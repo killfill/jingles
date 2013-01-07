@@ -1,0 +1,76 @@
+<div class="tab-pane" ng-show='vm.uuid'>
+
+	<div class="row-fluid">
+		<div class="span8">
+			<h3>Machine {{vm._name}}
+				<span style='font-size: 0.5em; padding: 5px 10px 10px 8px; margin-left: 10px; height: 10px;' class='label label-{{vm._state_label}}'>{{vm.state}}</span>
+			</h3>			
+			
+		</div>
+		<div class='span4'>
+			<div class="btn-toolbar btn-group pull-right">
+				<button ng-click="action('start', vm)"  ng-disabled="vm.state!='stopped'" class="btn btn-success"><i class='icon-play'></i></button>
+				<button ng-click="action('reboot', vm)" ng-disabled="vm.state!='running'" class="btn"><i class='icon-refresh'></i></button>
+				<button ng-click="action('stop', vm)"   ng-disabled="vm.state!='running'" class="btn btn-warning"><i class='icon-stop'></i></button>
+			</div>
+		</div>
+	</div>
+	<hr/>
+
+<div class="tabbable tabs-right">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+    <li><a href="#tab2" data-toggle="tab">History</a></li>
+    <li><a href="#tab2" data-toggle="tab">Notes</a></li>
+    <li><a href="#tab2" data-toggle="tab">Backup</a></li>
+    <li><a href="#tab2" data-toggle="tab">Performance</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="details">
+			<table class='table table-bordered'>
+				<tr><th>Name</th><td>{{vm.config.alias}} / <span class="uuid">{{vm.uuid}}</span></td></tr>
+				<tr><th>Dataset</th><td>{{vm.config.dataset}}</td></tr>
+				<tr><th>Package</th><td>{{vm._package}}</td></tr>
+				<tr><th>Resources</th>
+					<td>
+						<dl class="dl-horizontal">
+							<dt>Ram</dt><dd>{{vm.config.ram}}MB </dd>
+							<dt>CPU</dt><dd>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+							<dt>Disk</dt><dd>{{vm.config.quota}}GB</dd>
+							<dt></dt><dd></dd>
+							<dt></dt><dd></dd>
+						</dl>
+					</td></tr>
+				<tr><th>Network</th>
+					<td ng-repeat='net in vm.config.networks'>
+						<dl class="dl-horizontal">
+							<dt>Tag</dt>		<dd>{{net.nic_tag}}</dd>
+							<dt>Interface</dt>	<dd>{{net.interface}}</dd>
+							<dt>IP</dt>			<dd>{{net.ip}} / {{net.netmask}}</dd>
+							<dt>Gateway</dt>	<dd>{{net.gateway}}</dd>
+							<dt>Mac</dt>		<dd>{{net.mac}}</dd>
+							<dt>Primary</dt>	<dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
+						</dl>
+					</td>
+				</tr>
+				<tr><th>Type</th><td>{{vm.config.type}}</td></tr>
+				<tr><th>Hypervisor</th><td>{{vm.hypervisor}} </td></tr>
+				<tr><th>Created</th><td>31 Dec 2012, 10 days ago (MOCKUP!)</td></tr>
+			</table>
+			<div class="btn-toolbar btn-group pull-right">
+				<button class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Backup</button>
+				<button class="btn" jq-run='tooltip' title='Move to other hypervisor'><i class='icon-forward'></i> Move</button>
+				<button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button>
+			</div>    </div>
+    <div class="tab-pane" id="tab2">
+    </div>
+  </div>
+</div>	
+
+	<div class="row-fluid">
+		<div class="span12">
+			
+
+			
+		</div>
+</div>

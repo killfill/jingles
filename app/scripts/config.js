@@ -1,0 +1,105 @@
+Config = {
+    /*
+     * Comment this line in production!
+     * dev mode will cause the UI to log in with the
+     * redentials test/test.
+     */
+    mode: "production",
+    /*
+     * This is the URL of the FiFo API Server.
+     * Please adjust it to your configuration.
+     */
+    wiggle: window.location.protocol+"//"+window.location.host,
+    //wiggle: 'http://IP/api/0.1.0/',
+
+    /*
+     * The URL of the FiFo Howl notification Service.
+     * If you are not running howl you can comment this line
+     * and the service will not be used.
+     */
+    howl: window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host+"/howl",
+    //howl: 'ws://IP/howl',
+
+    /* Here you can define the rules by which the UI decides if metrics are good or bad.
+     * 'type'  values of warning or error are shown as a big red X, values of info are
+     * just listed.
+     * Following are a few example values.
+     */
+    could_test: [
+        {
+            max: 0,
+            type: "info",
+            category: "configuration",
+            element: "wiggle-ui-config",
+            message: "You have not adjusted your wiggle ui config.js. " +
+                "This is OK, but please keep in mind that the default warning levels in there " +
+                "might not apply to you. If you see warnings that you think you should not go " +
+                "there and change them, you can also remove this message there.",
+            formula: function() {return 1}
+        },
+        {
+            max: 0.85,
+            type: "warning",
+            category: "cloud",
+            element: "memory",
+            message: "High memory usage at: $v%",
+            formula: function(m) {return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);}
+        },
+        {
+            max: 0.60,
+            type: "warning",
+            category: "cloud",
+            element: "disk",
+            message: "High Disk usage at: $v%",
+            formula: function(m) {return m.used / m.size;}
+        },
+        {
+            min: 0.80,
+            category: "cloud",
+            element: "l1arc",
+            type: "warning",
+            message: "L1 Hit ratio is low at: $v%",
+            formula: function(m){return m.l1hits / (m.l1miss + m.l1hits)}
+        },
+        {
+            min: 0.20,
+            category: "cloud",
+            element: "l2arc",
+            type: "warning",
+            message: "L2 Hit ratio is low at: $v%",
+            formula: function(m){
+                var t = (m.l2miss + m.l2hits);
+                if (t == 0)
+                    return 1
+                else
+                    return m.l2hits / t
+            }
+        }
+    ],
+
+    /*
+     * This function evaluates cloud metrics to decide if it's
+     * ok or not.
+     * The rule is simple, if everythign is ok, return an empty
+     * array. If not return an warning element for each event.
+     */
+    evaluate_cloud: function(metrics) {
+        return Config.could_test.reduce(function(r,e) {
+            var v = e.formula(metrics);
+            var ok = true;
+            if (e.max != undefined) {
+                ok = (v <= e.max);
+            } else if (e.mim != undefined) {
+                ok = (v >= e.min);
+            }
+            if (! ok)
+                r.push({
+                    category: e.category,
+                    element: e.element,
+                    type: e.type,
+                    message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
+                });
+            return r;
+        }, []);
+    }
+}

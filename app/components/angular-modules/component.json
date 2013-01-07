@@ -1,0 +1,23 @@
+{
+  "name": "angular-modules",
+  "version": "0.0.0",
+  "main": [
+    "resource.js",
+    "cookies.js",
+    "sanitize.js",
+    "loader.js",
+    "angular-mocks.js"
+  ],
+  "dependencies": {
+    "angular": "d04689f019f8febd8a86839dfb044a49f5737f72"
+  },
+  "gitHead": "9ed3ef707178faf700211ead8cdebdb6d2fad844",
+  "_id": "angular-modules@1.0.0",
+  "readme": "ERROR: No README.md file found!",
+  "description": "ERROR: No README.md file found!",
+  "commit": "9ed3ef707178faf700211ead8cdebdb6d2fad844",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chadhietala/Angular-Modules.git"
+  }
+}

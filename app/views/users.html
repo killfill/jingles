@@ -1,0 +1,65 @@
+          <div class="tab-pane" id="users">
+            <div class="row-fluid">
+              <div class="span12">
+                <h2>Users<a style="float: right" href="#" class="btn-success btn">+</a></h2>
+                <hr/>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span12">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Groups</th>
+                      <th>Permissions</th>
+                      <th class="span1">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat='u in users'>
+                        <td>{{u.name}}</td>
+                        <td>{{u.groups.join(', ')}}</td>
+                        <td>{{u._perm}}</td>
+                        <td>TODO</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row-fluid details" style="display: none;">
+              <div class="span12">
+                <hr/>
+                <b><span name="user-name"></span></b><br/>
+                <input type="password" id="user-pass-1"/>
+                <input type="password" id="user-pass-2"/>
+                <a href="#" class="btn" id="user-change-pass">Change Password</a><br/>
+                <table class="table" id="user-permissions-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th class="span1">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <input type="text" id="user-permission-input"/>
+                <a href="#" class="btn" id="user-grant">Grant</a><br/>
+                <table class="table" id="user-groups-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Permissions</th>
+                      <th class="span1">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <select id="user-group-select"></select>
+                <a href="#" class="btn" id="user-join">Join</a><br/>
+              </div>
+            </div>
+          </div>
