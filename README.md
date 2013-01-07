@@ -1,4 +1,11 @@
-BUGS
+How to use
+----------
+
+# Install yeoman if not installed: npm install yeoman -g
+# Clone the repo
+# yeoman server
+
+Bugs found
 -------------
 
 - the tooltip that pops up to reveal the full uuid as you hover over the 
@@ -9,7 +16,7 @@ BUGS
 - When VM is deleted, its still on the list.
 - When VM is creted, it does not aprear.
 
-FEATURES
+Features missing
 -------------
 - Show created_at in list and vm detail
 - Vm list:
