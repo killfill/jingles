@@ -20,7 +20,7 @@
 <div class="tabbable tabs-right">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-    <li><a href="#tab2" data-toggle="tab">History</a></li>
+    <li><a href="#history" data-toggle="tab">History</a></li>
     <li><a href="#tab2" data-toggle="tab">Notes</a></li>
     <li><a href="#tab2" data-toggle="tab">Backup</a></li>
     <li><a href="#tab2" data-toggle="tab">Performance</a></li>
@@ -62,6 +62,15 @@
 				<button class="btn" jq-run='tooltip' title='Move to other hypervisor'><i class='icon-forward'></i> Move</button>
 				<button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button>
 			</div>    </div>
+    <div class="tab-pane" id="history">
+    	<table class="table">
+    		<tr ng-repeat="log in vm.log | orderBy: '-date' ">
+    			<td>{{log.date/1000 | fromNow}}</td>
+    			<td>{{log.date/1000 | date:'medium'}}</td>
+    			<td>{{log.log}}</td>
+    		</tr>
+    	</table>
+    </div>
     <div class="tab-pane" id="tab2">
     </div>
   </div>
