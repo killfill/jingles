@@ -33,7 +33,7 @@
                       <td>{{vm.config.dataset.split('-')[0]}}</td>
                       <td>{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
                       <td jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
-                      <td jq-run='tooltip' title='{{vm.hypervisor}}'>{{vm.hypervisor.split('-').slice(0,2).join('-')}}</td>
+                      <td>{{vm.hypervisor}}</td>
                       <td>
                         <span class='label label-{{vm._state_label}}'>{{vm.state}}</span>
                       </td>
