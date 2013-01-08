@@ -21,10 +21,9 @@ Features missing
 
 - Show created_at in list and vm detail
 - Vm list:
-	- Show name: alias || uuid.split[0]
 	  With tooltip shoing the details
-	- Show dataset (bug in wiggle api?)
-	- Show the package. (wishlist for wiggle api?)
+	- Show dataset name instead of the uuis
+	- Show the package. (wiggle api?)
 - Clean up the order vm list mess, and enable desc
 - VNC
 - Boostrap jquery tabs error and make'em active
