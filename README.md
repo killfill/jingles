@@ -1,17 +1,13 @@
 How to use
 ----------
 
-- Install yeoman if not installed: npm install yeoman -g
+- Install yeoman if not installed: 'npm install yeoman -g'
 - Clone the repo
-- yeoman server
+- 'yeoman server'
 
-Bugs found
+Bugs known
 -------------
 
-- the tooltip that pops up to reveal the full uuid as you hover over the 
-  truncated uuid, it would be awesome if you could reduce the font a bit so full uuid fits on one line in 
-  the tooltip, and then on the second line the vm "alias name " is listed.
-  also would be nice sorting of lists wrked in both directions
 - Tooltip bug:  http://cl.ly/image/0i032X010U0S: triggered it by scrolling up and down over tool tips for a while in multi directions.
 - When VM is deleted, its still on the list.
 - When VM is creted, it does not aprear.
@@ -19,12 +15,12 @@ Bugs found
 Features missing
 -------------
 
+- Equal wiggle-ui functionalities
 - Show created_at in list and vm detail
 - Vm list:
-	  With tooltip shoing the details
 	- Show dataset name instead of the uuis
 	- Show the package. (wiggle api?)
-- Clean up the order vm list mess, and enable desc
+	- Clean up the order vm list mess, and enable desc
 - VNC
 - Boostrap jquery tabs error and make'em active
 - Better logos / check their usage policy

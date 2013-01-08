@@ -28,7 +28,7 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
-                      <td title='{{vm.uuid}}' jq-run='tooltip' class='uuid' ><a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a></td>
+                      <td title='<span class=uuid>{{vm.uuid}}</div>' jq-run='tooltip' class='uuid' ><a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a></td>
                       <td>{{vm._ips}}</td>
                       <td>{{vm.config.dataset.split('-')[0]}}</td>
                       <td>{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
