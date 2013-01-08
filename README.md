@@ -18,13 +18,16 @@ Bugs found
 
 Features missing
 -------------
+
 - Show created_at in list and vm detail
 - Vm list:
+	- Show name: alias || uuid.split[0]
+	  With tooltip shoing the details
 	- Show dataset (bug in wiggle api?)
 	- Show the package. (wishlist for wiggle api?)
 - Clean up the order vm list mess, and enable desc
+- VNC
 - Boostrap jquery tabs error and make'em active
 - Better logos / check their usage policy
 - Minimize js's (yeoman?)
-- See how to deploy this..
 

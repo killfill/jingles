@@ -1,0 +1,8 @@
+    
+ -> Jingles is now installed.
+
+ 	Please do this:
+ 	ln -s /opt/local/jingles/app /opt/local/wiggle-ui/htdocs/jingles
+
+ 	So you can load http://ip/jingles in your browser!
+
