@@ -2,25 +2,25 @@
 
 fifoApp.controller('NetworksCtrl', function($scope, wiggle, status) {
 
-	$scope.networks = {}
+    $scope.networks = {}
 
-	$scope.show = function() {
+    $scope.show = function() {
 
-		wiggle.ipranges.list(function (ids) {
+        wiggle.ipranges.list(function (ids) {
 
-			ids.length > 0 && status.update('Loading networks', {total: ids.length})
+            ids.length > 0 && status.update('Loading networks', {total: ids.length})
 
-			ids.forEach(function(id) {
+            ids.forEach(function(id) {
 
-				$scope.networks[id] = {tag: id}
-				wiggle.ipranges.get({id: id}, function(res) {
-					$scope.networks[id] = res
-					status.update('Loading networks', {add: 1})
-				})
+                $scope.networks[id] = {tag: id}
+                wiggle.ipranges.get({id: id}, function(res) {
+                    $scope.networks[id] = res
+                    status.update('Loading networks', {add: 1})
+                })
 
-			})
-		})
-	}
+            })
+        })
+    }
 
-	$scope.show()
+    $scope.show()
 });

@@ -4,7 +4,7 @@ fifoApp.factory('howl', function($rootScope, $compile) {
 
     howl._wsMessage = function(e) {
         var msg = JSON.parse(e.data),
-            type = msg.message && msg.message.event || 'main';
+        type = msg.message && msg.message.event || 'main';
 
         $rootScope.$broadcast(type, msg)
         if (Config.mode == 'dev' && !msg.pong)
@@ -35,7 +35,6 @@ var howl = {
             howl._connected = true && howl._token && howl.send({ping: 1})
         }, 1000);
 
-        
     },
 
     _wsClose: function(e) {
@@ -50,7 +49,8 @@ var howl = {
             howl.ws = null;
         }
 
-        if (token) howl._token = token
+        if (token) 
+            howl._token = token
 
         howl.ws = new WebSocket(Config.howl)
         howl.ws.onopen = howl._wsOpen
@@ -67,7 +67,7 @@ var howl = {
     join: function(channel) {
         if (typeof channel.forEach == 'function')
             return channel.forEach(howl.join)
-        
+
         if (!howl._connected)
             return howl._join_channels_on_connect.push(channel)
 

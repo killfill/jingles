@@ -1,74 +1,74 @@
 'use strict';
 
 var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
-  .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/main', {
+    .when('/main', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
-      })
-      .when('/login', {
+    })
+    .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
-      })
-      .when('/status', {
+    })
+    .when('/status', {
         templateUrl: 'views/status.html',
         controller: 'StatusCtrl'
-      })
-      .when('/dashboard', {
+    })
+    .when('/dashboard', {
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
-      })
-      .when('/virtual-machines', {
+    })
+    .when('/virtual-machines', {
         templateUrl: 'views/virtual-machines.html',
         controller: 'Virtual-MachinesCtrl'
-      })
-      .when('/virtual-machines/new', {
+    })
+    .when('/virtual-machines/new', {
         templateUrl: 'views/new_vm.html',
         controller: 'NewVmCtrl'
-      })
-      .when('/virtual-machines/:uuid', {
+    })
+    .when('/virtual-machines/:uuid', {
         templateUrl: 'views/vm.html',
         controller: 'VmCtrl'
-      })
-      .when('/hypervisors', {
+    })
+    .when('/hypervisors', {
         templateUrl: 'views/hypervisors.html',
         controller: 'HypervisorsCtrl'
-      })
-      .when('/networks', {
+    })
+    .when('/networks', {
         templateUrl: 'views/networks.html',
         controller: 'NetworksCtrl'
-      })
-      .when('/datasets', {
+    })
+    .when('/datasets', {
         templateUrl: 'views/datasets.html',
         controller: 'DatasetsCtrl'
-      })
-      .when('/packages', {
+    })
+    .when('/packages', {
         templateUrl: 'views/packages.html',
         controller: 'PackagesCtrl'
-      })
-      .when('/groups', {
+    })
+    .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'GroupsCtrl'
-      })
-      .when('/users', {
+    })
+    .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'
-      })
-      .otherwise({
+    })
+    .otherwise({
         redirectTo: '/status'
-      });
+    });
 
-      //Replace # with pushstates:
-      //$locationProvider.html5Mode(false); //.hashPrefix('!');
-  }])
+    //Replace # with pushstates:
+    //$locationProvider.html5Mode(false); //.hashPrefix('!');
+}])
 .run(function ($http, $cookies, user) {
 
-  /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
-  delete $http.defaults.headers.common['X-Requested-With']
+    /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
+    delete $http.defaults.headers.common['X-Requested-With']
 
-  if ($cookies.login && $cookies.token)
-    user.login($cookies.token, $cookies.login)
+    if ($cookies.login && $cookies.token)
+        user.login($cookies.token, $cookies.login)
 
 })
 
