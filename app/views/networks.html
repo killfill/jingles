@@ -33,7 +33,9 @@
                         <td>{{net.current}}</td>
                         <td>{{net.last}}</td>
                         <td>{{net.free.length}}</td>
-                        <td>TODO!</td>
+                        <td>
+                            <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
+                        </td>
                       <tr>
                   </tbody>
                 </table>

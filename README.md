@@ -16,8 +16,7 @@ Features missing
 -------------
 
 - Equal wiggle-ui functionalities:
-    - Dashboard: graphs
-    - Networks: del/create
+    - Networks: create
     - Packages: del/create
     - User & Groups stuff
 - Show created_at in list and vm detail
