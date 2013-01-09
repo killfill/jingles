@@ -15,10 +15,13 @@ Bugs known
 Features missing
 -------------
 
-- Equal wiggle-ui functionalities
+- Equal wiggle-ui functionalities:
+    - Dashboard: graphs
+    - Networks: del/create
+    - Packages: del/create
+    - User & Groups stuff
 - Show created_at in list and vm detail
 - Vm list:
-	- Show dataset name instead of the uuis
 	- Show the package. (wiggle api?)
 	- Clean up the order vm list mess, and enable desc
 - VNC
@@ -26,3 +29,4 @@ Features missing
 - Better logos / check their usage policy
 - Minimize js's (yeoman?)
 
+- Checkout mongohq.com UX
