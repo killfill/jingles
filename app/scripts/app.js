@@ -70,5 +70,4 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
     if ($cookies.login && $cookies.token)
         user.login($cookies.token, $cookies.login)
 
-})
-
+    })
