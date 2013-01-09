@@ -20,6 +20,10 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
         wiggle.vms.del(vm);
     };
 
+    $scope.vnc = function(vm) {
+        window.open("/app/vnc.html?uuid=" + vm.uuid);
+    };
+
     $scope.show = function() {
 
         wiggle.vms.list(function (ids) {

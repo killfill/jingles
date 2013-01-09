@@ -28,7 +28,9 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
-                      <td title='<span class=uuid>{{vm.uuid}}</div>' jq-run='tooltip' class='uuid' ><a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a></td>
+                      <td title='<span class=uuid>{{vm.uuid}}</div>' jq-run='tooltip' class='uuid' >
+                        <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
+                      </td>
                       <td>{{vm._ips}}</td>
                       <td>{{vm.config.dataset.split('-')[0]}}</td>
                       <td>{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
@@ -37,11 +39,20 @@
                       <td>
                         <span class='label label-{{vm._state_label}}'>{{vm.state}}</span>
                       </td>
-                      <td id='vm_actions'>
-                        <i ng-click="start(this.vm)"  jq-run='tooltip' title="start" class="icon-play-circle clickable"></i>
-                        <i ng-click="stop(this.vm)"   jq-run='tooltip' title="stop" class="icon-off clickable"></i>
-                        <i ng-click="reboot(this.vm)" jq-run='tooltip' title="reboot" class="icon-refresh clickable"></i>
-                        <i ng-click="del(this.vm)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
+                      <td>
+                        <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"
+                           ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
+                           class="icon-eye-open clickable"></i>
+                        <i ng-click="start(this.vm)" jq-run="tooltip" title="start"
+                           ng-show="vm.state != 'running'"
+                           class="icon-play-circle clickable"></i>
+                        <i ng-click="stop(this.vm)" jq-run="tooltip" title="stop"
+                           ng-show="vm.state != 'stopped'"
+                           class="icon-off clickable"></i>
+                        <i ng-click="reboot(this.vm)" jq-run="tooltip" title="reboot"
+                           ng-show="vm.state != 'stopped'"
+                           class="icon-refresh clickable"></i>
+                        <i ng-click="del(this.vm)" jq-run="tooltip" title="delete" class="icon-remove-sign clickable"></i>
                       </td>
                     </tr>
                   </tbody>
