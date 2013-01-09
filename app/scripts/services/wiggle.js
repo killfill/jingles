@@ -15,7 +15,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
             if (cb.error)
                 r.error(cb.error)
         }
-        r
+        return  r
     }
     var endpoint = Config.wiggle
 
