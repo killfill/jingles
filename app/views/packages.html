@@ -18,12 +18,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                      <tr ng-repeat='p in packages'>
-                        <td>{{p.name}}</td>
-                        <td>{{p.ram}}</td>
-                        <td>{{p.quota}}</td>
-                        <td>{{p.cpu_cap}}</td>
-                        <td>TODO</td>
+                      <tr ng-repeat='pack in packages'>
+                        <td>{{pack.name}}</td>
+                        <td>{{pack.ram}}</td>
+                        <td>{{pack.quota}}</td>
+                        <td>{{pack.cpu_cap}}</td>
+                        <td>
+                            <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
+                        </td>
                       </tr>
                   </tbody>
                 </table>
