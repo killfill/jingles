@@ -23,8 +23,6 @@ Features missing
 - Vm list:
 	- Show the package. (wiggle api?)
 	- Clean up the order vm list mess, and enable desc
-- VNC
-- Boostrap jquery tabs error and make'em active
 - Better logos / check their usage policy
 - Minimize js's (yeoman?)
 
