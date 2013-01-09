@@ -93,18 +93,19 @@
 
 
     <div class='container-fluid' id='ui' ng-show="loggedUser && loggedUser.username">
-      <div class="tabs-left">
-        <nav-tabs>
-          <nav-tab href="#/status" icon="camera">Status</nav-tab>
-          <nav-tab href="#/dashboard" icon="dashboard">Dashboard</nav-tab>
-          <nav-tab href="#/virtual-machines" icon="display">Virtual Machines</nav-tab>
-          <nav-tab href="#/hypervisors" icon="cloud">Hypervisors</nav-tab>
-          <nav-tab href="#/networks" icon="share_alt">Networks</nav-tab>
-          <nav-tab href="#/datasets" icon="hdd">Datasets</nav-tab>
-          <nav-tab href="#/packages" icon="cargo">Packages</nav-tab>
-          <nav-tab href="#/groups" icon="group">Groups</nav-tab>
-          <nav-tab href="#/users" icon="user">Users</nav-tab>
-        </nav-tabs>
+        <div class="tabs-left">
+            <nav-tabs>
+              <nav-tab href="#/status" icon="camera">Status</nav-tab>
+              <nav-tab href="#/dashboard" icon="dashboard">Dashboard</nav-tab>
+              <nav-tab href="#/virtual-machines" icon="display">Virtual Machines</nav-tab>
+              <nav-tab href="#/hypervisors" icon="cloud">Hypervisors</nav-tab>
+              <nav-tab href="#/networks" icon="share_alt">Networks</nav-tab>
+              <nav-tab href="#/datasets" icon="hdd">Datasets</nav-tab>
+              <nav-tab href="#/packages" icon="cargo">Packages</nav-tab>
+              <nav-tab href="#/groups" icon="group">Groups</nav-tab>
+              <nav-tab href="#/users" icon="user">Users</nav-tab>
+            </nav-tabs>
+
             <div class='tab-content main-tab-content' style="margin-left:170px">
                 <div class='tab-pane active' ng-view></div>
             </div>
@@ -144,11 +145,11 @@
     <script src="scripts/services/wiggle.js"></script>
     <script src="scripts/services/howl.js"></script>
     <script src="scripts/services/status.js"></script>
-    <script src="scripts/services/jq-run.js"></script>
     <script src="scripts/services/modal.js"></script>
     <script src="scripts/services/user.js"></script>
     <script src="scripts/services/vm.js"></script>
     <script src="scripts/filters/filters.js"></script>
+    <script src="scripts/directives/directives.js"></script>
     <!-- endbuild -->
 
 </body>
