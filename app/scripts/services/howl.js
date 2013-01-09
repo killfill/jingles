@@ -49,7 +49,7 @@ var howl = {
             howl.ws = null;
         }
 
-        if (token) 
+        if (token)
             howl._token = token
 
         howl.ws = new WebSocket(Config.howl)

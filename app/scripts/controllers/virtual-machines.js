@@ -4,11 +4,27 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
 
     $scope.vms = {}
 
+    $scope.start = function(vm) {
+        wiggle.vms.start(vm);
+    };
+
+    $scope.stop = function(vm) {
+        wiggle.vms.stop(vm);
+    };
+
+    $scope.reboot = function(vm) {
+        wiggle.vms.reboot(vm);
+    };
+
+    $scope.del = function(vm) {
+        wiggle.vms.del(vm);
+    };
+
     $scope.show = function() {
 
         wiggle.vms.list(function (ids) {
 
-            /* We could add this to fix when user created a vm from another gui, so reloading the vm list will join the missing howl channel 
+            /* We could add this to fix when user created a vm from another gui, so reloading the vm list will join the missing howl channel
             But maybe there could be a event to let the gui know that a new vm was created!
             Same when a new VM is created.
             wiggle.vms.list(howl.join)

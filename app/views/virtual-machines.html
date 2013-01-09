@@ -23,7 +23,7 @@
                       <th class="clickable {{orderField.indexOf('_cpu') > -1 && 'sorted-down' || ''}}"         ng-click="orderField='_cpu'">CPU</th>
                       <th class="clickable {{orderField.indexOf('hypervisor') > -1 && 'sorted-down' || ''}}"   ng-click="orderField='hypervisor'">Hypevisor</th>
                       <th class="clickable {{orderField.indexOf('state') > -1 && 'sorted-down' || ''}}"        ng-click="orderField='state'">State</th>
-                      <!-- <th class="span2">Actions</th> -->
+                      <th class="span2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -37,12 +37,12 @@
                       <td>
                         <span class='label label-{{vm._state_label}}'>{{vm.state}}</span>
                       </td>
-                      <!--<td id='vm_actions'>
-                    <i ng-click="action('start', this)"  jq-run='tooltip' title="start" class="icon-play-circle clickable"></i>
-                    <i ng-click="action('stop', this)"   jq-run='tooltip' title="stop" class="icon-off clickable"></i>
-                    <i ng-click="action('reboot', this)" jq-run='tooltip' title="reboot" class="icon-refresh clickable"></i>
-                    <i ng-click="action('delete', this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
-                      </td>-->
+                      <td id='vm_actions'>
+                        <i ng-click="start(this.vm)"  jq-run='tooltip' title="start" class="icon-play-circle clickable"></i>
+                        <i ng-click="stop(this.vm)"   jq-run='tooltip' title="stop" class="icon-off clickable"></i>
+                        <i ng-click="reboot(this.vm)" jq-run='tooltip' title="reboot" class="icon-refresh clickable"></i>
+                        <i ng-click="del(this.vm)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
