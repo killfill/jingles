@@ -2,6 +2,21 @@
 
 fifoApp.factory('wiggle', function($resource, $http) {
 
+    var mk_callback = function(r, cb) {
+        if (cb) {
+            if (typeof cb == 'function') {
+                cb = {
+                    success: cb,
+                    error: cb
+                };
+            }
+            if (cb.success)
+                r.success(cb.success)
+            if (cb.error)
+                r.error(cb.error)
+        }
+        r
+    }
     var endpoint = Config.wiggle
 
     var services = {
@@ -25,44 +40,24 @@ fifoApp.factory('wiggle', function($resource, $http) {
     endpoint = endpoint.replace("\\", '');
     ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users'].forEach(function(resource) {
         services[resource].list = function(cb) {
-            $http.get(endpoint + resource)
-                .success(cb)
-                .error(cb);
+            mk_callback($http.get(endpoint + resource), cb)
         }
     });
 
     services['vms'].del = function(vm, cb) {
-        var r = $http.delete(endpoint + "vms/" + vm.uuid);
-        if (cb) {
-            r.success(cb)
-                .error(cb);
-        }
+        mk_callback($http.delete(endpoint + "vms/" + vm.uuid), cb);
     };
 
     services['vms'].start = function(vm, cb) {
-        console.log("start", vm);
-        var r = $http.put(endpoint + "vms/" + vm.uuid, '{"action":"start"}');
-        if (cb) {
-            r.success(cb)
-                .error(cb);
-        }
+        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"start"}'), cb);
     };
 
     services['vms'].stop = function(vm, cb) {
-        console.log("stop", vm);
-        var r = $http.put(endpoint + "vms/" + vm.uuid, '{"action":"stop"}');
-        if (cb) {
-            r.success(cb)
-                .error(cb);
-        }
+        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"stop"}'), cb);
     };
 
     services['vms'].reboot = function(vm, cb) {
-        var r = $http.put(endpoint + "vms/" + vm.uuid, '{"action":"reboot"}');
-        if (cb) {
-            r.success(cb)
-                .error(cb);
-        }
+        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"reboot"}'), cb);
     };
 
     return services
