@@ -13,7 +13,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
         })
 
         for (var i=0; i<$scope.selectedNetworks.length; i++)
-            vm.config.networks['net' + i] = $scope.selectedNetworks[i].tag
+            vm.config.networks['net' + i] = $scope.selectedNetworks[i].name
 
         vm.$save()
 
@@ -56,10 +56,10 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
         })
 
         wiggle.ipranges.list(function(ids) {
-            ids.forEach(function(id) {
-                var net = wiggle.ipranges.get({id: id})
+            ids.forEach(function(name) {
+                var net = wiggle.ipranges.get({id: name})
                 $scope.networks.push(net)
-                if (id=='admin')
+                if (!$scope.selectedNetworks)
                     $scope.selectedNetworks = [net]
             })
         })
