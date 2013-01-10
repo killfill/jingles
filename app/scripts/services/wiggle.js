@@ -32,7 +32,10 @@ fifoApp.factory('wiggle', function($resource, $http) {
                       ),
         ipranges: $resource(endpoint + 'ipranges/:id', {id: '@id'}),
         datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
-        packages: $resource(endpoint + 'packages/:id', {id: '@id'}),
+        packages: $resource(endpoint + 'packages/:id', 
+            {id: '@id'},
+            {create: {method: 'PUT'}}
+        ),
     }
 
     /* Response with list of strings are not $resource friendly..

@@ -9,8 +9,8 @@ Bugs known
 -------------
 
 - Tooltip bug:  http://cl.ly/image/0i032X010U0S: triggered it by scrolling up and down over tool tips for a while in multi directions.
-- When VM is deleted, its still on the list.
-- When VM is creted, it does not aprear.
+- When vm/package/etc is deleted, its still on the list.
+- When vm/package/etc is creted, it does not aprear.
 
 Features missing
 -------------

@@ -15,35 +15,30 @@
 
   <div class="span3 thumbnail">
     <div class="input-append">
-      <input class='input-large' placeholder="RAM" style='margin-left: 8px;' type=text ng-model='ram' ng:required>
+      <input class='input-small' placeholder="RAM" style='margin-left: 8px;' type=text ng-model='ram' ng:required>
       <span class="add-on">MB</span>
     </div>
     <div class="input-append">
-      <input class='input-large' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='quota' autofocus>
+      <input class='input-small' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='quota'>
       <span class="add-on">GB</span>
     </div>
     <div class="input-append">
-      <input class='input-large' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='cpu_cap' autofocus>
+      <input class='input-small' placeholder="CPU" style='margin-left: 8px;' type=text ng-model='cpu_cap'>
       <span class="add-on">%</span>
     </div>
   </div>
   <div class="span7 thumbnail">
     <table class=" table table-hover small">
-      <thead>
-        <tr>
-          <td>Weight</td>
-          <td>Condition</td>
-          <td>Attribute</td>
-          <td>Value</td>
-          <td style="text-align:right;">Action</td>
+        <tr class=small>
+          <th>Weight</th>
+          <th>Condition</th>
+          <th>Attribute</th>
+          <th>Value</th>
+          <th style="text-align:right;">Action</th>
         </tr>
-      </thead>
-      <tbody>
-      </tbody>
-      <tfoot>
-        <tr>
+        <tr ng-repeat='rule in rules'>
           <td>
-            <select class="span12" ng-model="cond_weight">
+            <select class="span12" ng-model="rule.weight">
               <option>must</option>
               <option>cant</option>
               <option>1</option>
@@ -85,10 +80,10 @@
             </select>
           </td>
           <td>
-            <input class="input-large span12" placeholder="Key" type="text" ng-model="cond_key"/>
+            <input class="input-large span12" placeholder="Key" type="text" ng-model="rule.key"/>
           </td>
           <td>
-            <select ng-model="cond_cond">
+            <select ng-model="rule.attribute">
               <option>&gt;=</option>
               <option>&gt;</option>
               <option>=&lt;</option>
@@ -102,13 +97,14 @@
             </select>
           </td>
           <td>
-            <input class="input-large span12" placeholder="Value" type="text" ng-model="cond_val"/>
+            <input class="input-large span12" placeholder="Value" type="text" ng-model="rule.val"/>
           </td>
           <td>
-            <button class="span12 btn btn-success pull-right" ng-click="add_rule()">+</button>
+            <button class="btn btn-small btn-success" ng-click="add_rule()">+</button>
+            <button class="btn btn-small btn-danger" ng-click="rm_rule($index)">-</button>
           </td>
         </tr>
-      </tfoot>
+
     </table>
 
   </div>
