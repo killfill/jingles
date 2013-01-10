@@ -17,7 +17,7 @@ fifoApp.controller('NewPackageCtrl', function($scope, $http, $location, howl, wi
             quota: $scope.quota,
             ram: $scope.ram,
             cpu_cap: $scope.cpu_cap,
-            rules: $scope.rules
+            requirements: $scope.rules
         });
 
         pkg.$create({id: $scope.name});
