@@ -11,7 +11,7 @@
   </div>
 
 
-  <button class='btn btn-success pull-right' ng-show='name' ng-click='create_package()'>Create!</button>
+  <button class='btn btn-success pull-right' ng-show='name && ram && quota && cpu_cap' ng-click='create_package()'>Create!</button>
 
   <div class="span3 thumbnail">
     <div class="input-append">
@@ -27,14 +27,13 @@
       <span class="add-on">%</span>
     </div>
   </div>
-  <div class="span7 thumbnail">
-    <table class=" table table-hover small">
+  <div class="span8 thumbnail">
+    <table class="table table-hover small">
         <tr class=small>
           <th>Weight</th>
           <th>Condition</th>
           <th>Attribute</th>
           <th>Value</th>
-          <th style="text-align:right;">Action</th>
         </tr>
         <tr ng-repeat='rule in rules'>
           <td>
@@ -100,12 +99,17 @@
             <input class="input-large span12" placeholder="Value" type="text" ng-model="rule.value"/>
           </td>
           <td>
-            <button class="btn btn-small btn-success" ng-click="add_rule()">+</button>
             <button class="btn btn-small btn-danger" ng-click="rm_rule($index)">-</button>
           </td>
         </tr>
 
     </table>
-
+    <div class='caption'>
+      <hr/>
+      <button class="btn btn-small btn-success pull-right" ng-click="add_rule()">+</button>
+      <p>
+        This rules help FiFo decide wich hypervisor to use. <a href="http://project-fifo.net/display/PF/Hypervisor+Requirements" target=_blank>More info</a>
+      </p>
+    </div>
   </div>
 </div>
