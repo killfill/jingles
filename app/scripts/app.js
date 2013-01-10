@@ -47,6 +47,11 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/packages.html',
         controller: 'PackagesCtrl'
     })
+    .when('/packages/new', {
+        templateUrl: 'views/new_package.html',
+        controller: 'NewPackageCtrl'
+    })
+
     .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'GroupsCtrl'

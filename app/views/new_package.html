@@ -1,0 +1,115 @@
+<div class="row-fluid">
+  <div class="span12">
+    <h2>Create a new Package</h2>
+    <hr/>
+  </div>
+
+  <div class="span10">
+    <div class="alert alert-info">
+      Create a package called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='name' autofocus>.
+    </div>
+  </div>
+
+
+  <button class='btn btn-success pull-right' ng-show='name' ng-click='create_package()'>Create!</button>
+
+  <div class="span3 thumbnail">
+    <div class="input-append">
+      <input class='input-large' placeholder="RAM" style='margin-left: 8px;' type=text ng-model='ram' ng:required>
+      <span class="add-on">MB</span>
+    </div>
+    <div class="input-append">
+      <input class='input-large' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='quota' autofocus>
+      <span class="add-on">GB</span>
+    </div>
+    <div class="input-append">
+      <input class='input-large' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='cpu_cap' autofocus>
+      <span class="add-on">%</span>
+    </div>
+  </div>
+  <div class="span7 thumbnail">
+    <table class=" table table-hover small">
+      <thead>
+        <tr>
+          <td>Weight</td>
+          <td>Condition</td>
+          <td>Attribute</td>
+          <td>Value</td>
+          <td style="text-align:right;">Action</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <select class="span12" ng-model="cond_weight">
+              <option>must</option>
+              <option>cant</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>20</option>
+              <option>30</option>
+              <option>40</option>
+              <option>50</option>
+              <option>60</option>
+              <option>70</option>
+              <option>80</option>
+              <option>90</option>
+              <option>-1</option>
+              <option>-2</option>
+              <option>-3</option>
+              <option>-4</option>
+              <option>-5</option>
+              <option>-6</option>
+              <option>-7</option>
+              <option>-8</option>
+              <option>-9</option>
+              <option>-10</option>
+              <option>-20</option>
+              <option>-30</option>
+              <option>-40</option>
+              <option>-50</option>
+              <option>-60</option>
+              <option>-70</option>
+              <option>-80</option>
+              <option>-90</option>
+            </select>
+          </td>
+          <td>
+            <input class="input-large span12" placeholder="Key" type="text" ng-model="cond_key"/>
+          </td>
+          <td>
+            <select ng-model="cond_cond">
+              <option>&gt;=</option>
+              <option>&gt;</option>
+              <option>=&lt;</option>
+              <option>&lt;</option>
+              <option>=:=</option>
+              <option>=/=</option>
+              <option>subset</option>
+              <option>superset</option>
+              <option>disjoint</option>
+              <option>element</option>
+            </select>
+          </td>
+          <td>
+            <input class="input-large span12" placeholder="Value" type="text" ng-model="cond_val"/>
+          </td>
+          <td>
+            <button class="span12 btn btn-success pull-right" ng-click="add_rule()">+</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+  </div>
+</div>
