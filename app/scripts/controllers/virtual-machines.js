@@ -5,7 +5,6 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
     $scope.vms = {}
 
     $scope.action = function(action, vm) {
-        console.log('asd,', vm)
         vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, function() {
             if (action=='delete')
                 $location.path('/virtual-machines')
