@@ -14,9 +14,9 @@ fifoApp.controller('NewPackageCtrl', function($scope, $http, $location, howl, wi
 
     $scope.create_package = function() {
         var pkg = new wiggle.packages({
-            quota: $scope.quota,
-            ram: $scope.ram,
-            cpu_cap: $scope.cpu_cap,
+            quota: parseInt($scope.quota),
+            ram: parseInt($scope.ram),
+            cpu_cap: parseInt($scope.cpu_cap),
             requirements: $scope.rules
         });
 

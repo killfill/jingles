@@ -15,15 +15,15 @@
 
   <div class="span3 thumbnail">
     <div class="input-append">
-      <input class='input-small' placeholder="RAM" style='margin-left: 8px;' type=text ng-model='ram' ng:required>
+      <input class='input-small' placeholder="RAM" style='margin-left: 8px;' type=text ng-model='ram' ng:required ng:validate="integer">
       <span class="add-on">MB</span>
     </div>
     <div class="input-append">
-      <input class='input-small' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='quota'>
+      <input class='input-small' placeholder="Disk Quota" style='margin-left: 8px;' type=text ng-model='quota' ng:validate="integer">
       <span class="add-on">GB</span>
     </div>
     <div class="input-append">
-      <input class='input-small' placeholder="CPU" style='margin-left: 8px;' type=text ng-model='cpu_cap'>
+      <input class='input-small' placeholder="CPU" style='margin-left: 8px;' type=text ng-model='cpu_cap' ng:validate="integer">
       <span class="add-on">%</span>
     </div>
   </div>
