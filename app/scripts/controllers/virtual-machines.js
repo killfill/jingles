@@ -4,22 +4,13 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
 
     $scope.vms = {}
 
-    $scope.start = function(vm) {
-        wiggle.vms.start(vm);
-    };
-
-    $scope.stop = function(vm) {
-        wiggle.vms.stop(vm);
-    };
-
-    $scope.reboot = function(vm) {
-        wiggle.vms.reboot(vm);
-    };
-
-    $scope.del = function(vm) {
-        wiggle.vms.del(vm);
-    };
-
+    $scope.action = function(action, vm) {
+        console.log('asd,', vm)
+        vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, function() {
+            if (action=='delete')
+                $location.path('/virtual-machines')
+        })
+    }
     $scope.vnc = function(vm) {
         window.open("/app/vnc.html?uuid=" + vm.uuid);
     };

@@ -3,6 +3,8 @@
 fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
     return {
+
+        /* So far action can be: start/stop/reboot/delete. More info: http://project-fifo.net/display/PF/API */
         executeAction: function(action, uuid, alias, cb) {
             var name = alias || uuid;
 

@@ -2,21 +2,6 @@
 
 fifoApp.factory('wiggle', function($resource, $http) {
 
-    var mk_callback = function(r, cb) {
-        if (cb) {
-            if (typeof cb == 'function') {
-                cb = {
-                    success: cb,
-                    error: cb
-                };
-            };
-            if (cb.success)
-                r.success(cb.success);
-            if (cb.error)
-                r.error(cb.error);
-        };
-        return  r;
-    }
     var endpoint = Config.wiggle
 
     var services = {
@@ -46,25 +31,11 @@ fifoApp.factory('wiggle', function($resource, $http) {
     endpoint = endpoint.replace("\\", '');
     ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users'].forEach(function(resource) {
         services[resource].list = function(cb) {
-            mk_callback($http.get(endpoint + resource), cb)
+            return $http.get(endpoint + resource)
+                .success(cb)
+                .error(cb)
         }
     });
-
-    services['vms'].del = function(vm, cb) {
-        mk_callback($http.delete(endpoint + "vms/" + vm.uuid), cb);
-    };
-
-    services['vms'].start = function(vm, cb) {
-        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"start"}'), cb);
-    };
-
-    services['vms'].stop = function(vm, cb) {
-        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"stop"}'), cb);
-    };
-
-    services['vms'].reboot = function(vm, cb) {
-        mk_callback($http.put(endpoint + "vms/" + vm.uuid, '{"action":"reboot"}'), cb);
-    };
 
     return services
 
