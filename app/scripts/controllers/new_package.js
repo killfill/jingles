@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewPackageCtrl', function($scope, $http, $location, howl, wiggle) {
+fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle) {
 
     $scope.rules = [{}];
 
@@ -20,7 +20,14 @@ fifoApp.controller('NewPackageCtrl', function($scope, $http, $location, howl, wi
             requirements: $scope.rules
         });
 
-        pkg.$create({id: $scope.name});
-        $location.path('/packages')
+        pkg.$create({id: $scope.name},
+            function success(data, headers) {
+                $location.path('/packages')
+            },
+            function error(data) {
+                console.error('Create Package error:', data)
+                alert('There was an error creating your package. See the javascript console.')
+            }
+        );
     }
 })

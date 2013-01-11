@@ -11,7 +11,15 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             if (action!='delete') {
                 status.update('Will ' + action + ' ' + name, {info: true})
                 cb && cb(action, uuid)
-                return wiggle.vms.put({id: uuid}, {action: action})
+                return wiggle.vms.put({id: uuid}, {action: action},
+                    function success() {
+                        cb && cb(action, uuid)
+                    },
+                    function error() {
+                        console.error(action + 'VM error:', data)
+                        alert('There was an error changing the state your vm. See the javascript console.')
+                    }
+                )
             }
 
             modal.confirm({
@@ -21,29 +29,39 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Destroy here will mean this VM is gone forever!</p>"
             }, function() {
                 status.update('Will delete ' + name, {info: true})
-                wiggle.vms.delete({id: uuid})
-                cb && cb(action, uuid)
+                wiggle.vms.delete({id: uuid},
+                    function success(data, h) {
+                        cb && cb(action, uuid)
+                    },
+                    function error(data) {
+                        console.error('Delete VM error:', data)
+                        alert('There was an error deleting your vm. See the javascript console.')
+                    }
+                )
+
             })
 
         },
 
         updateCustomFields: function(vm) {
-            if (!vm.config) {
-                vm._state_label = 'important'
-                return vm;
-            }
 
-            vm._name = vm.config.alias || vm.uuid.split('-')[0]
-            vm._ips = (vm.config.networks || []).map(function(e) { return e.ip}).join(", ");
-            vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
-            vm._cpu_tooltip = vm.config.vcpu
-                ? vm.config.vcpu + ' CPU'
-                : vm.config.cpu_cap ? 'Shares: ' + vm.config.cpu_shares + '</br>Cap:'+ vm.config.cpu_cap:  'Shares: '+vm.config.cpu_shares;
+            vm._name = (vm.config && vm.config.alias) || vm.uuid.split('-')[0]
             vm._state_label = vm.state=='running'
                 ? 'success'
                 : vm.state == 'stopped'
                     ? 'warning'
                     : 'important'
+
+            if (!vm.config) {
+                vm._state_label = 'important'
+                return vm;
+            }
+
+            vm._ips = (vm.config.networks || []).map(function(e) { return e.ip}).join(", ");
+            vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
+            vm._cpu_tooltip = vm.config.vcpu
+                ? vm.config.vcpu + ' CPU'
+                : vm.config.cpu_cap ? 'Shares: ' + vm.config.cpu_shares + '</br>Cap:'+ vm.config.cpu_cap:  'Shares: '+vm.config.cpu_shares;
 
             return vm;
         }

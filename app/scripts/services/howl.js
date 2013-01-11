@@ -32,7 +32,7 @@ var howl = {
         howl.join(howl._join_channels_on_connect)
 
         setInterval(function() {
-            howl._connected = true && howl._token && howl.send({ping: 1})
+            howl._connected == true && howl._token && howl.send({ping: 1})
         }, 1000);
 
     },
