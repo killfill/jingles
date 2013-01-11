@@ -12,8 +12,9 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
             }
         })
 
-        for (var i=0; i<$scope.selectedNetworks.length; i++)
+        for (var i=0; i<$scope.selectedNetworks.length; i++) {
             vm.config.networks['net' + i] = $scope.selectedNetworks[i].name
+        }
 
         vm.$save()
 
@@ -32,7 +33,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
     $scope.click_network = function(network) {
         var idx = $scope.selectedNetworks.indexOf(network)
         if (idx>-1)
-            delete $scope.selectedNetworks[idx]
+            $scope.selectedNetworks.splice(idx, 1)
         else
             $scope.selectedNetworks.push(network)
     }

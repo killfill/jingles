@@ -36,6 +36,17 @@ table thead tr th.sorted-down {
     padding-left: 12px;
 }
 
+/* form label width was too big, at least for the network creation.. */
+.form-horizontal .control-label {
+    width: 85px;
+}
+.form-horizontal .control-group {
+    margin-bottom: 5px;
+}
+.form-horizontal {
+    margin-top: 10px;
+}
+
 /* Small table */
 .table.small {
     margin-bottom: 0px;

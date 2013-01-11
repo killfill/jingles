@@ -21,16 +21,19 @@ fifoApp.factory('wiggle', function($resource, $http) {
 
     var services = {
         users: $resource(endpoint + 'users/:login/:controller/:id',
-                         {login: '@login'},
-                         {login: {method: 'PUT', params: {controller: 'sessions'}}}
-                        ),
+            {login: '@login'},
+            {login: {method: 'PUT', params: {controller: 'sessions'}}}
+        ),
         cloud: $resource(endpoint + 'cloud'),
         hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
         vms: $resource(endpoint + 'vms/:id',
-                       {id: '@id'},
-                       {put: {method: 'PUT'}}
-                      ),
-        ipranges: $resource(endpoint + 'ipranges/:id', {id: '@id'}),
+            {id: '@id'},
+            {put: {method: 'PUT'}}
+        ),
+        ipranges: $resource(endpoint + 'ipranges/:id',
+            {id: '@id'},
+            {create: {method: 'PUT'}}
+        ),
         datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
         packages: $resource(endpoint + 'packages/:id', 
             {id: '@id'},

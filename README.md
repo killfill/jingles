@@ -16,8 +16,6 @@ Features missing
 -------------
 
 - Equal wiggle-ui functionalities:
-    - Networks: create
-    - Packages: create
     - User & Groups stuff
 - Show created_at in list and vm detail
 - Vm list:
@@ -27,3 +25,4 @@ Features missing
 - Minimize js's (yeoman?)
 
 - Checkout mongohq.com UX
+- http://project-fifo.net/display/PF/Cool+AngularJS+Snippets

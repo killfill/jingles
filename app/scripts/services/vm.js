@@ -26,7 +26,6 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
         },
 
         updateCustomFields: function(vm) {
-            console.log(vm);
             if (!vm.config) {
                 vm._state_label = 'important'
                 return vm;

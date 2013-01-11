@@ -13,7 +13,7 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete network <b>' + el.net.name + "</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
             status.update('Will delete' + el.net.name, {info: true})
-            wiggle.ipranges.delete({id: el.net.tag})
+            wiggle.ipranges.delete({id: el.net.name})
         })
 
     }

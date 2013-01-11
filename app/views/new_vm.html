@@ -5,14 +5,14 @@
 	</div>
 
 	<div class="span10">
-		<div class="alert alert-info" ng-show='selectedDataset && selectedPackage'>
+		<div class="alert alert-info">
 			Create a <strong>{{selectedPackage.name}}</strong>
-			machine with <strong>{{selectedDataset.name}}</strong>
+			machine <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
 			called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='name' autofocus>
 		</div>
 	</div>
 
-	<button class='btn btn-success pull-right' ng-show='name' ng-click='create_machine()'>Create!</button>
+	<button class='btn btn-success pull-right' ng-show='name && selectedDataset && selectedPackage' ng-click='create_machine()'>Create!</button>
 
 	<div class="span5">
 		<div class="thumbnail">

@@ -39,6 +39,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/networks.html',
         controller: 'NetworksCtrl'
     })
+    .when('/networks/new', {
+        templateUrl: 'views/new_network.html',
+        controller: 'NewNetworkCtrl'
+    })
     .when('/datasets', {
         templateUrl: 'views/datasets.html',
         controller: 'DatasetsCtrl'
@@ -51,7 +55,6 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/new_package.html',
         controller: 'NewPackageCtrl'
     })
-
     .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'GroupsCtrl'
