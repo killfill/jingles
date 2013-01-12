@@ -13,7 +13,16 @@ fifoApp.controller('PackagesCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete the package <b>' + el.pack.name + "</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
             status.update('Will delete' + el.pack.name, {info: true})
-            wiggle.packages.delete({id: el.pack.name})
+            wiggle.packages.delete({id: el.pack.name},
+                function success (data, h) {
+                    delete $scope.packages[el.pack.name]
+                },
+                function error (data) {
+                    console.error('Delete package error:', data)
+                    alert('There was an error deleting your packge. See the javascript console.')
+                }
+            )
+            
         })
 
     }
