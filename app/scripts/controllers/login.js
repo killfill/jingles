@@ -4,11 +4,11 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
 
     $scope.login = function() {
 
-        wiggle.sessions.login({user: $scope.username}, {password: $scope.password},
+        wiggle.sessions.login(null, {user: $scope.username, password: $scope.password},
             function success(data){
-
-                user.login(data.token, $scope.username)
-                $scope.username = $scope.password = null
+                console.log(data);
+                user.login(data.session, $scope.username);
+                $scope.username = $scope.password = null;
 
                 /* reload the current view */
                 $route.reload()

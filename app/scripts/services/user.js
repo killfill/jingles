@@ -8,9 +8,9 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         },
 
         login: function(token, login) {
-
+            console.log(token, login)
             /* Cookies */
-            $cookies.token = token;
+            $cookies["X-Snarl-Token"] = token;
             $cookies.login = login;
 
             /* Logged data */
@@ -21,13 +21,13 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             if ('WebSocket' in window) {
                 wiggle.vms.list(howl.join)
                 wiggle.hypervisors.list(howl.join)
-                howl.connect($cookies.token)
+                howl.connect($cookies["X-Snarl-Token"])
             }
 
         },
 
         logout: function() {
-            delete $cookies.token;
+            delete $cookies["X-Snarl-Token"];
             delete $cookies.login;
             $rootScope.loggedUser = null;
         }

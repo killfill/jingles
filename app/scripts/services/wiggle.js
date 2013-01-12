@@ -6,7 +6,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
 
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
-                            {login: '@login'},
+                            {id: '@id'},
                             {login: {method: 'POST'}}),
         users: $resource(endpoint + 'users/:login/:controller/:id'),
         cloud: $resource(endpoint + 'cloud'),
