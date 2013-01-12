@@ -4,7 +4,7 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
 
     $scope.login = function() {
 
-        wiggle.users.login({login: $scope.username}, {password: $scope.password}, 
+        wiggle.sessions.login({user: $scope.username}, {password: $scope.password},
             function success(data){
 
                 user.login(data.token, $scope.username)
@@ -13,7 +13,7 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
                 /* reload the current view */
                 $route.reload()
 
-            }, 
+            },
             function error(){
                 $scope.loginError = "Invalid user"
                 alert('Login failed. Try again')

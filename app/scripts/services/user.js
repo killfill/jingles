@@ -21,7 +21,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             if ('WebSocket' in window) {
                 wiggle.vms.list(howl.join)
                 wiggle.hypervisors.list(howl.join)
-                howl.connect($cookies.token) 
+                howl.connect($cookies.token)
             }
 
         },

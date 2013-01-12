@@ -5,10 +5,10 @@ fifoApp.factory('wiggle', function($resource, $http) {
     var endpoint = Config.wiggle
 
     var services = {
-        users: $resource(endpoint + 'users/:login/:controller/:id',
-            {login: '@login'},
-            {login: {method: 'PUT', params: {controller: 'sessions'}}}
-        ),
+        sessions: $resource(endpoint + 'sessions/:id',
+                            {login: '@login'},
+                            {login: {method: 'POST'}}),
+        users: $resource(endpoint + 'users/:login/:controller/:id'),
         cloud: $resource(endpoint + 'cloud'),
         hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
         vms: $resource(endpoint + 'vms/:id',
@@ -20,7 +20,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
             {create: {method: 'PUT'}}
         ),
         datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
-        packages: $resource(endpoint + 'packages/:id', 
+        packages: $resource(endpoint + 'packages/:id',
             {id: '@id'},
             {create: {method: 'PUT'}}
         ),
@@ -29,7 +29,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
     /* Response with list of strings are not $resource friendly..
        https://groups.google.com/forum/#!msg/angular/QjhN9-UeBVM/UjSgc5CNDqMJ */
     endpoint = endpoint.replace("\\", '');
-    ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users'].forEach(function(resource) {
+    ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users', 'sessions'].forEach(function(resource) {
         services[resource].list = function(cb) {
             return $http.get(endpoint + resource)
                 .success(cb)

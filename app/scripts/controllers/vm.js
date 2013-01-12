@@ -12,6 +12,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         $scope.$apply()
     })
 
+    $scope.$on('delete', function(e, msg) {
+        $scope.vm.delete()
+        $scope.$apply()
+    })
+
     $scope.action = function(action, vm) {
         vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, function() {
             if (action=='delete')

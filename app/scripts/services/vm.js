@@ -33,6 +33,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 return vm;
             }
 
+            vm._package = vm.package || 'manual'
             vm._name = vm.config.alias || vm.uuid.split('-')[0]
             vm._ips = (vm.config.networks || []).map(function(e) { return e.ip}).join(", ");
             vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
