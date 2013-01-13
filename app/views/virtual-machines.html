@@ -19,6 +19,7 @@
                       <th class="clickable {{orderField.indexOf('config._name') > -1 && 'sorted-down' || ''}}" ng-click="orderField='config._name'">Name</th>
                       <th class="clickable {{orderField.indexOf('_ips') > -1 && 'sorted-down' || ''}}"         ng-click="orderField='_ips'">IPs</th>
                       <th class="clickable {{orderField.indexOf('config.dataset') > -1 && 'sorted-down' || ''}}"      ng-click="orderField='config.dataset'">Dataset</th>
+                      <th class="clickable {{orderField.indexOf('package') > -1 && 'sorted-down' || ''}}"      ng-click="orderField='package'">Package</th>
                       <th class="clickable {{orderField.indexOf('config.ram') > -1 && 'sorted-down' || ''}}"   ng-click="orderField='config.ram'">Memory</th>
                       <th class="clickable {{orderField.indexOf('_cpu') > -1 && 'sorted-down' || ''}}"         ng-click="orderField='_cpu'">CPU</th>
                       <th class="clickable {{orderField.indexOf('hypervisor') > -1 && 'sorted-down' || ''}}"   ng-click="orderField='hypervisor'">Hypevisor</th>
@@ -33,6 +34,7 @@
                       </td>
                       <td>{{vm._ips}}</td>
                       <td>{{vm.config.dataset.split('-')[0]}}</td>
+                      <td>{{vm.package}}</td>
                       <td>{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
                       <td jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
                       <td>{{vm.hypervisor}}</td>
