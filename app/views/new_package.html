@@ -31,11 +31,11 @@
     <table class="table table-hover small">
         <tr class=small>
           <th>Weight</th>
-          <th>Condition</th>
           <th>Attribute</th>
+          <th>Condition</th>
           <th>Value</th>
         </tr>
-        <tr ng-repeat='rule in rules'>
+        <tr ng-repeat='rule in rules' ng-class="rule.error && 'error'">
           <td>
             <select class="span12" ng-model="rule.weight">
               <option>must</option>
@@ -79,10 +79,18 @@
             </select>
           </td>
           <td>
-            <input class="input-large span12" placeholder="Key" type="text" ng-model="rule.condition"/>
+            <input 
+            class="input-large span12"
+            placeholder="Key"
+            type="text"
+            ng-model="rule.attribute"
+            data-provide='typeahead'
+            data-items='10'
+            data-source='{{availableOptions.attribute}}'
+            />
           </td>
           <td>
-            <select ng-model="rule.attribute">
+            <select ng-model="rule.condition">
               <option>&gt;=</option>
               <option>&gt;</option>
               <option>=&lt;</option>
