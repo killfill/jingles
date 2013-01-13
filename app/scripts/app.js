@@ -75,7 +75,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
     /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
     delete $http.defaults.headers.common['X-Requested-With']
 
-    if ($cookies.login && $cookies.token)
-        user.login($cookies.token, $cookies.login)
+    if ($cookies.login && $cookies["X-Snarl-Token"])
+        user.login($cookies["X-Snarl-Token"], $cookies.login)
 
     })

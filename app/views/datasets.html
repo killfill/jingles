@@ -17,7 +17,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                      <tr ng-repeat='data in datasets'>
+                      <tr ng-repeat="data in datasets | hash2array | orderBy: ['name','-version']">
                         <td>{{data.name}} {{data.version && '(' + data.version + ')'}}</td>
                         <td class='uuid'>{{data.dataset}}</td>
                         <td>{{data.type}}</td>

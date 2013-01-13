@@ -8,7 +8,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         },
 
         login: function(token, login) {
-            console.log(token, login)
+
             /* Cookies */
             $cookies["X-Snarl-Token"] = token;
             $cookies.login = login;
