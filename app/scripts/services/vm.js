@@ -52,10 +52,8 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                     ? 'warning'
                     : 'important'
 
-            if (!vm.config) {
-                vm._state_label = 'important'
+            if (!vm.config)
                 return vm;
-            }
 
             vm._package = vm.package || 'manual'
             vm._name = vm.config.alias || vm.uuid.split('-')[0]

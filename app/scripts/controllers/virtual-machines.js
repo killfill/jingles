@@ -50,6 +50,12 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
             $scope.vms[msg.channel].state = msg.message.data
             vmService.updateCustomFields($scope.vms[msg.channel])
             $scope.$apply()
+
+            /* When creating a new VM, we get events from howl telling about the state.
+               So when the machine is booting get the main info via wiggle */
+            if (msg.message.data == 'creating' && !$scope.vms[msg.channel].config) {
+                $scope.vms[msg.channel] = wiggle.vms.get({id: msg.channel})
+            }
         })
 
         $scope.$on('delete', function(e, msg) {
