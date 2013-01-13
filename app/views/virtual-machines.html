@@ -15,15 +15,15 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <!-- ok, maybe i should build an array of the headers to not repeate this much... or maybe there is a better way, like http://jsfiddle.net/Xanetia/Azhg7/asadas? -->
-                      <th class="clickable {{orderField.indexOf('config._name') > -1 && 'sorted-down' || ''}}" ng-click="orderField='config._name'">Name</th>
-                      <th class="clickable {{orderField.indexOf('_ips') > -1 && 'sorted-down' || ''}}"         ng-click="orderField='_ips'">IPs</th>
-                      <th class="clickable {{orderField.indexOf('config.dataset') > -1 && 'sorted-down' || ''}}"      ng-click="orderField='config.dataset'">Dataset</th>
-                      <th class="clickable {{orderField.indexOf('package') > -1 && 'sorted-down' || ''}}"      ng-click="orderField='package'">Package</th>
-                      <th class="clickable {{orderField.indexOf('config.ram') > -1 && 'sorted-down' || ''}}"   ng-click="orderField='config.ram'">Memory</th>
-                      <th class="clickable {{orderField.indexOf('_cpu') > -1 && 'sorted-down' || ''}}"         ng-click="orderField='_cpu'">CPU</th>
-                      <th class="clickable {{orderField.indexOf('hypervisor') > -1 && 'sorted-down' || ''}}"   ng-click="orderField='hypervisor'">Hypevisor</th>
-                      <th class="clickable {{orderField.indexOf('state') > -1 && 'sorted-down' || ''}}"        ng-click="orderField='state'">State</th>
+                    <!-- ok, maybe i should build an array of the headers to not repeate this much... or maybe there is a better way, like http://jsfiddle.net/Xanetia/Azhg7/asadas? -->
+                      <th ng-class="orderStyle('config.alias');"    ng-click="order('config.alias')">Name</th>
+                      <th ng-class="orderStyle('_ips');"            ng-click="order('_ips')">IPs</th>
+                      <th ng-class="orderStyle('config.dataset');"  ng-click="order('config.dataset')">Dataset</th>
+                      <th ng-class="orderStyle('package');"         ng-click="order('package')">Package</th>
+                      <th ng-class="orderStyle('config.ram');"      ng-click="order('config.ram')">Memory</th>
+                      <th ng-class="orderStyle('_cpu');"            ng-click="order('_cpu')">CPU</th>
+                      <th ng-class="orderStyle('hypervisor');"      ng-click="order('hypervisor')">Hypevisor</th>
+                      <th ng-class="orderStyle('state');"           ng-click="order('state')">State</th>
                       <th class="span2">Actions</th>
                     </tr>
                   </thead>

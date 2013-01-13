@@ -18,12 +18,6 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
 
         wiggle.vms.list(function (ids) {
 
-            /* We could add this to fix when user created a vm from another gui, so reloading the vm list will join the missing howl channel
-            But maybe there could be a event to let the gui know that a new vm was created!
-            Same when a new VM is created.
-            wiggle.vms.list(howl.join)
-            */
-
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
@@ -32,7 +26,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
                 wiggle.vms.get({id: id}, function(res) {
 
                     status.update('Loading machines', {add: 1})
-                    //If the vm is deleting, just ignore them.
+                    //If the vm is deleting, delete them from the list..
                     if (res.state == 'deleting')
                         delete $scope.vms[id];
                     else
@@ -51,8 +45,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
             vmService.updateCustomFields($scope.vms[msg.channel])
             $scope.$apply()
 
-            /* When creating a new VM, we get events from howl telling about the state.
-               So when the machine is booting get the main info via wiggle */
+            /* When creating a new VM, we get events from howl telling just about the state.
+               So when the machine is creating get the main info via wiggle */
             if (msg.message.data == 'creating' && !$scope.vms[msg.channel].config) {
                 $scope.vms[msg.channel] = wiggle.vms.get({id: msg.channel})
             }
@@ -66,5 +60,27 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
     }
 
     $scope.show()
+
+
+    /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
+    $scope.orderField = 'config.alias';
+    $scope.order = function(field) {
+        /* Change to asc or desc */
+        if (field == $scope.orderField && $scope.orderField[0] != '-')
+            $scope.orderField = '-' + field
+        else
+            $scope.orderField = field;
+    }
+    $scope.orderStyle = function(field) {
+
+        if ($scope.orderField.indexOf(field) < 0)
+            return;
+
+        if ($scope.orderField[0] == '-')
+            return 'clickable sorted-down'
+        else
+            return 'clickable sorted-up'
+    }
+
 
 });
