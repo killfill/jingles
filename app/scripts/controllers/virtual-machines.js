@@ -44,7 +44,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
 
         $scope.$on('state', function(e, msg) {
 
-            //When deleting a vm, as we do not unjoin the channel (can we do it?), the shut_down and stop events are sent prob. after deleting $scope.vms
+            //When deleting a vm, the shut_down and stop events are sent after the delete event (i.e. when the vm is running)
             if (!$scope.vms[msg.channel]) return;
 
             $scope.vms[msg.channel].state = msg.message.data
