@@ -6,7 +6,7 @@ COMPONENT=jingles
 package_list:
 	echo "@pkgdep nginx>=1.2.5" > packlist
 	(cd ../; find LICENSE* -type f | sort) >> packlist
-#	(cd ../; find config -type f | sort) >> packlist
+	(cd ../; find config -type f | sort) >> packlist
 	(cd ../; find app -type f | sort) >> packlist
 
 build_info:
