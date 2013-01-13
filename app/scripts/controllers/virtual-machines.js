@@ -51,6 +51,12 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
             vmService.updateCustomFields($scope.vms[msg.channel])
             $scope.$apply()
         })
+
+        $scope.$on('delete', function(e, msg) {
+            delete $scope.vms[msg.channel]
+            $scope.$apply()
+        })
+
     }
 
     $scope.show()

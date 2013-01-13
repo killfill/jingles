@@ -13,7 +13,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     })
 
     $scope.$on('delete', function(e, msg) {
-        $scope.vm.delete()
+        $location.path('/virtual-machines')
         $scope.$apply()
     })
 

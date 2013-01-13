@@ -2,7 +2,7 @@
 
 fifoApp.factory('wiggle', function($resource, $http) {
 
-    var endpoint = Config.wiggle
+    var endpoint = Config.wiggle.replace(':', '\\:')
 
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',

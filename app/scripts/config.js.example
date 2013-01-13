@@ -9,7 +9,7 @@ Config = {
      * This is the URL of the FiFo API Server.
      * Please adjust it to your configuration.
      */
-    wiggle: window.location.protocol+"//"+window.location.host,
+    wiggle: window.location.protocol+"//"+window.location.host + '/api/0.1.0/',
     //wiggle: 'http://IP/api/0.1.0/',
 
     /*

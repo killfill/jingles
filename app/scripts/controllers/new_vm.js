@@ -22,26 +22,10 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
                 $location.path('/virtual-machines')
             },
             function error(data) {
-
-                if (window.location.hostname == 'localhost' || Config.mode == 'dev') {
-                    /*
-                        After the vm is created wiggle response an 303 with the
-                        Location header pointing at the URL of the created VM.
-                        Within CORS (i.e. deleloping on the notebook pointing at a remote wiggle server)
-                        The GET request the browser makes to get the VM data fails.
-                        We cannot join its howl channel, so will not get state.
-                        But t least ignore the error and goto the vm list.
-                    */
-                    console.log('DEV: Cannot join how channel of the created machine, you will need to Cmd+R :S')
-                    return $location.path('/virtual-machines')
-                }
-
                 console.error('Create VM error:', data, data.headers())
                 alert('There was an error creating your vm. See the javascript console.')
             }
         )
-
-        
 
     }
 
