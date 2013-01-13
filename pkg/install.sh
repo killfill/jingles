@@ -68,9 +68,9 @@ case $2 in
         #else
         #    IP=`ifconfig net0 | grep inet | awk -e '{print $2}'`
         #fi
-        if [ ! -f /opt/local/jingles/app/script/config.js ]
+        if [ ! -f /opt/local/jingles/app/scripts/config.js ]
         then
-            cp /opt/local/jingles/app/script/config.js.example /opt/local/jingles/app/script/config.js
+            cp /opt/local/jingles/app/scripts/config.js.example /opt/local/jingles/app/scripts/config.js
         fi
         #sed --in-place=.bak -e "s/127.0.0.1/${IP}/g" /opt/local/wiggle-ui/htdocs/js/config.js
         ;;
