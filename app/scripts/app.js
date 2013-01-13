@@ -70,12 +70,20 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
     //Replace # with pushstates:
     //$locationProvider.html5Mode(false); //.hashPrefix('!');
 }])
-.run(function ($http, $cookies, user) {
+.run(function ($http, $cookies, user, wiggle) {
 
     /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
     delete $http.defaults.headers.common['X-Requested-With']
 
-    if ($cookies.login && $cookies["X-Snarl-Token"])
-        user.login($cookies["X-Snarl-Token"], $cookies.login)
+    var token = $cookies["X-Snarl-Token"];
+
+    if ($cookies.login && token)
+        wiggle.sessions.get({id: token},
+            function success() {
+                user.login(token, $cookies.login)
+            },
+            function error() {
+                user.logout();
+            })
 
     })

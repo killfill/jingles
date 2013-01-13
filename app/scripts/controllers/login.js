@@ -17,7 +17,6 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
                 $scope.loginError = "Invalid user"
                 alert('Login failed. Try again')
             })
-
     }
 
     $scope.logout = function() {
