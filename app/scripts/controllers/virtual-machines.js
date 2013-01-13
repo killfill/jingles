@@ -11,7 +11,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
         })
     }
     $scope.vnc = function(vm) {
-        window.open("/app/vnc.html?uuid=" + vm.uuid);
+        window.open("vnc.html?uuid=" + vm.uuid);
     };
 
     $scope.show = function() {
