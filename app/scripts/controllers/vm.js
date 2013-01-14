@@ -23,4 +23,8 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 $location.path('/virtual-machines')
         })
     }
+
+    $scope.vnc = function(vm) {
+        window.open("vnc.html?uuid=" + vm.uuid)
+    }
 });
