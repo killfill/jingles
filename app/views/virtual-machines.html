@@ -30,7 +30,7 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
-                      <td title="<span class=uuid>{{vm.uuid}}</div><br/>{{vm.config.created_at | fromNow}}" jq-run='tooltip' class='uuid nowrap' >
+                      <td title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
                         <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
                       </td>
                       <td>{{vm._ips}}</td>
