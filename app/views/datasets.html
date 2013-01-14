@@ -10,6 +10,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
+                      <th></th>
                       <th>Name</th>
                       <th>UUID</th>
                       <th>Type</th>
@@ -17,7 +18,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                      <tr ng-repeat="data in datasets | hash2array | orderBy: ['name','-version']">
+                      <tr ng-repeat="data in datasets | hash2array | orderBy: ['os', 'name','-version']">
+                        <td><img style='max-width: 100px; max-height: 24px' ng-src="images/logos/{{data.os}}.png"></td>
                         <td>{{data.name}} {{data.version && '(' + data.version + ')'}}</td>
                         <td class='uuid'>{{data.dataset}}</td>
                         <td>{{data.type}}</td>
