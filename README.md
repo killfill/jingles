@@ -17,8 +17,6 @@ Bugs known
 Features missing
 -------------
 - Manage User & Groups stuff
-- Show when was the vm created (requires: wiggle to send created_at field)
-- Use logos based on the OS, not thei name (requires: wiggle to send the OS of the dataset)
 
 
 Things that could be done
