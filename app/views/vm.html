@@ -54,18 +54,21 @@
                     <td>
                         <dl class="dl-horizontal">
                             <dt>Ram</dt><dd>{{vm.config.ram}}MB </dd>
-                            <dt>CPU</dt><dd>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+                            <dt>CPU</dt>
+                                <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
+                                <dd ng-hide='vm.config.vcpus'>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
                             <dt>Disk</dt><dd>{{vm.config.quota}}GB</dd>
                             <dt></dt><dd></dd>
                             <dt></dt><dd></dd>
                         </dl>
                     </td></tr>
                 <tr><th>Network</th>
-                    <td ng-repeat='net in vm.config.networks'>
-                        <dl class="dl-horizontal">
-                            <dt>Tag</dt>        <dd>{{net.nic_tag}}</dd>
+                    <td>
+                        <dl ng-repeat='net in vm.config.networks' class="dl-horizontal span3">
+                            <dt>Tag</dt>        <dd><strong>{{net.nic_tag}}</strong></dd>
                             <dt>Interface</dt>  <dd>{{net.interface}}</dd>
-                            <dt>IP</dt>         <dd>{{net.ip}} / {{net.netmask}}</dd>
+                            <dt>IP</dt>         <dd>{{net.ip}}</dd>
+                            <dt>Mask</dt>       <dd>{{net.netmask}}</dd>
                             <dt>Gateway</dt>    <dd>{{net.gateway}}</dd>
                             <dt>Mac</dt>        <dd>{{net.mac}}</dd>
                             <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
