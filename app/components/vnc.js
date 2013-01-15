@@ -47,6 +47,8 @@ $(function () {
         }
     }
 
+    document.title = "VNC - " + uuid;
+
     path = "api/0.1.0/vms/" + uuid + "/vnc";
     rfb = new RFB({'target':       $D('noVNC_canvas'),
                    'encrypt':      (window.location.protocol === "https:"),
