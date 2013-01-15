@@ -2,6 +2,10 @@
 
 fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
+    var padLeft = function(nr, n, str){
+        return Array(n-String(nr).length+1).join(str||'0')+nr;
+    }
+
     return {
 
         /* So far action can be: start/stop/reboot/delete. More info: http://project-fifo.net/display/PF/API */
@@ -62,6 +66,11 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             vm._cpu_tooltip = vm.config.vcpu
                 ? vm.config.vcpu + ' CPU'
                 : vm.config.cpu_cap ? 'Shares: ' + vm.config.cpu_shares + '</br>Cap:'+ vm.config.cpu_cap:  'Shares: '+vm.config.cpu_shares;
+
+            //Used for ordering in the vm list:
+            vm._ips_normalized = (vm.config.networks || []).map(function(e) {
+                return e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
+            }).join(", ");
 
             return vm;
         }
