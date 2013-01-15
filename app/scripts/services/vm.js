@@ -49,7 +49,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
         updateCustomFields: function(vm) {
 
-            vm._name = (vm.config && vm.config.alias) || vm.uuid.split('-')[0]
+            vm._name = (vm.config && vm.config.alias) || vm.uuid && vm.uuid.split('-')[0]
             vm._state_label = vm.state=='running'
                 ? 'success'
                 : vm.state == 'stopped'

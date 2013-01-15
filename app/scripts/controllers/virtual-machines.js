@@ -48,7 +48,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
             /* When creating a new VM, we get events from howl telling just about the state.
                So when the machine is creating get the main info via wiggle */
             if (msg.message.data == 'creating' && !$scope.vms[msg.channel].config) {
-                $scope.vms[msg.channel] = wiggle.vms.get({id: msg.channel})
+                $scope.vms[msg.channel] = vmService.updateCustomFields(wiggle.vms.get({id: msg.channel}))
             }
         })
 
@@ -60,7 +60,6 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
     }
 
     $scope.show()
-
 
     /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
     $scope.orderField = 'config.alias';
