@@ -61,16 +61,22 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
             vm._package = vm.package || 'manual'
             vm._name = vm.config.alias || vm.uuid.split('-')[0]
-            vm._ips = (vm.config.networks || []).map(function(e) { return e.ip}).join(", ");
+            vm._ips = (vm.config.networks || [])
+                .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
+                .map(function(e) { return e.ip}).join(", ");
+
+
             vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
             vm._cpu_tooltip = vm.config.vcpu
                 ? vm.config.vcpu + ' CPU'
                 : vm.config.cpu_cap ? 'Shares: ' + vm.config.cpu_shares + '</br>Cap:'+ vm.config.cpu_cap:  'Shares: '+vm.config.cpu_shares;
 
             //Used for ordering in the vm list:
-            vm._ips_normalized = (vm.config.networks || []).map(function(e) {
-                return e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
-            }).join(", ");
+            vm._ips_normalized = (vm.config.networks || [])
+                .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
+                .map(function(e) {
+                    return e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
+                }).join(", ");
 
             return vm;
         }
