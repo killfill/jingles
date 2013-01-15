@@ -38,9 +38,10 @@
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
     <li><a href="#history" data-toggle="tab">History</a></li>
-    <li><a href="#tab2" data-toggle="tab">Notes</a></li>
+    <!-- <li><a href="#tab2" data-toggle="tab">Notes</a></li>
     <li><a href="#tab2" data-toggle="tab">Backup</a></li>
     <li><a href="#tab2" data-toggle="tab">Performance</a></li>
+    -->
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
@@ -75,8 +76,10 @@
                 <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
             </table>
             <div class="btn-toolbar btn-group pull-right">
+                <!--
                 <button class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Backup</button>
                 <button class="btn" jq-run='tooltip' title='Move to other hypervisor'><i class='icon-forward'></i> Move</button>
+                -->
                 <button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button>
             </div>    </div>
     <div class="tab-pane" id="history">
