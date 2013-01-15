@@ -12,6 +12,12 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
             }
         })
 
+        if ($scope.root_pw)
+            vm.config.root_pw = $scope.root_pw
+
+        if ($scope.admin_pw)
+            vm.config.admin_pw = $scope.admin_pw
+
         for (var i=0; i<$scope.selectedNetworks.length; i++) {
             vm.config.networks['net' + i] = $scope.selectedNetworks[i].name
         }
