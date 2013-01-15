@@ -11,9 +11,8 @@
                 <div class="btn-group" style="margin-right: 30px;">
                     <button
                         ng-click='vnc(vm)'
-                        ng-show="vm.config && (vm.config.type == 'kvm')"
-                        ng-disabled="vm.state!='running'"
-                        title='Vnc'
+                        ng-show="vm.config && (vm.config.type == 'kvm') && vm.state=='running'"
+                        title='vnc'
                         jq-run='tooltip'
                         class="btn">
                         <i class='icon-eye-open'></i>
