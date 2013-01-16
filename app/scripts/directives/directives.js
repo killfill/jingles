@@ -4,7 +4,6 @@ fifoApp.directive('jqRun', function () {
         compile: function () {
             return function (scope, elm, attrs) {
 
-                //FIXME: when clicking on the a, the tooltip keep showing
                 if (attrs.jqRun == 'tooltip') {
                     //attrs.placement = 'right'
                     if (elm.children().length>0) {
@@ -13,18 +12,32 @@ fifoApp.directive('jqRun', function () {
                             $(elm).tooltip('hide')
                         })
                     }
-
                 }
+
+                var options = attrs
+
 
                 //FIXME: if not inside a timeout, the tooltip gets processed before the templace, so title='{{data}}' will show as {{data}}.. :P
                 setTimeout(function() {
-                    $(elm)[attrs.jqRun](attrs)
+
+                    if (attrs.jqOptions)
+                        options = scope.$eval(attrs.jqOptions)
+
+                    $(elm)[attrs.jqRun](options)
                 }, 100);
 
             };
         }
     };
 });
+
+fifoApp.directive('columnSelector', function($compile) {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: "<div ng-repeat='col in columns'><label class='checkbox'><input type='checkbox' ng-model='col.visible' ng-click='showHideColumn()'> {{col.name}}</div></label>"
+    }
+})
 
 /**
  * bootstrap directives from datasets.at

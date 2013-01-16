@@ -5,6 +5,15 @@
               		<a style="float: right; margin-left: 20px;" href="#/virtual-machines/new" class="btn btn-inverse">
               			<i class="icon-white icon-plus"></i> New
               		</a>
+                    <column-selector class='hidden' id='popupContent'>
+                    </column-selector>
+                    <button
+                        title='Show the following columns'
+                        jq-run='popover' jq-options="{placement: 'bottom', content: showPopupContent}"
+                        style='float: right; margin-left: 20px;'
+                        class='btn btn-info'>
+                        <i class='icon-white icon-list'></i>
+                    </button>
               		<input style="float: right" type="text" class="search-query" placeholder='Search' ng-model='searchQuery'>
               	</h2>
                 <hr/>
@@ -15,36 +24,31 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                    <!-- ok, maybe i should build an array of the headers to not repeate this much... or maybe there is a better way, like http://jsfiddle.net/Xanetia/Azhg7/asadas? -->
-                      <th ng-class="orderStyle('config.alias');"    ng-click="order('config.alias')">Name</th>
-                      <th ng-class="orderStyle('_ips_normalized');" ng-click="order('_ips_normalized')">IPs</th>
-                      <th ng-class="orderStyle('config.dataset');"  ng-click="order('config.dataset')">Dataset</th>
-                      <th ng-class="orderStyle('package');"         ng-click="order('package')">Package</th>
-                      <th ng-class="orderStyle('config.ram');"      ng-click="order('config.ram')">Memory</th>
-                      <th ng-class="orderStyle('_cpu');"            ng-click="order('_cpu')">CPU</th>
-                      <th ng-class="orderStyle('hypervisor');"      ng-click="order('hypervisor')">Hypevisor</th>
-                      <th ng-class="orderStyle('config.created_at');"           ng-click="order('config.created_at')">Age</th>
-                      <th ng-class="orderStyle('state');"           ng-click="order('state')">State</th>
-                      <th class="span2">Actions</th>
+                        <th ng-repeat='col in columns'
+                            ng-click="col.field && order(col.field, $event)"
+                            ng-class="col.field && orderStyle(col.field)"
+                            ng-show="col.visible">
+                                {{col.name}}
+                        </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
-                      <td title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
+                      <td ng-show="columns[0].visible" title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
                         <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
                       </td>
-                      <td>{{vm._ips}}</td>
-                      <td>{{vm.config.dataset.split('-')[0]}}</td>
-                      <td>{{vm.package}}</td>
-                      <td>{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
-                      <td jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
-                      <td>{{vm.hypervisor}}</td>
-                      <td jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</td>
+                      <td ng-show="columns[1].visible">{{vm._ips}}</td>
+                      <td ng-show="columns[2].visible">{{vm.config.dataset.split('-')[0]}}</td>
+                      <td ng-show="columns[3].visible">{{vm.package}}</td>
+                      <td ng-show="columns[4].visible">{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
+                      <td ng-show="columns[5].visible" jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
+                      <td ng-show="columns[6].visible">{{vm.hypervisor}}</td>
+                      <td ng-show="columns[7].visible" jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}" class='light nowrap'>{{vm.config.created_at | fromNow}}</td>
                       </td>
-                      <td>
+                      <td ng-show="columns[8].visible">
                         <span class='label label-{{vm._state_label}}'>{{vm.state}}</span>
                       </td>
-                      <td>
+                      <td ng-show="columns[9].visible">
                         <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"
                            ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
                            class="icon-eye-open clickable"></i>
@@ -53,13 +57,13 @@
                            ng-hide="vm.state!='stopped'"
                            class="icon-play-circle clickable"></i>
 
-                        <i ng-click="action('stop', this.vm)" jq-run="tooltip" title="stop"
-                           ng-hide="this.vm.state!='running'"
-                           class="icon-off clickable"></i>
-
                         <i ng-click="action('reboot', this.vm)" jq-run="tooltip" title="reboot"
                            ng-hide="this.vm.state!='running'"
                            class="icon-refresh clickable"></i>
+
+                        <i ng-click="action('stop', this.vm)" jq-run="tooltip" title="stop"
+                           ng-hide="this.vm.state!='running'"
+                           class="icon-off clickable"></i>
                       </td>
                     </tr>
                   </tbody>

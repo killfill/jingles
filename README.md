@@ -5,13 +5,9 @@ How to use
 - Clone the repo
 - 'yeoman server'
 
-
 Bugs known
 -------------
 - Tooltip bug:  http://cl.ly/image/0i032X010U0S: triggered it by scrolling up and down over tool tips for a while in multi directions.
-- IP ordering.
-- Two nics in vm detail looks bad: http://monosnap.com/image/jalflXBOyCcfCmx9sOai6zOJ1
-- Mini-logos: http://monosnap.com/image/cpLvWRbmtGNpWX1XiAMXIhCIV
 
 Features missing
 -------------

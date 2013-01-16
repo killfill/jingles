@@ -71,6 +71,7 @@
                             <dt>Mask</dt>       <dd>{{net.netmask}}</dd>
                             <dt>Gateway</dt>    <dd>{{net.gateway}}</dd>
                             <dt>Mac</dt>        <dd>{{net.mac}}</dd>
+                            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model}}</dd>
                             <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
                         </dl>
                     </td>

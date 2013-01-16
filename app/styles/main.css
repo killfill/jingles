@@ -10,6 +10,14 @@ body {
     background:url(../images/background.png);
 }
 
+.hidden {
+    display: none;
+}
+
+.light {
+    color: #888;
+}
+
 @media (max-width: 979px) {
     body {
         padding-top: 0px;

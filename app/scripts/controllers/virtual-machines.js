@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, modal, howl, vmService) {
+fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, status, modal, howl, vmService) {
 
     $scope.vms = {}
 
@@ -15,6 +15,22 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
     };
 
     $scope.show = function() {
+
+        if ($cookies.vmColumns)
+            $scope.columns = JSON.parse($cookies.vmColumns)
+        else
+            $scope.columns = [
+                {name: 'Name',      visible: true,  field: 'config.alias'},
+                {name: 'IPs',       visible: true,  field: '_ips_normalized'},
+                {name: 'Dataset',   visible: true,  field: 'config.dataset'},
+                {name: 'Package',   visible: true,  field: 'package'},
+                {name: 'Memory',    visible: true, field: 'config.ram'},
+                {name: 'CPU',       visible: false, field: '_cpu'},
+                {name: 'Hypervisor',visible: false, field: 'hypervisor'},
+                {name: 'Age',       visible: true,  field: 'config.created_at'},
+                {name: 'State',     visible: true,  field: 'state'},
+                {name: 'Actions',   visible: true,  field: ''}
+            ]
 
         wiggle.vms.list(function (ids) {
 
@@ -63,7 +79,9 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
 
     /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
     $scope.orderField = 'config.alias';
-    $scope.order = function(field) {
+    $scope.order = function(field, evt) {
+        //var el = angular.element(evt.currentTarget)
+
         /* Change to asc or desc */
         if (field == $scope.orderField && $scope.orderField[0] != '-')
             $scope.orderField = '-' + field
@@ -81,5 +99,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, wiggle, status, moda
             return 'clickable sorted-up'
     }
 
+    $scope.showPopupContent = function() {
+        var content = document.getElementById('popupContent')
+        if (!content) return;
+        content.className = ''
+        return content
+    }
+
+    $scope.showHideColumn = function() {
+        $cookies.vmColumns = JSON.stringify($scope.columns)
+    }
 
 });
