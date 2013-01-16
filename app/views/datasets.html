@@ -19,7 +19,7 @@
                   </thead>
                   <tbody>
                       <tr ng-repeat="data in datasets | hash2array | orderBy: ['os', 'name','-version']">
-                        <td><img title='{{data.os}}' jq-run='tooltip' style='max-width: 100px; max-height: 24px' ng-src="images/logos/{{data.os}}.png"></td>
+                        <td><img title='{{data.os}}' jq-run='tooltip' style='max-width: 100px; max-height: 24px' ng-src="images/logos/{{data.os}}.png" onerror='this.src="images/logos/unknown.png"'></td>
                         <td>{{data.name}} {{data.version && '(' + data.version + ')'}}</td>
                         <td class='uuid'>{{data.dataset}}</td>
                         <td>{{data.type}}</td>
