@@ -12,6 +12,7 @@ Features missing
 -------------
 - Manage User & Groups stuff
 - Funkyer way to select datasets.
+- Use this: http://mgcrea.github.com/angular-strap
 
 Things that could be done
 --------------------------

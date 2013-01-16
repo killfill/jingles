@@ -11,8 +11,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
         users: $resource(endpoint + 'users/:login/:controller/:id'),
         cloud: $resource(endpoint + 'cloud'),
         hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
-        vms: $resource(endpoint + 'vms/:id',
-            {id: '@id'},
+        vms: $resource(endpoint + 'vms/:id/:action/:second_id',
+            {id: '@id', action: '@action', second_id: '@second_id'},
             {put: {method: 'PUT'}}
         ),
         ipranges: $resource(endpoint + 'ipranges/:id',
@@ -48,7 +48,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
     services.vms._get = services.vms.get;
     services.vms.get = function(obj, cb) {
         services.vms._get(obj, function(res) {
-            if (!res.config.dataset || res.config.dataset === 1)
+            /* Dont get the dataset data when its not a plain get or no dataset found */
+            if (obj.action || !res.config.dataset || res.config.dataset === 1)
                 return cb(res)
             services.datasets.get({id: res.config.dataset}, function(ds) {
                 res.config._dataset = ds
