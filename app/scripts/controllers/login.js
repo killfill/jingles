@@ -13,9 +13,11 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
                 $route.reload()
 
             },
-            function error(){
-                $scope.loginError = "Invalid user"
-                alert('Login failed. Try again')
+            function error(data){
+                if (data && data.status == 403)
+                    return alert('Access denied. Try again');
+
+                alert('Error when loggin in. ' + (data && data.data))
             })
     }
 
