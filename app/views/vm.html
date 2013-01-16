@@ -51,7 +51,7 @@
                 <tr><th>Dataset</th>
                     <td>
                         <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
-                        <span>
+                        <span ng-show='vm.config._dataset'>
                             {{vm.config._dataset.name}} ({{vm.config._dataset.version}})<br/>
                             {{vm.config._dataset.description}}<br/>
                         </span>
@@ -62,11 +62,11 @@
                 <tr><th>Resources</th>
                     <td>
                         <dl class="dl-horizontal">
-                            <dt>Ram</dt><dd>{{vm.config.ram}}MB </dd>
+                            <dt>Ram</dt><dd>{{vm.config.ram * 1024*1024 | bytes}}</dd>
                             <dt>CPU</dt>
                                 <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
                                 <dd ng-hide='vm.config.vcpus'>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
-                            <dt>Disk</dt><dd>{{vm.config.quota}}GB</dd>
+                            <dt>Disk</dt><dd>{{vm.config.quota * 1024*1024*1024 | bytes}}</dd>
                             <dt></dt><dd></dd>
                             <dt></dt><dd></dd>
                         </dl>

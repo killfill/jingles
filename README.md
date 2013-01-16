@@ -5,12 +5,11 @@ How to use
 - Clone the repo
 - 'yeoman server'
 
-Bugs known
--------------
 
 Features missing
 -------------
 - Manage User & Groups stuff
+- User profile with ssh managment
 - Funkyer way to select datasets.
 - Use this: http://mgcrea.github.com/angular-strap
 

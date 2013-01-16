@@ -16,26 +16,26 @@
                     <tr>
                       <th>Name</th>
                       <th>Tag</th>
-                      <th>Subnet</th>
-                      <th>Gateway</th>
+                      <th>Network</th>
                       <th>Netmask</th>
+                      <th>Gateway</th>
                       <th>First</th>
-                      <th>Next</th>
                       <th>Last</th>
+                      <th>Next</th>
                       <th>Returned</th>
                       <th class="span1">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                       <tr ng-repeat='net in networks'>
-                        <td>{{net.name}}</td>
+                        <td><strong>{{net.name}}</strong></td>
                         <td>{{net.tag}}</td>
                         <td>{{net.network}}</td>
-                        <td>{{net.gateway}}</td>
                         <td>{{net.netmask}}</td>
+                        <td>{{net.gateway}}</td>
                         <td>{{net.first}}</td>
-                        <td>{{net.current}}</td>
                         <td>{{net.last}}</td>
+                        <td>{{net.current}}</td>
                         <td>{{net.free.length}}</td>
                         <td>
                             <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>

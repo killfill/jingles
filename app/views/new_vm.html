@@ -22,7 +22,7 @@
 			<table class="table table-hover small">
 				<tr class='small'>
 					<th></th>
-					<th>Image name</th>
+					<th>Dataset</th>
 					<th>Version</th>
 				</tr>
 				<tr class='clickable'  
@@ -49,8 +49,8 @@
 				<tr class='clickable' ng-repeat='p in packages' ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
 					<td><strong>{{p.name}}</strong></td>
 					<td>{{p.cpu_cap}}</td>
-					<td>{{p.ram}}MB</td>
-					<td>{{p.quota}}GB</td>
+					<td>{{p.ram * 1024 * 1024 | bytes}}</td>
+					<td>{{p.quota* 1024*1024*1024 | bytes}}</td>
 				</tr>
 			</table>
 		</div>
