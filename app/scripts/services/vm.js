@@ -19,7 +19,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                     function success() {
                         cb && cb(action, uuid)
                     },
-                    function error() {
+                    function error(data) {
                         console.error(action + 'VM error:', data)
                         alert('There was an error changing the state your vm. See the javascript console.')
                     }
