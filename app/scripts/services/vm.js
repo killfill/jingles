@@ -65,7 +65,6 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
                 .map(function(e) { return e.ip}).join(", ");
 
-
             vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
             vm._cpu_tooltip = vm.config.vcpu
                 ? vm.config.vcpu + ' CPU'
@@ -77,6 +76,10 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 .map(function(e) {
                     return e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ");
+
+            //If there is no primary network, just show the first one.
+            vm._ips = vm._ips || vm.config.networks[0].ip
+            vm._ips_normalized = vm._ips_normalized || padLeft(vm._ips)
 
             return vm;
         }

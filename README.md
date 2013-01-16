@@ -7,7 +7,6 @@ How to use
 
 Bugs known
 -------------
-- Tooltip bug:  http://cl.ly/image/0i032X010U0S: triggered it by scrolling up and down over tool tips for a while in multi directions.
 
 Features missing
 -------------
