@@ -2,8 +2,8 @@
 
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService) {
 
-    $scope.vm = wiggle.vms.get({id: $routeParams.uuid}, function(loaded) {
-        vmService.updateCustomFields($scope.vm)
+     wiggle.vms.get({id: $routeParams.uuid}, function(res) {
+        $scope.vm = vmService.updateCustomFields(res)
     })
 
     $scope.$on('state', function(e, msg) {

@@ -37,6 +37,26 @@ fifoApp.factory('wiggle', function($resource, $http) {
         }
     });
 
+    /* Cache dataset gets! */
+    services.datasets.get = function(obj, cb) {
+        $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
+            .success(cb)
+            .error(cb)
+    }
+
+    /* VM GET: include the asociated dataset */
+    services.vms._get = services.vms.get;
+    services.vms.get = function(obj, cb) {
+        services.vms._get(obj, function(res) {
+            if (!res.config.dataset || res.config.dataset === 1)
+                return cb(res)
+            services.datasets.get({id: res.config.dataset}, function(ds) {
+                res.config._dataset = ds
+                cb(res)
+            })
+        })
+    }
+
     return services
 
 });

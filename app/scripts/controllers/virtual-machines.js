@@ -21,15 +21,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
         else
             $scope.columns = [
                 {name: 'Name',      visible: true,  field: 'config.alias'},
+                {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
                 {name: 'IPs',       visible: true,  field: '_ips_normalized'},
-                {name: 'Dataset',   visible: true,  field: 'config.dataset'},
                 {name: 'Package',   visible: true,  field: 'package'},
-                {name: 'Memory',    visible: true, field: 'config.ram'},
+                {name: 'Memory',    visible: true,  field: 'config.ram'},
                 {name: 'CPU',       visible: false, field: '_cpu'},
                 {name: 'Hypervisor',visible: false, field: 'hypervisor'},
                 {name: 'Age',       visible: true,  field: 'config.created_at'},
                 {name: 'State',     visible: true,  field: 'state'},
-                {name: 'Actions',   visible: true,  field: ''}
+                {name: 'Actions',   visible: true}
             ]
 
         wiggle.vms.list(function (ids) {
@@ -47,7 +47,6 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
                         delete $scope.vms[id];
                     else
                         $scope.vms[id] = vmService.updateCustomFields(res);
-
                 })
             })
         })

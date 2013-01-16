@@ -37,8 +37,13 @@
                       <td ng-show="columns[0].visible" title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
                         <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
                       </td>
+                      <td ng-show="columns[2].visible"
+                            title='{{vm.config._dataset.description}}'
+                            jq-run='tooltip'>
+                            <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
+                            {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}
+                      </td>
                       <td ng-show="columns[1].visible">{{vm._ips}}</td>
-                      <td ng-show="columns[2].visible">{{vm.config.dataset.split('-')[0]}}</td>
                       <td ng-show="columns[3].visible">{{vm.package}}</td>
                       <td ng-show="columns[4].visible">{{vm.config.ram && vm.config.ram + 'MB' || ''}}</td>
                       <td ng-show="columns[5].visible" jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>

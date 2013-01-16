@@ -59,7 +59,10 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
 
         wiggle.datasets.list(function(ids) {
             ids.forEach(function(id) {
-                $scope.datasets.push(wiggle.datasets.get({id: id}))
+                wiggle.datasets.get({id: id}, function(res) {
+                    $scope.datasets.push(res)
+                })
+
             })
         })
 

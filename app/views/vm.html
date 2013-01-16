@@ -47,8 +47,17 @@
   <div class="tab-content">
     <div class="tab-pane active" id="details">
             <table class='table table-bordered'>
-                <tr><th>Name</th><td>{{vm.config.alias}} / <span class="uuid">{{vm.uuid}}</span></td></tr>
-                <tr><th>Dataset</th><td>{{vm.config.dataset}}</td></tr>
+                <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
+                <tr><th>Dataset</th>
+                    <td>
+                        <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
+                        <span>
+                            {{vm.config._dataset.name}} ({{vm.config._dataset.version}})<br/>
+                            {{vm.config._dataset.description}}<br/>
+                        </span>
+                        <span class='light'>{{vm.config.dataset}}</span>
+                    </td>
+                </tr>
                 <tr><th>Package</th><td>{{vm._package}}</td></tr>
                 <tr><th>Resources</th>
                     <td>

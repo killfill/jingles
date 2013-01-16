@@ -18,6 +18,11 @@ body {
     color: #888;
 }
 
+.oslogo {
+    max-width: 24px;
+    max-height: 24px
+}
+
 @media (max-width: 979px) {
     body {
         padding-top: 0px;

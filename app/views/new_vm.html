@@ -29,8 +29,8 @@
 					ng-repeat="d in datasets | orderBy: ['os', 'name', '-version']"
 					ng-click='click_dataset(d)' 
 					ng-class="selectedDataset.dataset==d.dataset && 'success'">
-					<td><img title='{{d.os}}' jq-run='tooltip' ng-src="images/logos/{{d.os}}.png" style='max-width: 100px; max-height: 24px' /></td>
-					<td><strong>{{d.name}}</strong></td>
+					<td><img jq-run='tooltip' ng-src="images/logos/{{d.os}}.png" class='oslogo' /></td>
+					<td><strong title='{{d.description}}' jq-run='tooltip'>{{d.name}}</strong></td>
 					<td>{{d.version}}</td>
 				</tr>
 			</table>
