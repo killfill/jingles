@@ -39,6 +39,7 @@
                       </td>
                       <td ng-show="columns[2].visible"
                             title='{{vm.config._dataset.description}}'
+                            class='nowrap'
                             jq-run='tooltip'>
                             <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
                             {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}

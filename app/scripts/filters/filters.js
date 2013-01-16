@@ -15,13 +15,14 @@ fifoApp.filter('hash2array', function() {
 
 fifoApp.filter('fromNow', function() {
     return function(dateString) {
+        if (!dateString) return;
         return moment(new Date(dateString)).fromNow()
     };
 });
 
 fifoApp.filter('bytes', function() {
     return function(bytes, precision) {
-        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return;
         if (typeof precision === 'undefined') precision = 0;
         var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
             number = Math.floor(Math.log(bytes) / Math.log(1024));

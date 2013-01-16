@@ -35,7 +35,8 @@
     </div>
     <hr/>
 
-<div class="tabbable tabs-right">
+<span ng-hide='vm.config'>Something is wrong with this machine. <br/>UUID: {{vm.uuid}}<br/><button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button></span>
+<div class="tabbable tabs-right" ng-show='vm.config'>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
     <li><a href="#history" data-toggle="tab">History</a></li>
@@ -48,6 +49,7 @@
     <div class="tab-pane active" id="details">
             <table class='table table-bordered'>
                 <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
+                <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
                 <tr><th>Dataset</th>
                     <td>
                         <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
@@ -58,10 +60,10 @@
                         <span class='light'>{{vm.config.dataset}}</span>
                     </td>
                 </tr>
-                <tr><th>Package</th><td>{{vm._package}}</td></tr>
                 <tr><th>Resources</th>
                     <td>
                         <dl class="dl-horizontal">
+                            <dt>Package</dt><dd><strong>{{vm._package}}</strong></dd>
                             <dt>Ram</dt><dd>{{vm.config.ram * 1024*1024 | bytes}}</dd>
                             <dt>CPU</dt>
                                 <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
@@ -87,7 +89,6 @@
                 </tr>
                 <tr><th>Type</th><td>{{vm.config.type}}</td></tr>
                 <tr><th>Hypervisor</th><td>{{vm.hypervisor}} </td></tr>
-                <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
             </table>
             <div class="btn-toolbar btn-group pull-right">
                 <!--
@@ -95,7 +96,8 @@
                 -->
                 <button ng-click="snapshot('create')" class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
                 <button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button>
-            </div>    </div>
+            </div>
+        </div>
     <div class="tab-pane" id="history">
         <table class="table">
             <tr ng-repeat="log in vm.log | orderBy: '-date' ">

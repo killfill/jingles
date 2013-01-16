@@ -6,15 +6,8 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     wiggle.vms.get({id: uuid}, function(res) {
         $scope.vm = vmService.updateCustomFields(res)
+        $scope.snapshots = $scope.vm.snapshots
     })
-
-    var getSnapshots = function() {
-        wiggle.vms.get({id: uuid, action: 'snapshots'}, function(res) {
-            $scope.snapshots = res
-        })
-    }
-
-    getSnapshots()
 
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
@@ -43,7 +36,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
             case 'create':
                 var comment = prompt('Write a comment for the new snapshot:');
-                wiggle.vms.save({id: uuid, action: 'snapshots'}, {comment: comment},
+                wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                     function success() {
                         getSnapshots();
                     },
@@ -63,9 +56,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 }, function() {
                     status.update('Will delete snapshot ' + snap.comment, {info: true});
                     $scope.$apply()
-                    wiggle.vms.delete({id: uuid, action: 'snapshots', second_id: snap.uuid},
+                    wiggle.vms.delete({id: uuid, controller: 'snapshots', second_id: snap.uuid},
                         function success() {
-                            getSnapshots();
+                            //Update the snapshot list
+                            wiggle.vms.get({id: uuid, controller: 'snapshots'}, function(res) {
+                                $scope.snapshots = res
+                            })
                         },
                         function error(data) {
                             alert('Error deleting the snapshot. See your console')
@@ -84,7 +80,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 }, function() {
                     status.update('Will rollback to snapshot ' + snap.comment, {info: true});
                     $scope.$apply()
-                    wiggle.vms.put({id: uuid, action: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
+                    wiggle.vms.put({id: uuid, controller: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
                         },
                         function error (data) {
