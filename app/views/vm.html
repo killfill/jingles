@@ -30,6 +30,12 @@
                         <i class='icon-stop'></i>
                     </button>
                 </div>
+
+                <div class="btn-group">
+                    <button ng-click="action('delete', vm)" class="btn" title='Delete' jq-run='tooltip'>
+                        <i class='icon-trash'></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -38,7 +44,6 @@
 <span ng-hide='vm.config'>
     <p>Something is wrong with this machine.</p>
     <p>UUID: {{vm.uuid}}</p>
-    <p><button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button><br/></p>
     <p>
         <strong>History</strong>
         <table class="table">
@@ -50,7 +55,7 @@
     </p>
 </span>
 
-<div class="tabbable tabs-right" ng-show='vm.config'>
+<div class="tabbable tabs-top" ng-show='vm.config'>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
     <li><a href="#history" data-toggle="tab">History</a></li>
@@ -104,13 +109,6 @@
                 <tr><th>Type</th><td>{{vm.config.type}}</td></tr>
                 <tr><th>Hypervisor</th><td>{{vm.hypervisor}} </td></tr>
             </table>
-            <div class="btn-toolbar btn-group pull-right">
-                <!--
-                <button class="btn" jq-run='tooltip' title='Move to other hypervisor'><i class='icon-forward'></i> Move</button>
-                -->
-                <button ng-click="snapshot('create')" class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
-                <button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button>
-            </div>
         </div>
     <div class="tab-pane" id="history">
         <table class="table">
@@ -122,6 +120,7 @@
     </div>
     <div class="tab-pane" id="snapshots">
         <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn pull-right" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
+        <span ng-show="vm.state!='stopped'" class='pull-right light' style='padding: 5px;'>To rollback, please stop the machine</span>
         <table class="table">
             <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
                 <td><strong>{{snap.comment}}</strong></td>
@@ -129,6 +128,7 @@
                 <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
                 <td class='nowrap'>
                     <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
+                        ng-show="vm.state=='stopped'"
                        class="icon-backward clickable"></i>
                     <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
                        class="icon-trash clickable"></i>

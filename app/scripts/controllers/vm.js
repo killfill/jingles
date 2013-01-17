@@ -93,9 +93,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.$apply()
                     wiggle.vms.put({id: uuid, controller: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
+                            alert('Rollback done')
                         },
                         function error (data) {
-                            alert('Error when rolling back. See your console')
+                            alert('Error when rolling back. See the history')
                             console.log(data)
                         })
                 })
