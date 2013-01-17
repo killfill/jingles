@@ -35,7 +35,21 @@
     </div>
     <hr/>
 
-<span ng-hide='vm.config'>Something is wrong with this machine. <br/>UUID: {{vm.uuid}}<br/><button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button></span>
+<span ng-hide='vm.config'>
+    <p>Something is wrong with this machine.</p>
+    <p>UUID: {{vm.uuid}}</p>
+    <p><button ng-click="action('delete', vm)" class="btn"><i class='icon-trash'></i> Destroy</button><br/></p>
+    <p>
+        <strong>History</strong>
+        <table class="table">
+            <tr ng-repeat="log in vm.log | orderBy: '-date' ">
+                <td>{{log.log}}</td>
+                <td class='nowrap light' title="{{log.date/1000 | date:'medium'}}" jq-run='tooltip'>{{log.date/1000 | fromNow}}</td>
+            </tr>
+        </table>
+    </p>
+</span>
+
 <div class="tabbable tabs-right" ng-show='vm.config'>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>

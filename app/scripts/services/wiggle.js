@@ -49,7 +49,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
     services.vms.get = function(obj, cb) {
         services.vms._get(obj, function(res) {
             /* Dont get the dataset data when its not a plain get or no dataset found */
-            if (obj.action || !res.config || !res.config.dataset || res.config.dataset === 1)
+            if (obj.controller || !res.config || !res.config.dataset || res.config.dataset === 1)
                 return cb(res)
             services.datasets.get({id: res.config.dataset}, function(ds) {
                 res.config._dataset = ds

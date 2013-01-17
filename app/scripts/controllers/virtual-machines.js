@@ -52,26 +52,35 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
         })
 
         $scope.$on('state', function(e, msg) {
+            var vm = $scope.vms[msg.channel];
+            if (!vm) return;
 
-            //When deleting a vm, the shut_down and stop events are sent after the delete event (i.e. when the vm is running)
-            if (!$scope.vms[msg.channel]) return;
-
-            $scope.vms[msg.channel].state = msg.message.data
-            vmService.updateCustomFields($scope.vms[msg.channel])
+            vm.state = msg.message.data
+            vmService.updateCustomFields(vm)
             $scope.$apply()
+        })
 
-            /* When creating a new VM, we get events from howl telling just about the state.
-               So when the machine is creating get the main info via wiggle */
-            if (msg.message.data == 'creating' && !$scope.vms[msg.channel].config) {
-                $scope.vms[msg.channel] = vmService.updateCustomFields(wiggle.vms.get({id: msg.channel}))
-            }
+        $scope.$on('update', function(e, msg) {
+            var vm = $scope.vms[msg.channel];
+
+            vm.config = msg.message.data.config;
+
+            /* When 'update' was triggered by a vm create, created_at is still not there */
+            if (!vm.config.created_at)
+                vm.config.created_at = new Date()
+
+            vmService.updateCustomFields(vm);
+
+            /* Get the dataset data */
+            wiggle.datasets.get({id: vm.config.dataset}, function(ds) {
+                vm.config._dataset = ds;
+            })
         })
 
         $scope.$on('delete', function(e, msg) {
             delete $scope.vms[msg.channel]
             $scope.$apply()
         })
-
     }
 
     $scope.show()
