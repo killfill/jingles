@@ -62,14 +62,6 @@
                         <i ng-click="action('start', this.vm)" jq-run="tooltip" title="start"
                            ng-hide="vm.state!='stopped'"
                            class="icon-play-circle clickable"></i>
-
-                        <i ng-click="action('reboot', this.vm)" jq-run="tooltip" title="reboot"
-                           ng-hide="this.vm.state!='running'"
-                           class="icon-refresh clickable"></i>
-
-                        <i ng-click="action('stop', this.vm)" jq-run="tooltip" title="stop"
-                           ng-hide="this.vm.state!='running'"
-                           class="icon-off clickable"></i>
                       </td>
                     </tr>
                   </tbody>
