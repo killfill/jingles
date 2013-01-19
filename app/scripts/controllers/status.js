@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('StatusCtrl', function($scope, $rootScope, wiggle) {
+fifoApp.controller('StatusCtrl', function($scope, $rootScope, $cookies, wiggle) {
 
 
     $scope.msgTrClass = function(type) {
@@ -28,6 +28,6 @@ fifoApp.controller('StatusCtrl', function($scope, $rootScope, wiggle) {
 
     }
 
-    $rootScope.loggedUser && $scope.show()
+    $cookies["X-Snarl-Token"] && $scope.show()
 
 });

@@ -4,18 +4,21 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     var uuid = $routeParams.uuid;
 
-    wiggle.vms.get({id: uuid}, function(res) {
-        $scope.vm = vmService.updateCustomFields(res)
-
-        /* Build the snapshots array */
-        $scope.snapshots = []
-        Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
-            var val = $scope.vm.snapshots[k]
-            val.uuid = k
-            $scope.snapshots.push(val)
+    var updateVm = function(cb) {
+        wiggle.vms.get({id: uuid}, function(res) {
+            $scope.vm = vmService.updateCustomFields(res);
+            /* Build the snapshots array */
+            $scope.snapshots = []
+            Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
+                var val = $scope.vm.snapshots[k]
+                val.uuid = k
+                $scope.snapshots.push(val)
+            })
+            $scope.snapshots = $scope.vm.snapshots
         })
-        $scope.snapshots = $scope.vm.snapshots
-    })
+    }
+
+    updateVm()
 
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
@@ -39,12 +42,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         window.open("vnc.html?uuid=" + vm.uuid)
     }
 
-    var updateSnapshots = function() {
-        wiggle.vms.query({id: uuid, controller: 'snapshots'}, function(res) {
-            $scope.snapshots = res
-        })
-    }
-
     $scope.snapshot = function(action, snap) {
         switch (action) {
 
@@ -52,7 +49,8 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 var comment = prompt('Write a comment for the new snapshot:');
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                     function success(data, h) {
-                        updateSnapshots()
+                        status.update('Snapshot created', {info: true});
+                        updateVm()
                     },
                     function error(data) {
                         alert('Error saving the snapshot. See your console')
@@ -68,11 +66,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     header: 'Confirm Snapshot Deletion',
                     body: '<p>Are you sure you want to delete snapshot <strong>' + snap.comment + '</strong> dated ' + new Date(snap.timestamp/1000) + '</p>'
                 }, function() {
-                    status.update('Will delete snapshot ' + snap.comment, {info: true});
                     $scope.$apply()
                     wiggle.vms.delete({id: uuid, controller: 'snapshots', second_id: snap.uuid},
                         function success() {
+                            status.update('Snapshot ' + snap.comment + ' deleted', {info: true});
                             delete $scope.snapshots[snap.uuid]
+                            updateVm()
                         },
                         function error(data) {
                             alert('Error deleting the snapshot. See your console')
@@ -94,6 +93,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.$apply()
                     wiggle.vms.put({id: uuid, controller: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
+                            updateVm()
                             alert('Rollback done')
                         },
                         function error (data) {

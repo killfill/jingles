@@ -1,10 +1,8 @@
 How to use
 ----------
-
 - Install yeoman if not installed: 'npm install yeoman -g'
 - Clone the repo
 - 'yeoman server'
-
 
 Features missing
 -------------

@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div id='login-modal' class="modal" ng-show="!loggedUser || !loggedUser.username">
+    <div id='login-modal' class="modal" ng-show="!loggedUser || !loggedUser.name">
         <form ng-submit="login()" ng-controller='LoginCtrl'>
             <div class="modal-header"><h3><img src="images/PF.png" style="height: 25px;" alt="Project FiFo"> Please sign in</h3></div>
             <div class="modal-body">
@@ -51,7 +51,7 @@
         </form>
     </div>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" id="nav-bar" ng-show="loggedUser && loggedUser.username">
+    <div class="navbar navbar-inverse navbar-fixed-top" id="nav-bar" ng-show="loggedUser && loggedUser.name">
         <div class="navbar-inner">
             <div class="container-fluid">
 
@@ -66,7 +66,7 @@
                 </a>
 
                 <ul class='nav' ng-repeat='st in status'>
-                    <li style='padding-top: 15px; padding-left: 20px;'>{{st.name}}</li>
+                    <li style='padding-top: 15px; padding-left: 20px; color: white;'>{{st.name}}</li>
                     <li class='span2' style='padding-top: 15px; height: 10px' ng-show='st.current'>
                         <div class="progress progress-striped active">
                             <div class="bar" style="width: {{st.percent}}%;"></div>
@@ -74,17 +74,16 @@
                     </li>
                 </ul>  
 
-
                 <div class='btn-toolbar'>
                     <div class='btn-group pull-right nav' ng-controller='LoginCtrl'>
                         <a href="#" class='btn btn-small dropdown-toggle' data-toggle='dropdown'>
-                            <i class='icon-user'></i> {{loggedUser.username}}
+                            <i class='icon-user'></i> {{loggedUser.name}}
                             <span class="caret"></span>
                         </a>
                         <ul class='dropdown-menu'>
-                            <!-- <li><a href='#' ng-click='logout()'>My info</a></li>
-                            <li><a href='#' ng-click='logout()'>Public keys</a></li>
-                            <li class='divider'></li> -->
+                            <li><a href='#/users/{{loggedUser.uuid}}'>My info</a></li>
+                            <!-- <li><a href='#' ng-click='logout()'>Public keys</a></li> -->
+                            <li class='divider'></li>
                             <li><a href='#' ng-click='logout()'>Logout</a></li>
                         </ul>
                     </div>
@@ -94,7 +93,7 @@
     </div>
 
 
-    <div class='container-fluid' id='ui' ng-show="loggedUser && loggedUser.username">
+    <div class='container-fluid' id='ui' ng-show="loggedUser && loggedUser.name">
         <div class="tabs-left">
             <nav-tabs>
               <nav-tab href="#/status" icon="camera">Status</nav-tab>
@@ -115,7 +114,7 @@
         </div>
     </div>
 
-    <footer ng-show="loggedUser && loggedUser.username">
+    <footer ng-show="loggedUser && loggedUser.name">
         <hr>
         <p class="copy">
             &copy; <a href="http://project-fifo.net">Project FiFo</a> 2012</p>

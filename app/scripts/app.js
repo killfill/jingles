@@ -96,8 +96,8 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
 
     if ($cookies.login && token)
         wiggle.sessions.get({id: token},
-            function success() {
-                user.login(token, $cookies.login)
+            function success(data) {
+                user.login(data)
             },
             function error() {
                 user.logout();

@@ -11,15 +11,15 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
                               controller: 'groups',
                               controller_id: group});
         },
-        login: function(token, login) {
+        login: function(data) { //token, login) {
 
             /* Cookies */
-            $cookies["X-Snarl-Token"] = token;
-            $cookies.login = login;
+            $cookies["X-Snarl-Token"] = data.session;
+            $cookies.login = data.name;
 
             /* Logged data */
-            $rootScope.loggedUser = {username: $cookies.login}
-            $http.defaults.headers.common['X-Snarl-Token'] = $cookies.token;
+            $rootScope.loggedUser = data
+            $http.defaults.headers.common['X-Snarl-Token'] = data.session;
 
             /* Pass the token to autenticate, and a list of vms to monitor */
             if ('WebSocket' in window) {
