@@ -12,7 +12,6 @@
                     <tr>
                       <th>Name</th>
                       <th>Groups</th>
-                      <th>Permissions</th>
                       <th class="span1">Actions</th>
                     </tr>
                   </thead>
@@ -20,7 +19,6 @@
                       <tr ng-repeat='u in users'>
                         <td><a href="#/users/{{u.uuid}}">{{u.name}}</a></td>
                         <td>{{u.groups.join(', ')}}</td>
-                        <td>{{u._perm}}</td>
                         <td>TODO</td>
                       </tr>
                   </tbody>

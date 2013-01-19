@@ -29,6 +29,10 @@
       </div>
       <div class="tab-pane" id="permisisons">
         <table class='table table-bordered'>
+          <tr>
+            <th>Permission</th>
+            <th>Actions</th>
+          </tr>
           <tr ng-repeat="permission in permissions">
             <td>{{permission.text}}</td>
             <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
@@ -37,13 +41,19 @@
       </div>
       <div class="tab-pane" id="groups">
         <select id="join_group" ng-model='group'>
-          <option ng-repeat="group in groups">{{group}}</option>
+          <option ng-repeat="group in groups | hash2array | orderBy: name" value="{{group.uuid}}">{{group.name}}</option>
         </select>
         <button ng-click="group_join()">Join</button>
         <table class='table table-bordered'>
-          <tr ng-repeat="group in user.groups">
-            <td>{{group}}</td>
-            <td><a ng-click="leave_group(group)">delete</a></td>
+          <tr>
+            <th>Name</th>
+            <th>UUID</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="group in user._groups">
+            <td>{{group.name}}</td>
+            <td>{{group.uuid}}</td>
+            <td><a ng-click="leave_group(group.uuid)">delete</a></td>
           </tr>
         </table>
       </div>
