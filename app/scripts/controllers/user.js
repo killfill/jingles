@@ -26,8 +26,28 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         console.log(permission);
     };
 
-    $scope.passwd = function () {
+    $scope.delete = function() {
+        var name = $scope.user.name;
+        var uuid = $scope.user.uuid;
+        modal.confirm({
+            btnClass: 'btn-danger',
+            btnText: 'Delete',
+            header: 'Confirm VM Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Destroy here will mean this VM is gone forever!</p>"
+        }, function() {
+            status.update('Will user ' + name, {info: true});
+            wiggle.users.delete({id: uuid},
+                                function success(data, h) {
+                                    $location.path('/users')
+                                },
+                                function error(data) {
+                                    console.error('Delete VM error:', data);
+                                    alert('There was an error deleting your vm. See the javascript console.');
+                                });
+        })
+    };
 
+    $scope.passwd = function () {
         if ($scope.pass1 == $scope.pass2) {
             wiggle.users.put({id: $scope.user.uuid},
                              {password: $scope.pass1},
@@ -47,9 +67,9 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         wiggle.users.delete({id: $scope.user.uuid,
                              controller: 'groups',
                              controller_id: group},
-                           function(){
-                               delete $scope.user._groups[group];
-                           });
+                            function(){
+                                delete $scope.user._groups[group];
+                            });
     };
 
     $scope.group_join = function() {
@@ -64,6 +84,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     };
 
     $scope.init = function() {
+        $scope.pass1 = "";
+        $scope.pass2 = "";
         $scope.groups = [];
         wiggle.groups.list(function(ids) {
             ids.forEach(function(gid) {
