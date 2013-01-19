@@ -23,6 +23,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
         vmService.updateCustomFields($scope.vm)
+        updateVm()
         $scope.$apply()
     })
 
