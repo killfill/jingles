@@ -18,7 +18,6 @@ fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
         }
     })();
     $scope.show = function() {
-
         wiggle.users.list(function (ids) {
 
             ids.length > 0 && status.update('Loading users', {total: ids.length})

@@ -33,7 +33,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             btnClass: 'btn-danger',
             btnText: 'Delete',
             header: 'Confirm VM Deletion',
-            body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Destroy here will mean this VM is gone forever!</p>"
+            body: '<p><font color="red">Warning!</font> you are about to delete the User <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Destroy here will mean this User is gone forever!</p>"
         }, function() {
             status.update('Will user ' + name, {info: true});
             wiggle.users.delete({id: uuid},
@@ -41,8 +41,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                                     $location.path('/users')
                                 },
                                 function error(data) {
-                                    console.error('Delete VM error:', data);
-                                    alert('There was an error deleting your vm. See the javascript console.');
+                                    console.error('Delete User error:', data);
+                                    alert('There was an error deleting your user. See the javascript console.');
                                 });
         })
     };

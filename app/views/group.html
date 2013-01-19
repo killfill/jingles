@@ -1,0 +1,46 @@
+<div class="tab-pane" ng-show='group.uuid'>
+
+  <div class="row-fluid">
+    <div class="span8">
+      <h3>Group {{group.name}}</h3>
+    </div>
+    <div class='span4'>
+      <div class="btn-toolbar btn-group pull-right">
+
+        <div class="btn-group">
+          <button ng-click="delete()" class="btn" title='Delete' jq-run='tooltip'>
+            <i class='icon-trash'></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+
+  <div class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <table class='table table-bordered'>
+          <tr><th>Name</th><td><b>{{group.name}}</b></td></tr>
+          <tr><th>UUID</th><td><b>{{group.uuid}}</b></td></tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="permisisons">
+        <table class='table table-bordered'>
+          <tr>
+            <th>Permission</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="permission in permissions">
+            <td>{{permission.text}}</td>
+            <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
