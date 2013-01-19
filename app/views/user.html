@@ -20,9 +20,9 @@
           <tr><th>UUID</th><td><b>{{user.uuid}}</b></td></tr>
           <tr><th style="vertical-align: middle">Password</th>
             <td style="vertical-align: middle">
-              <input name='pass1' type='password'/>
-              <input name='pass2' type='password'/><br/>
-              <button class="button" enabled="false">Change</button>
+              <input ng-model="pass1" type='password'/>
+              <input ng-model="pass2" type='password'/><br/>
+              <button class="button" ng-click="passwd()">Change</button>
             </td>
           </tr>
         </table>
