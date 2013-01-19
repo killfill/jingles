@@ -44,6 +44,8 @@
                 <input ng-model='password' class="input-block-level" type='password' placeholder='Password' required>
             </div>
             <div class="modal-footer">
+                <span class='status-{{connectionStatus.ok}}'></span>
+                <span ng-show='!connectionStatus.ok' class='pull-left' 'margin-right: 20px'>Not conected: {{connectionStatus.services}}</span>
                 <button href="#" class="btn btn-primary" type="submit">Ok</button>
             </div>
         </form>
@@ -80,9 +82,9 @@
                             <span class="caret"></span>
                         </a>
                         <ul class='dropdown-menu'>
-                            <li><a href='#' ng-click='logout()'>My info</a></li>
+                            <!-- <li><a href='#' ng-click='logout()'>My info</a></li>
                             <li><a href='#' ng-click='logout()'>Public keys</a></li>
-                            <li class='divider'></li>
+                            <li class='divider'></li> -->
                             <li><a href='#' ng-click='logout()'>Logout</a></li>
                         </ul>
                     </div>

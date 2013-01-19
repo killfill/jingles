@@ -9,7 +9,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
                             {id: '@id'},
                             {login: {method: 'POST'}}),
         users: $resource(endpoint + 'users/:login/:controller/:id'),
-        cloud: $resource(endpoint + 'cloud'),
+        cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),
         hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
         vms: $resource(endpoint + 'vms/:id/:controller/:second_id',
             {id: '@id', controller: '@controller', second_id: '@second_id'},

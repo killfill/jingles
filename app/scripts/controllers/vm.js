@@ -9,7 +9,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
         /* Build the snapshots array */
         $scope.snapshots = []
-        Object.keys($scope.vm.snapshots).forEach(function(k) {
+        Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
             var val = $scope.vm.snapshots[k]
             val.uuid = k
             $scope.snapshots.push(val)
@@ -66,7 +66,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     btnClass: 'btn-info',
                     btnText: 'Delete',
                     header: 'Confirm Snapshot Deletion',
-                    body: '<p>Are you sure you want to delete snapshot <strong>' + snap.comment + '</strong> from ' + new Date(snap.timestamp/1000) + '</p>'
+                    body: '<p>Are you sure you want to delete snapshot <strong>' + snap.comment + '</strong> dated ' + new Date(snap.timestamp/1000) + '</p>'
                 }, function() {
                     status.update('Will delete snapshot ' + snap.comment, {info: true});
                     $scope.$apply()
@@ -86,8 +86,9 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     btnClass: 'btn-danger btn-warning',
                     btnText: 'Rollback',
                     header: 'Confirm Rollback',
-                    body: '<p><font color="red">Warning!</font> you are about to rollback VM <b id="delete-uuid">' + uuid + " "+ ($scope.vm.config.alias? '(' + $scope.vm.config.alias + ')': '') + '</b> to snapshot <strong>' + snap.comment + '</strong> from ' + new Date(snap.timestamp/1000) + '</p>' +
-                        "</b> Are you 100% sure you really want to do this?</p>"
+                    body: '<p><font color="red">Warning!</font> You are about to rollback to snapshot <strong>' + snap.comment + '</strong> dated ' + new Date(snap.timestamp/1000) + '?</p>' +
+                        '<p>Please note: Any snapshots that have been taken after this rollback date will be deleted if you proceed.</p>' +
+                        "</b>Are you 100% sure you really want to do this?</p>"
                 }, function() {
                     status.update('Will rollback to snapshot ' + snap.comment, {info: true});
                     $scope.$apply()

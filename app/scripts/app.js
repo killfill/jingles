@@ -85,5 +85,8 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
             function error() {
                 user.logout();
             })
+    else
+        //logout() checks for the connection status ;)
+        user.logout();
 
     })

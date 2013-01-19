@@ -8,19 +8,22 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
             dataset: $scope.selectedDataset.dataset,
             config: {
                 networks: {},
-                alias: $scope.name
+                alias: $scope.alias,
+                root_pw: $scope.root_pw,
+                admin_pw: $scope.admin_pw,
+                hostname: $scope.hostname,
+                resolvers: []
             }
         })
-
-        if ($scope.root_pw)
-            vm.config.root_pw = $scope.root_pw
-
-        if ($scope.admin_pw)
-            vm.config.admin_pw = $scope.admin_pw
 
         for (var i=0; i<$scope.selectedNetworks.length; i++) {
             vm.config.networks['net' + i] = $scope.selectedNetworks[i].name
         }
+
+        if ($scope.resolver1)
+            vm.config.resolvers.push($scope.resolver1)
+        if ($scope.resolver2)
+            vm.config.resolvers.push($scope.resolver2)
 
         vm.$save({},
             function success(data, headers) {

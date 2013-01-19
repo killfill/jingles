@@ -8,11 +8,11 @@
 		<div class="alert alert-info">
 			Create a <strong>{{selectedPackage.name}}</strong>
 			machine <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
-			called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='name' autofocus>
+			called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
 		</div>
 	</div>
 
-	<button class='btn btn-success pull-right' ng-show='name && selectedDataset && selectedPackage' ng-click='create_machine()'>Create!</button>
+	<button class='btn btn-success pull-right' ng-show='alias && selectedDataset && selectedPackage' ng-click='create_machine()'>Create!</button>
 
 	<div class="span5">
 		<div class="thumbnail">
@@ -90,6 +90,18 @@
                         <tr class='small'>
                             <th class='nowrap'>Admin password</th>
                             <td><input type=text ng-model='admin_pw'/></td>
+                        </tr>
+                        <tr class='small'>
+                            <th class='nowrap'>Hostname</th>
+                            <td><input type=text ng-model='hostname'/></td>
+                        </tr>
+                        <tr class='small'>
+                            <th class='nowrap'>Resolver 1</th>
+                            <td><input type=text ng-model='resolver1'/></td>
+                        </tr>
+                        <tr class='small'>
+                            <th class='nowrap'>Resolver 2</th>
+                            <td><input type=text ng-model='resolver2'/></td>
                         </tr>
                     </table>
                   </div>
