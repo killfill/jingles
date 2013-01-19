@@ -27,6 +27,6 @@ fifoApp.controller('DashboardCtrl', function($scope, wiggle) {
                 label: 'hits vs misses',
                 percent: parseInt(100 * data.metrics['l2hits'] / (data.metrics['l2hits']+data.metrics['l2miss']), 10)
             })
-    })
+        })
 
 });

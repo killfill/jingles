@@ -24,7 +24,7 @@ fifoApp.directive('jqRun', function () {
                         options = scope.$eval(attrs.jqOptions)
 
                     $(elm)[attrs.jqRun](options)
-                }, 100);
+                }, 500);
 
             };
         }
