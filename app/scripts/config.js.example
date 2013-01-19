@@ -27,17 +27,6 @@ Config = {
      */
     could_test: [
         {
-            max: 0,
-            type: "info",
-            category: "configuration",
-            element: "wiggle-ui-config",
-            message: "You have not adjusted your wiggle ui config.js. " +
-                "This is OK, but please keep in mind that the default warning levels in there " +
-                "might not apply to you. If you see warnings that you think you should not go " +
-                "there and change them, you can also remove this message there.",
-            formula: function() {return 1}
-        },
-        {
             max: 0.85,
             type: "warning",
             category: "cloud",
@@ -92,14 +81,21 @@ Config = {
             } else if (e.mim != undefined) {
                 ok = (v >= e.min);
             }
-            if (! ok)
-                r.push({
-                    category: e.category,
-                    element: e.element,
-                    type: e.type,
-                    message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
-                });
+            r.push({
+                category: e.category,
+                element: e.element,
+                type: e.type,
+                max: e.max,
+                percent: parseInt((v * 100), 10),
+                ok: ok,
+                message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
+            });
             return r;
         }, []);
-    }
+    },
+
+    adjustMessage: "You have not adjusted your wiggle ui config.js. " +
+                "This is OK, but please keep in mind that the default warning levels in there " +
+                "might not apply to you. If you see warnings that you think you should not go " +
+                "there and change them, you can also remove this message there."
 }
