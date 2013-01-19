@@ -13,6 +13,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
                           controller: '@controller',
                           controller_id: '@controller_id'},
                          {put: {method: 'PUT'},
+                          create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
         groups: $resource(endpoint + 'groups/:id'),
         cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),

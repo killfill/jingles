@@ -98,5 +98,5 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             });
         })
     };
-    $scope.init()
+    $scope.init();
 })
