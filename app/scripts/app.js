@@ -63,6 +63,11 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'
     })
+        .when('/users/:uuid', {
+            templateUrl: 'views/user.html',
+            controller: 'UserCtrl'
+        })
+
     .otherwise({
         redirectTo: '/status'
     });

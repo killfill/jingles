@@ -6,7 +6,11 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         logged: function() {
 
         },
-
+        join: function(uuid, group) {
+            wiggle.users.put({id: uuid,
+                              controller: 'groups',
+                              controller_id: group});
+        },
         login: function(token, login) {
 
             /* Cookies */

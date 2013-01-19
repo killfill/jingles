@@ -18,7 +18,7 @@
                   </thead>
                   <tbody>
                       <tr ng-repeat='u in users'>
-                        <td>{{u.name}}</td>
+                        <td><a href="#/users/{{u.uuid}}">{{u.name}}</a></td>
                         <td>{{u.groups.join(', ')}}</td>
                         <td>{{u._perm}}</td>
                         <td>TODO</td>

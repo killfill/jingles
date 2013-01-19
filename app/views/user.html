@@ -1,0 +1,52 @@
+<div class="tab-pane" ng-show='user.uuid'>
+
+  <div class="row-fluid">
+    <div class="span8">
+      <h3>User {{user.name}}</h3>
+    </div>
+  </div>
+  <hr/>
+
+  <div class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
+      <li><a href="#groups" data-toggle="tab">Groups</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <table class='table table-bordered'>
+          <tr><th>Name</th><td><b>{{user.name}}</b></td></tr>
+          <tr><th>UUID</th><td><b>{{user.uuid}}</b></td></tr>
+          <tr><th style="vertical-align: middle">Password</th>
+            <td style="vertical-align: middle">
+              <input name='pass1' type='password'/>
+              <input name='pass2' type='password'/><br/>
+              <button class="button" enabled="false">Change</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="permisisons">
+        <table class='table table-bordered'>
+          <tr ng-repeat="permission in permissions">
+            <td>{{permission.text}}</td>
+            <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="groups">
+        <select id="join_group" ng-model='group'>
+          <option ng-repeat="group in groups">{{group}}</option>
+        </select>
+        <button ng-click="group_join()">Join</button>
+        <table class='table table-bordered'>
+          <tr ng-repeat="group in user.groups">
+            <td>{{group}}</td>
+            <td><a ng-click="leave_group(group)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
