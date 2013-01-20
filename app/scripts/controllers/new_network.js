@@ -8,6 +8,7 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
 
     $scope.create_network = function() {
         var network = new wiggle.ipranges({
+            name: $scope.name,
             tag: $scope.tag,
             network: $scope.network,
             netmask: $scope.netmask,
@@ -19,7 +20,7 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
         if ($scope.vlan)
             network.vlan = parseInt($scope.vlan, 10)
 
-        network.$create({id: $scope.name},
+        network.$create({},
             function success(data, headers) {
                 $location.path('/networks');
             },

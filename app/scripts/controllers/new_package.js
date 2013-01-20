@@ -43,21 +43,22 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle) {
 
 
         var pkg = new wiggle.packages({
+            name: $scope.name,
             quota: parseInt($scope.quota),
             ram: parseInt($scope.ram),
             cpu_cap: parseInt($scope.cpu_cap),
             requirements: $scope.rules.filter(function(item) {
-                return item['attribute'] && item['condition'] && item['weight'] && item['value']
+                return item['attribute'] && item['condition'] && item['weight'] && item['value'];
             })
         });
 
-        pkg.$create({id: $scope.name},
+        pkg.$create({},
             function success(data, headers) {
-                $location.path('/packages')
+                $location.path('/packages');
             },
             function error(data) {
-                console.error('Create Package error:', data)
-                alert('There was an error creating your package. See the javascript console.')
+                console.error('Create Package error:', data);
+                alert('There was an error creating your package. See the javascript console.');
             }
         );
     }

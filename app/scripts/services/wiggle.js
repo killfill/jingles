@@ -30,12 +30,12 @@ fifoApp.factory('wiggle', function($resource, $http) {
         ),
         ipranges: $resource(endpoint + 'ipranges/:id',
             {id: '@id'},
-            {create: {method: 'PUT'}}
+            {create: {method: 'POST'}}
         ),
         datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
         packages: $resource(endpoint + 'packages/:id',
             {id: '@id'},
-            {create: {method: 'PUT'}}
+            {create: {method: 'POST'}}
         ),
     }
 
