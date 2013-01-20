@@ -202,6 +202,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         break;
                     case "users":
                     case "grous":
+                    case "vms":
                     case "pacakges":
                     case "ipranges":
                         $scope.p3 = [
@@ -266,6 +267,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                     ];
                     break;
                 }
+                if ($scope.p3)
+                    $scope.p3.unshift({'id': '...', name:'Everything'});
             }
         };
     };
