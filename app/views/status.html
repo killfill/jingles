@@ -8,14 +8,14 @@
             <tr>
                 <td class='span1 nowrap'><big>Memory</big></td>
                 <td><div class="progress {{messages[0].ok && 'progress-success' || 'progress-danger'}}"
-                    title="{{metrics['provisioned-memory']*1024*1024|bytes}} of {{total_memory*1024*1024|bytes}} allocated" jq-run='tooltip'>
+                    title="{{metrics['provisioned-memory'] | Mbytes}} of {{total_memory | Mbytes}} allocated" jq-run='tooltip'>
                     <div class="bar" style="width: {{messages[0].percent}}%;">{{messages[0].percent}}%</div>
                 </div></td>
             </tr>
             <tr>
                 <td class='span1 nowrap'><big>Disk space</big></td>
                 <td><div class="progress {{messages[1].ok && 'progress-success' || 'progress-danger'}}"
-                    title="{{metrics.used*1024*1024|bytes}} of {{metrics.size*1024*1024|bytes}} used" jq-run='tooltip'>
+                    title="{{metrics.used | Mbytes}} of {{metrics.size | Mbytes}} used" jq-run='tooltip'>
                     <div class="bar" style="width: {{messages[1].percent}}%;">{{messages[1].percent}}%</div>
                 </div></td>
             </tr>

@@ -17,8 +17,8 @@
       <div class="tab-pane active" id="details">
         <table class='table table-bordered'>
           <tr><th>Name</th><td><b>{{hyper.name}}</b></td></tr>
-          <tr><th>Networks</th><td><b>{{hyper.networks.join(", ")}}</b></td></tr>
-          <tr><th>Virtualisations</th><td><b>{{hyper.virtualisation.join(", ")}}</b></td></tr>
+          <tr><th>Networks</th><td>{{hyper.networks.join(", ")}}</td></tr>
+          <tr><th>Virtualisations</th><td>{{hyper.virtualisation.join(", ")}}</td></tr>
         </table>
       </div>
       <div class="tab-pane" id="performance">
@@ -26,15 +26,15 @@
           <tr>
             <th rowspan="3">Memory</th>
             <td><b>Free</b></td>
-            <td>{{hyper.resources["free-memory"]}} MB</td>
+            <td>{{hyper.resources["free-memory"] | Mbytes}}</td>
           </tr>
           <tr>
             <td><b>Provisioned</b></td>
-            <td>{{hyper.resources["provisioned-memory"]}} MB</td>
+            <td>{{hyper.resources["provisioned-memory"] | Mbytes}}</td>
           </tr>
           <tr>
             <td><b>Total</b></td>
-            <td>{{hyper.resources["total-memory"]}} MB</td>
+            <td>{{hyper.resources["total-memory"] | Mbytes}}</td>
           </tr>
           <tr>
             <th rowspan="4">L1 Arc</th>
@@ -51,7 +51,7 @@
           </tr>
           <tr>
             <td><b>Size</b></td>
-            <td>{{hyper.resources["l1size"]}} MB</td>
+            <td>{{hyper.resources["l1size"] | Mbytes}}</td>
           </tr>
           <tr ng-show="hyper.resources['l2size']">
             <th rowspan="4">L2 Arc</th>
@@ -68,7 +68,7 @@
           </tr>
           <tr ng-show="hyper.resources['l2size']">
             <td><b>Size</b></td>
-            <td>{{hyper.resources["l2size"]}} MB</td>
+            <td>{{hyper.resources["l2size"]}}</td>
           </tr>
         </table>
       </div>
@@ -82,9 +82,9 @@
           </tr>
           <tr ng-repeat="(name, data) in hyper.pools">
             <th>{{name}} ({{data.health}})</th>
-            <td>{{data.free}}</td>
-            <td>{{data.used}}</td>
-            <td>{{data.size}}</td>
+            <td>{{data.free | Mbytes}}</td>
+            <td>{{data.used | Mbytes}}</td>
+            <td>{{data.size | Mbytes}}</td>
           </tr>
         </table>
       </div>

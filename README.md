@@ -7,6 +7,7 @@ How to use
 Features missing
 -------------
 - Manage User & Groups stuff
+- 403 en la llamadas? hook a request?... error (p.e. si no tengo internets?)
 - Change ram, quota, resolvers. Packages?
 - User profile with ssh managment
 - Funkyer way to select datasets.

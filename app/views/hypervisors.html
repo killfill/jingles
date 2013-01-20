@@ -21,9 +21,9 @@
                   <tbody>
                     <tr ng-repeat="hyper in hypervisors">
                       <td><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
-                      <td>{{hyper.resources['total-memory']*1024*1024 | bytes}}</td>
-                      <td>{{hyper.resources['provisioned-memory']*1024*1024 | bytes}}</td>
-                      <td>{{hyper.resources['free-memory']*1024*1024 | bytes}}</td>
+                      <td>{{hyper.resources['total-memory'] | Mbytes}}</td>
+                      <td>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
+                      <td>{{hyper.resources['free-memory'] | Mbytes}}</td>
                       <td>{{hyper.networks.join(', ')}}</td>
                       <td>{{hyper.virtualisation.join(', ')}}</td>
                     </tr>

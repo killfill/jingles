@@ -20,12 +20,31 @@ fifoApp.filter('fromNow', function() {
     };
 });
 
-fifoApp.filter('bytes', function() {
-    return function(bytes, precision) {
+var formatBytes = function(defaultPow1024) {
+    return function(bytes, hash) {
         if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return;
-        if (typeof precision === 'undefined') precision = 0;
-        var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
-            number = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (bytes/Math.pow(1024, Math.floor(number))).toFixed(precision) +  '' + units[number];
+
+        hash = hash || {}
+        var pow1024 = hash.pow1024 || defaultPow1024 || 0,
+            precision = hash.precision || 1,
+            units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+
+        bytes = bytes * Math.pow(1024, pow1024)
+        var number = Math.floor(Math.log(bytes) / Math.log(1024));
+        var str = ( bytes / Math.pow(1024, Math.floor(number)) ).toFixed(precision);
+        str = str.replace(/(.\d*?)0*$/, "$1").replace(/(.*?)\.$/, "$1"); //trim right-zeros
+        return str +  '' + units[number];
     }
+}
+
+fifoApp.filter('bytes', function() {
+    return formatBytes()
+});
+
+fifoApp.filter('Mbytes', function() {
+    return formatBytes(2)
+});
+
+fifoApp.filter('Gbytes', function() {
+    return formatBytes(3)
 });
