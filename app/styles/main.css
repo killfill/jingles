@@ -14,6 +14,13 @@ body {
     display: none;
 }
 
+h2 {
+    font-size: 23.5px;
+}
+h1, h2, h3 {
+    line-height: 28px;
+}
+
 .modal.fade.in, .modal {
     top: 60%;
 }

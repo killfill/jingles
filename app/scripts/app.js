@@ -71,14 +71,18 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'
     })
-        .when('/users/new', {
-            templateUrl: 'views/new_user.html',
-            controller: 'NewUserCtrl'
-        })
-        .when('/users/:uuid', {
-            templateUrl: 'views/user.html',
-            controller: 'UserCtrl'
-        })
+    .when('/users/new', {
+        templateUrl: 'views/new_user.html',
+        controller: 'NewUserCtrl'
+    })
+    .when('/users/:uuid', {
+        templateUrl: 'views/user.html',
+        controller: 'UserCtrl'
+    })
+    .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl'
+    })
 
     .otherwise({
         redirectTo: '/status'
