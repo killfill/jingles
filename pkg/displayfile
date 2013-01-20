@@ -6,7 +6,7 @@
 |                                                                              |
 | Please have a look at the configuraiton files:                               |
 |                                                                              |
-|  * /opt/local/jingles/htdocs/js/config.js                                    |
+|  * /opt/local/jingles/app/scripts/config.js                                  |
 |    * Change the address of the wiggle server.                                |
 |    * Change the address of the howl server.                                  |
 |                                                                              |
