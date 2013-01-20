@@ -30,20 +30,22 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     };
 
     $scope.grant = function() {
-        var perm_string = $scope.permission.controller;
-        if ($scope.permission.controller_id)
-            perm_string = perm_string + "->" + $scope.permission.controller_id;
-        if ($scope.permission.controller_id2)
-            perm_string = perm_string + "->" + $scope.permission.controller_id2;
-        alert("This is just a demo so far, the permission created would be: " + perm_string);
+        $scope.permission.id = $scope.user.uuid;
+        $scope.permission.controller = "permissions";
+
+        wiggle.users.grant($scope.permission, function () {
+            console.log("Granted")
+        }, function() {
+            console.log("failed")
+        });
         console.log($scope.permission);
     };
     $scope.perm_change = function(level) {
         delete $scope.permission;
         switch(level) {
         case 3:
-            $scope.permission = {controller: $scope.perm1,
-                                 controller_id: $scope.perm2,
+            $scope.permission = {controller_id: $scope.perm1,
+                                 controller_id1: $scope.perm2,
                                  controller_id2: $scope.perm3};
 
             break;
@@ -52,7 +54,19 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             $scope.p3 = false;
             switch($scope.perm1) {
             case "...":
-                $scope.permission = {controller: "..."};
+                $scope.permission = {controller_id: "..."};
+                break;
+            case "cloud":
+                $scope.p2 = {
+                    "could": {id: "cloud", name: "Cloud"},
+                    "users": {id: "users", name: "Users"},
+                    "groups": {id: "groups", name: "Groups"},
+                    "hypervisors": {id: "hypervisors", name: "Hypervisors"},
+                    "vms": {id: "vms", name: "Virtual Machines"},
+                    "ipranges": {id: "ipranges", name: "Networks"},
+                    "datasets": {id: "datasets", name: "Datasets"},
+                    "packages": {id: "packages", name: "Packages"}
+                };
                 break;
             case "users":
                 wiggle.users.list(function(ids) {
@@ -158,10 +172,34 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         case 2:
             $scope.p3 = false;
             if ($scope.perm2 == "...") {
-                $scope.permission = {controller: $scope.perm1,
-                                     controller_id: "..."};
+                $scope.permission = {controller_id: $scope.perm1,
+                                     controller_id1: "..."};
             } else {
                 switch($scope.perm1) {
+                case "cloud":
+                    switch($scope.perm2) {
+                    case "cloud":
+                        $scope.p3 = [
+                            {id: "status", name: "Status"}
+                        ]
+                        break;
+                    case "users":
+                    case "grous":
+                    case "pacakges":
+                    case "ipranges":
+                        $scope.p3 = [
+                            {id: "list", name: "List"},
+                            {id: "create", name: "Create"}
+                        ];
+                        break;
+                    case "datasets":
+                    case "hypervisors":
+                        $scope.p3 = [
+                            {id: "list", name: "List"}
+                        ]
+                        break;
+                    }
+                    break;
                 case "users":
                     $scope.p3 = [
                         {id:"get", name: "See"},
