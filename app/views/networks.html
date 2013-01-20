@@ -22,6 +22,7 @@
                       <th>First</th>
                       <th>Last</th>
                       <th>Next</th>
+                      <th>VLan</th>
                       <th>Returned</th>
                       <th class="span1">Actions</th>
                     </tr>
@@ -36,6 +37,7 @@
                         <td>{{net.first}}</td>
                         <td>{{net.last}}</td>
                         <td>{{net.current}}</td>
+                        <td>{{net.vlan}}</td>
                         <td>{{net.free.length}}</td>
                         <td>
                             <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
