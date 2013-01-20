@@ -4,7 +4,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
 
     $scope.create_machine = function() {
         var vm = new wiggle.vms({
-            package: $scope.selectedPackage.name,
+            package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
             config: {
                 networks: {},
@@ -17,7 +17,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
         })
 
         for (var i=0; i<$scope.selectedNetworks.length; i++) {
-            vm.config.networks['net' + i] = $scope.selectedNetworks[i].name
+            vm.config.networks['net' + i] = $scope.selectedNetworks[i].uuid
         }
 
         if ($scope.resolver1)
