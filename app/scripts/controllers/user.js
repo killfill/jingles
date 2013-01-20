@@ -12,7 +12,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         $scope.user._groups = {};
         $scope.user.groups.map(function (gid){
             if ($scope.groups[gid]) {
-                $scope.user._groups[gid] = $scope.groups[gid]
+                $scope.user._groups[gid] = $scope.groups[gid];
             } else {
                 $scope.user._groups[gid] = {uuid: gid};
             }
@@ -26,7 +26,18 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     });
 
     $scope.delete_permission = function(permission) {
-        console.log(permission);
+        var p = {controller: "permissions",
+                 id: $scope.user.uuid};
+        p.controller_id = permission[0];
+        if (permission[1])
+            p.controller_id1 = permission[1];
+        if (permission[2])
+            p.controller_id2 = permission[2];
+        wiggle.users.revoke(p, function success(){
+            $scope.permissions = $scope.permissions.filter(function (pobj) {
+                return pobj.obj != permission;
+            })
+        });
     };
 
     $scope.grant = function() {
@@ -34,9 +45,15 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         $scope.permission.controller = "permissions";
 
         wiggle.users.grant($scope.permission, function () {
-            console.log("Granted")
-        }, function() {
-            console.log("failed")
+            console.log("Granted");
+            var p = [$scope.permission.controller_id];
+            if ($scope.permission.controller_id1)
+                p.push($scope.permission.controller_id1);
+            if ($scope.permission.controller_id2)
+                p.push($scope.permission.controller_id2);
+            $scope.permissions.push({obj: p, text: p.join("->")});
+        }, function(d) {
+            console.log("failed:", d);
         });
         console.log($scope.permission);
     };
