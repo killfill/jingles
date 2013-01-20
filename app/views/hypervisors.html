@@ -20,7 +20,7 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="hyper in hypervisors">
-                      <td>{{hyper.name}}</td>
+                      <td><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
                       <td>{{hyper.resources['total-memory']*1024*1024 | bytes}}</td>
                       <td>{{hyper.resources['provisioned-memory']*1024*1024 | bytes}}</td>
                       <td>{{hyper.resources['free-memory']*1024*1024 | bytes}}</td>

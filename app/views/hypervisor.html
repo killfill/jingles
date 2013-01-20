@@ -1,0 +1,93 @@
+<div class="tab-pane" ng-show="hyper.name">
+
+  <div class="row-fluid">
+    <div class="span8">
+      <h3>Hypervisor {{hyper.name}}</h3>
+    </div>
+  </div>
+  <hr/>
+
+  <div class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#performance" data-toggle="tab">Performance</a></li>
+      <li><a href="#zfs" data-toggle="tab">ZFS</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <table class='table table-bordered'>
+          <tr><th>Name</th><td><b>{{hyper.name}}</b></td></tr>
+          <tr><th>Networks</th><td><b>{{hyper.networks.join(", ")}}</b></td></tr>
+          <tr><th>Virtualisations</th><td><b>{{hyper.virtualisation.join(", ")}}</b></td></tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="performance">
+        <table class='table table-bordered'>
+          <tr>
+            <th rowspan="3">Memory</th>
+            <td><b>Free</b></td>
+            <td>{{hyper.resources["free-memory"]}} MB</td>
+          </tr>
+          <tr>
+            <td><b>Provisioned</b></td>
+            <td>{{hyper.resources["provisioned-memory"]}} MB</td>
+          </tr>
+          <tr>
+            <td><b>Total</b></td>
+            <td>{{hyper.resources["total-memory"]}} MB</td>
+          </tr>
+          <tr>
+            <th rowspan="4">L1 Arc</th>
+            <td><b>Hit</b></td>
+            <td>{{hyper.resources["l1hits"]}}</td>
+          </tr>
+          <tr>
+            <td><b>Miss</b></td>
+            <td>{{hyper.resources["l1miss"]}}</td>
+          </tr>
+          <tr>
+            <td><b>Hit Ratio</b></td>
+            <td>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</td>
+          </tr>
+          <tr>
+            <td><b>Size</b></td>
+            <td>{{hyper.resources["l1size"]}} MB</td>
+          </tr>
+          <tr ng-show="hyper.resources['l2size']">
+            <th rowspan="4">L2 Arc</th>
+            <td><b>Hit</b></td>
+            <td>{{hyper.resources["l2hits"]}}</td>
+          </tr>
+          <tr ng-show="hyper.resources['l2size']">
+            <td><b>Miss</b></td>
+            <td>{{hyper.resources["l2miss"]}}</td>
+          </tr>
+          <tr ng-show="hyper.resources['l2size']">
+            <td><b>Hit Ratio</b></td>
+            <td>{{(hyper.resources["l2hits"]/(hyper.resources["l2hits"] + hyper.resources["l2miss"])).toFixed(2)}}%</td>
+          </tr>
+          <tr ng-show="hyper.resources['l2size']">
+            <td><b>Size</b></td>
+            <td>{{hyper.resources["l2size"]}} MB</td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="zfs">
+        <table class='table table-bordered'>
+          <tr>
+            <th>Pool</th>
+            <th>Free</th>
+            <th>Used</th>
+            <th>Size</th>
+          </tr>
+          <tr ng-repeat="(name, data) in hyper.pools">
+            <th>{{name}} ({{data.health}})</th>
+            <td>{{data.free}}</td>
+            <td>{{data.used}}</td>
+            <td>{{data.size}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

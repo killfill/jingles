@@ -1,5 +1,5 @@
 'use strict';
-var x;
+
 fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
     var uuid = $routeParams.uuid;
     $scope.p2 = false;

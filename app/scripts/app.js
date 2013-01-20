@@ -31,6 +31,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/vm.html',
         controller: 'VmCtrl'
     })
+    .when('/hypervisors/:uuid', {
+        templateUrl: 'views/hypervisor.html',
+        controller: 'HypervisorCtrl'
+    })
     .when('/hypervisors', {
         templateUrl: 'views/hypervisors.html',
         controller: 'HypervisorsCtrl'
