@@ -63,6 +63,7 @@
 
                 <a class="brand" href="#">
                     <img src="images/PF.png" style="height: 30px;" alt="Project FiFo"/>
+                    <img ng-show='loading' style='margin-left: 10px; margin-right: 10px;' src="images/loading.gif">
                 </a>
 
                 <ul class='nav' ng-repeat='st in status'>
@@ -158,6 +159,7 @@
     <script src="scripts/services/modal.js"></script>
     <script src="scripts/services/user.js"></script>
     <script src="scripts/services/vm.js"></script>
+    <script src="scripts/services/hooks.js"></script>
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/directives/directives.js"></script>
     <!-- endbuild -->

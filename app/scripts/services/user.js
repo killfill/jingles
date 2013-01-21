@@ -2,6 +2,16 @@
 
 fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, howl) {
 
+    var hideTabs = function(perms) {
+
+        var list = perms.map(function(i){ return i[0];});
+        window.x = list;
+        if (list.indexOf('...') > -1)
+            return;
+
+        $rootScope.hideTabs = list
+    }
+
     return {
         logged: function() {
 
@@ -20,6 +30,8 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             /* Logged data */
             $rootScope.loggedUser = data
             $http.defaults.headers.common['X-Snarl-Token'] = data.session;
+
+            //hideTabs(data.permissions)
 
             /* Pass the token to autenticate, and a list of vms to monitor */
             if ('WebSocket' in window) {

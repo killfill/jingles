@@ -6,11 +6,13 @@ How to use
 
 Features missing
 -------------
+- http://monosnap.com/image/dZ82Eiu0juQkK5ah0AvlYUDlg
 - Manage User & Groups stuff
 - 403 en la llamadas? hook a request?... error (p.e. si no tengo internets?)
 - Change ram, quota, resolvers. Packages?
 - User profile with ssh managment
 - Funkyer way to select datasets.
+- Funkyer way to create vm's http://www.orionvm.com.au/pricing
 - Use this: http://mgcrea.github.com/angular-strap
 - Keystrokes
 

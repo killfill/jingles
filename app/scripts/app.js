@@ -1,6 +1,6 @@
 'use strict';
 
-var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies'])
+var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks'])
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
     .when('/main', {

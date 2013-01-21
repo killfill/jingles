@@ -2,7 +2,6 @@
 
 fifoApp.controller('StatusCtrl', function($scope, $rootScope, $cookies, wiggle) {
 
-
     $scope.msgTrClass = function(type) {
         return type == 'critical' ? 'error': type;
     }
@@ -29,5 +28,8 @@ fifoApp.controller('StatusCtrl', function($scope, $rootScope, $cookies, wiggle) 
     }
 
     $cookies["X-Snarl-Token"] && $scope.show()
+
+    /* Update data on memory change */
+    $scope.$on('memorychange', $scope.show)
 
 });
