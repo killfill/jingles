@@ -59,28 +59,33 @@ fifoApp.factory('wiggle', function($resource, $http) {
     });
 
     /* Cache dataset gets! */
-    services.datasets.get = function(obj) {
+    services.datasets.get = function(obj, success, error) {
         return $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
+            .then(function (res) {
+                if (!res)
+                    return error && error({dataset: obj.id});
+                success(res.data)
+            })
     }
 
     /* VM GET: include the asociated dataset */
     services.vms._get = services.vms.get;
     services.vms.get = function(obj, cb) {
 
-        services.vms._get(obj, function(res) {
+        return services.vms._get(obj, function(res) {
 
             /* Dont get the dataset data when its not a plain get or no dataset found */
             if (obj.controller || !res.config || !res.config.dataset || res.config.dataset === 1) {
-                res.uuid = obj['id']
+                res.uuid = obj.id
                 return cb(res)
             }
 
-            return services.datasets.get({id: res.config.dataset})
-                .then(function(dsRes) {
-                    if (dsRes)
-                        res.config._dataset = dsRes.data
+            return services.datasets.get({id: res.config.dataset},
+                function cb(ds) {
+                    if (ds) res.config._dataset = ds;
                     cb(res)
-                })
+                }
+            )
         })
     }
 

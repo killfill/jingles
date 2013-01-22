@@ -12,13 +12,17 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status) {
 
             ids.forEach(function(id) {
 
-                wiggle.datasets.get({id: id})
-                    .then(function(res) {
-                        if (res.data)
-                            $scope.datasets[id] = addFields(res.data)
-
+                wiggle.datasets.get({id: id},
+                    function success(res) {
+                        if (res) $scope.datasets[id] = addFields(res)
                         status.update('Loading datasets', {add: 1})
-                })
+                    },
+                    function error (res) {
+                        //Maybe we should not even show the dataset?
+                        $scope.datasets[id] = {dataset: id}
+                        status.update('Loading datasets', {add: 1})
+                    }
+                )
 
             })
         })
