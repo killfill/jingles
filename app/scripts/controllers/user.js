@@ -312,6 +312,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                 case "hypervisors":
                     $scope.p3 = [
                         {id:"get", name: "See"},
+                        {id:"create", name: "Create VM's here"},
                         {id:"edit", name: "Edit Metadata"}
                     ];
                     break;
