@@ -5,6 +5,62 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     $scope.p2 = false;
     $scope.p3 = false;
 
+
+    var cache=(function(){
+        var c = {};
+        return function(entity, e, callback) {
+            if (!c[entity])
+                c[entity] = {};
+            if (c[entity][e]) {
+                callback(c[entity][e]);
+            } else {
+                wiggle[entity].get({id: e}, function(elem) {
+                    c[entity][e] = elem;
+                    callback(elem);
+                })
+            }
+        }
+    })();
+
+    var update_permission = function(p) {
+        var res = {
+            text: p.join("->"),
+            obj: p
+        };
+        var we_need_a_stupid_copy_thank_you_js = p.slice()
+        if (p[1] && p[1] != "..." && p[1] != "_") {
+            switch (p[0]) {
+            case "users":
+            case "groups":
+            case "packages":
+            case "ipranges":
+                cache(p[0], p[1], function (e) {
+                    p[1] = e.name;
+                    res.text = p.join("->");
+                })
+                break;
+            case "datasets":
+                cache(p[0], p[1], function (e) {
+                    if (e.config && e.config.alias) {
+                        p[1] = e.name + " (" + e.version + ")";
+                        res.text = p.join("->");
+                    }
+                });
+                break;
+            case "vms":
+                cache(p[0], p[1], function (e) {
+                    if (e.config && e.config.alias) {
+
+                        we_need_a_stupid_copy_thank_you_js[1] = e.config.alias + "(" + p[1] + ")";
+                        res.text = we_need_a_stupid_copy_thank_you_js.join("->");
+                    }
+                })
+                break;
+            }
+        }
+        return res;
+    };
+
     wiggle.users.get({id: uuid}, function(res) {
         res.groups = res.groups || [];
         $scope.user = res; //vmService.updateCustomFields(res)
@@ -17,12 +73,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                 $scope.user._groups[gid] = {uuid: gid};
             }
         });
-        $scope.permissions = res.permissions.map(function(p) {
-            return {
-                text: p.join("->"),
-                obj: p
-            };
-        });
+        $scope.permissions = res.permissions.map(update_permission);
     });
 
     $scope.delete_permission = function(permission) {
@@ -51,7 +102,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                 p.push($scope.permission.controller_id1);
             if ($scope.permission.controller_id2)
                 p.push($scope.permission.controller_id2);
-            $scope.permissions.push({obj: p, text: p.join("->")});
+            $scope.permissions.push(update_permission(p));
         }, function(d) {
             console.log("failed:", d);
         });
