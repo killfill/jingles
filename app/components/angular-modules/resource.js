@@ -373,7 +373,7 @@ angular.module('ngResource', ['ng']).
             data: data,
             headers: extend({}, action.headers || {})
           }).then(function(response) {
-              var data = response.data;
+              var data = response && response.data;
 
               if (data) {
                 if (action.isArray) {
@@ -385,7 +385,7 @@ angular.module('ngResource', ['ng']).
                   copy(data, value);
                 }
               }
-              (success||noop)(value, response.headers);
+              (success||noop)(value, response && response.headers);
             }, error);
 
           return value;

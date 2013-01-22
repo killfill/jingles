@@ -14,12 +14,14 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
             if (action!='delete') {
                 status.update('Will ' + action + ' ' + name, {info: true})
-                cb && cb(action, uuid)
                 return wiggle.vms.put({id: uuid}, {action: action},
-                    function success() {
+                    function success(r, headers) {
+                        if (!headers)
+                            return alert('An error 500 has occur. :(');
+
                         cb && cb(action, uuid)
                     },
-                    function error(data) {
+                    function error() {
                         console.error(action + 'VM error:', data)
                         alert('There was an error changing the state your vm. See the javascript console.')
                     }
