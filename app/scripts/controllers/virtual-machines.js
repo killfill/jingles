@@ -33,7 +33,6 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
             ]
 
         wiggle.vms.list(function (ids) {
-
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
