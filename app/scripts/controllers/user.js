@@ -41,7 +41,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                 break;
             case "datasets":
                 cache(p[0], p[1], function (e) {
-                    if (e.config && e.config.alias) {
+                    if (e.name && e.version) {
                         p[1] = e.name + " (" + e.version + ")";
                         res.text = p.join("->");
                     }
