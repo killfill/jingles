@@ -181,6 +181,9 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
+                        wiggle.ipranges.get({id: id}, function(ipr) {
+                            $scope.p2[id].name = ipr.name + " (" + id + ")";
+                        });
                     })
                 });
                 break;
