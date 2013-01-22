@@ -12,10 +12,12 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status) {
 
             ids.forEach(function(id) {
 
-                $scope.datasets[id] = {dataset: id}
-                wiggle.datasets.get({id: id}, function(res) {
-                    $scope.datasets[id] = addFields(res)
-                    status.update('Loading datasets', {add: 1})
+                wiggle.datasets.get({id: id})
+                    .then(function(res) {
+                        if (res.data)
+                            $scope.datasets[id] = addFields(res.data)
+
+                        status.update('Loading datasets', {add: 1})
                 })
 
             })
