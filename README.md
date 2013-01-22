@@ -6,7 +6,6 @@ How to use
 
 Features missing
 -------------
-- http://monosnap.com/image/dZ82Eiu0juQkK5ah0AvlYUDlg
 - Manage User & Groups stuff
 - 403 en la llamadas? hook a request?... error (p.e. si no tengo internets?)
 - Change ram, quota, resolvers. Packages?

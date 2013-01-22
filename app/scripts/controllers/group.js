@@ -5,14 +5,63 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
     $scope.p2 = false;
     $scope.p3 = false;
 
+    var cache=(function(){
+        var c = {};
+        return function(entity, e, callback) {
+            if (!c[entity])
+                c[entity] = {};
+            if (c[entity][e]) {
+                callback(c[entity][e]);
+            } else {
+                wiggle[entity].get({id: e}, function(elem) {
+                    c[entity][e] = elem;
+                    callback(elem);
+                })
+            }
+        }
+    })();
+
+    var update_permission = function(p) {
+        var res = {
+            text: p.join("->"),
+            obj: p
+        };
+        var we_need_a_stupid_copy_thank_you_js = p.slice()
+        if (p[1] && p[1] != "..." && p[1] != "_") {
+            switch (p[0]) {
+            case "users":
+            case "groups":
+            case "packages":
+            case "ipranges":
+                cache(p[0], p[1], function (e) {
+                    we_need_a_stupid_copy_thank_you_js[1] = e.name;
+                    res.text = we_need_a_stupid_copy_thank_you_js.join("->");
+                })
+                break;
+            case "datasets":
+                cache(p[0], p[1], function (e) {
+                    if (e.name && e.version) {
+                        we_need_a_stupid_copy_thank_you_js[1] = e.name + " (" + e.version + ")";
+                        res.text = we_need_a_stupid_copy_thank_you_js.join("->");
+                    }
+                });
+                break;
+            case "vms":
+                cache(p[0], p[1], function (e) {
+                    if (e.config && e.config.alias) {
+                        we_need_a_stupid_copy_thank_you_js[1] = e.config.alias + "(" + p[1] + ")";
+                        res.text = we_need_a_stupid_copy_thank_you_js.join("->");
+                    }
+                })
+                break;
+            }
+        }
+        return res;
+    };
+
     wiggle.groups.get({id: uuid}, function(res) {
         $scope.group = res;
-        $scope.permissions = res.permissions.map(function(p) {
-            return {
-                text: p.join("->"),
-                obj: p
-            };
-        });
+        $scope.permissions = res.permissions.map(update_permission);
     });
 
     $scope.delete_permission = function(permission) {
@@ -41,7 +90,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                 p.push($scope.permission.controller_id1);
             if ($scope.permission.controller_id2)
                 p.push($scope.permission.controller_id2);
-            $scope.permissions.push({obj: p, text: p.join("->")});
+            $scope.permissions.push(update_permission(p));
         }, function(d) {
             console.log("failed:", d);
         });
@@ -160,6 +209,10 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
+                        wiggle.packages.get({id: id}, function(ipr) {
+                            $scope.p2[id].name = ipr.name + " (" + id + ")";
+                        });
+
                     })
                 });
                 break;
@@ -172,6 +225,9 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
+                        wiggle.ipranges.get({id: id}, function(ipr) {
+                            $scope.p2[id].name = ipr.name + " (" + id + ")";
+                        });
                     })
                 });
                 break;
@@ -246,6 +302,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                 case "hypervisors":
                     $scope.p3 = [
                         {id:"get", name: "See"},
+                        {id:"create", name: "Create VM's here"},
                         {id:"edit", name: "Edit Metadata"}
                     ];
                     break;
