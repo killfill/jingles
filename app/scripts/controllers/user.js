@@ -35,22 +35,21 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             case "packages":
             case "ipranges":
                 cache(p[0], p[1], function (e) {
-                    p[1] = e.name;
-                    res.text = p.join("->");
+                    we_need_a_stupid_copy_thank_you_js[1] = e.name;
+                    res.text = we_need_a_stupid_copy_thank_you_js.join("->");
                 })
                 break;
             case "datasets":
                 cache(p[0], p[1], function (e) {
                     if (e.name && e.version) {
-                        p[1] = e.name + " (" + e.version + ")";
-                        res.text = p.join("->");
+                        we_need_a_stupid_copy_thank_you_js[1] = e.name + " (" + e.version + ")";
+                        res.text = we_need_a_stupid_copy_thank_you_js.join("->");
                     }
                 });
                 break;
             case "vms":
                 cache(p[0], p[1], function (e) {
                     if (e.config && e.config.alias) {
-
                         we_need_a_stupid_copy_thank_you_js[1] = e.config.alias + "(" + p[1] + ")";
                         res.text = we_need_a_stupid_copy_thank_you_js.join("->");
                     }
