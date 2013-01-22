@@ -5,18 +5,18 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
     $scope.networks = {}
 
     $scope.delete = function(el) {
-
+        console.log(el);
         modal.confirm({
             btnClass: 'btn-danger',
             btnText: 'Delete',
             header: 'Confirm Network Deletion',
             body: '<p><font color="red">Warning!</font> you are about to delete network <b>' +
-                el.pack.name +"(" + el.pack.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
+                el.name +"(" + el.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
-            status.update('Will delete' + el.pack.name +"(" + el.pack.uuid + ")", {info: true})
-            wiggle.ipranges.delete({id: el.net.uuid},
+            status.update('Will delete' + el.name +"(" + el.uuid + ")", {info: true})
+            wiggle.ipranges.delete({id: el.uuid},
                 function success (data, h) {
-                    delete $scope.networks[el.net.uuid]
+                    delete $scope.networks[el.uuid]
                 },
                 function error(data) {
                     console.error('Delete network error:', data)

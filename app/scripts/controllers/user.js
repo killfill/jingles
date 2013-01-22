@@ -203,7 +203,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                     case "users":
                     case "grous":
                     case "vms":
-                    case "pacakges":
+                    case "packages":
                     case "ipranges":
                         $scope.p3 = [
                             {id: "list", name: "List"},
