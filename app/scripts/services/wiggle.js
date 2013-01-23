@@ -53,10 +53,9 @@ fifoApp.factory('wiggle', function($resource, $http) {
     ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users', 'sessions', 'groups'].forEach(function(resource) {
         services[resource].list = function(cb, error) {
             return $http.get(endpoint + resource)
-                .then(function (res) {
-                    if (!res)
-                        return error && error()
-                    cb(res.data)
+                .success(cb)
+                .error(function(data) {
+                    error && error(data)
                 })
         }
     });
@@ -64,10 +63,9 @@ fifoApp.factory('wiggle', function($resource, $http) {
     /* Cache dataset gets! */
     services.datasets.get = function(obj, success, error) {
         return $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
-            .then(function (res) {
-                if (!res)
-                    return error && error({dataset: obj.id});
-                success(res.data)
+            .success(success)
+            .error(function(data) {
+                error && error(data)
             })
     }
 
