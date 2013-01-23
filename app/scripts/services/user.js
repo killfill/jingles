@@ -47,6 +47,8 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             delete $cookies.login;
             $rootScope.loggedUser = null;
 
+            howl.disconnect();
+
             wiggle.cloud.get({controller: 'connection'}, function(res) {
                 $rootScope.connectionStatus = {
                     ok: (res.howl > 0 && res.snarl > 0 && res.sniffle > 0),

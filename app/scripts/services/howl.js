@@ -14,7 +14,8 @@ fifoApp.factory('howl', function($rootScope, $compile) {
     return {
         connect: howl.connect,
         join: howl.join,
-        send: howl.send
+        send: howl.send,
+        disconnect: howl.disconnect
     }
 
 });
@@ -39,15 +40,25 @@ var howl = {
 
     _wsClose: function(e) {
         howl._connected = false
+        if (!howl._token)
+            return;
         console.log('[howl] connection closed, reconnecting in 5[s]...')
         setTimeout(howl.connect, 5000)
     },
 
-    connect: function(token) {
+    disconnect: function() {
         if (howl.ws) {
             howl.ws.close();
             howl.ws = null;
         }
+        howl._connected = false;
+        howl._token = null;
+    },
+
+    connect: function(token) {
+
+        if (howl.ws)
+            howl.disconnect();
 
         if (token)
             howl._token = token
