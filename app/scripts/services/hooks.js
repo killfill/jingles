@@ -17,7 +17,9 @@ angular.module('fifoHooks', [], function($provide, $httpProvider) {
                     if (res.status == 403) {
                         var err = 'You dont have permition to ' + res.config.method + ' ' + res.config.url;
                         console.log(err)
+
                     }
+                    return $q.reject(res)
                 }
             )
         }
