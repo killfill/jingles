@@ -2,7 +2,12 @@
 
 fifoApp.factory('wiggle', function($resource, $http) {
 
-    var endpoint = Config.wiggle.replace(':', '\\:')
+
+    var endpoint = Config.wiggle
+
+    //The port : needs to be escaped to \\:
+    if (endpoint.split(':').length>2)
+        endpoint = endpoint.replace(/:([^:]*)$/,'\\:'+'$1');
 
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
