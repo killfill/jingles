@@ -28,7 +28,7 @@
                             ng-click="col.field && order(col.field, $event)"
                             ng-class="col.field && orderStyle(col.field)"
                             ng-show="col.visible">
-                                {{col.name}}
+                                {{col.name == 'Actions' && ' ' || col.name}}
                         </th>
                     </tr>
                   </thead>

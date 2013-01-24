@@ -113,7 +113,6 @@ fifoApp.factory('wiggle', function($resource, $http) {
             else
                 services.packages.get({id: res.package},
                     function (p) {
-                        console.log('pkis')
                         res._package = p
                         checkIfReady()
                     },
