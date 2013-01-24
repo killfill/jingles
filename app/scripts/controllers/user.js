@@ -261,7 +261,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         ]
                         break;
                     case "users":
-                    case "grous":
+                    case "groups":
                     case "vms":
                     case "packages":
                     case "ipranges":
