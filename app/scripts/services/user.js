@@ -12,6 +12,16 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         $rootScope.hideTabs = list
     }
 
+    var connectionPoller = false;
+    var pollConnection = function() {
+        wiggle.cloud.get({controller: 'connection'}, function(res) {
+            $rootScope.connectionStatus = {
+                ok: (res.howl > 0 && res.snarl > 0 && res.sniffle > 0),
+                services: res
+            }
+        })
+    }
+
     return {
         logged: function() {
 
@@ -40,6 +50,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
                 howl.connect($cookies["X-Snarl-Token"])
             }
 
+            clearInterval(connectionPoller);
         },
 
         logout: function() {
@@ -49,13 +60,8 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
 
             howl.disconnect();
 
-            wiggle.cloud.get({controller: 'connection'}, function(res) {
-                $rootScope.connectionStatus = {
-                    ok: (res.howl > 0 && res.snarl > 0 && res.sniffle > 0),
-                    services: res
-                }
-            })
-
+            pollConnection();
+            connectionPoller = setInterval(pollConnection, 5000)
         }
     }
 })
