@@ -83,15 +83,15 @@
                 <div id="toggleOptions" class="collapse">
                   <div class="accordion-inner">
                     <table class="table table-hover small">
-                        <tr class='small'>
+                        <tr class='small' ng-show="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>SSH Keys</th>
                             <td><textarea type=text ng-model='ssh_keys'></textarea></td>
                         </tr>
-                        <tr class='small'>
+                        <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>Root password</th>
                             <td><input type=text ng-model='root_pw'/></td>
                         </tr>
-                        <tr class='small'>
+                        <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>Admin password</th>
                             <td><input type=text ng-model='admin_pw'/></td>
                         </tr>
