@@ -76,7 +76,11 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
             }
 
             ids.forEach(function(id) {
-                $scope.packages.push(wiggle.packages.get({id: id}))
+                wiggle.packages.get({id: id},
+                    function(pack) {
+                        $scope.packages.push(pack)
+                    }
+                )
             })
         })
 
