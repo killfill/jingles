@@ -82,7 +82,7 @@
                 <tr><th>Resources</th>
                     <td>
                         <dl class="dl-horizontal">
-                            <dt>Package</dt><dd><strong>{{vm._package}}</strong></dd>
+                            <dt>Package</dt><dd><strong>{{vm._package.name || 'custom'}}</strong></dd>
                             <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
                             <dt>CPU</dt>
                                 <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>

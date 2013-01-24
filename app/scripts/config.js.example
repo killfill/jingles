@@ -35,7 +35,7 @@ Config = {
             formula: function(m) {return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);}
         },
         {
-            max: 0.60,
+            max: 0.85,
             type: "warning",
             category: "cloud",
             element: "disk",

@@ -61,7 +61,6 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             if (!vm.config)
                 return vm;
 
-            vm._package = vm.package || 'custom'
             vm._name = vm.config.alias || vm.uuid.split('-')[0]
             vm._ips = (vm.config.networks || [])
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
