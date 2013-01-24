@@ -109,6 +109,8 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
         case 1:
             $scope.p2 = false;
             $scope.p3 = false;
+            $scope.perm2 = "";
+            $scope.perm3 = "";
             switch($scope.perm1) {
             case "...":
                 $scope.permission = {controller_id: "..."};
@@ -235,6 +237,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
             break;
         case 2:
             $scope.p3 = false;
+            $scope.perm3 = "";
             if ($scope.perm2 == "...") {
                 $scope.permission = {controller_id: $scope.perm1,
                                      controller_id1: "..."};
@@ -248,7 +251,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                         ]
                         break;
                     case "users":
-                    case "grous":
+                    case "groups":
                     case "vms":
                     case "packages":
                     case "ipranges":
