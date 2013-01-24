@@ -3,6 +3,7 @@
 fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle) {
 
     $scope.create_machine = function() {
+
         var vm = new wiggle.vms({
             package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
@@ -12,7 +13,8 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
                 root_pw: $scope.root_pw,
                 admin_pw: $scope.admin_pw,
                 hostname: $scope.hostname,
-                resolvers: []
+                resolvers: [],
+                ssh_keys: $scope.ssh_keys
             }
         })
 
