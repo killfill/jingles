@@ -29,7 +29,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
                 {name: 'Hypervisor',visible: false, field: 'hypervisor'},
                 {name: 'Age',       visible: true,  field: 'config.created_at'},
                 {name: 'State',     visible: true,  field: 'state'},
-                {name: '',          visible: true}
+                {name: 'Actions',   visible: true}
             ]
 
         wiggle.vms.list(function (ids) {
