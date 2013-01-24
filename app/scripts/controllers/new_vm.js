@@ -13,7 +13,6 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
                 root_pw: $scope.root_pw,
                 admin_pw: $scope.admin_pw,
                 hostname: $scope.hostname,
-                resolvers: [],
                 ssh_keys: $scope.ssh_keys
             }
         })
@@ -23,7 +22,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
         }
 
         if ($scope.resolver1)
-            vm.config.resolvers.push($scope.resolver1)
+            vm.config.resolvers = [$scope.resolver1];
         if ($scope.resolver2)
             vm.config.resolvers.push($scope.resolver2)
 
