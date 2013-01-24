@@ -61,6 +61,11 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             if (!vm.config)
                 return vm;
 
+            /* When the vm is not fully created yet, just put the current time.. :P
+               (i.e. ater the update event on vm creation*/
+            if (!vm.config.created_at)
+                vm.config.created_at = new Date()
+
             vm._name = vm.config.alias || vm.uuid.split('-')[0]
             vm._ips = (vm.config.networks || [])
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})

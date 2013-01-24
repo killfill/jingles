@@ -64,15 +64,14 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
 
             vm.config = msg.message.data.config;
 
-            /* When 'update' was triggered by a vm create, created_at is still not there */
-            if (!vm.config.created_at)
-                vm.config.created_at = new Date()
-
             vmService.updateCustomFields(vm);
 
-            /* Get the dataset data */
+            /* Get the extra data */
             wiggle.datasets.get({id: vm.config.dataset}, function(ds) {
                 vm.config._dataset = ds;
+            })
+            wiggle.packages.get({id: vm.package}, function(pack) {
+                vm._package = pack
             })
         })
 
