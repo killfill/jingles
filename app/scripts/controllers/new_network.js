@@ -9,7 +9,7 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
     $scope.create_network = function() {
         var network = new wiggle.ipranges({
             name: $scope.name,
-            tag: $scope.tag,
+            tag: $scope.tag || 0,
             network: $scope.network,
             netmask: $scope.netmask,
             gateway: $scope.gateway,
