@@ -60,7 +60,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
         }
     });
 
-    /* Cache dataset gets! */
+    /* Gets with cache! */
     services.datasets.get = function(obj, success, error) {
         return $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
             .success(success)
@@ -68,28 +68,59 @@ fifoApp.factory('wiggle', function($resource, $http) {
                 error && error(data)
             })
     }
+    services.packages.get = function(obj, success, error) {
+        return $http.get(endpoint + 'packages/' + obj.id, {cache: true})
+            .success(success)
+            .error(function(data) {
+                error && error(data)
+            })
+    }
 
-    /* VM GET: include the asociated dataset */
+    /* VM GET: include the asociated data */
     services.vms._get = services.vms.get;
-    services.vms.get = function(obj, cb) {
+    services.vms.get = function(obj, returnCb) {
 
         return services.vms._get(obj, function(res) {
 
-            /* Dont get the dataset data when its not a plain get or no dataset found */
-            if (obj.controller || !res.config || !res.config.dataset || res.config.dataset === 1) {
+            /* No extra call if controller is pressent or no sane vm */
+            if (obj.controller || !res.config) {
                 res.uuid = obj.id
-                return cb(res)
+                return returnCb(res)
             }
 
-            services.datasets.get({id: res.config.dataset},
-                function (ds) {
-                    if (ds) res.config._dataset = ds;
-                    return cb(res)
-                },
-                function err (ds) {
-                    cb(res)
-                }
-            )
+            var callsLeft = 2;
+            function checkIfReady() {
+                callsLeft--;
+                if (callsLeft < 1)
+                    return returnCb(res)
+            }
+
+            if (!res.config.dataset || res.config.dataset === 1)
+                checkIfReady();
+            else
+                services.datasets.get({id: res.config.dataset},
+                    function (ds) {
+                        res.config._dataset = ds;
+                        checkIfReady()
+                    },
+                    function err(ds) {
+                        checkIfReady()
+                    }
+                )
+
+            if (!res.package)
+                checkIfReady();
+            else
+                services.packages.get({id: res.package},
+                    function (p) {
+                        console.log('pkis')
+                        res._package = p
+                        checkIfReady()
+                    },
+                    function err() {
+                        checkIfReady()
+                    }
+                )
         })
     }
 

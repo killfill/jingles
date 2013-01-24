@@ -31,7 +31,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
                 $location.path('/virtual-machines')
             },
             function error(data) {
-                console.error('Create VM error:', data, data.headers())
+                console.error('Create VM error:', data, data.headers(), vm)
                 alert('There was an error creating your vm. See the javascript console.')
             }
         )

@@ -15,7 +15,7 @@ angular.module('fifoHooks', [], function($provide, $httpProvider) {
                 function error(res) {
                     $rootScope.loading = false;
                     if (res.status == 403) {
-                        var err = 'You dont have permition to ' + res.config.method + ' ' + res.config.url;
+                        var err = 'You dont have permission to ' + res.config.method + ' ' + res.config.url;
                         console.log(err)
 
                     }
