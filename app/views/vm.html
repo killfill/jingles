@@ -31,7 +31,7 @@
                     </button>
                 </div>
 
-                <div class="btn-group">
+                <div class="btn-group" ng-show="vm.state=='stopped'">
                     <button ng-click="action('delete', vm)" class="btn" title='Delete' jq-run='tooltip'>
                         <i class='icon-trash'></i>
                     </button>
