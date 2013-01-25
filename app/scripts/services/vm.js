@@ -80,7 +80,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             vm._ips_normalized = (vm.config.networks || [])
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
                 .map(function(e) {
-                    return e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
+                    return e.ip && e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ");
 
             //If there is no primary network, just show the first one.
