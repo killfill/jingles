@@ -72,7 +72,10 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             //Get the ips to show
             var ips = (vm.config.networks || [])
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
-                .map(function(e) { return e.ip});
+                .map(function(e) { return e.ip})
+
+                //Take the undefined elements out of the array (i.e. when there is no ip attribute)
+                .filter(function(i) {return i;});
 
             //If there is nothing to show, just show the one of the first network
             vm._ips = ips.length > 0 ? ips.join(", ") : vm.config.networks[0].ip;
