@@ -13,7 +13,7 @@
                 </div></td>
             </tr>
             <tr>
-                <td class='span1 nowrap'><big>Disk space</big></td>
+                <td class='span1 nowrap'><big>Disk</big></td>
                 <td><div class="progress {{messages[1].ok && 'progress-success' || 'progress-danger'}}"
                     title="{{metrics.used | Mbytes}} of {{metrics.size | Mbytes}} used" jq-run='tooltip'>
                     <div class="bar" style="width: {{messages[1].percent}}%;">{{messages[1].percent}}%</div>
