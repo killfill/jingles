@@ -83,9 +83,9 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                     return e.ip && e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ");
 
-            //If there is no primary network, just show the first one.
+            //If there is no primary network or it has no ip on it, just show the one of the first one
             vm._ips = vm._ips || vm.config.networks[0].ip
-            vm._ips_normalized = vm._ips_normalized || padLeft(vm._ips)
+            vm._ips_normalized = vm._ips_normalized || vm._ips!=''? padLeft(vm._ips): ''
 
             return vm;
         }
