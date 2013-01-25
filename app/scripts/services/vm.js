@@ -3,6 +3,7 @@
 fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
     var padLeft = function(nr, n, str){
+        console.log('CACHATE pad', nr, n, str)
         return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
 
@@ -67,9 +68,14 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 vm.config.created_at = new Date()
 
             vm._name = vm.config.alias || vm.uuid.split('-')[0]
-            vm._ips = (vm.config.networks || [])
+
+            //Get the ips to show
+            var ips = (vm.config.networks || [])
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
-                .map(function(e) { return e.ip}).join(", ");
+                .map(function(e) { return e.ip});
+
+            //If there is nothing to show, just show the one of the first network
+            vm._ips = ips.length > 0 ? ips.join(", ") : vm.config.networks[0].ip;
 
             vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
             vm._cpu_tooltip = vm.config.vcpu
@@ -77,15 +83,12 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 : vm.config.cpu_cap ? 'Shares: ' + vm.config.cpu_shares + '</br>Cap:'+ vm.config.cpu_cap:  'Shares: '+vm.config.cpu_shares;
 
             //Used for ordering in the vm list:
-            vm._ips_normalized = (vm.config.networks || [])
-                .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
-                .map(function(e) {
-                    return e.ip && e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
-                }).join(", ");
+            vm._ips_normalized = ips.length > 0 ?
+                ips.map(function(e) {
+                    return e && e.ip && e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
+                }).join(", ")
+                : vm.config.networks[0].ip;
 
-            //If there is no primary network or it has no ip on it, just show the one of the first one
-            vm._ips = vm._ips || vm.config.networks[0].ip
-            vm._ips_normalized = vm._ips_normalized || vm._ips!=''? padLeft(vm._ips): ''
 
             return vm;
         }
