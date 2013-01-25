@@ -28,7 +28,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                      <tr ng-repeat='net in networks'>
+                      <tr ng-repeat="net in networks | hash2array | orderBy: 'name'">
                         <td><strong>{{net.name}}</strong></td>
                         <td>{{net.tag}}</td>
                         <td>{{net.network}}</td>

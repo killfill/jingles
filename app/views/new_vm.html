@@ -46,7 +46,7 @@
 					<th>Memory</th>
 					<th>Disk</th>
 				</tr>
-				<tr class='clickable' ng-repeat='p in packages' ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
+				<tr class='clickable' ng-repeat="p in packages | hash2array | orderBy: 'ram'" ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
 					<td><strong>{{p.name}}</strong></td>
 					<td>{{p.cpu_cap}}</td>
 					<td>{{p.ram | Mbytes}}</td>
@@ -64,7 +64,7 @@
 					<th>Network</th>
 					<th>Next avail IP</th>
 				</tr>
-				<tr class='clickable' ng-repeat='n in networks' ng-click='click_network(n)' ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
+				<tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'" ng-click='click_network(n)' ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
 					<td><strong>{{n.name}}</strong></td>
 					<td>{{n.network}} / {{n.netmask}}</td>
 					<td>{{n.current}}</td>
