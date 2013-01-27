@@ -14,6 +14,10 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
         window.open("vnc.html?uuid=" + vm.uuid);
     };
 
+    $scope.console = function(vm) {
+        window.open("console.html?uuid=" + vm.uuid);
+    };
+
     $scope.show = function() {
 
         if ($cookies.vmColumns)
