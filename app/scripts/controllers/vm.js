@@ -1,11 +1,12 @@
 'use strict';
-
+var a;
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
 
     var uuid = $routeParams.uuid;
 
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function(res) {
+            a = res;
             $scope.vm = vmService.updateCustomFields(res);
             /* Build the snapshots array */
             $scope.snapshots = []
@@ -41,6 +42,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     $scope.vnc = function(vm) {
         window.open("vnc.html?uuid=" + vm.uuid)
+    }
+
+    $scope.console = function(vm) {
+        window.open("console.html?uuid=" + vm.uuid)
     }
 
     $scope.snapshot = function(action, snap) {
