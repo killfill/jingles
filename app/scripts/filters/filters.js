@@ -13,6 +13,17 @@ fifoApp.filter('hash2array', function() {
 
     })
 
+/* will return the actual value if it is not empty or the defaultValue */
+fifoApp.filter('orDefault', function() {
+    return function(value, defaultValue) {
+        if (value && value != '') {
+            return value;
+        }
+
+        return defaultValue;
+    };
+});
+
 fifoApp.filter('fromNow', function() {
     return function(dateString) {
         if (!dateString) return;

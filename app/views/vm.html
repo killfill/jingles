@@ -105,12 +105,12 @@
                     <td>
                         <dl ng-repeat='net in vm.config.networks' class="dl-horizontal span3">
                             <dt>Tag</dt>        <dd><strong>{{net.nic_tag}}</strong></dd>
-                            <dt>Interface</dt>  <dd>{{net.interface}}</dd>
-                            <dt>IP</dt>         <dd>{{net.ip}}</dd>
-                            <dt>Mask</dt>       <dd>{{net.netmask}}</dd>
-                            <dt>Gateway</dt>    <dd>{{net.gateway}}</dd>
-                            <dt>Mac</dt>        <dd>{{net.mac}}</dd>
-                            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model}}</dd>
+                            <dt>Interface</dt>  <dd>{{net.interface | orDefault:'-'}}</dd>
+                            <dt>IP</dt>         <dd>{{net.ip | orDefault:'-'}}</dd>
+                            <dt>Mask</dt>       <dd>{{net.netmask | orDefault:'-'}}</dd>
+                            <dt>Gateway</dt>    <dd>{{net.gateway | orDefault:'-'}}</dd>
+                            <dt>Mac</dt>        <dd>{{net.mac | orDefault:'-'}}</dd>
+                            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
                             <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
                         </dl>
                     </td>
