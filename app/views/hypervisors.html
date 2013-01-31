@@ -11,6 +11,7 @@
                   <thead>
                     <tr>
                       <th>Name</th>
+                      <th>Version</th>
                       <th>Memory</th>
                       <th>Provisioned</th>
                       <th>Free</th>
@@ -21,6 +22,7 @@
                   <tbody>
                     <tr ng-repeat="hyper in hypervisors">
                       <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
+                      <td>{{hyper['version']}}</td>
                       <td>{{hyper.resources['total-memory'] | Mbytes}}</td>
                       <td>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
                       <td>{{hyper.resources['free-memory'] | Mbytes}}</td>
