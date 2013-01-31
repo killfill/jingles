@@ -40,7 +40,7 @@
                     </button>
                 </div>
 
-                <div class="btn-group" ng-show="vm.state=='stopped'">
+                <div class="btn-group" ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'">
                     <button ng-click="action('delete', vm)" class="btn" title='Delete' jq-run='tooltip'>
                         <i class='icon-trash'></i>
                     </button>
