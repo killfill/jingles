@@ -33,7 +33,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 btnClass: 'btn-danger',
                 btnText: 'Delete',
                 header: 'Confirm VM Deletion',
-                body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Destroy here will mean this VM is gone forever!</p>"
+                body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
             }, function() {
                 status.update('Will delete ' + name, {info: true})
                 wiggle.vms.delete({id: uuid},
