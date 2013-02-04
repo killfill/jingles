@@ -75,7 +75,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
-            <table class='table table-bordered'>
+            <table class='table table-condensed table-bordered'>
                 <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
                 <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
                 <tr><th>Dataset</th>
@@ -120,20 +120,20 @@
             </table>
         </div>
     <div class="tab-pane" id="history">
-        <table class="table table-hover">
+        <table class="table table-condensed table-hover">
             <tr ng-repeat="log in vm.log | orderBy: '-date' ">
-                <td>{{log.log}}</td>
-                <td class='nowrap light' title="{{log.date/1000 | date:'medium'}}" jq-run='tooltip'>{{log.date/1000 | fromNow}}</td>
+                <td><small>{{log.log}}</small></td>
+                <td class='nowrap light' title="{{log.date/1000 | date:'medium'}}" jq-run='tooltip'><small>{{log.date/1000 | fromNow}}</small></td>
             </tr>
         </table>
     </div>
     <div class="tab-pane" id="snapshots">
         <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn pull-right" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
         <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='pull-right light' style='padding: 5px;'>To rollback, please stop the machine</span>
-        <table class="table table-hover">
+        <table class="table table-condensed table-hover">
             <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
                 <td><strong>{{snap.comment}}</strong></td>
-                <td class='nowrap'>{{snap.timestamp/1000 | date:'medium'}}</td>
+                <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
                 <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
                 <td class='nowrap'>
                     <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
