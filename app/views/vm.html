@@ -42,7 +42,7 @@
 
                 <div class="btn-group" ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'">
                     <button ng-click="action('delete', vm)" class="btn" title='Delete' jq-run='tooltip'>
-                        <i class='icon-remove-sign'></i>
+                        <i class='icon-trash'></i>
                     </button>
                 </div>
             </div>
@@ -75,7 +75,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
-            <table class='table table-bordered'>
+            <table class='table table-condensed table-bordered'>
                 <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
                 <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
                 <tr><th>Dataset</th>
@@ -140,7 +140,7 @@
                         ng-show="vm.state=='stopped'"
                        class="icon-backward clickable"></i>
                     <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
-                       class="icon-remove-sign clickable"></i>
+                       class="icon-trash clickable"></i>
                 </td>
             </tr>
         </table>
