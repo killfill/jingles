@@ -3,11 +3,51 @@ var a;
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
 
     var uuid = $routeParams.uuid;
+    var update_pkg = function(p) {
+        p.vcpus = p.cpu_cap/100;
+        p.cpu_shares = p.ram;
+        return p;
+    }
+    wiggle.packages.list(function(res) {
+        $scope.packages = {};
+        res.forEach(function(pid) {
+            $scope.packages[pid] = {
+                name: pid,
+                id: pid
+            };
+            wiggle.packages.get({id: pid}, function(pkg) {
+                $scope.packages[pid] = update_pkg(pkg);
+                $scope.packages[pid].id = pid;
+            });
+        });
+
+    });
+
+    $scope.select_package = function(){
+        console.log($scope.new_pkg);
+    };
 
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function(res) {
-            a = res;
             $scope.vm = vmService.updateCustomFields(res);
+               var pkg =  "custom"
+            if ($scope.vm["package"]) {
+                console.log($scope.vm["package"])
+                pkg = $scope.vm["package"] + "";
+            }
+            if (! $scope.packages[pkg] ) {
+                $scope.packages[pkg] = update_pkg({
+                    id: pkg,
+                    name: $scope.vm._package.name,
+                    ram: $scope.vm.config.ram,
+                    cpu_shares: $scope.vm.config.cpu_shares,
+                    vcpus: $scope.vm.config.vcpus,
+                    cpu_cap: $scope.vm.config.cpu_cap,
+                    quota: $scope.vm.config.quota
+                });
+            };
+            $scope.new_pkg = pkg;
+            console.log(pkg, $scope.packages)
             /* Build the snapshots array */
             $scope.snapshots = []
             Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
@@ -18,6 +58,13 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             $scope.snapshots = $scope.vm.snapshots
         })
     }
+    $scope.update = function() {
+        wiggle.vms.put({id: $scope.vm.uuid},
+                       {"package": $scope.new_pkg},
+                      function() {
+                          updateVm()
+                      });
+    };
 
     updateVm()
 
