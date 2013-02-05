@@ -77,6 +77,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
             wiggle.packages.get({id: vm.package}, function(pack) {
                 vm._package = pack
             })
+            $scope.$apply()
         })
 
         $scope.$on('delete', function(e, msg) {

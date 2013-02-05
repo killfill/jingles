@@ -97,7 +97,7 @@
                             <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
                             <dt>CPU</dt>
                                 <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-                                <dd ng-hide='vm.config.vcpus'>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+                                <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
                             <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
                             <dt></dt><dd></dd>
                             <dt></dt><dd></dd>
@@ -151,7 +151,6 @@
       <table class='table table-condensed table-bordered'>
         <tr><th>Current</th><th>
             <select ng-model="new_pkg"
-                    ng-change='select_package(self)'
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
             </select>
             <button ng-show="packages[new_pkg].id != vm['package']"
@@ -164,7 +163,7 @@
               <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
               <dt>CPU</dt>
               <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-              <dd ng-hide='vm.config.vcpus'>Share: {{vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+              <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
               <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
             </dl>
           </td>
