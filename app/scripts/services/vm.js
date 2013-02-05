@@ -3,7 +3,6 @@
 fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
 
     var padLeft = function(nr, n, str){
-        console.log('CACHATE pad', nr, n, str)
         return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
 
@@ -14,7 +13,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             var name = alias || uuid;
 
             if (action!='delete') {
-                status.update('Will ' + action + ' ' + name, {info: true})
+                status.info('Will ' + action + ' ' + name)
                 return wiggle.vms.put({id: uuid}, {action: action},
                     function success(r, headers) {
                         if (!headers)
@@ -35,7 +34,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 header: 'Confirm VM Deletion',
                 body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
             }, function() {
-                status.update('Will delete ' + name, {info: true})
+                status.info('Will delete ' + name)
                 wiggle.vms.delete({id: uuid},
                     function success(data, h) {
                         cb && cb(action, uuid)

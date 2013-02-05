@@ -13,7 +13,7 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete network <b>' +
                 el.name +"(" + el.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
-            status.update('Will delete' + el.name +"(" + el.uuid + ")", {info: true})
+            status.info('Will delete' + el.name +"(" + el.uuid + ")")
             wiggle.ipranges.delete({id: el.uuid},
                 function success (data, h) {
                     delete $scope.networks[el.uuid]
