@@ -14,7 +14,7 @@ fifoApp.controller('AboutCtrl', function($scope, $rootScope, wiggle, $http) {
         $scope.versions = data.versions
         $scope.adjustMessage = Config.adjustMessage
         $http.get('jingles.version').then(function(res){
-            $scope.versions.jingles = res.data;
+            $scope.versions.jingles = res.data.trim();
             var this_branch = $scope.versions.jingles.substr(0,3);
             if (this_branch == "dev" || this_branch == "tes") {
                 branch = "dev";
