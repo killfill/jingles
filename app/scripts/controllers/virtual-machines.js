@@ -67,6 +67,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
             var vm = $scope.vms[msg.channel];
 
             vm.config = msg.message.data.config;
+            vm.package = msg.message.data.package;
 
             vmService.updateCustomFields(vm);
 
