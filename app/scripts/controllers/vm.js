@@ -32,7 +32,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             if (! $scope.packages[pkg] ) {
                 $scope.packages[pkg] = {
                     id: pkg,
-                    name: $scope.vm._package.name,
+                    name: $scope.vm._package && $scope.vm._package.name,
                     ram: $scope.vm.config.ram,
                     cpu_shares: $scope.vm.config.cpu_shares,
                     vcpus: $scope.vm.config.vcpus,
@@ -87,7 +87,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     $scope.$on('update', function(e, msg) {
         var vm = msg.message.data.config
 
-        //if ($scope.vm.package != vm.)
         Object.keys(vm).forEach(function(k) {
             $scope.vm.config[k] = vm[k]
         })
