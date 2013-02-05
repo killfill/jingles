@@ -333,7 +333,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
             header: 'Confirm VM Deletion',
             body: '<p><font color="red">Warning!</font> you are about to delete the Group <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Group is gone forever!</p>"
         }, function() {
-            status.update('Will group ' + name, {info: true});
+            status.info('Will group ' + name);
             wiggle.groups.delete({id: uuid},
                                  function success(data, h) {
                                      $location.path('/groups')

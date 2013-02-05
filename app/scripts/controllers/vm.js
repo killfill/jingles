@@ -1,42 +1,36 @@
 'use strict';
-var a;
+
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
 
     var uuid = $routeParams.uuid;
-    var update_pkg = function(p) {
-        p.vcpus = p.cpu_cap/100;
-        p.cpu_shares = p.ram;
-        return p;
-    }
+
+    $scope.packages = {};
     wiggle.packages.list(function(res) {
-        $scope.packages = {};
         res.forEach(function(pid) {
             $scope.packages[pid] = {
                 name: pid,
                 id: pid
             };
             wiggle.packages.get({id: pid}, function(pkg) {
-                $scope.packages[pid] = update_pkg(pkg);
+                $scope.packages[pid] = pkg;
+
+                /* Additional fields GET does not provide */
                 $scope.packages[pid].id = pid;
+                $scope.packages[pid].vcpus = pkg.cpu_cap/100;
+                $scope.packages[pid].cpu_shares = pkg.ram;
             });
         });
-
     });
-
-    $scope.select_package = function(){
-        console.log($scope.new_pkg);
-    };
 
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function(res) {
             $scope.vm = vmService.updateCustomFields(res);
-               var pkg =  "custom"
+            var pkg =  "custom"
             if ($scope.vm["package"]) {
-                console.log($scope.vm["package"])
                 pkg = $scope.vm["package"] + "";
             }
             if (! $scope.packages[pkg] ) {
-                $scope.packages[pkg] = update_pkg({
+                $scope.packages[pkg] = {
                     id: pkg,
                     name: $scope.vm._package.name,
                     ram: $scope.vm.config.ram,
@@ -44,10 +38,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     vcpus: $scope.vm.config.vcpus,
                     cpu_cap: $scope.vm.config.cpu_cap,
                     quota: $scope.vm.config.quota
-                });
+                };
             };
             $scope.new_pkg = pkg;
-            console.log(pkg, $scope.packages)
+
             /* Build the snapshots array */
             $scope.snapshots = []
             Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
@@ -56,14 +50,24 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 $scope.snapshots.push(val)
             })
             $scope.snapshots = $scope.vm.snapshots
+            cb && cb($scope.vm)
         })
     }
     $scope.update = function() {
-        wiggle.vms.put({id: $scope.vm.uuid},
-                       {"package": $scope.new_pkg},
-                      function() {
-                          updateVm()
-                      });
+        wiggle.vms.put({id: $scope.vm.uuid}, {"package": $scope.new_pkg},
+            function success() {
+                status.info('Resizing ' + $scope.vm._name + '...')
+
+                updateVm(function() {
+                    $scope.vm.config.ram = ''
+                    $scope.vm.config.vcpus = ''
+                    $scope.vm.config.cpu_shares = ''
+                    $scope.vm.config.cpu_cap = ''
+                    $scope.vm.config.quota = ''
+                })
+                if ($scope.vm.config.type == 'kvm')
+                    alert('Reboot on this machine is needed for resize to take effect')
+        });
     };
 
     updateVm()
@@ -77,6 +81,17 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     $scope.$on('delete', function(e, msg) {
         $location.path('/virtual-machines')
+        $scope.$apply()
+    })
+
+    $scope.$on('update', function(e, msg) {
+        var vm = msg.message.data.config
+
+        //if ($scope.vm.package != vm.)
+        Object.keys(vm).forEach(function(k) {
+            $scope.vm.config[k] = vm[k]
+        })
+        vmService.updateCustomFields($scope.vm);
         $scope.$apply()
     })
 
@@ -102,7 +117,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 var comment = prompt('Write a comment for the new snapshot:');
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                     function success(data, h) {
-                        status.update('Snapshot created', {info: true});
+                        status.info('Snapshot created');
                         updateVm()
                     },
                     function error(data) {
@@ -122,7 +137,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.$apply()
                     wiggle.vms.delete({id: uuid, controller: 'snapshots', second_id: snap.uuid},
                         function success() {
-                            status.update('Snapshot ' + snap.comment + ' deleted', {info: true});
+                            status.info('Snapshot ' + snap.comment + ' deleted');
                             delete $scope.snapshots[snap.uuid]
                             updateVm()
                         },
@@ -142,7 +157,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                         '<p>Please note: Any snapshots that have been taken after this rollback date will be deleted if you proceed.</p>' +
                         "</b>Are you 100% sure you really want to do this?</p>"
                 }, function() {
-                    status.update('Will rollback to snapshot ' + snap.comment, {info: true});
+                    status.info('Will rollback to snapshot ' + snap.comment);
                     $scope.$apply()
                     wiggle.vms.put({id: uuid, controller: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
