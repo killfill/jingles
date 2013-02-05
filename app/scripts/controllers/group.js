@@ -84,7 +84,6 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
         $scope.permission.controller = "permissions";
 
         wiggle.groups.grant($scope.permission, function () {
-            console.log("Granted");
             var p = [$scope.permission.controller_id];
             if ($scope.permission.controller_id1)
                 p.push($scope.permission.controller_id1);
@@ -92,9 +91,8 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                 p.push($scope.permission.controller_id2);
             $scope.permissions.push(update_permission(p));
         }, function(d) {
-            console.log("failed:", d);
+            console.log("Grant failed:", d);
         });
-        console.log($scope.permission);
     };
 
     $scope.perm_change = function(level) {

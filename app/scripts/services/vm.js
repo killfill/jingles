@@ -20,10 +20,6 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                             return alert('An error 500 has occur. :(');
 
                         cb && cb(action, uuid)
-                    },
-                    function error(data) {
-                        console.error(action + 'VM error:', data)
-                        alert('There was an error changing the state your vm. See the javascript console.')
                     }
                 )
             }
@@ -38,10 +34,6 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 wiggle.vms.delete({id: uuid},
                     function success(data, h) {
                         cb && cb(action, uuid)
-                    },
-                    function error(data) {
-                        console.error('Delete VM error:', data)
-                        alert('There was an error deleting your vm. See the javascript console.')
                     }
                 )
 

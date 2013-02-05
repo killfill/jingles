@@ -4,8 +4,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
     var uuid = $routeParams.uuid;
 
     wiggle.hypervisors.get({id: uuid}, function(res) {
-        $scope.hyper = res; //vmService.updateCustomFields(res)
-
+        $scope.hyper = res;
     });
 
 })

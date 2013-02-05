@@ -95,7 +95,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
     //Replace # with pushstates:
     //$locationProvider.html5Mode(false); //.hashPrefix('!');
 }])
-.run(function ($http, $cookies, user, wiggle) {
+.run(function ($http, $cookies, user, wiggle, hookListener) {
 
     /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
     delete $http.defaults.headers.common['X-Requested-With']

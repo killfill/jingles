@@ -26,7 +26,7 @@ var howl = {
     _join_channels_on_connect: [],
     _wsOpen: function(e) {
         howl.send({token: howl._token});
-        console.log('[howl] connection open')
+        Config.mode == 'dev' && console.log('[howl] connection open')
         howl._connected = true
 
         //Join the pending channels..
