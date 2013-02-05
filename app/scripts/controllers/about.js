@@ -20,10 +20,12 @@ fifoApp.controller('AboutCtrl', function($scope, $rootScope, wiggle, $http) {
                 branch = "dev";
             };
             ['sniffle', 'snarl', 'howl', 'wiggle', 'jingles'].forEach(function(E) {
-                $http.get(base + '/' + branch + '/' + E + '.version', opts).
-                    success(function(res){
-                        $scope.latest[E] = res;
-                    });
+                (function(E) {
+                    $http.get(base + '/' + branch + '/' + E + '.version', opts).
+                        success(function(res){
+                            $scope.latest[E] = res;
+                        });
+                })(E);
             });
         })
     })
