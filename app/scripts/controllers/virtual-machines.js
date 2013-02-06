@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, status, modal, howl, vmService) {
+fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status, modal, howl, vmService) {
 
     $scope.vms = {}
 
@@ -20,21 +20,18 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
 
     $scope.show = function() {
 
-        if ($cookies.vmColumns)
-            $scope.columns = JSON.parse($cookies.vmColumns)
-        else
-            $scope.columns = [
-                {name: 'Name',      visible: true,  field: 'config.alias'},
-                {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
-                {name: 'IPs',       visible: true,  field: '_ips_normalized'},
-                {name: 'Package',   visible: true,  field: 'package'},
-                {name: 'Memory',    visible: true,  field: 'config.ram'},
-                {name: 'CPU',       visible: false, field: '_cpu'},
-                {name: 'Hypervisor',visible: false, field: 'hypervisor'},
-                {name: 'Age',       visible: true,  field: 'config.created_at'},
-                {name: 'State',     visible: true,  field: 'state'},
-                {name: 'Actions',   visible: true}
-            ]
+        $scope.columns = user.get_metadata('vm_sort_order') || [
+            {name: 'Name',      visible: true,  field: 'config.alias'},
+            {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
+            {name: 'IPs',       visible: true,  field: '_ips_normalized'},
+            {name: 'Package',   visible: true,  field: 'package'},
+            {name: 'Memory',    visible: true,  field: 'config.ram'},
+            {name: 'CPU',       visible: false, field: '_cpu'},
+            {name: 'Hypervisor',visible: false, field: 'hypervisor'},
+            {name: 'Age',       visible: true,  field: 'config.created_at'},
+            {name: 'State',     visible: true,  field: 'state'},
+            {name: 'Actions',   visible: true}
+        ];
 
         wiggle.vms.list(function (ids) {
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
@@ -99,7 +96,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
             $scope.orderField = '-' + field
         else
             $scope.orderField = field;
-    }
+    };
+
     $scope.orderStyle = function(field) {
 
         if ($scope.orderField.indexOf(field) < 0)
@@ -109,17 +107,17 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, $cookies, wiggle, st
             return 'clickable sorted-down'
         else
             return 'clickable sorted-up'
-    }
+    };
 
     $scope.showPopupContent = function() {
         var content = document.getElementById('popupContent')
         if (!content) return;
         content.className = ''
         return content
-    }
+    };
 
     $scope.showHideColumn = function() {
-        $cookies.vmColumns = JSON.stringify($scope.columns)
-    }
+        user.set_metadata('vm_sort_order', $scope.columns);
+    };
 
 });

@@ -23,6 +23,28 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
     }
 
     return {
+        get_metadata: function(key) {
+            if (!$rootScope.loggedUser.metadata)
+                $rootScope.loggedUser.metadata = {};
+            if (!$rootScope.loggedUser.metadata.jingles)
+                $rootScope.loggedUser.metadata.jingles = {};
+            return $rootScope.loggedUser.metadata.jingles[key];
+        },
+        set_metadata: function(key, value) {
+            if (!$rootScope.loggedUser.metadata)
+                $rootScope.loggedUser.metadata = {};
+            if (!$rootScope.loggedUser.metadata.jingles)
+                $rootScope.loggedUser.metadata.jingles = {};
+            var o = {};
+            o[key] = value;
+            wiggle.users.put({id:$rootScope.loggedUser.uuid,
+                              controller: 'metadata',
+                              controller_id: 'jingles'},
+                             o,
+                             function success(){
+                                 $rootScope.loggedUser.metadata.jingles[key] = value;
+                             });
+        },
         logged: function() {
 
         },

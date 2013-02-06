@@ -22,7 +22,6 @@ fifoApp.factory('status', function($rootScope) {
 
     }
 
-    
     var update = function(type, params) {
 
         //when total comes, start from scratch
