@@ -84,7 +84,53 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
-            <table class='table table-condensed table-bordered'>
+    
+    <p class='span3 well-light'>
+        <i class="icon-hand-right"></i>
+        <b>Machine {{vm.config.alias}}</b><br/>
+
+        Created <span jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</span><br/>
+        Type: {{vm.config.type}}<br/>
+        Hypervisor: <span class='uuid nowrap'>{{vm.hypervisor}}</span>
+    </p>
+    <p class='span3 well2'>
+        <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
+        <span ng-show='vm.config._dataset'>
+            <strong>Dataset {{vm.config._dataset.name}} ({{vm.config._dataset.version}})</strong><br/>
+            {{vm.config._dataset.description}}<br/>
+        </span>
+        <span class='light'>{{vm.config.dataset}}</span>
+    </p>
+
+    <div class='well2 span4'>
+        <i class="icon-tasks"></i> <strong>Package {{vm._package.name || 'custom'}}</strong>
+        <dl class="dl-horizontal">
+            <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
+            <dt>CPU</dt>
+                <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
+                <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+            <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
+            <dt></dt><dd></dd>
+            <dt></dt><dd></dd>
+        </dl>
+    </div>
+
+    <div class="well2 span4" ng-repeat='net in vm.config.networks'>
+        <i class="icon-retweet"></i> <strong>Network {{net.nic_tag}}</strong>
+        <dl class="dl-horizontal">
+            <dt>Interface</dt>  <dd>{{net.interface | orDefault:'-'}}</dd>
+            <dt>IP</dt>         <dd>{{net.ip | orDefault:'-'}}</dd>
+            <dt>Mask</dt>       <dd>{{net.netmask | orDefault:'-'}}</dd>
+            <dt>Gateway</dt>    <dd>{{net.gateway | orDefault:'-'}}</dd>
+            <dt>Mac</dt>        <dd>{{net.mac | orDefault:'-'}}</dd>
+            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
+            <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
+        </dl>
+    </div>
+
+
+
+            <table class='table table-condensed table-bordered hide'>
                 <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
                 <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
                 <tr><th>Dataset</th>

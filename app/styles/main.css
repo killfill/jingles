@@ -139,14 +139,6 @@ tr.small > th {
     font-size: 10px;
 }
 
-.dl-horizontal dd {
-    margin-left: 90px;
-}
-
-.dl-horizontal dt {
-    width: 70px;
-    color: #999;
-}
 
 /* Login Screen */
 #login-modal form {
@@ -323,6 +315,16 @@ dd {
   margin-left: 10px;
 }
 
+
+.dl-horizontal dd {
+    margin-left: 90px;
+}
+
+.dl-horizontal dt {
+    width: 70px;
+    color: #999;
+}
+
 .dl-horizontal {
   *zoom: 1;
 }
@@ -340,7 +342,7 @@ dd {
 
 .dl-horizontal dt {
   float: left;
-  width: 160px;
+  --width: 160px;
   overflow: hidden;
   clear: left;
   text-align: right;
@@ -349,7 +351,7 @@ dd {
 }
 
 .dl-horizontal dd {
-  margin-left: 180px;
+  --margin-left: 180px;
 }
 
 .icon-twitter {
