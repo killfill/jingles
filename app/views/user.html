@@ -7,7 +7,7 @@
     <div class='span4'>
       <div class="btn-toolbar btn-group pull-right">
 
-        <div class="btn-group">
+        <div ng-show='user.uuid != loggedUser.uuid' class="btn-group">
           <button ng-click="delete()" class="btn" title='Delete' jq-run='tooltip'>
             <i class='icon-trash'></i>
           </button>
