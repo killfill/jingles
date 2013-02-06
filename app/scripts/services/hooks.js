@@ -30,7 +30,7 @@ angular.module('fifoHooks', [], function($provide, $httpProvider) {
 fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, status) {
 
     $rootScope.$on('response', function(evt, statusCode, res) {
-        if (statusCode < 300) return;
+        if (statusCode < 300 || statusCode == 404) return;
 
         if (statusCode == 403) {
 

@@ -79,10 +79,9 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             //Used for ordering in the vm list:
             vm._ips_normalized = ips.length > 0 ?
                 ips.map(function(e) {
-                    return e && e.ip && e.ip.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
+                    return e && e.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ")
                 : vm.config.networks[0].ip;
-
 
             return vm;
         }
