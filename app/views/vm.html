@@ -137,9 +137,11 @@
         </table>
     </div>
     <div class="tab-pane" id="snapshots">
-        <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn pull-right" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
-        <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='pull-right light' style='padding: 5px;'>To rollback, please stop the machine</span>
-        <table class="table table-condensed table-hover">
+        <p class='pull-right'>
+        <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;'>To rollback, please stop the machine</span>
+        <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
+        </p>
+        <table class="table table-condensed table-hover pull-left">
             <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
                 <td><strong>{{snap.comment}}</strong></td>
                 <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
@@ -161,7 +163,7 @@
             <select ng-model="new_pkg"
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
             </select>
-            <button
+            <button style='margin-bottom: 10px;' class='btn'
                ng-disabled="vm.mdata('locked')"
                ng-show="packages[new_pkg].id != vm['package']"
                ng-click="update()">change</button>

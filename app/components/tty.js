@@ -78,7 +78,7 @@
 
         var init_socket;
         init_socket = function (atty) {
-            atty.socket = new WebSocket(window.location.origin.replace(/^http/, "ws") +
+            atty.socket = new WebSocket('ws://' + window.location.host + (window.location.port ? ":" + window.location.port: '') +
                                        "/api/0.1.0/vms/" + uuid + "/console");
             setInterval(function () {
                 atty.socket.send("");

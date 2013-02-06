@@ -357,6 +357,8 @@ dd {
     background-position: center center;
 }
 
-select, textarea, input[type="text"], input[type="password"] {
-    margin-bottom: 0px;
+hr {
+    margin: 10px 0;
+    border-top: 0px dashed #eeeeee;
+    border-bottom: 1px dashed #efe;
 }
