@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="btn-group" ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'">
-                    <button ng-click="action('delete', vm)" ng-disabled="vm.metadata.locked" class="btn" title='Delete' jq-run='tooltip'>
+                    <button ng-click="action('delete', vm)" ng-disabled="vm.metadata.jingles.locked" class="btn" title='Delete' jq-run='tooltip'>
                         <i class='icon-trash'></i>
                     </button>
                 </div>
@@ -148,11 +148,12 @@
                 <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
                 <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
                 <td class='nowrap'>
-                    <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
-                        ng-show="vm.state=='stopped'"
-                       class="icon-backward clickable"></i>
-                    <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
-                       class="icon-trash clickable"></i>
+                  <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
+                     ng-show="vm.state=='stopped' && !vm.metadata.jingles.locked"
+                     class="icon-backward clickable"></i>
+                  <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
+                     ng-hide="vm.metadata.jingles.locked"
+                     class="icon-trash clickable"></i>
                 </td>
             </tr>
         </table>
@@ -163,8 +164,10 @@
             <select ng-model="new_pkg"
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
             </select>
-            <button ng-show="packages[new_pkg].id != vm['package']"
-                    ng-click="update()">change</button>
+            <button
+               ng-disabled="vm.metadata.jingles.locked"
+               ng-show="packages[new_pkg].id != vm['package']"
+               ng-click="update()">change</button>
         </th></tr>
         <tr>
           <td>
