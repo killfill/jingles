@@ -16,7 +16,7 @@
                     <tr>
                       <th>Name</th>
                       <th>Ram</th>
-                      <th>Quota</th>
+                      <th>Disk</th>
                       <th>CPU Cap</th>
                       <th class="span1">Actions</th>
                     </tr>
@@ -24,8 +24,8 @@
                   <tbody>
                       <tr ng-repeat="pack in packages | hash2array| orderBy: 'ram'">
                         <td><strong>{{pack.name}}</strong></td>
-                        <td>{{pack.ram}}</td>
-                        <td>{{pack.quota}}</td>
+                        <td>{{pack.ram | Mbytes}}</td>
+                        <td>{{pack.quota | Gbytes}}</td>
                         <td>{{pack.cpu_cap}}</td>
                         <td>
                             <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
