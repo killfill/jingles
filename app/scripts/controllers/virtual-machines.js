@@ -20,7 +20,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
     $scope.show = function() {
 
-        $scope.columns = user.get_metadata('vm_sort_order') || [
+        $scope.columns = user.get_metadata('vm_fields') || [
             {name: 'Name',      visible: true,  field: 'config.alias'},
             {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
             {name: 'IPs',       visible: true,  field: '_ips_normalized'},
@@ -87,7 +87,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
     $scope.show()
 
     /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
-    $scope.orderField = 'config.alias';
+    $scope.orderField = user.get_metadata('vm_sort_field') || 'config.alias';
     $scope.order = function(field, evt) {
         //var el = angular.element(evt.currentTarget)
 
@@ -96,6 +96,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             $scope.orderField = '-' + field
         else
             $scope.orderField = field;
+        user.set_metadata('vm_sort_field', $scope.orderField);
+
     };
 
     $scope.orderStyle = function(field) {
@@ -117,7 +119,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
     };
 
     $scope.showHideColumn = function() {
-        user.set_metadata('vm_sort_order', $scope.columns);
+        user.set_metadata('vm_fields', $scope.columns);
     };
 
 });
