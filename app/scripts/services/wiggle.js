@@ -37,8 +37,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
                           delete: {method: 'DELETE'}}),
         cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),
         hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
-        vms: $resource(endpoint + 'vms/:id/:controller/:second_id',
-            {id: '@id', controller: '@controller', second_id: '@second_id'},
+        vms: $resource(endpoint + 'vms/:id/:controller/:controller_id',
+            {id: '@id', controller: '@controller', controller_id: '@controller_id'},
             {put: {method: 'PUT'}}
         ),
         ipranges: $resource(endpoint + 'ipranges/:id',
@@ -62,6 +62,25 @@ fifoApp.factory('wiggle', function($resource, $http) {
                 .error(function(data) {
                     error && error(data)
                 })
+        }
+
+        /* Resources that has put may save metadata, i.e. PUT vms/metadata/jingles {locked: true} */
+        if (services[resource].put) {
+            services[resource].prototype.mdata_set = function(obj, cb) {
+                var id = this.uuid,
+                    that = this;
+
+                return services[resource].put({id: id, controller: 'metadata', controller_id: 'jingles'}, obj, function() {
+                    Object.keys(obj).forEach(function(k) {
+                        that.metadata.jingles[k] = obj[k]
+                    })
+                })
+            }
+        }
+        /* Metadata get helper */
+        services[resource].prototype.mdata = function(key) {
+            var m = this.metadata
+            return m && m.jingles && m.jingles[key]
         }
     });
 

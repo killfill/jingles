@@ -25,6 +25,7 @@ fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
             ids.forEach(function(id) {
                 $scope.users[id] = {name: id}
                 wiggle.users.get({id: id}, function(res) {
+                    console.log('uuuu', res)
                     $scope.users[id] = addFields(res);
                     var gs = $scope.users[id].groups || [];
                     gs.forEach(function(g, i) {

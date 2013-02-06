@@ -29,18 +29,15 @@
                 </div>
 
                 <div class="btn-group">
-                    <button ng-click="action('start', vm)"  ng-disabled="vm.state!='stopped' ||
-                                                                         vm.metadata.jingles.locked"
+                    <button ng-click="action('start', vm)"  ng-disabled="vm.state!='stopped' || vm.mdata('locked')"
                             class="btn btn-success">
                         <i class='icon-play'></i>
                     </button>
-                    <button ng-click="action('reboot', vm)" ng-disabled="vm.state!='running' ||
-                                                                         vm.metadata.jingles.locked"
+                    <button ng-click="action('reboot', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')"
                             class="btn">
                         <i class='icon-refresh'></i>
                     </button>
-                    <button ng-click="action('stop', vm)" ng-disabled="vm.state!='running' ||
-                                                                       vm.metadata.jingles.locked"
+                    <button ng-click="action('stop', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')"
                             class="btn btn-warning">
                         <i class='icon-stop'></i>
                     </button>
@@ -51,7 +48,7 @@
                 </div>
 
                 <div class="btn-group" ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'">
-                    <button ng-click="action('delete', vm)" ng-disabled="vm.metadata.jingles.locked" class="btn" title='Delete' jq-run='tooltip'>
+                    <button ng-click="action('delete', vm)" ng-disabled="vm.mdata('locked')" class="btn" title='Delete' jq-run='tooltip'>
                         <i class='icon-trash'></i>
                     </button>
                 </div>
@@ -149,10 +146,10 @@
                 <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
                 <td class='nowrap'>
                   <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
-                     ng-show="vm.state=='stopped' && !vm.metadata.jingles.locked"
+                     ng-show="vm.state=='stopped' && !vm.mdata('locked')"
                      class="icon-backward clickable"></i>
                   <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
-                     ng-hide="vm.metadata.jingles.locked"
+                     ng-hide="vm.mdata('locked')"
                      class="icon-trash clickable"></i>
                 </td>
             </tr>
@@ -165,7 +162,7 @@
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
             </select>
             <button
-               ng-disabled="vm.metadata.jingles.locked"
+               ng-disabled="vm.mdata('locked')"
                ng-show="packages[new_pkg].id != vm['package']"
                ng-click="update()">change</button>
         </th></tr>

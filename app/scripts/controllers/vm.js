@@ -4,22 +4,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     var uuid = $routeParams.uuid;
 
-    var set_metadata = function(key, value) {
-        var o = {};
-        o[key] = value;
-        wiggle.vms.put({id: uuid,
-                        controller: 'metadata',
-                        second_id: 'jingles'},
-                       o,
-                       function success() {
-                           $scope.vm.metadata.jingles[key] = value;
-                       })
-    };
-
-    var get_metadata = function(key) {
-        return $scope.vm.metadata.jingles[key];
-    };
-
+    /* Get the all the packages */
     $scope.packages = {};
     wiggle.packages.list(function(res) {
         res.forEach(function(pid) {
@@ -41,11 +26,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function(res) {
             $scope.vm = vmService.updateCustomFields(res);
-            if (!$scope.vm.metadata)
-                $scope.vm.metadata = {};
-            if (!$scope.vm.metadata.jingles)
-                $scope.vm.metadata.jingles = {};
-            console.log($scope.vm.metadata.jingles.locked)
             var pkg =  "custom"
             if ($scope.vm["package"]) {
                 pkg = $scope.vm["package"] + "";
@@ -123,7 +103,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     }
 
     $scope.lock = function() {
-        set_metadata('locked', ! get_metadata('locked'));
+        $scope.vm.mdata_set({locked: !$scope.vm.mdata('locked')})
     }
     
     $scope.vnc = function(vm) {
@@ -159,7 +139,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     body: '<p>Are you sure you want to delete snapshot <strong>' + snap.comment + '</strong> dated ' + new Date(snap.timestamp/1000) + '</p>'
                 }, function() {
                     $scope.$apply()
-                    wiggle.vms.delete({id: uuid, controller: 'snapshots', second_id: snap.uuid},
+                    wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap.uuid},
                         function success() {
                             status.info('Snapshot ' + snap.comment + ' deleted');
                             delete $scope.snapshots[snap.uuid]
@@ -183,7 +163,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 }, function() {
                     status.info('Will rollback to snapshot ' + snap.comment);
                     $scope.$apply()
-                    wiggle.vms.put({id: uuid, controller: 'snapshots', second_id: snap.uuid}, {action: 'rollback'},
+                    wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
                             updateVm()
                             alert('Rollback done')

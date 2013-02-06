@@ -102,7 +102,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
 
     var token = $cookies["X-Snarl-Token"];
 
-    if ($cookies.login && token)
+    if (token)
         wiggle.sessions.get({id: token},
             function success(data) {
                 user.login(data)

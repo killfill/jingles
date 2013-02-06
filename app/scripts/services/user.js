@@ -23,47 +23,32 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
     }
 
     return {
-        get_metadata: function(key) {
-            if (!$rootScope.loggedUser.metadata)
-                $rootScope.loggedUser.metadata = {};
-            if (!$rootScope.loggedUser.metadata.jingles)
-                $rootScope.loggedUser.metadata.jingles = {};
-            return $rootScope.loggedUser.metadata.jingles[key];
+        //2 Wrappers, becouse of JIN-27..
+        mdata: function(k) {
+            return $rootScope.loggedUser && $rootScope.loggedUser.mdata(k)
         },
-        set_metadata: function(key, value) {
-            if (!$rootScope.loggedUser.metadata)
-                $rootScope.loggedUser.metadata = {};
-            if (!$rootScope.loggedUser.metadata.jingles)
-                $rootScope.loggedUser.metadata.jingles = {};
-            var o = {};
-            o[key] = value;
-            wiggle.users.put({id:$rootScope.loggedUser.uuid,
-                              controller: 'metadata',
-                              controller_id: 'jingles'},
-                             o,
-                             function success(){
-                                 $rootScope.loggedUser.metadata.jingles[key] = value;
-                             });
+        mdata_set: function(obj, cb) {
+            return $rootScope.loggedUser && $rootScope.loggedUser.mdata_set(obj, cb)
         },
-        logged: function() {
 
+        logged: function() {
+            return $rootScope.loggedUser
         },
         join: function(uuid, group) {
             wiggle.users.put({id: uuid,
                               controller: 'groups',
                               controller_id: group});
         },
-        login: function(data) { //token, login) {
+        login: function(sessionData) { //token, login) {
 
-            /* Cookies */
-            $cookies["X-Snarl-Token"] = data.session;
-            $cookies.login = data.name;
+            /* Access token */
+            $cookies["X-Snarl-Token"] = sessionData.session;
+            $http.defaults.headers.common['X-Snarl-Token'] = sessionData.session;
 
-            /* Logged data */
-            $rootScope.loggedUser = data
-            $http.defaults.headers.common['X-Snarl-Token'] = data.session;
+            /* Create a user object based on the sessionData, so later we can use loggedUser.mdata_set */
+            $rootScope.loggedUser = new wiggle.users(sessionData)
 
-            //hideTabs(data.permissions)
+            //hideTabs(sessionData.permissions)
 
             /* Pass the token to autenticate, and a list of vms to monitor */
             if ('WebSocket' in window) {
@@ -77,7 +62,6 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
 
         logout: function() {
             delete $cookies["X-Snarl-Token"];
-            delete $cookies.login;
             $rootScope.loggedUser = null;
 
             howl.disconnect();
