@@ -351,3 +351,8 @@ dd {
 .dl-horizontal dd {
   margin-left: 180px;
 }
+
+.icon-twitter {
+    background-image: url("/images/twitter.png");
+    background-position: center center;
+}
