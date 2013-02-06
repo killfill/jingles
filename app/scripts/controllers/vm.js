@@ -4,6 +4,22 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     var uuid = $routeParams.uuid;
 
+    var set_metadata = function(key, value) {
+        var o = {};
+        o[key] = value;
+        wiggle.vms.put({id: uuid,
+                        controller: 'metadata',
+                        second_id: 'jingles'},
+                       o,
+                       function success() {
+                           $scope.vm.metadata.jingles[key] = value;
+                       })
+    };
+
+    var get_metadata = function(key) {
+        return $scope.vm.metadata.jingles[key];
+    };
+
     $scope.packages = {};
     wiggle.packages.list(function(res) {
         res.forEach(function(pid) {
@@ -25,6 +41,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function(res) {
             $scope.vm = vmService.updateCustomFields(res);
+            if (!$scope.vm.metadata)
+                $scope.vm.metadata = {};
+            if (!$scope.vm.metadata.jingles)
+                $scope.vm.metadata.jingles = {};
+            console.log($scope.vm.metadata.jingles.locked)
             var pkg =  "custom"
             if ($scope.vm["package"]) {
                 pkg = $scope.vm["package"] + "";
@@ -101,6 +122,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         })
     }
 
+    $scope.lock = function() {
+        set_metadata('locked', ! get_metadata('locked'));
+    }
+    
     $scope.vnc = function(vm) {
         window.open("vnc.html?uuid=" + vm.uuid)
     }
