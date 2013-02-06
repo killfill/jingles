@@ -62,7 +62,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
 
     wiggle.users.get({id: uuid}, function(res) {
         res.groups = res.groups || [];
-        $scope.user = res; //vmService.updateCustomFields(res)
+        $scope.user = res;
+        $scope.ssh_keys = $scope.user.mdata('ssh_keys')
         $scope.permissions = [];
         $scope.user._groups = {};
         $scope.user.groups.map(function (gid){
@@ -390,6 +391,11 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                          }
                         );
     };
+
+    $scope.save_sshkeys = function() {
+        $scope.user.mdata_set({ssh_keys: $scope.ssh_keys})
+        status.info('SSH key saved')
+    }
 
     $scope.init = function() {
         $scope.pass1 = "";

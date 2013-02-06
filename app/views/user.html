@@ -22,17 +22,18 @@
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
       <li><a href="#groups" data-toggle="tab">Groups</a></li>
+      <li><a href="#ssh_keys" data-toggle="tab">SSH Keys</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="details">
         <table class='table table-bordered'>
           <tr><th>Name</th><td><b>{{user.name}}</b></td></tr>
-          <tr><th>UUID</th><td><b>{{user.uuid}}</b></td></tr>
+          <tr><th>UUID</th><td>{{user.uuid}}</td></tr>
           <tr><th style="vertical-align: middle">Password</th>
-            <td style="vertical-align: middle">
+            <td >
               <input ng-model="pass1" type='password'/>
-              <input ng-model="pass2" type='password'/><br/>
-              <button class="button" ng-click="passwd()">Change</button>
+              <input ng-model="pass2" type='password'/>
+              <button class="btn" ng-click="passwd()">Change</button>
             </td>
           </tr>
         </table>
@@ -84,6 +85,11 @@
             <td><a ng-click="leave_group(group.uuid)">delete</a></td>
           </tr>
         </table>
+      </div>
+      <div class="tab-pane" id="ssh_keys">
+        <p>SSH Keys will be used when creating new machines.</p>
+        <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
+        <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Save</button></p>
       </div>
     </div>
   </div>

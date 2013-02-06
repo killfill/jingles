@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle) {
+fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle, user) {
 
     $scope.create_machine = function() {
 
@@ -56,6 +56,8 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle)
     }
 
     $scope.init = function() {
+
+        $scope.ssh_keys = user.mdata('ssh_keys')
 
         $scope.datasets = []
         $scope.packages = []
