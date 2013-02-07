@@ -72,8 +72,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
 
                 return services[resource].put({id: id, controller: 'metadata', controller_id: 'jingles'}, obj, function() {
                     Object.keys(obj).forEach(function(k) {
-                        if (!that.metadata.jingles)
-                            that.metadata.jingles = {}
+                        if (!that.metadata) that.metadata = {}
+                        if (!that.metadata.jingles) that.metadata.jingles = {}
                         that.metadata.jingles[k] = obj[k]
                     })
                 })
