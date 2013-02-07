@@ -56,6 +56,10 @@ big {
     font-family: Consolas, "Andale Mono", monospace, "Courier New";
 }
 
+.small {
+    font-size: 0.8em;
+}
+
 @media (max-width: 979px) {
     body {
         padding-top: 0px;
@@ -163,7 +167,6 @@ footer {
 footer > hr {
     margin: 10px;
 }
-
 
 .navbar-inverse > .navbar-inner {
     background-image: none;
@@ -300,6 +303,7 @@ footer > hr {
 
 dl {
   margin-bottom: 20px;
+  margin-top: 4px;
 }
 
 dt,
@@ -350,6 +354,25 @@ dd {
   white-space: nowrap;
 }
 
+.box {
+    width: 22%;
+    min-width: 200px;
+    min-height: 132px;
+    float: left;
+    padding: 10px;
+    margin: 5px;
+}
+
+.box .header {
+    padding-bottom: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.box > span {
+    margin-left: 20px;
+}
+
 .dl-horizontal dd {
   --margin-left: 180px;
 }
@@ -363,4 +386,17 @@ hr {
     margin: 10px 0;
     border-top: 0px dashed #eeeeee;
     border-bottom: 1px dashed #efe;
+}
+
+.nav-tabs {
+    margin-bottom: 0px;
+}
+
+.tabs-top > .tab-content {
+    background-color: white; 
+    padding: 30px 15px 15px 15px; 
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 4px;
 }

@@ -84,26 +84,21 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
-    
-    <p class='span3 well-light'>
-        <i class="icon-hand-right"></i>
-        <b>Machine {{vm.config.alias}}</b><br/>
-
+    <div class='box'>
+        <div class='header'>
+            <i class="icon-hand-right"></i> Machine {{vm.config.alias}}<br/>
+        </div>
+       <span>
         Created <span jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</span><br/>
-        Type: {{vm.config.type}}<br/>
-        Hypervisor: <span class='uuid nowrap'>{{vm.hypervisor}}</span>
-    </p>
-    <p class='span3 well2'>
-        <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
-        <span ng-show='vm.config._dataset'>
-            <strong>Dataset {{vm.config._dataset.name}} ({{vm.config._dataset.version}})</strong><br/>
-            {{vm.config._dataset.description}}<br/>
-        </span>
-        <span class='light'>{{vm.config.dataset}}</span>
-    </p>
-
-    <div class='well2 span4'>
-        <i class="icon-tasks"></i> <strong>Package {{vm._package.name || 'custom'}}</strong>
+       </span>
+        <dl class="dl-horizontal">
+            <dt>Type</dt>  <dd>{{vm.config.type}}</dd>
+            <dt>Hyper</dt><dd class='uuid'>{{vm.hypervisor}}</dd>
+    </div>
+    <div class='box'>
+        <div class='header'>
+            <i class="icon-tasks"></i> Package {{vm._package.name || 'custom'}}
+        </div>
         <dl class="dl-horizontal">
             <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
             <dt>CPU</dt>
@@ -114,9 +109,21 @@
             <dt></dt><dd></dd>
         </dl>
     </div>
+    <div class='box'>
+        <div class='header'>
+            <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
+            <span ng-show='vm.config._dataset'>
+                Dataset {{vm.config._dataset.name}} ({{vm.config._dataset.version}})<br/>
+            </span>
+        </div>
+        <span>{{vm.config._dataset.description}}<br/></span>
+        <span class='light'>{{vm.config.dataset}}</span>
+    </div>
 
-    <div class="well2 span4" ng-repeat='net in vm.config.networks'>
-        <i class="icon-retweet"></i> <strong>Network {{net.nic_tag}}</strong>
+    <div class="box" ng-repeat='net in vm.config.networks'>
+        <div class='header'>
+            <i class="icon-retweet"></i> Network {{net.nic_tag}}
+        </div>
         <dl class="dl-horizontal">
             <dt>Interface</dt>  <dd>{{net.interface | orDefault:'-'}}</dd>
             <dt>IP</dt>         <dd>{{net.ip | orDefault:'-'}}</dd>
@@ -128,52 +135,7 @@
         </dl>
     </div>
 
-
-
-            <table class='table table-condensed table-bordered hide'>
-                <tr><th>Name</th><td><b>{{vm.config.alias}}</b> / <span class="uuid">{{vm.uuid}}</span></td></tr>
-                <tr><th>Created</th><td>{{vm.config.created_at | fromNow}} ({{vm.config.created_at | date:'medium'}})</td></tr>
-                <tr><th>Dataset</th>
-                    <td>
-                        <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class=oslogo>
-                        <span ng-show='vm.config._dataset'>
-                            {{vm.config._dataset.name}} ({{vm.config._dataset.version}})<br/>
-                            {{vm.config._dataset.description}}<br/>
-                        </span>
-                        <span class='light'>{{vm.config.dataset}}</span>
-                    </td>
-                </tr>
-                <tr><th>Resources</th>
-                    <td>
-                        <dl class="dl-horizontal">
-                            <dt>Package</dt><dd><strong>{{vm._package.name || 'custom'}}</strong></dd>
-                            <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
-                            <dt>CPU</dt>
-                                <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-                                <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
-                            <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
-                            <dt></dt><dd></dd>
-                            <dt></dt><dd></dd>
-                        </dl>
-                    </td></tr>
-                <tr><th>Network</th>
-                    <td>
-                        <dl ng-repeat='net in vm.config.networks' class="dl-horizontal span3">
-                            <dt>Tag</dt>        <dd><strong>{{net.nic_tag}}</strong></dd>
-                            <dt>Interface</dt>  <dd>{{net.interface | orDefault:'-'}}</dd>
-                            <dt>IP</dt>         <dd>{{net.ip | orDefault:'-'}}</dd>
-                            <dt>Mask</dt>       <dd>{{net.netmask | orDefault:'-'}}</dd>
-                            <dt>Gateway</dt>    <dd>{{net.gateway | orDefault:'-'}}</dd>
-                            <dt>Mac</dt>        <dd>{{net.mac | orDefault:'-'}}</dd>
-                            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
-                            <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
-                        </dl>
-                    </td>
-                </tr>
-                <tr><th>Type</th><td>{{vm.config.type}}</td></tr>
-                <tr><th>Hypervisor</th><td>{{vm.hypervisor}} </td></tr>
-            </table>
-        </div>
+    </div>
     <div class="tab-pane" id="history">
         <table class="table table-condensed table-hover">
             <tr ng-repeat="log in vm.log | orderBy: '-date' ">
@@ -242,7 +204,3 @@
 </div>
 
 
-<div class="row-fluid">
-  <div class="span12">
-
-</div>
