@@ -23,10 +23,10 @@
                     <tr ng-repeat="hyper in hypervisors">
                       <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
                       <td><small>{{hyper['version']}}</small></td>
-                      <td>{{hyper.resources['total-memory'] | Mbytes}}</td>
-                      <td>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
-                      <td>{{hyper.resources['free-memory'] | Mbytes}}</td>
-                      <td>{{hyper.networks.join(', ')}}</td>
+                      <td class='right'>{{hyper.resources['total-memory'] | Mbytes}}</td>
+                      <td class='right'>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
+                      <td class='right'>{{hyper.resources['free-memory'] | Mbytes}}</td>
+                      <td class='right'>{{hyper.networks.join(', ')}}</td>
                       <td>{{hyper.virtualisation.join(', ')}}</td>
                     </tr>
                   </tbody>

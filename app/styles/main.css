@@ -346,13 +346,21 @@ dd {
 
 .dl-horizontal dt {
   float: left;
-  --width: 160px;
+--  width: 160px;
   overflow: hidden;
   clear: left;
   text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.dl-horizontal.wide dt{
+    width: 160px;
+}
+.dl-horizontal.wide dd{
+    width-left: 180px;
+}
+
 
 .box {
     width: 22%;
@@ -374,7 +382,7 @@ dd {
 }
 
 .dl-horizontal dd {
-  --margin-left: 180px;
+ -- margin-left: 180px;
 }
 
 .icon-twitter {
@@ -399,4 +407,9 @@ hr {
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.table .right  {
+    text-align: right;
+    padding-right: 40px;
 }
