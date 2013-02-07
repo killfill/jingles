@@ -302,7 +302,7 @@ footer > hr {
 
 
 dl {
-  margin-bottom: 20px;
+  margin-bottom: 6px;
   margin-top: 4px;
 }
 
@@ -346,13 +346,18 @@ dd {
 
 .dl-horizontal dt {
   float: left;
---  width: 160px;
+  width: 44px;
   overflow: hidden;
   clear: left;
   text-align: right;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
 }
+
+.dl-horizontal dd {
+    margin-left: 53px;
+}
+
 
 .dl-horizontal.wide dt{
     width: 160px;
@@ -363,26 +368,20 @@ dd {
 
 
 .box {
-    width: 22%;
+    width: 21%;
     min-width: 200px;
-    min-height: 132px;
+    min-height: 172px;
     float: left;
     padding: 10px;
     margin: 5px;
+    margin-left: 25px;
 }
 
 .box .header {
+    margin-left: -25px;
     padding-bottom: 8px;
     font-weight: bold;
     font-size: 1.1em;
-}
-
-.box > span {
-    margin-left: 20px;
-}
-
-.dl-horizontal dd {
- -- margin-left: 180px;
 }
 
 .icon-twitter {
@@ -412,4 +411,9 @@ hr {
 .table .right  {
     text-align: right;
     padding-right: 40px;
+}
+
+.clean {
+    border: 0px !important;
+    padding: 0px !important;
 }

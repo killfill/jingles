@@ -31,19 +31,6 @@ fifoApp.filter('fromNow', function() {
     };
 });
 
-var addCommas = function(nStr)
-{
-    nStr += '';
-    var x = nStr.split('.');
-    var x1 = x[0];
-    var x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1 + x2;
-}
-
 var formatBytes = function(defaultPow1024) {
     return function(bytes, hash) {
         if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return;
@@ -64,8 +51,7 @@ var formatBytes = function(defaultPow1024) {
         var str = ( bytes / Math.pow(1024, Math.floor(number)) ).toFixed(precision);
 
         str = str.replace(/(.\d*?)0*$/, "$1").replace(/(.*?)\.$/, "$1"); //trim right-zeros
-        str = addCommas(str)
-        return str +  '' + units[number];
+        return str +  ' ' + units[number];
     }
 }
 

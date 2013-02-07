@@ -12,9 +12,9 @@
                     <tr>
                       <th>Name</th>
                       <th>Agent Version</th>
-                      <th>Memory</th>
-                      <th>Provisioned</th>
-                      <th>Free</th>
+                      <th class='right'>Memory</th>
+                      <th class='right'>Provisioned</th>
+                      <th class='right'>Free</th>
                       <th>Networks</th>
                       <th>Capabilities</th>
                     </tr>
@@ -26,7 +26,7 @@
                       <td class='right'>{{hyper.resources['total-memory'] | Mbytes}}</td>
                       <td class='right'>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
                       <td class='right'>{{hyper.resources['free-memory'] | Mbytes}}</td>
-                      <td class='right'>{{hyper.networks.join(', ')}}</td>
+                      <td>{{hyper.networks.join(', ')}}</td>
                       <td>{{hyper.virtualisation.join(', ')}}</td>
                     </tr>
                   </tbody>

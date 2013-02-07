@@ -42,6 +42,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 };
             };
             $scope.new_pkg = pkg;
+            $scope.description = $scope.vm.mdata('description')
 
             /* Build the snapshots array */
             $scope.snapshots = []
@@ -94,6 +95,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         vmService.updateCustomFields($scope.vm);
         $scope.$apply()
     })
+
+    $scope.save_description = function() {
+        $scope.vm.mdata_set({description: $scope.description})
+        status.info('Description changed')
+    }
 
     $scope.action = function(action, vm) {
         vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, function() {

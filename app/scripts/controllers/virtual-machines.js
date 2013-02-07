@@ -20,8 +20,9 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
     $scope.show = function() {
 
-        $scope.columns = user.mdata('vm_fields') || [
+        $scope.allColumns = [
             {name: 'Name',      visible: true,  field: 'config.alias'},
+            {name: 'Description',visible: false, field: 'metadata.jingles.description'},
             {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
             {name: 'IPs',       visible: true,  field: '_ips_normalized'},
             {name: 'Package',   visible: true,  field: 'package'},
@@ -31,7 +32,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             {name: 'Age',       visible: true,  field: 'config.created_at'},
             {name: 'State',     visible: true,  field: 'state'},
             {name: 'Actions',   visible: true}
-        ];
+        ]
+        $scope.columns = user.mdata('vm_fields') || $scope.allColumns;
 
         wiggle.vms.list(function (ids) {
             ids.length > 0 && status.update('Loading machines', {total: ids.length})

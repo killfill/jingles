@@ -92,8 +92,18 @@
         Created <span jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</span><br/>
        </span>
         <dl class="dl-horizontal">
-            <dt>Type</dt>  <dd>{{vm.config.type}}</dd>
-            <dt>Hyper</dt><dd class='uuid'>{{vm.hypervisor}}</dd>
+            <dt>Type</dt><dd>{{vm.config.type}}</dd>
+            <dt>Hyper</dt><dd class='uuid'><a href="#/hypervisors/{{vm.hypervisor}}">{{vm.hypervisor}}</a></dd>
+        </dl>
+        <form ng-submit='save_description()'>
+        <input 
+            type='text'
+            title='Set description'
+            jq-run='tooltip' type='text'
+            class='input-medium clean'
+            ng-model="description"
+        ></input>
+        </form>
     </div>
     <div class='box'>
         <div class='header'>
@@ -125,13 +135,14 @@
             <i class="icon-retweet"></i> Network {{net.nic_tag}}
         </div>
         <dl class="dl-horizontal">
-            <dt>Interface</dt>  <dd>{{net.interface | orDefault:'-'}}</dd>
-            <dt>IP</dt>         <dd>{{net.ip | orDefault:'-'}}</dd>
-            <dt>Mask</dt>       <dd>{{net.netmask | orDefault:'-'}}</dd>
-            <dt>Gateway</dt>    <dd>{{net.gateway | orDefault:'-'}}</dd>
-            <dt>Mac</dt>        <dd>{{net.mac | orDefault:'-'}}</dd>
-            <dt ng-show='net.model'>Model</dt>      <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
-            <dt>Primary</dt>    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
+            <dt>Nic</dt>    <dd>{{net.interface | orDefault:'-'}}</dd>
+            <dt>IP</dt>     <dd>{{net.ip | orDefault:'-'}}</dd>
+            <dt>Mask</dt>   <dd>{{net.netmask | orDefault:'-'}}</dd>
+            <dt>Router</dt> <dd>{{net.gateway | orDefault:'-'}}</dd>
+            <dt>Mac</dt>    <dd>{{net.mac | orDefault:'-'}}</dd>
+            <dt ng-show='net.model'>Model</dt>
+                            <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
+            <dt>Main</dt>   <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
         </dl>
     </div>
 
