@@ -12,9 +12,9 @@
                     <tr>
                       <th>Name</th>
                       <th>Agent Version</th>
-                      <th>Memory</th>
-                      <th>Provisioned</th>
-                      <th>Free</th>
+                      <th>Ram <font size="1">(MB)</font)</th>
+                      <th>Used <font size="1">(MB)</font)</th>
+                      <th>Free <font size="1">(MB)</font)</th>
                       <th>Networks</th>
                       <th>Capabilities</th>
                     </tr>
@@ -23,10 +23,10 @@
                     <tr ng-repeat="hyper in hypervisors">
                       <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
                       <td><small>{{hyper['version']}}</small></td>
-                      <td class='right'>{{hyper.resources['total-memory'] | Mbytes}}</td>
-                      <td class='right'>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
-                      <td class='right'>{{hyper.resources['free-memory'] | Mbytes}}</td>
-                      <td class='right'>{{hyper.networks.join(', ')}}</td>
+                      <td class='left memory'>{{hyper.resources['total-memory'] }}</td>
+                      <td class='left memory'>{{hyper.resources['provisioned-memory'] }}</td>
+                      <td class='left memory'>{{hyper.resources['free-memory'] }}</td>
+                      <td class='left memory'>{{hyper.networks.join(', ')}}</td>
                       <td>{{hyper.virtualisation.join(', ')}}</td>
                     </tr>
                   </tbody>

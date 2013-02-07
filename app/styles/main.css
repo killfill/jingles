@@ -178,6 +178,11 @@ footer > hr {
     text-decoration: none;
 }
 
+.memory {
+    font-family: Consolas, "Andale Mono", monospace, "Courier New";
+    text-decoration: none;
+}
+
 .mono {
     font-family: monospace;
 }
@@ -412,4 +417,9 @@ hr {
 .table .right  {
     text-align: right;
     padding-right: 40px;
+}
+
+.table-condensed th,
+.table-condensed td {
+  padding: 3px 5px;
 }
