@@ -33,7 +33,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
+                    <tr style="background-color: {{vm.mdata('color')}}" ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
                       <td ng-show="columns[0].visible" title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
                         <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
                       </td>

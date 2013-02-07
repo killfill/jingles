@@ -1,0 +1,17 @@
+{
+  "name": "bootstrap-colorpicker",
+  "version": "0.0.0",
+  "main": [
+    "./js/bootstrap-colorpicker.js",
+    "./css/colorpicker.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/theblacksmith/bootstrap-colorpicker.git"
+  },
+  "gitHead": "6456f21e11cbeeadb0b71aef7d3018fbbf87910f",
+  "_id": "bootstrap-colorpicker@1.0.0",
+  "readme": "ERROR: No README.md file found!",
+  "description": "ERROR: No README.md file found!",
+  "commit": "6456f21e11cbeeadb0b71aef7d3018fbbf87910f"
+}

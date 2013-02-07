@@ -96,6 +96,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         $scope.$apply()
     })
 
+    $scope.$watch('color', function(val) {
+        if (!val) return;
+        $scope.vm.mdata_set({color: val})
+        status.info('Color changed')
+    })
+
     $scope.save_description = function() {
         $scope.vm.mdata_set({description: $scope.description})
         status.info('Description changed')
