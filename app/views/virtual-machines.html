@@ -47,7 +47,7 @@
                       </td>
                       <td ng-show="columns[3].visible">{{vm._ips}}</td>
                       <td ng-show="columns[4].visible">{{vm._package.name}}</td>
-                      <td ng-show="columns[5].visible">{{vm.config.ram | Mbytes}}</td>
+                      <td class='memory'ng-show="columns[5].visible">{{vm.config.ram | Mbytes}}</td>
                       <td ng-show="columns[6].visible" jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
                       <td ng-show="columns[7].visible">{{vm.hypervisor}}</td>
                       <td ng-show="columns[8].visible" jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}" class='light nowrap'>{{vm.config.created_at | fromNow}}</td>
