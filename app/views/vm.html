@@ -74,86 +74,109 @@
 <div class="tabbable tabs-top" ng-show='vm.config'>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-    <li><a href="#history" data-toggle="tab">History</a></li>
     <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
     <li><a href="#resize" data-toggle="tab">Resize</a></li>
+    <li><a href="#history" data-toggle="tab">History</a></li>
     <li><a href="#notes" data-toggle="tab">Notes</a></li>
-
-    <!-- <li><a href="#tab2" data-toggle="tab">Notes</a></li>
-    <li><a href="#tab2" data-toggle="tab">Performance</a></li>
-    -->
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="details">
-    <div class='box'>
-        <div class='header'>
-            <i class="icon-hand-right"></i> Machine {{vm.config.alias}}<br/>
+    <div class="row-fluid">
+
+        <div class="box">
+
+            <div class="header">
+                Machine <span class="badge badge-info">{{vm.config.alias}}</span>
+            </div>
+
+            <dl class="dl-horizontal">
+              <dt>Created</dt>
+                <dd jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</dd>
+              <dt>Type</dt>
+                <dd>{{vm.config.type}}</dd>
+              <dt>Hypervisor</dt>
+                <dd><a href="#/hypervisors/{{vm.hypervisor}}"><small>{{vm.hypervisor}}</small></a></dd>
+            </dl>
+
+            <form ng-submit='save_description()'>
+                <input 
+                    type='text'
+                    title='Set description'
+                    jq-run='tooltip' type='text'
+                    class='input-medium clean'
+                    ng-model="description"
+                ></input><br/>
+                <div class="btn-group">
+                    <a  class="btn btn-mini" 
+                        style="background-color: {{vm.mdata('color')}}; background-image: none; text-shadow: 0 0px 5px rgba(255, 255, 255, 0.75);" 
+                        ng-model='color' colorpicker>Color</a>
+                    <a class="btn btn-mini" ng-click='color=false'>x</a>
+                </div>
+            </form>
         </div>
-       <span>
-        Created <span jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</span><br/>
-       </span>
-        <dl class="dl-horizontal">
-            <dt>Type</dt><dd>{{vm.config.type}}</dd>
-            <dt>Hyper</dt><dd class='uuid'><a href="#/hypervisors/{{vm.hypervisor}}">{{vm.hypervisor}}</a></dd>
-        </dl>
-        <form ng-submit='save_description()'>
-        <input 
-            type='text'
-            title='Set description'
-            jq-run='tooltip' type='text'
-            class='input-medium clean'
-            ng-model="description"
-        ></input><br/>
-        <div class="btn-group">
-            <a  class="btn btn-mini" 
-                style="background-color: {{vm.mdata('color')}}; background-image: none; text-shadow: 0 0px 5px rgba(255, 255, 255, 0.75);" 
-                ng-model='color' colorpicker>Color</a>
-            <a class="btn btn-mini" ng-click='color=false'>x</a>
+
+        <div class="box">
+
+            <div class="header">
+                Package <span class="badge badge-info">{{vm._package.name || 'custom'}}
+            </div>
+
+            <dl class="dl-horizontal">
+                <dt style="text-align: left;">CPU</dt>
+                    <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
+                    <dd ng-hide='vm.config.vcpus'>
+                        {{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}}
+                        {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
+                <dt>Ram</dt>
+                    <dd class='memory'>{{vm.config.ram | Mbytes}}</dd>
+                <dt>Disk</dt>
+                    <dd class='memory'>{{vm.config.quota | Gbytes}}</dd>
+            </dl>
         </div>
-        </form>
+
+        <div class="box">
+            <div class="header">
+                Dataset 
+                <span ng-show='vm.config._dataset' class="badge badge-info">
+                    {{vm.config._dataset.name}} {{vm.config._dataset.version}}
+                </span>
+                <img jq-run='tooltip' title="{{vm.config._dataset.os || 'unknown'}}"
+                    ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
+            </div>
+            
+            <dl class="dl-horizontal">
+              <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
+              <dt>Info</dt><dd>{{vm.config._dataset.description}}</dd>
+            </dl>
+        </div>
+
+        <div class="box" ng-repeat='net in vm.config.networks'>
+        
+            <div class="header">
+                Network <span class="badge badge-info">{{net.nic_tag}}</span>
+            </div>
+
+            <dl class="dl-horizontal">
+                <dt>NIC</dt>
+                    <dd>{{net.interface | orDefault:'-'}}</dd>
+                <dt>IP</dt>
+                    <dd>{{net.ip | orDefault:'-'}}</dd>
+                <dt>Mask</dt>
+                    <dd>{{net.netmask | orDefault:'-'}}</dd>
+                <dt>Router</dt>
+                    <dd>{{net.gateway | orDefault:'-'}}</dd>
+                <dt>Mac</dt>
+                    <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
+                <dt ng-show='net.model'>Model</dt>
+                    <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
+                <dt>Main</dt>
+                    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
+            </dl>
+
+        </div>
     </div>
-    <div class='box'>
-        <div class='header'>
-            <i class="icon-tasks"></i> Package {{vm._package.name || 'custom'}}
-        </div>
-        <dl class="dl-horizontal">
-            <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
-            <dt>CPU</dt>
-                <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-                <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
-            <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
-            <dt></dt><dd></dd>
-            <dt></dt><dd></dd>
-        </dl>
-    </div>
-    <div class='box'>
-        <div class='header'>
-            <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
-            <span ng-show='vm.config._dataset'>
-                Dataset {{vm.config._dataset.name}} ({{vm.config._dataset.version}})<br/>
-            </span>
-        </div>
-        <span>{{vm.config._dataset.description}}<br/></span>
-        <span class='light'>{{vm.config.dataset}}</span>
     </div>
 
-    <div class="box" ng-repeat='net in vm.config.networks'>
-        <div class='header'>
-            <i class="icon-retweet"></i> Network {{net.nic_tag}}
-        </div>
-        <dl class="dl-horizontal">
-            <dt>Nic</dt>    <dd>{{net.interface | orDefault:'-'}}</dd>
-            <dt>IP</dt>     <dd>{{net.ip | orDefault:'-'}}</dd>
-            <dt>Mask</dt>   <dd>{{net.netmask | orDefault:'-'}}</dd>
-            <dt>Router</dt> <dd>{{net.gateway | orDefault:'-'}}</dd>
-            <dt>Mac</dt>    <dd>{{net.mac | orDefault:'-'}}</dd>
-            <dt ng-show='net.model'>Model</dt>
-                            <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
-            <dt>Main</dt>   <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
-        </dl>
-    </div>
-
-    </div>
     <div class="tab-pane" id="history">
         <table class="table table-condensed table-hover">
             <tr ng-repeat="log in vm.log | orderBy: '-date' ">
@@ -218,6 +241,7 @@
         </tr>
       </table>
     </div>
+
     <div class="tab-pane" id="notes">
         <button class="btn btn-success pull-right" ng-click="note('create')">+</button>
         <div class='postit pull-left' ng-repeat='n in notes' jq-run='tooltip' title="{{n.created_at | date:'medium'}}">
@@ -226,7 +250,9 @@
             <br/><small style='color: black' class='nowrap uuid'>{{n.created_at | fromNow}}</small>
         </div>
     </div>
+
   </div>
 </div>
+
 
 

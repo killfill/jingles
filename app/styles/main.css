@@ -322,7 +322,7 @@ dd {
 
 
 .dl-horizontal dd {
-    margin-left: 90px;
+    margin-left: 80px;
 }
 
 .dl-horizontal dt {
@@ -347,16 +347,17 @@ dd {
 
 .dl-horizontal dt {
   float: left;
-  width: 44px;
+  --width: 44px;
   overflow: hidden;
   clear: left;
   text-align: right;
   text-overflow: clip;
+  font-size: 85%;
   white-space: nowrap;
 }
 
 .dl-horizontal dd {
-    margin-left: 53px;
+    font-size: 90%;
 }
 
 
@@ -371,19 +372,44 @@ dd {
 .box {
     width: 21%;
     min-width: 200px;
-    min-height: 173px;
+    min-height: 160px;
     float: left;
     padding: 10px;
     margin: 5px;
     margin-left: 25px;
+
+    background-color: #f5f5f5;
+    border: 1px dashed #e3e3e3;
+
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+       -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
 }
 
 .box .header {
-    margin-left: -25px;
     padding-bottom: 8px;
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 9px;
     font-weight: bold;
     font-size: 1.1em;
+    text-align: center;
 }
+
+.box > .dl-horizontal dt {
+    width: 90px;
+    text-align: left;
+}
+.box > .dl-horizontal dt{
+    width: 30%;
+}
+.box > .dl-horizontal dd {
+    text-align: left;
+}
+
 
 .icon-twitter {
     background-image: url("/images/twitter.png");
@@ -440,4 +466,13 @@ hr {
     box-shadow: 0px 2px 6px #333;
     -moz-box-shadow: 0px 2px 6px #333;
     -webkit-box-shadow: 0px 2px 6px #333;
+}
+
+.dl-horizontal.wide2 dt{
+    width: 50px;
+}
+
+form {
+    padding: 0px;
+    margin: 0px;
 }
