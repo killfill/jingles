@@ -97,7 +97,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     })
 
     $scope.$watch('color', function(val) {
-        if (!val) return;
+        if (typeof val === 'undefined') return;
         $scope.vm.mdata_set({color: val})
         status.info('Color changed')
     })

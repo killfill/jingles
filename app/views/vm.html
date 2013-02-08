@@ -82,7 +82,7 @@
     <li><a href="#tab2" data-toggle="tab">Performance</a></li>
     -->
   </ul>
-  <div class="tab-content" style="background-color: {{vm.mdata('color')}}">
+  <div class="tab-content">
     <div class="tab-pane active" id="details">
     <div class='box'>
         <div class='header'>
@@ -103,7 +103,12 @@
             class='input-medium clean'
             ng-model="description"
         ></input><br/>
-        <a class="btn btn-mini" ng-model='color' colorpicker>Color</a>
+        <div class="btn-group">
+            <a  class="btn btn-mini" 
+                style="background-color: {{vm.mdata('color')}}; background-image: none; text-shadow: 0 0px 5px rgba(255, 255, 255, 0.75);" 
+                ng-model='color' colorpicker>Color</a>
+            <a class="btn btn-mini" ng-click='color=false'>x</a>
+        </div>
         </form>
     </div>
     <div class='box'>
