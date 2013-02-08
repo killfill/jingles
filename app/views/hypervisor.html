@@ -12,6 +12,7 @@
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#zfs" data-toggle="tab">ZFS</a></li>
+      <li><a href="#characteristics" data-toggle="tab">Characteristics</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="details">
@@ -86,6 +87,25 @@
             <td>{{data.free | Mbytes}}</td>
             <td>{{data.used | Mbytes}}</td>
             <td>{{data.size | Mbytes}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="characteristics">
+        <p>
+            Characteristics can be used when <a href="#/packages/new">creating packages</a>.
+            <button class="btn btn-success pull-right" ng-click="add()">+</button>
+        </p>
+        <br/>
+        <table ng-hide='characteristics.length<1' class='table table-bordered'>
+          <!--<tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th style='width: 40px;'></th>
+          </tr>-->
+          <tr ng-repeat='ch in characteristics'>
+            <th>{{ch.name}}</th>
+            <td><input type='text' class='span7' ng-model='ch.value'></td>
+            <td style='width: 40px;'><button class='btn btn-danger pull-right' ng-click='del(ch.name, $index)'>-</button></td>
           </tr>
         </table>
       </div>

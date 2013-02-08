@@ -36,7 +36,11 @@ fifoApp.factory('wiggle', function($resource, $http) {
                           create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
         cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),
-        hypervisors: $resource(endpoint + 'hypervisors/:id', {id: '@id'}),
+        hypervisors: $resource(endpoint + 'hypervisors/:id/:controller/:controller_id', 
+            {id: '@id', controller: '@controller', controller_id: '@controller_id'},
+            {put: {method: 'PUT'},
+             delete: {method: 'DELETE'}}
+        ),
         vms: $resource(endpoint + 'vms/:id/:controller/:controller_id',
             {id: '@id', controller: '@controller', controller_id: '@controller_id'},
             {put: {method: 'PUT'}}

@@ -56,10 +56,6 @@ big {
     font-family: Consolas, "Andale Mono", monospace, "Courier New";
 }
 
-.small {
-    font-size: 0.8em;
-}
-
 @media (max-width: 979px) {
     body {
         padding-top: 0px;
@@ -375,7 +371,7 @@ dd {
 .box {
     width: 21%;
     min-width: 200px;
-    min-height: 172px;
+    min-height: 173px;
     float: left;
     padding: 10px;
     margin: 5px;
