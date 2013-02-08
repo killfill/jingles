@@ -77,6 +77,7 @@
     <li><a href="#history" data-toggle="tab">History</a></li>
     <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
     <li><a href="#resize" data-toggle="tab">Resize</a></li>
+    <li><a href="#notes" data-toggle="tab">Notes</a></li>
 
     <!-- <li><a href="#tab2" data-toggle="tab">Notes</a></li>
     <li><a href="#tab2" data-toggle="tab">Performance</a></li>
@@ -216,6 +217,14 @@
           </td>
         </tr>
       </table>
+    </div>
+    <div class="tab-pane" id="notes">
+        <button class="btn btn-success pull-right" ng-click="note('create')">+</button>
+        <div class='postit pull-left' ng-repeat='n in notes' jq-run='tooltip' title="{{n.created_at | date:'medium'}}">
+            <button class="btn btn-mini pull-right" style='margin-left: 10px' ng-click="note('delete', $index)">x</button>
+            {{n.text}}
+            <br/><small style='color: black' class='nowrap uuid'>{{n.created_at | fromNow}}</small>
+        </div>
     </div>
   </div>
 </div>

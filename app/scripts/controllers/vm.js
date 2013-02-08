@@ -43,6 +43,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             };
             $scope.new_pkg = pkg;
             $scope.description = $scope.vm.mdata('description')
+            $scope.notes = $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; }).reverse() || []
 
             /* Build the snapshots array */
             $scope.snapshots = []
@@ -124,6 +125,26 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     $scope.console = function(vm) {
         window.open("console.html?uuid=" + vm.uuid)
+    }
+
+    $scope.notes = []
+    $scope.note = function(action, idx) {
+
+        switch(action) {
+
+            case 'create':
+                $scope.notes.splice(0, 0, {text: prompt('Enter your note:'), created_at: new Date()})
+                $scope.vm.mdata_set({notes: $scope.notes})
+                status.info('Note created')
+                break;
+
+            case 'delete':
+                $scope.notes.splice(idx, 1)
+                $scope.vm.mdata_set({notes: $scope.notes})
+                status.info('Note deleted')
+                break;
+        }
+
     }
 
     $scope.snapshot = function(action, snap) {
