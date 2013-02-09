@@ -43,7 +43,8 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             };
             $scope.new_pkg = pkg;
             $scope.description = $scope.vm.mdata('description')
-            $scope.notes = $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; }).reverse() || []
+            var _notes = $scope.vm.mdata('notes') && $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; })
+            $scope.notes = _notes? _notes.reverse() : []
 
             /* Build the snapshots array */
             $scope.snapshots = []
