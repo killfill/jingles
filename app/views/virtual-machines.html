@@ -58,15 +58,15 @@
                       <td ng-show="columns[10].visible">
                         <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"
                            ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
-                           class="icon-eye-open clickable"></i>
+                           class="icon-desktop clickable"></i>
 
                         <i ng-click="console(this.vm)" jq-run="tooltip" title="console"
                            ng-show="vm.config && (vm.config.type != 'kvm') && (vm.state == 'running')"
-                           class="icon-eye-open clickable"></i>
+                           class="icon-desktop clickable"></i>
 
                         <i ng-click="action('start', this.vm)" jq-run="tooltip" title="start"
                            ng-hide="vm.state!='stopped'"
-                           class="icon-play-circle clickable"></i>
+                           class="icon-play clickable"></i>
                       </td>
                     </tr>
                   </tbody>
