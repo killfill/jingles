@@ -11,7 +11,7 @@
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Agent Version</th>
+                      <th>Agent</th>
                       <th class='right'>Ram</th>
                       <th class='right'>Used</th>
                       <th class='right'>Free</th>
@@ -22,7 +22,7 @@
                   <tbody>
                     <tr ng-repeat="hyper in hypervisors">
                       <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
-                      <td><small>{{hyper['version']}}</small></td>
+                      <td><small>{{hyper['version'].split(',')[0]}}</small></td>
                       <td class='right memory'>{{hyper.resources['total-memory'] | Mbytes}}</td>
                       <td class='right memory'>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
                       <td class='right memory'>{{hyper.resources['free-memory'] | Mbytes}}</td>
