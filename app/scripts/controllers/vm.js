@@ -134,7 +134,9 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         switch(action) {
 
             case 'create':
-                $scope.notes.splice(0, 0, {text: prompt('Enter your note:'), created_at: new Date()})
+                var n = prompt('Enter your note:')
+                if (n === null) return;
+                $scope.notes.splice(0, 0, {text: n, created_at: new Date()})
                 $scope.vm.mdata_set({notes: $scope.notes})
                 status.info('Note created')
                 break;
@@ -153,6 +155,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
             case 'create':
                 var comment = prompt('Write a comment for the new snapshot:');
+                if (comment === null) return;
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                     function success(data, h) {
                         status.info('Snapshot created');
