@@ -22,6 +22,13 @@
           <tr><th>Networks</th><td>{{hyper.networks.join(", ")}}</td></tr>
           <tr><th>Virtualizations</th><td>{{hyper.virtualisation.join(", ")}}</td></tr>
         </table>
+        <h5>System information:</h5>
+        <table class='table table-condensed table-bordered'>
+            <tr ng-repeat='(key, info) in hyper.sysinfo'>
+                <th class='nowrap'>{{key}}</hd>
+                <td>{{info}}</td>
+            </tr>
+        </table>
       </div>
       <div class="tab-pane" id="performance">
         <table class='table table-condensed table-bordered'>
