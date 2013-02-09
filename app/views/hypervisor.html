@@ -21,7 +21,8 @@
         <div class="hyperbox">
 
             <div class="header">
-                <i class="icon-lightbulb">&nbsp</i><span class="badge badge-info">Information
+                <i class="icon-lightbulb"></i>
+                <span class="badge badge-info">Information</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -29,23 +30,23 @@
                     <dd>{{hyper.sysinfo["Live Image"]}}</dd>
                     <dt>Node name</dt>
                     <dd>{{hyper.name}}</dd>
-                    <dt>ZPool profile</dt>
-                    <dd>{{hyper.sysinfo["Zpool Profile"]}}</dd>
-                    <dt>Zpool disks</dt>
-                    <dd>{{hyper.sysinfo['Zpool Disks']}}</dd>
                     <dt>Agent version</dt>
                     <dd title="{{hyper.version.split(',')[1]}}" jq-run='tooltip'>{{hyper.version.split(',')[0]}}</dd>
                     <dt>Booted</dt>
                     <dd jq-run='tooltip' title="{{hyper.sysinfo['Boot Time'] *1000 | date:'medium'}}">{{hyper.sysinfo['Boot Time'] *1000 | fromNow}}</dd>
+                    <dt>Zpool profile</dt>
+                    <dd>{{hyper.sysinfo["Zpool Profile"]}}</dd>
+                    <dt>Zpool disks</dt>
+                    <dd>{{hyper.sysinfo['Zpool Disks']}}</dd>
             </dl>
-
  
         </div>
 
         <div class="hyperbox">
 
             <div class="header">
-                <i class="icon-tasks">&nbsp</i><span class="badge badge-info">CPU / Mainboard
+                <i class="icon-tasks"></i>
+                <span class="badge badge-info">CPU / Mainboard</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -67,7 +68,8 @@
         <div class="hyperbox">
 
             <div class="header">
-                <i class="icon-beaker">&nbsp</i><span class="badge badge-info">Memory
+                <i class="icon-beaker"></i>
+                <span class="badge badge-info">Memory</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -115,14 +117,6 @@
                 <span class="badge badge-info">Storage</span>
             </div>
 
-            Disks:
-            <dl class='dl-horizontal'>
-                <span ng-repeat='(disk, data) in hyper.sysinfo.Disks'> 
-                <dt>{{disk}}</dt>
-                <dd>{{data['Size in GB'] | Gbytes}}</dd>
-                </span>     
-            </dl>
-
             <dl class="dl-horizontal" ng-repeat='(name, data) in hyper.pools'>
                     <dt>Pool</dt>
                     <dd>{{name}} ({{data.health}})</dd>
@@ -138,15 +132,20 @@
                     <dd ng-show="hyper.resources['l2size']">{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
             </dl>
 
+            <a class="accordion-toggle" data-toggle="collapse" href="#disks">
+                Disks
+            </a>
+            <dl class='dl-horizontal collapse' id='disks'>
+                <span ng-repeat='(disk, data) in hyper.sysinfo.Disks'> 
+                <dt>{{disk}}</dt>
+                <dd>{{data['Size in GB'] | Gbytes}}</dd>
+                </span>     
+            </dl>
+
         </div>
 
-
-
       </div>
-
-
       </div>  
-
 
       <div class="tab-pane" id="characteristics">
         <p>
