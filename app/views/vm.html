@@ -124,12 +124,9 @@
             <dl class="dl-horizontal">
                 <dt>CPU</dt>
                     <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-                    <dd ng-hide='vm.config.vcpus' jq-run='tooltip'
-                        title="{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}}<br/>
-                               {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}">
-                        {{vm.config.cpu_shares/100}} 
-                        <small>{{(vm.config.cpu_cap != vm.config.cpu_shares) && '(burst '+ vm.config.cpu_cap/100 + ')' || ''}}</small>
-                        </dd>
+                    <dd ng-hide='vm.config.vcpus'>
+                        {{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}}<br/>
+                        {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
                 <dt>Ram</dt>
                     <dd class='memory'>{{vm.config.ram | Mbytes}}</dd>
                 <dt>Disk</dt>
