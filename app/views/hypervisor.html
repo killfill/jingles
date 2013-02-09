@@ -11,92 +11,106 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
-      <li><a href="#zfs" data-toggle="tab">ZFS</a></li>
       <li><a href="#characteristics" data-toggle="tab">Characteristics</a></li>
     </ul>
+    
     <div class="tab-content">
-      <div class="tab-pane active" id="details">
-        <table class='table table-condensed table-bordered'>
-          <tr><th>Name</th><td><b>{{hyper.name}}</b></td></tr>
-          <tr><th>Agent Version</th><td>{{hyper.version}}</td></tr>
-          <tr><th>Networks</th><td>{{hyper.networks.join(", ")}}</td></tr>
-          <tr><th>Virtualizations</th><td>{{hyper.virtualisation.join(", ")}}</td></tr>
-        </table>
-        <h5>System information:</h5>
-        <table class='table table-condensed table-bordered'>
-            <tr ng-repeat='(key, info) in hyper.sysinfo'>
-                <th class='nowrap'>{{key}}</hd>
-                <td>{{info}}</td>
-            </tr>
-        </table>
+    <div class="tab-pane active" id="details">
+    <div class="row-fluid">
+
+        <div class="hyperbox">
+
+            <div class="header">
+                <i class="icon-tasks">&nbsp</i><span class="badge badge-info">CPU / Mainboard
+            </div>
+
+            <dl class="dl-horizontal">
+                    <dt>CPU type</dt>
+                    <dd>{{hyper.sysinfo["CPU Type"]}}</dd>
+                    <dt>CPU sockets</dt>
+                    <dd>{{hyper.sysinfo["CPU Physical Cores"]}}</dd>
+                    <dt>CPU cores</dt>
+                    <dd>{{hyper.sysinfo["CPU Total Cores"]}}</dd>
+                    <dt>Capability</dt>
+                    <dd>{{hyper.virtualisation.join(", ")}}</dd>
+                    <dt>Mainboard</dt>
+                    <dd>{{hyper.sysinfo["Product"]}}</dd>
+                    <dt>Manufacturer</dt>
+                    <dd>{{hyper.sysinfo["Manufacturer"]}}</dd>
+            </dl>
+        </div>
+
+        <div class="hyperbox">
+
+            <div class="header">
+                <i class="icon-beaker">&nbsp</i><span class="badge badge-info">Memory
+            </div>
+
+            <dl class="dl-horizontal">
+                    <dt>Total</dt>
+                    <dd>{{hyper.resources["total-memory"] | Mbytes}}</dd>
+                    <dt>Provisioned</dt>
+                    <dd>{{hyper.resources["provisioned-memory"] | Mbytes}}</dd>
+                    <dt>Free</dt>
+                    <dd>{{hyper.resources["free-memory"] | Mbytes}}</dd>
+                    <dt>L1 Size</dt>
+                    <dd>{{hyper.resources["l1size"] | Mbytes}}</dd>
+                    <dt>L1 Arc hit %</dt>
+                    <dd>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</dd>
+            </dl>
+        </div>
+
+        <div class="hyperbox">
+
+            <div class="header">
+                <i class="icon-hdd">&nbsp</i><span class="badge badge-info">Storage
+            </div>
+
+            <dl class="dl-horizontal">
+                    <dt>Pool</dt>
+                    <dd ng-repeat='(name, data) in hyper.pools'>{{name}} ({{data.health}})</dd>
+                    <dt>ZFS size</dt>
+                    <dd ng-repeat='(name, data) in hyper.pools'>{{data.size | Mbytes}}</dd>
+                    <dt>ZFS used</dt>
+                    <dd ng-repeat='(name, data) in hyper.pools'>{{data.used | Mbytes}}</dd>
+                    <dt>ZFS free</dt>
+                    <dd ng-repeat='(name, data) in hyper.pools'>{{data.free | Mbytes}}</dd>
+                    <dt ng-show="hyper.resources['l2size']">L2 Size</dt>
+                    <dd ng-show="hyper.resources['l2size']">{{hyper.resources["l2size"] | Mbytes  | orDefault:'-'}}</dd>
+                    <dt ng-show="hyper.resources['l2size']">L2 Arc hit %</dt>
+                    <dd ng-show="hyper.resources['l2size']">{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
+            </dl>
+        </div>
+
+        <div class="hyperbox">
+
+            <div class="header">
+                <i class="icon-lightbulb">&nbsp</i><span class="badge badge-info">Information
+            </div>
+
+            <dl class="dl-horizontal">
+                    <dt>SmartOS ver</dt>
+                    <dd>{{hyper.sysinfo["Live Image"]}}</dd>
+                    <dt>Node name</dt>
+                    <dd>{{hyper.name}}</dd>
+                    <dt>Network tags</dt>
+                    <dd>{{hyper.networks.join(", ")}}</dd>
+                    <dt>Raid profile</dt>
+                    <dd>{{hyper.sysinfo["Zpool Profile"]}}</dd>
+                    <dt>Agent version</dt>
+                    <dd><small>{{hyper.version}}</small></dd>
+                    <dt ng-show='hyper.sysinfo["Serial Number"]'>Serial</dt>
+                    <dd ng-show='hyper.sysinfo["Serial Number"]'>{{hyper.sysinfo["Serial Number"]  | orDefault:'-'}}</dd>
+            </dl>
+        </div>
+
       </div>
+      </div>  
+
       <div class="tab-pane" id="performance">
-        <table class='table table-condensed table-bordered'>
-          <tr>
-            <th rowspan="3">Memory</th>
-            <td><b>Free</b></td>
-            <td>{{hyper.resources["free-memory"] | Mbytes}}</td>
-          </tr>
-          <tr>
-            <td><b>Provisioned</b></td>
-            <td>{{hyper.resources["provisioned-memory"] | Mbytes}}</td>
-          </tr>
-          <tr>
-            <td><b>Total</b></td>
-            <td>{{hyper.resources["total-memory"] | Mbytes}}</td>
-          </tr>
-          <tr>
-            <th rowspan="4">L1 Arc</th>
-            <td><b>Hit</b></td>
-            <td>{{hyper.resources["l1hits"]}}</td>
-          </tr>
-          <tr>
-            <td><b>Miss</b></td>
-            <td>{{hyper.resources["l1miss"]}}</td>
-          </tr>
-          <tr>
-            <td><b>Hit Ratio</b></td>
-            <td>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</td>
-          </tr>
-          <tr>
-            <td><b>Size</b></td>
-            <td>{{hyper.resources["l1size"] | Mbytes}}</td>
-          </tr>
-          <tr ng-show="hyper.resources['l2size']">
-            <th rowspan="4">L2 Arc</th>
-            <td><b>Hit</b></td>
-            <td>{{hyper.resources["l2hits"]}}</td>
-          </tr>
-          <tr ng-show="hyper.resources['l2size']">
-            <td><b>Miss</b></td>
-            <td>{{hyper.resources["l2miss"]}}</td>
-          </tr>
-          <tr ng-show="hyper.resources['l2size']">
-            <td><b>Hit Ratio</b></td>
-            <td>{{(hyper.resources["l2hits"]/(hyper.resources["l2hits"] + hyper.resources["l2miss"])).toFixed(2)}}%</td>
-          </tr>
-          <tr ng-show="hyper.resources['l2size']">
-            <td><b>Size</b></td>
-            <td>{{hyper.resources["l2size"]}}</td>
-          </tr>
-        </table>
+        
       </div>
-      <div class="tab-pane" id="zfs">
-        <table class='table table-condensed table-bordered'>
-          <tr>
-            <th>Pool</th>
-            <th>Free</th>
-            <th>Used</th>
-            <th>Size</th>
-          </tr>
-          <tr ng-repeat="(name, data) in hyper.pools">
-            <th>{{name}} ({{data.health}})</th>
-            <td>{{data.free | Mbytes}}</td>
-            <td>{{data.used | Mbytes}}</td>
-            <td>{{data.size | Mbytes}}</td>
-          </tr>
-        </table>
-      </div>
+
       <div class="tab-pane" id="characteristics">
         <p>
             Characteristics can be used when <a href="#/packages/new">creating packages</a>.
