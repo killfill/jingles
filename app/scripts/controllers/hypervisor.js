@@ -16,6 +16,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
 
     $scope.add = function() {
         var key = prompt('Enter the key of the new characteristic:')
+        if (key===null) return;
         $scope.characteristics.push({
             name: key,
             value: ''
