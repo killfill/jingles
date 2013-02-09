@@ -107,6 +107,22 @@
                             <th class='nowrap'>Resolver 2</th>
                             <td><input type=text ng-model='resolver2'/></td>
                         </tr>
+                        <tr class="small">
+                            <th class="nowrap">User script</th>
+                            <td><input type='text' ng-model='userScript'/></td>
+                        </tr>
+
+                        <tr class='small' ng-repeat='meta in metadata'>
+                            <th class="nowrap">{{meta.key}}</th>
+                            <th class="nowrap">
+                                <input type='text' ng-model='meta.value'/>
+                                <button class='btn btn-small btn-danger' style='margin-bottom: 10px;' ng-click="meta_action('delete', $index)">-</button>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td colspan='2'><button class='btn btn-success pull-right' title='Add customer_metadata field' jq-run='tooltip' ng-click="meta_action('create')">+</button></td>
+                        </tr>
                     </table>
                   </div>
                 </div>

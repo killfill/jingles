@@ -9,6 +9,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             dataset: $scope.selectedDataset.dataset,
             config: {
                 networks: {},
+                metadata: {},
                 alias: $scope.alias,
                 root_pw: $scope.root_pw,
                 admin_pw: $scope.admin_pw,
@@ -25,6 +26,13 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             vm.config.resolvers = [$scope.resolver1];
         if ($scope.resolver2)
             vm.config.resolvers.push($scope.resolver2)
+
+        if ($scope.userScript)
+            vm.config.metadata['user-script'] = $scope.userScript
+
+        $scope.metadata.forEach(function(h) {
+            vm.config.metadata[h.key] = h.value;
+        })
 
         vm.$save({},
             function success(data, headers) {
@@ -53,6 +61,21 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             $scope.selectedNetworks.splice(idx, 1)
         else
             $scope.selectedNetworks.push(network)
+    }
+
+    $scope.metadata = []
+    $scope.meta_action = function(action, idx) {
+        switch (action) {
+            case 'delete':
+                $scope.metadata.splice(idx, 1)
+                break;
+            
+            case 'create':
+                var txt = prompt('Enter metadata key:')
+                if (txt === null) return;
+                $scope.metadata.push({key: txt})
+                break;
+        }
     }
 
     $scope.init = function() {
