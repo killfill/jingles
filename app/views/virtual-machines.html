@@ -60,11 +60,11 @@
                            ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
                            class="icon-desktop clickable"></i>
 
-                        <i ng-click="console(this.vm)" jq-run="tooltip" title="console"
+                        <i ng-click="console(this.vm)" jq-run="tooltip" title="Console"
                            ng-show="vm.config && (vm.config.type != 'kvm') && (vm.state == 'running')"
                            class="icon-desktop clickable"></i>
 
-                        <i ng-click="action('start', this.vm)" jq-run="tooltip" title="start"
+                        <i ng-click="action('start', this.vm)" jq-run="tooltip" title="Start"
                            ng-hide="vm.state!='stopped'"
                            class="icon-play clickable"></i>
                       </td>

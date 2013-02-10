@@ -8,50 +8,59 @@
         </div>
         <div class='span4'>
             <div class="btn-toolbar btn-group pull-right">
-                <div class="btn-group" style="margin-right: 30px;">
+                <div class="btn-group" style="margin-right: 20px;">
+                    <button ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'" 
+                        ng-click="action('delete', vm)" ng-disabled="vm.mdata('locked')" class="btn btn-small" 
+                        title='Delete' jq-run='tooltip'>
+                        <i class='icon-trash'></i>
+                    </button>
                     <button
                         ng-click='vnc(vm)'
                         ng-show="vm.config && (vm.config.type == 'kvm') && vm.state=='running'"
                         title='vnc'
                         jq-run='tooltip'
-                        class="btn">
+                        class="btn btn-small">
                         <i class='icon-desktop'></i>
                     </button>
                     <button
                         ng-click='console(vm)'
                         ng-show="vm.config && (vm.config.type != 'kvm') && vm.state=='running'"
-                        title='console'
+                        title='Console'
                         jq-run='tooltip'
-                        class="btn">
+                        class="btn btn-small">
                         <i class='icon-desktop'></i>
                     </button>
-
+                    <button ng-click="lock()" class="btn btn-small" 
+                        title='Lock vm for changes' jq-run='tooltip'>
+                        <i class='icon-lock'></i>
+                    </button>
                 </div>
 
                 <div class="btn-group">
-                    <button ng-click="action('start', vm)"  ng-disabled="vm.state!='stopped' || vm.mdata('locked')"
-                            class="btn btn-success">
+                    <button ng-click="action('start', vm)"  
+                        ng-disabled="vm.state!='stopped' || vm.mdata('locked')"
+                        title='Start'
+                        jq-run='tooltip'
+                        class="btn">
                         <i class='icon-play'></i>
                     </button>
-                    <button ng-click="action('reboot', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')"
-                            class="btn">
+                    <button ng-click="action('reboot', vm)" 
+                        ng-disabled="vm.state!='running' || vm.mdata('locked')"
+                        title='Reboot'
+                        jq-run='tooltip'
+                        class="btn">
                         <i class='icon-refresh'></i>
                     </button>
-                    <button ng-click="action('stop', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')"
-                            class="btn btn-warning">
+                    <button ng-click="action('stop', vm)" 
+                        ng-disabled="vm.state!='running' || vm.mdata('locked')"
+                        title='Stop'
+                        jq-run='tooltip'
+                        class="btn">
                         <i class='icon-stop'></i>
                     </button>
-                    <button ng-click="lock()" class="small btn">
-                        <i class='icon-lock'></i>
-                    </button>
 
                 </div>
 
-                <div class="btn-group" ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'">
-                    <button ng-click="action('delete', vm)" ng-disabled="vm.mdata('locked')" class="btn" title='Delete' jq-run='tooltip'>
-                        <i class='icon-trash'></i>
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -103,7 +112,7 @@
                     type='text'
                     title='Set description'
                     jq-run='tooltip' type='text'
-                    class='input-medium clean'
+                    class='clean'
                     ng-model="description"
                 ></input><br/>
                 <div class="btn-group">

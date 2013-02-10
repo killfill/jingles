@@ -51,7 +51,7 @@
                     <dt>CPU type</dt>
                     <dd>{{hyper.sysinfo["CPU Type"]}}</dd>
                     <dt>Cores</dt>
-                    <dd>{{hyper.sysinfo["CPU Total Cores"]}} ({{hyper.sysinfo["CPU Physical Cores"]}} cpu)</dd>
+                    <dd>{{hyper.sysinfo["CPU Total Cores"]}} ({{hyper.sysinfo["CPU Physical Cores"]}} cpus)</dd>
                     <dt>Capability</dt>
                     <dd>{{hyper.virtualisation.join(", ")}}</dd>
                     <dt>Mainboard</dt>
@@ -85,30 +85,6 @@
         </div>
 
         <div class="hyperbox">
-            <div class="header">
-                <i class="icon-signal"></i>
-                <span class="badge badge-info">Networks</span>
-            </div>
-
-            <dl class="dl-horizontal">
-                <dt>Main IP</dt>
-                <dd>{{hyper.host}}</dd>
-                <dt>Network tags</dt>
-                <dd>{{hyper.networks.join(", ")}}</dd>
-            </dl>
-
-           <dl class="dl-horizontal" ng-repeat="(iface, data) in hyper.sysinfo['Network Interfaces']">
-                <dt>NIC {{$index + 1}}</dt>
-                <dd>{{iface}}</dd>
-                <dt>IP</dt>
-                <dd>{{data['ip4addr']}}</dd>
-                <dt>Mac</dt>
-                <dd>{{data['MAC Address']}}</dd>
-                <dt>tags</dt>
-                <dd>{{data['NIC Names'].join(', ')}}</dd>
-            </dl>
-        </div>
-        <div class="hyperbox">
 
             <div class="header">
                 <i class="icon-hdd"></i>
@@ -140,6 +116,31 @@
                 </span>     
             </dl>
 
+        </div>
+
+        <div class="hyperbox">
+            <div class="header">
+                <i class="icon-signal"></i>
+                <span class="badge badge-info">Networks</span>
+            </div>
+
+            <dl class="dl-horizontal">
+                <dt>Main IP</dt>
+                <dd>{{hyper.host}}</dd>
+                <dt>Network tags</dt>
+                <dd>{{hyper.networks.join(", ")}}</dd>
+            </dl>
+
+           <dl class="dl-horizontal" ng-repeat="(iface, data) in hyper.sysinfo['Network Interfaces']">
+                <dt>NIC {{$index + 1}}</dt>
+                <dd>{{iface}}</dd>
+                <dt>IP</dt>
+                <dd>{{data['ip4addr']}}</dd>
+                <dt>Mac</dt>
+                <dd>{{data['MAC Address']}}</dd>
+                <dt ng-show="data['NIC Names'].length>0">tags</dt>
+                <dd ng-show="data['NIC Names'].length>0">{{data['NIC Names'].join(', ')}}</dd>
+            </dl>
         </div>
 
       </div>
