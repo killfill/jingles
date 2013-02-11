@@ -372,7 +372,7 @@ dd {
 .box {
     width: 21%;
     min-width: 200px;
-    min-height: 160px;
+    min-height: 180px;
     float: left;
     padding: 10px;
     margin: 5px;

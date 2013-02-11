@@ -95,7 +95,7 @@
         <div class="box">
 
             <div class="header">
-                Machine <span class="badge badge-info clickable" ng-click='change_alias()'>{{vm.config.alias}}</span>
+                Machine <span class="badge badge-info">{{vm.config.alias}}</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -103,21 +103,28 @@
                 <dd jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</dd>
               <dt>Type</dt>
                 <dd>{{vm.config.type}}</dd>
+              <dt>Alias</dt>
+                <dd class="clickable" ng-click='change_alias()'"><a><small>{{vm.config.alias}}</small></a></dd>
               <dt>Hypervisor</dt>
                 <dd><a href="#/hypervisors/{{vm.hypervisor}}"><small>{{vm.hypervisor}}</small></a></dd>
-            </dl>
-
+                <dt>Describe</dt>
+                <dd>
             <form ng-submit='save_description()'>
                 <input 
                     type='text'
+                    style="width: 120px;"
+                    maxlength="25"
                     title='Set description'
                     jq-run='tooltip' type='text'
                     class='clean'
                     ng-model="description"
                 ></input><br/>
             </form>
-            <small>List View:</small>
-            <select name="colorpicker" ng-model='color' simplecolorpicker>
+                </dd>
+            <dt>List Color:</dt>
+            <dd>
+
+                <select name="colorpicker" ng-model='color' simplecolorpicker>
                 <option value="#ffffff">Clear</option>
                 <option value="#7bd148">Green</option>
                 <option value="#5484ed">Bold blue</option>
@@ -132,12 +139,16 @@
                 <option value="#dbadff">Purple</option>
             </select>
 
+            </dd>    
+            </dl>
+            
+            
+
         </div>
 
         <div class="box">
-
             <div class="header">
-                Package <span class="badge badge-info">{{vm._package.name || 'custom'}}
+                Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
             </div>
 
             <dl class="dl-horizontal">
