@@ -2,7 +2,7 @@
             <div class="row-fluid">
               <div class="span12">
               	<h2>Virtual Machines
-              		<a style="float: right; margin-left: 20px;" href="#/virtual-machines/new" class="btn btn-inverse">
+              		<a title='Create a new Machine' jq-run='tooltip' style="float: right; margin-left: 20px;" href="#/virtual-machines/new" class="btn btn-inverse">
               			<i class="icon-white icon-plus"></i> New
               		</a>
                     <column-selector class='hidden' id='popupContent'>
@@ -14,7 +14,7 @@
                         class='btn btn-info'>
                         <i class='icon-white icon-list'></i>
                     </button>
-              		<input style="float: right" type="text" class="search-query span3" placeholder='Search' ng-model='searchQuery'>
+              		<input style="float: right" type="text" class="search-query span3" placeholder='Filter' ng-model='searchQuery'>
               	</h2>
                 <hr/>
               </div>

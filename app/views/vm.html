@@ -31,7 +31,7 @@
                         <i class='icon-desktop'></i>
                     </button>
                     <button ng-click="lock()" class="btn btn-small" 
-                        title='Lock vm for changes' jq-run='tooltip'>
+                        title='Lock vm to prevent changes' jq-run='tooltip'>
                         <i class='icon-lock'></i>
                     </button>
                 </div>
@@ -104,9 +104,9 @@
               <dt>Type</dt>
                 <dd>{{vm.config.type}}</dd>
               <dt>Alias</dt>
-                <dd class="clickable" ng-click='change_alias()'"><a><small>{{vm.config.alias}}</small></a></dd>
+                <dd title='Change alias name' jq-run='tooltip' class="clickable" ng-click='change_alias()'"><a><small>{{vm.config.alias}}</small></a></dd>
               <dt>Hypervisor</dt>
-                <dd><a href="#/hypervisors/{{vm.hypervisor}}"><small>{{vm.hypervisor}}</small></a></dd>
+                <dd><a title='View hypervisor {{vm.hypervisor}}' jq-run='tooltip'href="#/hypervisors/{{vm.hypervisor}}"><small>{{vm.hypervisor}}</small></a></dd>
                 <dt>Describe</dt>
                 <dd>
             <form ng-submit='save_description()'>
@@ -121,7 +121,7 @@
                 ></input><br/>
             </form>
                 </dd>
-            <dt>List Color:</dt>
+            <dt>List Color</dt>
             <dd>
 
                 <select name="colorpicker" ng-model='color' simplecolorpicker>

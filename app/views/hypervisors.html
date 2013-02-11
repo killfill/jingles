@@ -11,9 +11,10 @@
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Agent</th>
+                      <th>IPv4</th>
+                      <th class='right'>Booted</th>                      
+                      <th>Agent ver</th>
                       <th class='right'>Ram</th>
-                      <th class='right'>Used</th>
                       <th class='right'>Free</th>
                       <th>Networks</th>
                       <th>Capabilities</th>
@@ -21,10 +22,11 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="hyper in hypervisors">
-                      <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>
+                      <td class='nowrap'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>                                         
+                      <td class='nowrap'>{{hyper.host}}</td>
+                      <td class='right memory'>{{hyper.sysinfo['Boot Time'] *1000 | fromNow}}</td> 
                       <td><small>{{hyper['version'].split(',')[0]}}</small></td>
                       <td class='right memory'>{{hyper.resources['total-memory'] | Mbytes}}</td>
-                      <td class='right memory'>{{hyper.resources['provisioned-memory'] | Mbytes }}</td>
                       <td class='right memory'>{{hyper.resources['free-memory'] | Mbytes}}</td>
                       <td>{{hyper.networks.join(', ')}}</td>
                       <td>{{hyper.virtualisation.join(', ')}}</td>
