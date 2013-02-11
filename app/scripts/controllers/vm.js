@@ -58,6 +58,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             cb && cb($scope.vm)
         })
     }
+
     $scope.update = function() {
         wiggle.vms.put({id: $scope.vm.uuid}, {"package": $scope.new_pkg},
             function success() {
@@ -100,7 +101,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     })
 
     $scope.$watch('color', function(val) {
-        if (typeof val === 'undefined') return;
+        if (typeof val === 'undefined' || !$scope.vm || val == $scope.vm.mdata('color')) return;
         $scope.vm.mdata_set({color: val})
         status.info('Color changed')
     })
