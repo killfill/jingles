@@ -95,7 +95,7 @@
         <div class="box">
 
             <div class="header">
-                Machine <span class="badge badge-info">{{vm.config.alias}}</span>
+                Machine <span class="badge badge-info clickable" ng-click='change_alias()'>{{vm.config.alias}}</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -116,6 +116,7 @@
                     ng-model="description"
                 ></input><br/>
             </form>
+            <small>List View:</small>
             <select name="colorpicker" ng-model='color' simplecolorpicker>
                 <option value="#ffffff">Clear</option>
                 <option value="#7bd148">Green</option>

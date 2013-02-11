@@ -435,9 +435,11 @@ hr {
     padding-right: 40px;
 }
 
-.clean {
+input.clean {
     border: 0px !important;
     padding: 0px !important;
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .table-condensed th,

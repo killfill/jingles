@@ -105,6 +105,19 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         status.info('Color changed')
     })
 
+    $scope.change_alias = function() {
+        var txt = prompt('Enter new alias:')
+        if (!txt) return
+
+        wiggle.vms.put({id: $scope.vm.uuid}, {config: {alias: txt}},
+            function success() {
+                status.info('Alias changed')
+                $scope.vm.config.alias = txt;
+                updateVm()
+            }
+        )
+    }
+
     $scope.save_description = function() {
         $scope.vm.mdata_set({description: $scope.description})
         status.info('Description changed')
