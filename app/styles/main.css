@@ -376,7 +376,7 @@ dd {
     float: left;
     padding: 10px;
     margin: 5px;
-    margin-left: 25px;
+    --margin-left: 25px;
 
     background-color: #f5f5f5;
     border: 1px dashed #e3e3e3;
@@ -423,7 +423,7 @@ hr {
 
 .tabs-top > .tab-content {
     background-color: white; 
-    padding: 30px 15px 15px 15px; 
+    padding: 20px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
@@ -515,4 +515,8 @@ form {
 .hyperbox > .dl-horizontal dd {
     text-align: left;
     font-size: 12px;
+}
+
+.thumbnail {
+    padding: 10px;
 }
