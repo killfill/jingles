@@ -79,6 +79,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
                         if (!that.metadata) that.metadata = {}
                         if (!that.metadata.jingles) that.metadata.jingles = {}
                         that.metadata.jingles[k] = obj[k]
+                        cb && cb(obj)
                     })
                 })
             }

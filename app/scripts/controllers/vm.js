@@ -43,6 +43,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             };
             $scope.new_pkg = pkg;
             $scope.description = $scope.vm.mdata('description')
+            $scope.alias = $scope.vm.config.alias
             $scope.color = $scope.vm.mdata('color')
             var _notes = $scope.vm.mdata('notes') && $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; })
             $scope.notes = _notes? _notes.reverse() : []
@@ -106,22 +107,21 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         status.info('Color changed')
     })
 
-    $scope.change_alias = function() {
-        var txt = prompt('Enter new alias:')
-        if (!txt) return
+    $scope.save_vm_info = function() {
 
-        wiggle.vms.put({id: $scope.vm.uuid}, {config: {alias: txt}},
-            function success() {
-                status.info('Alias changed')
-                $scope.vm.config.alias = txt;
-                updateVm()
-            }
-        )
-    }
+        if ($scope.alias != $scope.vm.config.alias)
+            wiggle.vms.put({id: $scope.vm.uuid}, {config: {alias: $scope.alias}},
+                function success() {
+                    status.info('Alias changed')
+                    $scope.vm.config.alias = $scope.alias;
+                    updateVm()
+                }
+            )
 
-    $scope.save_description = function() {
-        $scope.vm.mdata_set({description: $scope.description})
-        status.info('Description changed')
+        if ($scope.description != $scope.vm.mdata('description')) {
+            $scope.vm.mdata_set({description: $scope.description})
+            status.info('Description changed')
+        }
     }
 
     $scope.action = function(action, vm) {

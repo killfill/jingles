@@ -372,7 +372,7 @@ dd {
 .box {
     width: 21%;
     min-width: 200px;
-    min-height: 180px;
+    min-height: 151px;
     float: left;
     padding: 10px;
     margin: 5px;
@@ -408,6 +408,13 @@ dd {
 }
 .box > .dl-horizontal dd {
     text-align: left;
+}
+.box > .dl-horizontal input {
+    width: 100%;
+    border: 0px !important;
+    padding: 0px !important;
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 

@@ -13,7 +13,7 @@
                       <th>Name</th>
                       <th>IPv4</th>
                       <th class='right'>Booted</th>                      
-                      <th>Agent ver</th>
+                      <th class='nowrap'>Agent ver</th>
                       <th class='right'>Ram</th>
                       <th class='right'>Free</th>
                       <th>Networks</th>
@@ -24,8 +24,8 @@
                     <tr ng-repeat="hyper in hypervisors">
                       <td class='nowrap' title='View hypervisor {{hyper.name}}' jq-run='tooltip'><a href="#/hypervisors/{{hyper.name}}">{{hyper.name}}</a></td>                                        
                       <td class='nowrap'>{{hyper.host}}</td>
-                      <td class='right memory' jq-run='tooltip' title="{{hyper.sysinfo['Boot Time'] *1000 | date:'medium'}}">{{hyper.sysinfo['Boot Time'] *1000 | fromNow}}</td> 
-                      <td><small>{{hyper['version'].split(',')[0]}}</small></td>
+                      <td class='right memory nowrap' jq-run='tooltip' title="{{hyper.sysinfo['Boot Time'] *1000 | date:'medium'}}">{{hyper.sysinfo['Boot Time'] *1000 | fromNow}}</td> 
+                      <td class='nowrap'><small>{{hyper['version'].split(',')[0]}}</small></td>
                       <td class='right memory'>{{hyper.resources['total-memory'] | Mbytes}}</td>
                       <td class='right memory'>{{hyper.resources['free-memory'] | Mbytes}}</td>
                       <td>{{hyper.networks.join(', ')}}</td>

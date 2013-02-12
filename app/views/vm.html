@@ -1,11 +1,12 @@
 <div class="tab-pane" ng-show='vm.uuid'>
 
     <div class="row-fluid">
-        <div class="span8">
-            <h3>Machine {{vm._name}}
-                <span style='font-size: 0.5em; padding: 5px 10px 10px 8px; margin-left: 10px; height: 10px;' class='label label-{{vm._state_label}}'>{{vm.state}}</span>
-            </h3>
-        </div>
+        <span class="span8">
+            <h3 style='display: inline-block; margin-top: 10px;'>Machine {{vm._name}}</h3>
+            <span style='margin: 0px 5px 5px 5px; vertical-align: middle;' class='label label-{{vm._state_label}}'>{{vm.state}}</span>
+            <span class='light'>{{vm.mdata('description')}}</span>
+            
+        </span>
         <div class='span4'>
             <div class="btn-toolbar btn-group pull-right">
                 <div class="btn-group" style="margin-right: 20px;">
@@ -103,45 +104,50 @@
                 <dd jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}">{{vm.config.created_at | fromNow}}</dd>
               <dt>Type</dt>
                 <dd>{{vm.config.type}}</dd>
-              <dt>Alias</dt>
-                <dd title='Change alias name' jq-run='tooltip' class="clickable" ng-click='change_alias()'"><a><small>{{vm.config.alias}}</small></a></dd>
               <dt>Hypervisor</dt>
                 <dd><a title='View hypervisor {{vm.hypervisor}}' jq-run='tooltip'href="#/hypervisors/{{vm.hypervisor}}"><small>{{vm.hypervisor}}</small></a></dd>
-                <dt>Describe</dt>
+              <dt>List Color</dt>
                 <dd>
-            <form ng-submit='save_description()'>
-                <input 
-                    type='text'
-                    style="width: 120px;"
-                    maxlength="25"
-                    title='Set description'
-                    jq-run='tooltip' type='text'
-                    class='clean'
-                    ng-model="description"
-                ></input><br/>
-            </form>
-                </dd>
-            <dt>List Color</dt>
-            <dd>
-
-                <select name="colorpicker" ng-model='color' simplecolorpicker>
-                <option value="#ffffff">Clear</option>
-                <option value="#7bd148">Green</option>
-                <option value="#5484ed">Bold blue</option>
-                <option value="#a4bdfc">Blue</option>
-                <option value="#46d6db">Turquoise</option>
-                <option value="#7ae7bf">Light green</option>
-                <option value="#51b749">Bold green</option>
-                <option value="#fbd75b">Yellow</option>
-                <option value="#ffb878">Orange</option>
-                <option value="#ff887c">Red</option>
-                <option value="#dc2127">Bold red</option>
-                <option value="#dbadff">Purple</option>
-            </select>
-
-            </dd>    
-            </dl>
+                    <select name="colorpicker" ng-model='color' simplecolorpicker>
+                    <option value="#ffffff">Clear</option>
+                    <option value="#7bd148">Green</option>
+                    <option value="#5484ed">Bold blue</option>
+                    <option value="#a4bdfc">Blue</option>
+                    <option value="#46d6db">Turquoise</option>
+                    <option value="#7ae7bf">Light green</option>
+                    <option value="#51b749">Bold green</option>
+                    <option value="#fbd75b">Yellow</option>
+                    <option value="#ffb878">Orange</option>
+                    <option value="#ff887c">Red</option>
+                    <option value="#dc2127">Bold red</option>
+                    <option value="#dbadff">Purple</option>
+                    </select>
+                </dd>    
             
+                <a class='accordion-toggle' jq-run='tooltip' title='Edit machine information' data-toggle='collapse' href='#editform'><i class='icon-edit'></i></a>
+                <form class='collapse222' id='editform' ng-submit='save_description()'>
+                <dl class='dl-horizontal'>
+                    <dt>Alias</dt>
+                        <dd>
+                            <input
+                                type='text'
+                                name='spis'
+                                maxlength='25'
+                                ng-model='alias'
+                            />
+                        </dd>
+                    <dt>Describe</dt>
+                        <dd>
+                            <input 
+                                type='text'
+                                maxlength="25"
+                                ng-model="description"/><br/>
+                    </dd>            
+                </dl>
+                <button class="btn btn-small pull-right" ng-click='save_vm_info(alias, description)'>Save</button>
+                </form>
+             
+            </dl>
             
 
         </div>
@@ -188,19 +194,17 @@
 
             <dl class="dl-horizontal">
                 <dt>NIC</dt>
-                    <dd>{{net.interface | orDefault:'-'}}</dd>
+                    <dd>{{net.interface | orDefault:'-'}} {{net.primary && '(primary)'}}</dd>
                 <dt>IP</dt>
                     <dd>{{net.ip | orDefault:'-'}}</dd>
-                <dt>Mask</dt>
+                <dt>Netmask</dt>
                     <dd>{{net.netmask | orDefault:'-'}}</dd>
-                <dt>Router</dt>
+                <dt>Gateway</dt>
                     <dd>{{net.gateway | orDefault:'-'}}</dd>
                 <dt>Mac</dt>
                     <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
                 <dt ng-show='net.model'>Model</dt>
                     <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
-                <dt>Main</dt>
-                    <dd><input type='checkbox' ng-checked='net.primary' disabled></dd>
             </dl>
 
         </div>
