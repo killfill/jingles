@@ -123,28 +123,42 @@
                     <option value="#dbadff">Purple</option>
                     </select>
                 </dd>    
-            
-                <a class='accordion-toggle' jq-run='tooltip' title='Edit machine information' data-toggle='collapse' href='#editform'><i class='icon-edit'></i></a>
-                <form class='collapse' id='editform' ng-submit='save_description()'>
+
+                <a class='accordion-toggle' jq-run='tooltip' title='Edit configuration' data-toggle='collapse' href='#editform'><i class='icon-edit'></i></a>
+                <form class='collapse' id='editform' ng-submit='save_vm_info(configHash)'>
                 <dl class='dl-horizontal'>
-                    <dt>Alias</dt>
-                        <dd>
-                            <input
-                                type='text'
-                                name='spis'
-                                maxlength='25'
-                                ng-model='alias'
-                            />
-                        </dd>
                     <dt>Describe</dt>
                         <dd>
                             <input 
                                 type='text'
-                                maxlength="25"
-                                ng-model="description"/><br/>
-                    </dd>            
+                                maxlength='25'
+                                ng-model='description'/><br/>
+                    </dd>
+                    <dt>Alias</dt>
+                        <dd>
+                            <input
+                                type='text'
+                                maxlength='25'
+                                ng-model='configHash.alias'
+                            />
+                        </dd>
+                    <dt>Hostname</dt>
+                        <dd>
+                            <input
+                                type='text'
+                                maxlength='25'
+                                ng-model='configHash.hostname'
+                            />
+                        </dd>
+                    <dt>Resolvers</dt>
+                        <dd>
+                            <input
+                                type='text'
+                                ng-model='configHash.resolvers'
+                            />
+                        </dd>
                 </dl>
-                <button class="btn btn-small pull-right" ng-click='save_vm_info(alias, description)'>Save</button>
+                <button class="btn btn-small pull-right">Save</button>
                 </form>
              
             </dl>
