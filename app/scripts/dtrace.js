@@ -4,23 +4,25 @@ var h = 5;
 var w = 20;
 
 var history_size = 30;
-var cols = [];
 
-var cur_pos = 0;
+var cols = [];
 
 var max = 0;
 
 var colorScale;
 
+var bucket_count = 32;
+var bucket_size = 2;
+
+var mySVG;
+
+var socket = undefined;
+
 for (var i = 0; i < history_size; i ++) {
     cols.push([]);
 };
 
-var mySVG;
-var socket = undefined;
-
 function run(){
-
 
     if ('MozWebSocket' in window) {
         WebSocket = MozWebSocket;
@@ -30,26 +32,28 @@ function run(){
        on connection. */
     socket.onmessage = function(message){
         var message = JSON.parse(message.data);
-        draw(message);
+        if (message.config) {
+            bucket_count =  ((message.config.end - message.config.start + 1)/message.config.step) || 32;
+            bucket_size =  message.config.step || 2;
+        } else {
+            draw(message);
+        }
     };
-    mySVG = d3
-        .select("#content")
-        .append("svg")
-        .attr("width", (w * 60) + 400)
-        .attr("height", (h * 32 + 100))
-        .style('position','absolute')
-        .style('top',0)
-        .style('left',0);
+
+    socket.onopen = function() {
+        socket.send('');
+    }
+
 
 };
 
 function draw(data) {
 //    socket.close();
-    cols.shift();
 
     var current = {};
     var col = [];
     var flat = []
+    var max = 0;
 
     for (var element in data) {
         for (var bucket in data[element]) {
@@ -62,53 +66,59 @@ function draw(data) {
             };
         }
     }
+
     for (bucket in current) {
         col.push([parseInt(bucket), sum(current[bucket]), current[bucket]])
     };
-    cols.push(col);
-    var max = 0;
-    cols.forEach(function(c) {
-//        console.log(c);
-        c.forEach(function(app) {
-            var total = app[1];//sum(app);
-            if (total > max) {
-                max = total;
-            };
-        })
+
+    col.forEach(function(app) {
+        var total = app[1];//sum(app);
+        if (total > max) {
+            max = total;
+        };
+    })
+
+    flat = col.map(function(e) {
+        var e0 = e.slice()
+        e0.unshift(i)
+        return e0;
     });
-//    console.log(max);
-    colorScale = d3.scale.sqrt()
+
+    if (! flat.length)
+        return;
+
+    var colorScale = d3.scale.sqrt()
         .domain([0, max])
         .range(["white", "blue"]);
 
-    cols.forEach(function(s, i) {
-        flat.push(s.map(function(e) {
-            var e0 = e.slice()
-            e0.unshift(i)
-            return e0;
-        }));
-    })
-    var heatmapRow = mySVG.selectAll(".heatmap")
-        .data(flat).enter().append("g");
+    var first = cols.shift();
+    if (first.svg)
+        first.svg.remove();
+
+    var mySVG = d3
+        .select("#content")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", (h * bucket_count + 100))
+
     // generate heatmap columns
-    var heatmapRects = heatmapRow
+    var heatmapRects = mySVG
         .selectAll(".rect")
-        .data(function(d) {
-            return d;
-        }).enter().append("svg:rect")
+        .data(flat)
+        .enter().append("svg:rect")
         .attr('width', w)
         .attr('height', h)
         .attr('x', function(d) {
-            return (d[0] * w) + 25;
+            return 0;
         })
         .attr('y', function(d) {
-            return (h * 32 + 100) - ((d[1]/2 * h) + 50);
+            return (h * bucket_count + 100) - ((d[1]/bucket_size * h) + 50);
         })
         .style('fill',function(d) {
             return colorScale(d[2]);
-        })
-        .exit()
-        .remove();
+        });
+
+    cols.push({svg: mySVG, data: flat});
 }
 
 
