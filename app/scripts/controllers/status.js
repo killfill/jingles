@@ -11,7 +11,6 @@ fifoApp.controller('StatusCtrl', function($scope, $rootScope, $cookies, wiggle) 
         wiggle.cloud.get(function res (data) {
             $scope.metrics = data.metrics
             $scope.versions = data.versions
-            $scope.total_memory = data.metrics['provisioned-memory'] + data.metrics['free-memory']
             $scope.messages = Config.evaluate_cloud(data.metrics).concat(data.warnings)
             $scope.adjustMessage = Config.adjustMessage
 

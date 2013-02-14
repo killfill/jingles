@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid" ng-show="metrics">
     <div class="span3">
         <img id="health" ng-src="{{cloud_status}}"></img>
     </div>
@@ -8,8 +8,8 @@
             <tr>
                 <td class='span1 nowrap'><big>Memory</big></td>
                 <td><div class="progress {{messages[0].ok && 'progress-success' || 'progress-danger'}}"
-                    title="{{metrics['provisioned-memory'] | Mbytes}} of {{total_memory | Mbytes}} allocated" jq-run='tooltip'>
-                    <div class="bar" style="width: {{messages[0].percent}}%;">{{messages[0].percent}}%</div>
+                    title="{{metrics['provisioned-memory'] | Mbytes}} of {{metrics['total-memory'] | Mbytes}} allocated" jq-run='tooltip'>
+                    <div class="bar" style="width: {{messages[0].percent || '0'}}%;">{{messages[0].percent || '0'}}%</div>
                 </div></td>
             </tr>
             <tr>
@@ -28,9 +28,9 @@
         This is a shameless plug from <a href="http://basho.com/products/riak-control/">Basho's riak control</a>. Thanks guys!
     </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid" ng-show="metrics && !cloud_ok">
     <div class="span12" id="messages">
-        <table class="table" ng-show='!cloud_ok'>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Category</th>

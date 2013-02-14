@@ -30,6 +30,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             if ($scope.vm["package"]) {
                 pkg = $scope.vm["package"] + "";
             }
+
+            //If the vm has no config (i.e. failed-get_server state) ignore what continues
+            if (!$scope.vm.config) return
+
             if (! $scope.packages[pkg] ) {
                 $scope.packages[pkg] = {
                     id: pkg,
