@@ -1,0 +1,34 @@
+<div class="tab-pane" ng-show='script.uuid'>
+
+  <div class="row-fluid">
+    <span class="span8">
+      <h3 style='display: inline-block; margin-top: 10px;'>Script {{script.name}}</h3>
+    </span>
+  </div>
+  <hr/>
+
+  <div class="tabbable tabs-top" ng-show='script.config'>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#edit" data-toggle="tab">Edit</a></li>
+      <li><a href="#run" data-toggle="tab">Run</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="edit">
+        <div class="row-fluid">
+          <input class="input" ng-model="script.name"/></br>
+          <textarea ng-model="script.script" rows="20" cols="80">
+          </textarea>
+        </div>
+      </div>
+      <div class="tab-pane" id="run">
+        <div class="row-fluid">
+          <button class="button" ng-click="start()">Play</button>
+          <div style="width: 300px;" id="content">
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

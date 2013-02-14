@@ -19,6 +19,14 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
     })
+    .when('/dtrace/:uuid', {
+        templateUrl: 'views/dtrace.html',
+        controller: 'DTraceCtrl'
+    })
+    .when('/dtrace', {
+        templateUrl: 'views/dtraces.html',
+        controller: 'DTracesCtrl'
+    })
     .when('/virtual-machines', {
         templateUrl: 'views/virtual-machines.html',
         controller: 'Virtual-MachinesCtrl'

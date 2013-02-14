@@ -35,7 +35,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             data[i.name] = i.value
 
             wiggle.hypervisors.put(
-                {id: uuid, controller: 'characteristics'}, 
+                {id: uuid, controller: 'characteristics'},
                 data
             )
         })
@@ -73,7 +73,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
         return newArr.filter(function(i){
 
             var newVal = newArr[idx],
-                oldVal = oldArr[idx]
+            oldVal = oldArr[idx]
 
             idx++
             if (!oldVal) return true
