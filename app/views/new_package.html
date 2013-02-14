@@ -12,35 +12,38 @@
 
   <button class='btn btn-success pull-right' ng-disabled='form.$invalid || !name' ng-click='create_package()'>Create!</button>
 
-    <div class="span3 thumbnail">
+  <div class="span3 thumbnail">
 
-        <form name='form' novalidate>
-            <div class="input-append">
-                <input class='input-small' placeholder="RAM" type=number min=1 ng-model='ram' required>
-                <span class="add-on">MB</span>
-            </div>
-            <div class="input-append">
-                <input class='input-small' placeholder="Disk" type=number min=1 ng-model='quota' required>
-                <span class="add-on">GB</span>
-            </div>
-            <div class="input-append">
-                <input class='input-small' placeholder="CPU" type=number min=1 ng-model='cpu_cap' required>
-                <span class="add-on">%</span>
-            </div>
-        </form>
-    </div>
+    <form name='form' novalidate>
+      <div class="input-append">
+        <input class='input-small' placeholder="RAM" type="number" min="1" ng-model='ram' required>
+        <span class="add-on">MB</span>
+      </div>
+      <div class="input-append">
+        <input class='input-small' placeholder="Disk" type="number" min="1" ng-model='quota' required>
+        <span class="add-on">GB</span>
+      </div>
+      <div class="input-append">
+        <input class='input-small' placeholder="CPU" type="number" min="1" ng-model='cpu_cap' required>
+        <span class="add-on">%</span>
+      </div>
+    </form>
+  </div>
 
   <div class="span8 thumbnail">
-    <table class="table table-hover small">
-        <tr class=small>
+    <table class="small table-condensed table">
+      <thead>
+        <tr class="small">
           <th>Weight</th>
           <th>Attribute</th>
           <th>Condition</th>
           <th>Value</th>
         </tr>
+      </thead>
+      <tbody>
         <tr ng-repeat='rule in rules' ng-class="rule.error && 'error'">
           <td>
-            <select class="span12" ng-model="rule.weight">
+            <select class="input-small" ng-model="rule.weight">
               <option>must</option>
               <option>cant</option>
               <option>1</option>
@@ -83,17 +86,17 @@
           </td>
           <td>
             <input
-            class="input-large span12"
-            placeholder="Key"
-            type="text"
-            ng-model="rule.attribute"
-            data-provide='typeahead'
-            data-items='10'
-            data-source='{{availableOptions.attribute}}'
-            />
+               class="input-large"
+               placeholder="Key"
+               type="text"
+               ng-model="rule.attribute"
+               data-provide='typeahead'
+               data-items='10'
+               data-source='{{availableOptions.attribute}}'
+               />
           </td>
           <td>
-            <select ng-model="rule.condition">
+            <select class="input-small" ng-model="rule.condition">
               <option>&gt;=</option>
               <option>&gt;</option>
               <option>=&lt;</option>
@@ -107,13 +110,13 @@
             </select>
           </td>
           <td>
-            <input class="input-large span12" placeholder="Value" type="text" ng-model="rule.value"/>
+            <input class="input-small" placeholder="Value" type="text" ng-model="rule.value"/>
           </td>
           <td>
             <button class="btn btn-small btn-danger" ng-click="rm_rule($index)">-</button>
           </td>
         </tr>
-
+      <tbody>
     </table>
     <div class='caption'>
       <hr/>
