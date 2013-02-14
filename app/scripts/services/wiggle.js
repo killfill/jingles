@@ -12,7 +12,9 @@ fifoApp.factory('wiggle', function($resource, $http) {
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
                             {id: '@id'},
-                            {login: {method: 'POST'}}),
+                            {login: {method: 'POST'},
+                             logout: {methode: 'DELETE'}}
+                           ),
         users: $resource(endpoint + 'users/:id/:controller/:controller_id/:controller_id1/:controller_id2',
                          {id: '@id',
                           controller: '@controller',
@@ -36,7 +38,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
                           create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
         cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),
-        hypervisors: $resource(endpoint + 'hypervisors/:id/:controller/:controller_id', 
+        hypervisors: $resource(endpoint + 'hypervisors/:id/:controller/:controller_id',
             {id: '@id', controller: '@controller', controller_id: '@controller_id'},
             {put: {method: 'PUT'},
              delete: {method: 'DELETE'}}

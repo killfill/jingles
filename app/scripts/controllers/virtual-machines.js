@@ -73,15 +73,13 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             var vm = $scope.vms[msg.channel];
 
             vm.config = msg.message.data.config;
-            vm.package = msg.message.data.package;
-
             vmService.updateCustomFields(vm);
 
             /* Get the extra data */
             wiggle.datasets.get({id: vm.config.dataset}, function(ds) {
                 vm.config._dataset = ds;
             })
-            wiggle.packages.get({id: vm.package}, function(pack) {
+            wiggle.packages.get({id: vm.config.package}, function(pack) {
                 vm._package = pack
             })
             $scope.$apply()
