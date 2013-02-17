@@ -116,7 +116,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         var config = {
             alias: h.alias,
             hostname: h.hostname,
-            resolvers: h.resolvers.toString().split(',')
+            resolvers: h.resolvers && h.resolvers.toString().split(',')
         }
 
         wiggle.vms.put({id: $scope.vm.uuid}, {config: config},

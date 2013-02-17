@@ -134,8 +134,8 @@
            <dl class="dl-horizontal" ng-repeat="(iface, data) in hyper.sysinfo['Network Interfaces']">
                 <dt>NIC {{$index + 1}}</dt>
                 <dd>{{iface}}</dd>
-                <dt>IP</dt>
-                <dd>{{data['ip4addr']}}</dd>
+                <dt ng-show="data.ip4addr">IP</dt>
+                <dd ng-show="data.ip4addr">{{data.ip4addr}}</dd>
                 <dt>Mac</dt>
                 <dd>{{data['MAC Address']}}</dd>
                 <dt ng-show="data['NIC Names'].length>0">tags</dt>
