@@ -11,6 +11,13 @@ fifoApp.factory('howl', function($rootScope, $compile) {
             console.debug('[howl] receive:', msg, type)
     }
 
+    /* Put the connection info on the rootScope, so use can see it... */
+    setInterval(function () {
+        if ($rootScope.howlConnected === howl._connected) return;
+        $rootScope.howlConnected = howl._connected;
+        $rootScope.$digest();
+    }, 1000);
+
     return {
         connect: howl.connect,
         join: howl.join,

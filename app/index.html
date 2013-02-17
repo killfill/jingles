@@ -86,11 +86,14 @@
                         <ul class='dropdown-menu'>
                             <li><a href='#/users/{{loggedUser.uuid}}'>My info</a></li>
                             <li><a href='#/about'>About</a></li>
-                            <!-- <li><a href='#' ng-click='logout()'>Public keys</a></li> -->
                             <li class='divider'></li>
                             <li><a href='#' ng-click='logout()'>Logout</a></li>
                         </ul>
                     </div>
+                </div>
+                <div class="pull-right" style="padding: 5px; margin-right: 10px;">
+                    <i ng-show='howlConnected' class="icon-globe" title='Connected with websockets' jq-run='tooltip' jq-options="{placement: 'bottom'}"></i>
+                    <i ng-hide='howlConnected' class="icon-ban-circle" title='Connected without websockets' jq-run='tooltip' jq-options="{placement: 'bottom'}"> No realtime</i>
                 </div>
             </div>
         </div>
