@@ -55,6 +55,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/packages.html',
         controller: 'PackagesCtrl'
     })
+    .when('/package/:uuid', {
+        templateUrl: 'views/package.html',
+        controller: 'PackageCtrl'
+    })
     .when('/packages/new', {
         templateUrl: 'views/new_package.html',
         controller: 'NewPackageCtrl'

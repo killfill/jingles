@@ -31,6 +31,36 @@ fifoApp.directive('jqRun', function () {
     };
 });
 
+fifoApp.directive('package', function() {
+    return {
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: {
+            pkg: '=',
+            vmconfig: '=',
+            title: '@title'
+        },
+        template: "<dl class='dl-horizontal'>" + 
+                "<dt>CPU</dt>" + 
+                    "<dd ng-show='!vmconfig'>Share: {{pkg.ram}}<br/>Cap: {{pkg.cpu_cap}}</dd>" +
+                    "<dd ng-show='vmconfig.vcpus'>{{vmconfig.vcpus}}</dd>" +
+                    "<dd ng-hide='!vmconfig || vmconfig.vcpus'>" +
+                        "{{vmconfig.cpu_shares && 'Share: ' + vmconfig.cpu_shares}}</br>" +
+                        "{{vmconfig.cpu_cap && 'Cap: ' + vmconfig.cpu_cap}}</dd>" +
+                "<dt>Ram</dt>" +
+                    "<dd class='memory'>{{pkg.ram | Mbytes}}</dd>" +
+                "<dt>Disk</dt>" +
+                    "<dd class='memory'>{{pkg.quota | Gbytes}}</dd>" +
+            "</dl>"    
+        }
+})
+
+
+
+
+
+
 fifoApp.directive('columnSelector', function($compile) {
     return {
         restrict: 'E',

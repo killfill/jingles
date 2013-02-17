@@ -93,7 +93,7 @@
     <div class="tab-pane active" id="details">
     <div class="row-fluid">
 
-        <div class="box">
+        <div class="box box-small pull-left">
 
             <div class="header">
                 Machine <span class="badge badge-info">{{vm.config.alias}}</span>
@@ -166,25 +166,15 @@
 
         </div>
 
-        <div class="box">
+        <div class="box box-small pull-left">
             <div class="header">
                 Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
             </div>
-
-            <dl class="dl-horizontal">
-                <dt>CPU</dt>
-                    <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-                    <dd ng-hide='vm.config.vcpus'>
-                        {{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}}<br/>
-                        {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
-                <dt>Ram</dt>
-                    <dd class='memory'>{{vm.config.ram | Mbytes}}</dd>
-                <dt>Disk</dt>
-                    <dd class='memory'>{{vm.config.quota | Gbytes}}</dd>
-            </dl>
+            <package pkg='vm._package' vmconfig='vm.config'></package>
         </div>
+        
 
-        <div class="box">
+        <div class="box box-small pull-left">
             <div class="header">
                 Dataset 
                 <span ng-show='vm.config._dataset' class="badge badge-info">
@@ -200,7 +190,7 @@
             </dl>
         </div>
 
-        <div class="box" ng-repeat='net in vm.config.networks'>
+        <div class="box box-small pull-left" ng-repeat='net in vm.config.networks'>
         
             <div class="header">
                 Network <span class="badge badge-info">{{net.nic_tag}}</span>
@@ -255,39 +245,29 @@
         </table>
     </div>
     <div class="tab-pane" id="resize">
-      <table class='table table-condensed table-bordered'>
-        <tr><th>Current</th><th>
-            <select ng-model="new_pkg"
+
+        <div class="box span4">
+            <div class="header">
+                Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+            </div>
+            <package pkg='vm._package' vmconfig='vm.config'></package>
+        </div>
+        <div class="box span4">
+            <div class="header">
+                Change to 
+                <select class='input-small' style='margin: 0px; height: 20px;'
+                    ng-model="new_pkg"
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
-            </select>
-            <button style='margin-bottom: 10px;' class='btn'
-               ng-disabled="vm.mdata('locked')"
-               ng-show="packages[new_pkg].id != vm['package']"
-               ng-click="update()">change</button>
-        </th></tr>
-        <tr>
-          <td>
-            <dl class="dl-horizontal">
-              <dt>Package</dt><dd><strong>{{vm._package.name || 'custom'}}</strong></dd>
-              <dt>Ram</dt><dd>{{vm.config.ram | Mbytes}}</dd>
-              <dt>CPU</dt>
-              <dd ng-show='vm.config.vcpus'>{{vm.config.vcpus}}</dd>
-              <dd ng-hide='vm.config.vcpus'>{{vm.config.cpu_shares && 'Share: ' + vm.config.cpu_shares}} {{vm.config.cpu_cap && 'Cap: ' + vm.config.cpu_cap}}</dd>
-              <dt>Disk</dt><dd>{{vm.config.quota | Gbytes}}</dd>
-            </dl>
-          </td>
-          <td>
-            <dl class="dl-horizontal">
-              <dt>Package</dt><dd><strong>{{packages[new_pkg].name || 'custom'}}</strong></dd>
-              <dt>Ram</dt><dd>{{packages[new_pkg].ram | Mbytes}}</dd>
-              <dt>CPU</dt>
-              <dd ng-hide="vm.config.type == 'zone'">{{packages[new_pkg].vcpus}}</dd>
-              <dd ng-show="vm.config.type == 'zone'">Share: {{packages[new_pkg].cpu_shares}} {{packages[new_pkg].cpu_cap && 'Cap: ' + packages[new_pkg].cpu_cap}}</dd>
-              <dt>Disk</dt><dd>{{packages[new_pkg].quota | Gbytes}}</dd>
-            </dl>
-          </td>
-        </tr>
-      </table>
+                </select>
+            </div>
+            <package pkg='packages[new_pkg]'></package>
+        </div>
+        <div class="span8">
+        <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
+            ng-disabled="vm.mdata('locked')"
+            ng-show="packages[new_pkg].id != vm['package']"
+            ng-click="update()">change</button>
+            </div>
     </div>
 
     <div class="tab-pane" id="notes">

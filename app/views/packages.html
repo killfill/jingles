@@ -23,7 +23,7 @@
                   </thead>
                   <tbody>
                       <tr ng-repeat="pack in packages | hash2array| orderBy: 'ram'">
-                        <td><strong>{{pack.name}}</strong></td>
+                        <td><a href="#/package/{{pack.uuid}}">{{pack.name}}</a></td>
                         <td>{{pack.ram | Mbytes}}</td>
                         <td>{{pack.quota | Gbytes}}</td>
                         <td>{{pack.cpu_cap}}</td>

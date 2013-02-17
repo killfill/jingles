@@ -368,15 +368,19 @@ dd {
     width-left: 180px;
 }
 
+.box-small {
+    width: 21% !important;
+}
+.box-medium {
+    width: 33% !important;
+}
 
 .box {
-    width: 21%;
     min-width: 200px;
     min-height: 151px;
-    float: left;
+    
     padding: 10px;
     margin: 5px;
-    --margin-left: 25px;
 
     background-color: #f5f5f5;
     border: 1px dashed #e3e3e3;
@@ -572,8 +576,12 @@ form {
 }
 
 
-
-
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
 
 .thumbnail {
     padding: 10px;

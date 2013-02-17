@@ -34,6 +34,7 @@ fifoApp.filter('fromNow', function() {
 var formatBytes = function(defaultPow1024) {
     return function(bytes, hash) {
         if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return;
+        if (bytes < 1) return bytes;
 
         hash = hash || {}
         var pow1024 = hash.pow1024 || defaultPow1024 || 0,
@@ -44,10 +45,10 @@ var formatBytes = function(defaultPow1024) {
         var number = Math.floor(Math.log(bytes) / Math.log(1024));
 
         /* Print > MBs in MBs */
-        var idx = units.indexOf(number);
+  /*      var idx = units.indexOf(number);
         if (number > 2)
             number -= (number - 2);
-
+*/
         var str = ( bytes / Math.pow(1024, Math.floor(number)) ).toFixed(precision);
 
         str = str.replace(/(.\d*?)0*$/, "$1").replace(/(.*?)\.$/, "$1"); //trim right-zeros

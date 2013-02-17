@@ -12,8 +12,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
                             {id: '@id'},
-                            {login: {method: 'POST'},
-                             logout: {methode: 'DELETE'}}
+                            {login: {method: 'POST'}}
                            ),
         users: $resource(endpoint + 'users/:id/:controller/:controller_id/:controller_id1/:controller_id2',
                          {id: '@id',
