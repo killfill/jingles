@@ -81,6 +81,10 @@
                     <dd>{{hyper.resources["l1size"] | Mbytes}}</dd>
                     <dt>L1 Arc hit %</dt>
                     <dd>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</dd>
+                    <dt >L2 Size</dt>
+                    <dd>{{hyper.resources["l2size"] | Mbytes  | orDefault:'-'}}</dd>
+                    <dt>L2 Arc hit %</dt>
+                    <dd>{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
             </dl>
         </div>
 
@@ -101,14 +105,6 @@
                     <dt>ZFS free</dt>
                     <dd>{{data.free | Mbytes}}</dd>
 
-            </dl>
-
-            <span ng-show="hyper.resources['l2size']">L2 Arc:</span>
-            <dl class='dl-horizontal' ng-show="hyper.resources['l2size']">
-                <dt >L2 Size</dt>
-                <dd>{{hyper.resources["l2size"] | Mbytes  | orDefault:'-'}}</dd>
-                <dt>L2 Arc hit %</dt>
-                <dd>{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
             </dl>
 
             <a class="accordion-toggle" data-toggle="collapse" href="#disks">
