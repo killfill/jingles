@@ -51,7 +51,8 @@ fifoApp.directive('package', function() {
                 "<dt>Ram</dt>" +
                     "<dd class='memory'>{{(pkg.ram || vmconfig.ram) | Mbytes}}</dd>" +
                 "<dt>Disk</dt>" +
-                    "<dd class='memory'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
+                    "<dd class='memory' ng-hide='vmconfig.disks'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
+                    "<dd class='memory' ng-repeat='disk in vmconfig.disks'><span title='{{disk.model}} {{disk.bool && \"(booteable)\" || \"\"}}' jq-run='tooltip'>{{disk.size | Mbytes}}</span></dd>" +
             "</dl>"    
         }
 })
