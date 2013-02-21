@@ -49,9 +49,9 @@ fifoApp.directive('package', function() {
                         "{{vmconfig.cpu_shares && 'Share: ' + vmconfig.cpu_shares}}</br>" +
                         "{{vmconfig.cpu_cap && 'Cap: ' + vmconfig.cpu_cap}}</dd>" +
                 "<dt>Ram</dt>" +
-                    "<dd class='memory'>{{pkg.ram | Mbytes}}</dd>" +
+                    "<dd class='memory'>{{(pkg.ram || vmconfig.ram) | Mbytes}}</dd>" +
                 "<dt>Disk</dt>" +
-                    "<dd class='memory'>{{pkg.quota | Gbytes}}</dd>" +
+                    "<dd class='memory'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
             "</dl>"    
         }
 })

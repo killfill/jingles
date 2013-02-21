@@ -96,7 +96,7 @@
         <div class="box box-small pull-left">
 
             <div class="header">
-                Machine <span class="badge badge-info">{{vm.config.alias}}</span>
+                Machine <span class="badge badge-info">{{vm._name}}</span>
             </div>
 
             <dl class="dl-horizontal">
@@ -174,7 +174,7 @@
         </div>
         
 
-        <div class="box box-small pull-left">
+        <div class="box box-small pull-left" ng-show="vm.config._dataset">
             <div class="header">
                 Dataset 
                 <span ng-show='vm.config._dataset' class="badge badge-info">
