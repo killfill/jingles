@@ -119,6 +119,20 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             resolvers: h.resolvers && h.resolvers.toString().split(',')
         }
 
+        if ($scope.description != $scope.vm.mdata('description')) {
+            $scope.vm.mdata_set({description: $scope.description})
+            status.info('Description changed')
+        }
+
+        var resolverOk  = true
+        if (config.resolvers && config.resolvers.length > 0) {
+            config.resolvers.forEach(function(ip) {
+                resolverOk = resolverOk && ip.match(/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/)
+            })
+        }
+        if (!resolverOk)
+            return alert('Resolvers are not valid. Cannot save config.')
+
         wiggle.vms.put({id: $scope.vm.uuid}, {config: config},
             function success() {
                 status.info('Config changed')
@@ -126,10 +140,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             }
         )
 
-        if ($scope.description != $scope.vm.mdata('description')) {
-            $scope.vm.mdata_set({description: $scope.description})
-            status.info('Description changed')
-        }
+
     }
 
     $scope.action = function(action, vm) {
