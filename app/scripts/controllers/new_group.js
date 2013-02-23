@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewGroupCtrl', function($scope, $location, wiggle) {
+fifoApp.controller('NewGroupCtrl', function($scope, $location, wiggle, status) {
     $scope.create_group = function() {
         var user = new wiggle.groups({name: $scope.name});
         user.$create({},
@@ -9,7 +9,7 @@ fifoApp.controller('NewGroupCtrl', function($scope, $location, wiggle) {
                      },
                      function() {
                          console.error('Create Package error:', data);
-                         alert('There was an error creating your package. See the javascript console.');
+                         status.error('There was an error creating your package. See the javascript console.');
                      });
     };
 });

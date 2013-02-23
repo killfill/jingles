@@ -63,7 +63,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         logout: function() {
             var session = $cookies["X-Snarl-Token"];
             delete $cookies["X-Snarl-Token"];
-            wiggle.sessions.delete({id: session});
+            session && wiggle.sessions.delete({id: session});
 
             $rootScope.loggedUser = null;
 

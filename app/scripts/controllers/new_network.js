@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wiggle) {
+fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wiggle, status) {
 
     $scope.rules = [{}];
 
@@ -19,38 +19,38 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
         var bc = net + ~mask;
         // Okay here is a lot of checking
         if ((net & mask) != net) {
-            alert("Network / Netmask combination is not valid!");
+            status.error("Network / Netmask combination is not valid!");
             return 1;
         }
         if ((gateway & mask) != net ||
             gateway == net) {
-            alert("Gateway is not in the netork range!");
+            status.error("Gateway is not in the netork range!");
             return 1;
         }
         if ((first & mask) != net ||
             first == net) {
-            alert("First is not in the netork range!");
+            status.error("First is not in the netork range!");
             return 1;
         }
         if ((last & mask) != net ||
             last == net) {
-            alert("Last is not in the netork range!");
+            status.error("Last is not in the netork range!");
             return 1;
         }
         if (first > last) {
-            alert("First has to be lower or equal to last!");
+            status.error("First has to be lower or equal to last!");
             return 1;
         }
         if (first <= gateway && gateway <= last) {
-            alert("The gateway is inbetwen first and last, this can't work!");
+            status.error("The gateway is inbetwen first and last, this can't work!");
             return 1;
         }
         if (gateway == bc) {
-            alert("The gateway equals the networks broadcast!");
+            status.error("The gateway equals the networks broadcast!");
             return 1;
         }
         if (last == bc) {
-            alert("The last equals the networks broadcast!");
+            status.error("The last equals the networks broadcast!");
             return 1;
         }
         var network = new wiggle.ipranges({
@@ -73,11 +73,11 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
             function error(data) {
                 switch (data.status){
                     case 409:
-                    alert("A network with this name already exists!");
+                    status.error("A network with this name already exists!");
                     break;
                     default:
                     console.error('Create Network error:', data);
-                    alert('There was an error creating your network. See the javascript console.');
+                    status.error('There was an error creating your network. See the javascript console.');
                 }
             }
         );

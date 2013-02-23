@@ -13,14 +13,14 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete network <b>' +
                 el.name +"(" + el.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
-            status.info('Will delete' + el.name +"(" + el.uuid + ")")
             wiggle.ipranges.delete({id: el.uuid},
                 function success (data, h) {
                     delete $scope.networks[el.uuid]
+                    status.success(el.name + ' deleted')
                 },
                 function error(data) {
                     console.error('Delete network error:', data)
-                    alert('There was an error deleting your network. See the javascript console.')
+                    status.error('There was an error deleting your network. See the javascript console.')
                 }
             )
 

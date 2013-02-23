@@ -37,13 +37,6 @@ fifoApp.factory('status', function($rootScope) {
         if (status[type].current && status[type].total && status[type].current >= status[type].total)
             delete status[type]
 
-        if (params.info)
-            setTimeout(function() {
-                delete status[type]
-                updateText(status)
-                $rootScope.$digest()
-            }, typeof info === 'number'? params.info: 3000)
-
         updateText(status)
     }
 
@@ -54,7 +47,22 @@ fifoApp.factory('status', function($rootScope) {
 
         /* Show something for a little time..*/
         info: function(text) {
-            update(text, {info: true})
+            Alertify.log.info(text)
+        },
+
+        success: function(text) {
+            Alertify.log.success(text)
+        },
+
+        error: function(text) {
+            Alertify.log.error(text)
+        },
+
+        prompt: function(text, cb, errCb) {
+            Alertify.dialog.prompt(text, function(userInput) {
+                if (userInput == '') return;
+                cb(userInput);
+            }, errCb)
         }
     };
 });

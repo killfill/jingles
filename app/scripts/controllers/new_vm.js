@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle, user) {
+fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle, user, status) {
 
     $scope.create_machine = function() {
 
@@ -41,7 +41,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             },
             function error(data) {
                 console.error('Create VM error:', data, data.headers(), vm)
-                alert('There was an error creating your vm. See the javascript console.')
+                status.error('There was an error creating your vm. See the javascript console.')
             }
         )
 
@@ -71,9 +71,9 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
                 break;
             
             case 'create':
-                var txt = prompt('Enter metadata key:')
-                if (txt === null) return;
-                $scope.metadata.push({key: txt})
+                status.prompt('Enter metadata key:', function(txt) {
+                    $scope.metadata.push({key: txt})
+                })
                 break;
         }
     }
@@ -97,7 +97,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         wiggle.packages.list(function(ids) {
 
             if (ids.length<1) {
-                alert('Create a package first');
+                status.error('Create a package first');
                 return $location.path('/packages/new')
             }
 
@@ -113,7 +113,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         wiggle.ipranges.list(function(ids) {
 
             if (ids.length<1) {
-                alert('Please create a network first');
+                status.error('Please create a network first');
                 return $location.path('/networks/new')
             }
 

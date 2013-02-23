@@ -34,6 +34,9 @@ fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, sta
 
         if (statusCode == 403) {
 
+            /* When user is loggin in, we could get a 403 (access denied..) */
+            if (res.config.url.indexOf('sessions' > -1))
+                return;
             //If the session is valid, its something with the permition
             return wiggle.sessions.get({id: $cookies["X-Snarl-Token"]},
                 function success(data) {

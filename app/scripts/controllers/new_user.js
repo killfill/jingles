@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewUserCtrl', function($scope, $location, wiggle) {
+fifoApp.controller('NewUserCtrl', function($scope, $location, wiggle, status) {
     $scope.create_user = function() {
         var user = new wiggle.users({user: $scope.name,
                                      password: $scope.pass1});
@@ -10,7 +10,7 @@ fifoApp.controller('NewUserCtrl', function($scope, $location, wiggle) {
                     },
                     function() {
                         console.error('Create Package error:', data);
-                        alert('There was an error creating your package. See the javascript console.');
+                        status.error('There was an error creating your package. See the javascript console.');
                     });
     };
 });

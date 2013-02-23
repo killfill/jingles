@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
+fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user, status) {
 
     $scope.login = function() {
 
@@ -15,9 +15,9 @@ fifoApp.controller('LoginCtrl', function($scope, wiggle, $route, user) {
             },
             function error(data){
                 if (data && data.status == 403)
-                    return alert('Access denied. Try again');
+                    return status.error('Access denied. Try again');
 
-                alert('Error when loggin in. ' + (data && data.data))
+                status.error('Error when loggin in. ' + (data && data.data))
             })
     }
 

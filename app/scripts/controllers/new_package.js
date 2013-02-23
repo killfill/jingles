@@ -37,7 +37,7 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle) {
     $scope.create_package = function() {
 
         if (!validateRequirements()) {
-            alert('Some rules are not valid. Please fix them');
+            status.error('Some rules are not valid. Please fix them');
             return;
         }
 
@@ -58,7 +58,7 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle) {
             },
             function error(data) {
                 console.error('Create Package error:', data);
-                alert('There was an error creating your package. See the javascript console.');
+                status.error('There was an error creating your package. See the javascript console.');
             }
         );
     }

@@ -586,3 +586,7 @@ form {
 .thumbnail {
     padding: 10px;
 }
+
+input[type='text'].alertify-text {
+    height: 30px;
+}

@@ -77,7 +77,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.vm.config.quota = ''
                 })
                 if ($scope.vm.config.type == 'kvm')
-                    alert('Reboot on this machine is needed for resize to take effect')
+                    status.error('Reboot on this machine is needed for resize to take effect')
         });
     };
 
@@ -131,7 +131,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             })
         }
         if (!resolverOk)
-            return alert('Resolvers are not valid. Cannot save config.')
+            return status.error('Resolvers are not valid. Cannot save config.')
 
         wiggle.vms.put({id: $scope.vm.uuid}, {config: config},
             function success() {
@@ -168,17 +168,17 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         switch(action) {
 
             case 'create':
-                var n = prompt('Enter your note:')
-                if (n === null) return;
-                $scope.notes.splice(0, 0, {text: n, created_at: new Date()})
-                $scope.vm.mdata_set({notes: $scope.notes})
-                status.info('Note created')
+                status.prompt('Enter your note:', function(txt) {
+                    $scope.notes.splice(0, 0, {text: txt, created_at: new Date()})
+                    $scope.vm.mdata_set({notes: $scope.notes})
+                    status.success('Note created')
+                })
                 break;
 
             case 'delete':
                 $scope.notes.splice(idx, 1)
                 $scope.vm.mdata_set({notes: $scope.notes})
-                status.info('Note deleted')
+                status.success('Note deleted')
                 break;
         }
 
@@ -188,18 +188,17 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         switch (action) {
 
             case 'create':
-                var comment = prompt('Write a comment for the new snapshot:');
-                if (comment === null) return;
-                wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
-                    function success(data, h) {
-                        status.info('Snapshot created');
-                        updateVm()
-                    },
-                    function error(data) {
-                        alert('Error saving the snapshot. See your console')
-                        console.log(data)
-                    });
-
+                status.prompt('Write a comment for the new snapshot:', function(comment) {
+                    wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
+                        function success(data, h) {
+                            status.success('Snapshot created');
+                            updateVm()
+                        },
+                        function error(data) {
+                            status.error('Error saving the snapshot. See your console')
+                            console.log(data)
+                        });
+                });
                 break;
 
             case 'delete':
@@ -212,12 +211,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.$apply()
                     wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap.uuid},
                         function success() {
-                            status.info('Snapshot ' + snap.comment + ' deleted');
+                            status.success('Snapshot ' + snap.comment + ' deleted');
                             delete $scope.snapshots[snap.uuid]
                             updateVm()
                         },
                         function error(data) {
-                            alert('Error deleting the snapshot. See your console')
+                            status.error('Error deleting the snapshot. See your console')
                             console.log(data)
                         })
                 })
@@ -237,10 +236,10 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap.uuid}, {action: 'rollback'},
                         function sucess () {
                             updateVm()
-                            alert('Rollback done')
+                            status.success('Rollback done')
                         },
                         function error (data) {
-                            alert('Error when rolling back. See the history')
+                            status.error('Error when rolling back. See the history')
                             console.log(data)
                         })
                 })

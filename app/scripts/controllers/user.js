@@ -344,14 +344,14 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             header: 'Confirm VM Deletion',
             body: '<p><font color="red">Warning!</font> you are about to delete the User <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this User is gone forever!</p>"
         }, function() {
-            status.info('Will user ' + name);
             wiggle.users.delete({id: uuid},
                                 function success(data, h) {
+                                    status.success(name + ' deleted');
                                     $location.path('/users')
                                 },
                                 function error(data) {
                                     console.error('Delete User error:', data);
-                                    alert('There was an error deleting your user. See the javascript console.');
+                                    status.error('There was an error deleting your user. See the javascript console.');
                                 });
         })
     };
@@ -361,13 +361,13 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             wiggle.users.put({id: $scope.user.uuid},
                              {password: $scope.pass1},
                              function() {
-                                 alert("Password for user " +
+                                 status.success("Password for user " +
                                        $scope.user.name +
                                        " changed.");
                              });
 
         } else {
-            alert("Passwords don't match!");
+            status.error("Passwords don't match!");
         }
     }
 

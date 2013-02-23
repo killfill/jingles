@@ -13,12 +13,12 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             var name = alias || uuid;
 
             if (action!='delete') {
-                status.info('Will ' + action + ' ' + name)
                 return wiggle.vms.put({id: uuid}, {action: action},
                     function success(r, headers) {
                         if (!headers)
-                            return alert('An error 500 has occur. :(');
+                            return status.error('An error 500 has occur. :(');
 
+                        status.success(action + 'ing ' + name)
                         cb && cb(action, uuid)
                     }
                 )
@@ -30,9 +30,9 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                 header: 'Confirm VM Deletion',
                 body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
             }, function() {
-                status.info('Will delete ' + name)
                 wiggle.vms.delete({id: uuid},
                     function success(data, h) {
+                        status.info('Deleting'  + name)
                         cb && cb(action, uuid)
                     }
                 )
