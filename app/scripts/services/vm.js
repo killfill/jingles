@@ -32,7 +32,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             }, function() {
                 wiggle.vms.delete({id: uuid},
                     function success(data, h) {
-                        status.info('Deleting'  + name)
+                        status.info('Deleting '  + name)
                         cb && cb(action, uuid)
                     }
                 )

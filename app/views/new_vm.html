@@ -26,7 +26,7 @@
 					<th>Version</th>
 				</tr>
 				<tr class='clickable'
-					ng-repeat="d in datasets | orderBy: ['os', 'name', '-version']"
+					ng-repeat="d in datasets | orderBy: ['-os', 'name', '-version']"
 					ng-click='click_dataset(d)'
 					ng-class="selectedDataset.dataset==d.dataset && 'success'">
 					<td><img jq-run='tooltip' ng-src="images/logos/{{d.os || 'unknown'}}.png" class='oslogo' /></td>
@@ -85,37 +85,37 @@
                     <table class="table table-hover small">
                         <tr class='small' ng-show="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>SSH Keys</th>
-                            <td><textarea type=text ng-model='ssh_keys'></textarea></td>
+                            <td><textarea class='span12' type=text ng-model='ssh_keys'></textarea></td>
                         </tr>
                         <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>Root password</th>
-                            <td><input type='password' ng-model='root_pw'/></td>
+                            <td><input class='span12' type='password' ng-model='root_pw'/></td>
                         </tr>
                         <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
                             <th class='nowrap'>Admin password</th>
-                            <td><input type='password' ng-model='admin_pw'/></td>
+                            <td><input class='span12' type='password' ng-model='admin_pw'/></td>
                         </tr>
                         <tr class='small'>
                             <th class='nowrap'>Hostname</th>
-                            <td><input type=text ng-model='hostname'/></td>
+                            <td><input class='span12' type=text ng-model='hostname'/></td>
                         </tr>
                         <tr class='small'>
                             <th class='nowrap'>Resolver 1</th>
-                            <td><input type=text ng-model='resolver1'/></td>
+                            <td><input class='span12' type=text ng-model='resolver1'/></td>
                         </tr>
                         <tr class='small'>
                             <th class='nowrap'>Resolver 2</th>
-                            <td><input type=text ng-model='resolver2'/></td>
+                            <td><input class='span12' type=text ng-model='resolver2'/></td>
                         </tr>
                         <tr class="small">
                             <th class="nowrap">User script</th>
-                            <td><input type='text' ng-model='userScript'/></td>
+                            <td><input class='span12' type='text' ng-model='userScript'/></td>
                         </tr>
 
                         <tr class='small' ng-repeat='meta in metadata'>
                             <th class="nowrap">{{meta.key}}</th>
                             <th class="nowrap">
-                                <input type='text' ng-model='meta.value'/>
+                                <input class='span11' type='text' ng-model='meta.value'/>
                                 <button class='btn btn-small btn-danger' style='margin-bottom: 10px;' ng-click="meta_action('delete', $index)">-</button>
                             </th>
                         </tr>

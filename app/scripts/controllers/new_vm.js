@@ -73,6 +73,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             case 'create':
                 status.prompt('Enter metadata key:', function(txt) {
                     $scope.metadata.push({key: txt})
+                    $scope.$apply()
                 })
                 break;
         }
@@ -105,6 +106,8 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
                 wiggle.packages.get({id: id},
                     function(pack) {
                         $scope.packages.push(pack)
+                        if (!$scope.selectedPackage)
+                            $scope.selectedPackage = pack
                     }
                 )
             })
@@ -113,15 +116,18 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         wiggle.ipranges.list(function(ids) {
 
             if (ids.length<1) {
-                status.error('Please create a network first');
+                status.error('Please create a new network');
                 return $location.path('/networks/new')
             }
 
             ids.forEach(function(name) {
-                var net = wiggle.ipranges.get({id: name})
-                $scope.networks.push(net)
-                if (!$scope.selectedNetworks)
-                    $scope.selectedNetworks = [net]
+                wiggle.ipranges.get({id: name}, function(res) {
+                    if (res.current > res.last) return;
+                    $scope.networks.push(res)
+                    if (!$scope.selectedNetworks)
+                        $scope.selectedNetworks = [res]
+                })
+                
             })
         })
 
