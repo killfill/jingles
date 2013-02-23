@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle) {
+fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status) {
 
     $scope.add_rule = function() {
         $scope.rules.push({})
