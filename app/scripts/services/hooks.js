@@ -49,7 +49,7 @@ fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, sta
                 })
         }
 
-        status.info('There was an error. See the details in the js console')
+        status.error('There was an error. See the details in the js console')
         console.error('Error:', statusCode, res.config)
     })
 
