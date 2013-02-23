@@ -6,6 +6,13 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
         return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
 
+    /* After implementing multi-lang, this should not exist anymore.. :P */
+    var actionDescrition = {
+        'start': 'Starting',
+        'stop': 'Stopping',
+        'reboot': 'Rebooting'
+    }
+
     return {
 
         /* So far action can be: start/stop/reboot/delete. More info: http://project-fifo.net/display/PF/API */
@@ -18,7 +25,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
                         if (!headers)
                             return status.error('An error 500 has occur. :(');
 
-                        status.success(action + 'ing ' + name)
+                        status.info(actionDescrition[action] + ' machine ' + name)
                         cb && cb(action, uuid)
                     }
                 )
@@ -32,7 +39,7 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
             }, function() {
                 wiggle.vms.delete({id: uuid},
                     function success(data, h) {
-                        status.info('Deleting '  + name)
+                        status.info('Deleting machine '  + name)
                         cb && cb(action, uuid)
                     }
                 )
