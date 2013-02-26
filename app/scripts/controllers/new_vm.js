@@ -34,17 +34,13 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             vm.config.metadata[h.key] = h.value;
         })
 
-        vm.$save({},
-            function success(data, headers) {
-                howl.join(data.uuid);
-                $location.path('/virtual-machines')
-            },
-            function error(data) {
-                console.error('Create VM error:', data, data.headers(), vm)
-                status.error('There was an error creating your vm. See the javascript console.')
-            }
-        )
-
+        vm.$save({}, function success(data, headers) {
+            howl.join(data.uuid);
+            $location.path('/virtual-machines')
+        }, function error(data) {
+            console.error('Create VM error:', data, data.headers(), vm)
+            status.error('There was an error creating your vm. See the javascript console.')
+        })
     }
 
     $scope.click_package = function(pkg) {
@@ -66,16 +62,16 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
     $scope.metadata = []
     $scope.meta_action = function(action, idx) {
         switch (action) {
-            case 'delete':
-                $scope.metadata.splice(idx, 1)
-                break;
-            
-            case 'create':
-                status.prompt('Enter metadata key:', function(txt) {
-                    $scope.metadata.push({key: txt})
-                    $scope.$apply()
-                })
-                break;
+        case 'delete':
+            $scope.metadata.splice(idx, 1)
+            break;
+
+        case 'create':
+            status.prompt('Enter metadata key:', function(txt) {
+                $scope.metadata.push({key: txt})
+                $scope.$apply()
+            })
+            break;
         }
     }
 
@@ -104,12 +100,12 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
 
             ids.forEach(function(id) {
                 wiggle.packages.get({id: id},
-                    function(pack) {
-                        $scope.packages.push(pack)
-                        if (!$scope.selectedPackage)
-                            $scope.selectedPackage = pack
-                    }
-                )
+                                    function(pack) {
+                                        $scope.packages.push(pack)
+                                        if (!$scope.selectedPackage)
+                                            $scope.selectedPackage = pack
+                                    }
+                                   )
             })
         })
 
@@ -122,12 +118,20 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
 
             ids.forEach(function(name) {
                 wiggle.ipranges.get({id: name}, function(res) {
-                    if (res.current > res.last) return;
+                    var cur = res.current.split(/\./);
+                    var last = res.last.split(/\./);
+                    var c = 0;
+                    var l = 0;
+                    for (var x=0; x<4; x++){
+                        c += Math.pow(256, 3-x)*cur[x];
+                        l += Math.pow(256, 3-x)*last[x];
+                    };
+                    if (c > l) return;
                     $scope.networks.push(res)
                     if (!$scope.selectedNetworks)
                         $scope.selectedNetworks = [res]
                 })
-                
+
             })
         })
 
