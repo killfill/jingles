@@ -4,15 +4,6 @@ USER=jingles
 GROUP=www
 DOMAIN="project-fifo.net"
 CERTDIR="/var/db/fifo"
-SUBJ="
-C=AU
-ST=Victoria
-O=Company
-localityName=Melbourne
-commonName=$DOMAIN
-organizationalUnitName=Widgets
-emailAddress=blah@blah.com
-"
 
 
 fail_if_error() {
@@ -26,6 +17,25 @@ case $2 in
     PRE-INSTALL)
         if [ ! -d /var/db/fifo ]
         then
+            #echo Trying to guess network configuration ...
+
+            if ifconfig net1 > /dev/null 2>&1
+            then
+                IP=`ifconfig net1 | grep inet | awk -e '{print $2}'`
+            else
+                IP=`ifconfig net0 | grep inet | awk -e '{print $2}'`
+            fi
+            SUBJ="
+C=AU
+ST=Victoria
+O=Company
+localityName=Melbourne
+commonName=$IP
+organizationalUnitName=None
+emailAddress=blah@blah.com
+"
+
+
             export PASSPHRASE=$(head -c 128 /dev/random  | uuencode - | grep -v "^end" | tr "\n" "d")
             echo "Creating certificates"
             mkdir -p $CERTDIR
@@ -60,14 +70,6 @@ case $2 in
 
         ;;
     POST-INSTALL)
-        #echo Trying to guess network configuration ...
-
-        #if ifconfig net1 > /dev/null 2>&1
-        #then
-        #    IP=`ifconfig net1 | grep inet | awk -e '{print $2}'`
-        #else
-        #    IP=`ifconfig net0 | grep inet | awk -e '{print $2}'`
-        #fi
         if [ ! -f /opt/local/jingles/app/scripts/config.js ]
         then
             cp /opt/local/jingles/app/scripts/config.js.example /opt/local/jingles/app/scripts/config.js
