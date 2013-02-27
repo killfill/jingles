@@ -27,4 +27,8 @@ cp /opt/local/jingles/config/nginx.conf /opt/local/etc/nginx/nginx.conf
 |                                                                              |
 | Note: nginx is not enabled by default - you need to do that manually.        |
 |                                                                              |
+| There is an automatic SSL certificate generated, please note that you might  |
+| need to change the settings for the certificates to work propperly, there is |
+| a generation scriipt in /opt/local/jingles/config/autocert.sh to help you.   |
+|                                                                              |
 `------------------------------------------------------------------------------'
