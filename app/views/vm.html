@@ -143,56 +143,52 @@
               </form>
 
             </dl>
+          </div>
+
+          <div class="box box-small pull-left">
+            <div class="header">
+              Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+            </div>
+            <package pkg='vm._package' vmconfig='vm.config'></package>
+          </div>
 
 
-            <div class="box box-small pull-left">
-              <div class="header">
-                Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
-              </div>
-              <package pkg='vm._package' vmconfig='vm.config'></package>
+          <div class="box box-small pull-left" ng-show="vm.config._dataset">
+            <div class="header">
+              Dataset
+              <span ng-show='vm.config._dataset' class="badge badge-info">
+                {{vm.config._dataset.name}} {{vm.config._dataset.version}}
+              </span>
+              <img jq-run='tooltip' title="{{vm.config._dataset.os || 'unknown'}}"
+                   ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'/>
             </div>
 
+            <dl class="dl-horizontal">
+              <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
+              <dt>Info</dt><dd>{{vm.config._dataset.description}}</dd>
+            </dl>
+          </div>
 
-            <div class="box box-small pull-left" ng-show="vm.config._dataset">
-              <div class="header">
-                Dataset
-                <span ng-show='vm.config._dataset' class="badge badge-info">
-                  {{vm.config._dataset.name}} {{vm.config._dataset.version}}
-                </span>
-                <img jq-run='tooltip' title="{{vm.config._dataset.os || 'unknown'}}"
-                     ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
-              </div>
-
-              <dl class="dl-horizontal">
-                <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
-                <dt>Info</dt><dd>{{vm.config._dataset.description}}</dd>
-              </dl>
+          <div class="box box-small pull-left" ng-repeat='net in vm.config.networks'>
+            <div class="header">
+              Network <span class="badge badge-info">{{net.nic_tag}}</span>
             </div>
 
-            <div class="box" ng-repeat='net in vm.config.networks'>
+            <dl class="dl-horizontal">
+              <dt>NIC</dt>
+              <dd>{{net.interface | orDefault:'-'}} {{net.primary && '(primary)'}}</dd>
+              <dt>IP</dt>
+              <dd>{{net.ip | orDefault:'-'}}</dd>
+              <dt>Netmask</dt>
+              <dd>{{net.netmask | orDefault:'-'}}</dd>
+              <dt>Gateway</dt>
+              <dd>{{net.gateway | orDefault:'-'}}</dd>
+              <dt>Mac</dt>
+              <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
+              <dt ng-show='net.model'>Model</dt>
+              <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
+            </dl>
 
-              <div class="box box-small pull-left" ng-repeat='net in vm.config.networks'>
-                <div class="header">
-                  Network <span class="badge badge-info">{{net.nic_tag}}</span>
-                </div>
-
-                <dl class="dl-horizontal">
-                  <dt>NIC</dt>
-                  <dd>{{net.interface | orDefault:'-'}} {{net.primary && '(primary)'}}</dd>
-                  <dt>IP</dt>
-                  <dd>{{net.ip | orDefault:'-'}}</dd>
-                  <dt>Netmask</dt>
-                  <dd>{{net.netmask | orDefault:'-'}}</dd>
-                  <dt>Gateway</dt>
-                  <dd>{{net.gateway | orDefault:'-'}}</dd>
-                  <dt>Mac</dt>
-                  <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
-                  <dt ng-show='net.model'>Model</dt>
-                  <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
-                </dl>
-
-              </div>
-            </div>
           </div>
         </div>
       </div>
