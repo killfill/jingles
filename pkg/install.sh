@@ -4,6 +4,7 @@ USER=jingles
 GROUP=www
 DOMAIN="project-fifo.net"
 CERTDIR="/var/db/fifo"
+CERTPREFIX="fifo"
 
 
 fail_if_error() {
@@ -40,28 +41,28 @@ emailAddress=blah@blah.com
             echo "Creating certificates"
             mkdir -p $CERTDIR
 
-            openssl genrsa -des3 -out $CERTDIR/$DOMAIN.key -passout env:PASSPHRASE 2048
+            openssl genrsa -des3 -out $CERTDIR/$CERTPREFIX.key -passout env:PASSPHRASE 2048
             fail_if_error $?
 
             openssl req \
                 -new \
                 -batch \
                 -subj "$(/opt/local/gnu/bin/echo -n "$SUBJ" | /opt/local/gnu/bin/tr "\n" "/")" \
-                -key $CERTDIR/$DOMAIN.key \
-                -out $CERTDIR/$DOMAIN.csr \
+                -key $CERTDIR/$CERTPREFIX.key \
+                -out $CERTDIR/$CERTPREFIX.csr \
                 -passin env:PASSPHRASE
             fail_if_error $?
 
-            cp $CERTDIR/$DOMAIN.key $CERTDIR/$DOMAIN.key.org
+            cp $CERTDIR/$CERTPREFIX.key $CERTDIR/$CERTPREFIX.key.org
             fail_if_error $?
 
-            openssl rsa -in $CERTDIR/$DOMAIN.key.org -out $CERTDIR/$DOMAIN.key -passin env:PASSPHRASE
+            openssl rsa -in $CERTDIR/$CERTPREFIX.key.org -out $CERTDIR/$CERTPREFIX.key -passin env:PASSPHRASE
             fail_if_error $?
 
-            openssl x509 -req -days 365 -in $CERTDIR/$DOMAIN.csr -signkey $CERTDIR/$DOMAIN.key -out $CERTDIR/$DOMAIN.crt
+            openssl x509 -req -days 365 -in $CERTDIR/$CERTPREFIX.csr -signkey $CERTDIR/$CERTPREFIX.key -out $CERTDIR/$CERTPREFIX.crt
             fail_if_error $?
 
-            cat $CERTDIR/$DOMAIN.key $CERTDIR/$DOMAIN.crt > $CERTDIR/$DOMAIN.pem
+            cat $CERTDIR/$CERTPREFIX.key $CERTDIR/$CERTPREFIX.crt > $CERTDIR/$CERTPREFIX.pem
 
             chgrp -R $GROUP $CERTDIR
 
