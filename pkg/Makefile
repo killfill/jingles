@@ -4,7 +4,7 @@ COMPONENT=jingles
 .PHONY: build_info package package_list
 
 package_list:
-	echo "@pkgdep nginx>=1.2.5" > packlist
+	echo "@pkgdep nginx>=1.3.13" > packlist
 	(cd ../; find LICENSE* -type f | sort) >> packlist
 	(cd ../; find config -type f | sort) >> packlist
 	(cd ../; find app -type f | sort) >> packlist
