@@ -53,11 +53,13 @@ fifoApp.factory('wiggle', function($resource, $http) {
         datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
         packages: $resource(endpoint + 'packages/:id',
                             {id: '@id'},
-                            {create: {method: 'POST'}}
+                            {create: {method: 'POST'},
+                             delete: {method: 'DELETE'}}
                            ),
         dtrace: $resource(endpoint + 'dtrace/:id',
                           {id: '@id'},
-                          {create: {method: 'POST'}}
+                          {create: {method: 'POST'},
+                           delete: {method: 'DELETE'}}
                          ),
 
     }
