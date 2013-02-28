@@ -146,7 +146,9 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         if ('MozWebSocket' in window) {
             WebSocket = MozWebSocket;
         }
-        socket = new WebSocket('ws://127.0.0.1/api/0.1.0/dtrace/' + uuid + '/stream');
+        var wsurl = window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host +'/api/0.1.0/dtrace/' + uuid + '/stream';
+        console.log(wsurl);
+        socket = new WebSocket(wsurl);
         /* The only messages we recieve should contain contain the dtrace aggregation data we requested
            on connection. */
         socket.onmessage = function(message){
