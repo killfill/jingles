@@ -15,17 +15,67 @@
     <div class="tab-content">
       <div class="tab-pane active" id="edit">
         <div class="row-fluid">
-          <input class="input" ng-model="script.name"/></br>
-          <textarea ng-model="script.script" rows="20" cols="80">
-          </textarea>
+          <div class="span8 box">
+            <div class="header">
+              <i class="icon-tasks"></i>
+              <span class="badge badge-info">Script</span>
+            </div>
+            <textarea ng-model="script.script" class="input-block-level" rows="20" ng-change="script_change()"></textarea>
+          </div>
+
+          <div class="span3 box">
+            <div class="header">
+              <i class="icon-tasks"></i>
+              <span class="badge badge-info">Variables</span>
+            </div>
+
+            <div ng-repeat='variable in script.vars' class='thumbnail2'>
+              <input
+                 class="span5 disabled"
+                 placeholder="Variable"
+                 type="text"
+                 title='Attribute' jq-run='tooltip'
+                 ng-model="variable.name"
+                 disabled
+                 />
+              <input class="span5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
+            </div>
+
+            <br/>
+
+          </div>
         </div>
       </div>
       <div class="tab-pane" id="run">
         <div class="row-fluid">
-          <button class="button" ng-click="start()">Play</button>
-          <div style="width: 300px;" id="content">
-
+          <div class="span8 box">
+            <div class="header">
+              <i class="icon-tasks"></i>
+              <span class="badge badge-info">Script</span>
+              <button class="button" ng-click="start()">Play</button>
+            </div>
+            <div style="width: 300px;" id="content">
+            </div>
           </div>
+          <div class="span3 box">
+            <div class="header">
+              <i class="icon-tasks"></i>
+              <span class="badge badge-info">Variables</span>
+            </div>
+
+            <div ng-repeat='variable in script.cur_vars' class='thumbnail2'>
+              <input
+                 class="span5 disabled"
+                 placeholder="Variable"
+                 type="text"
+                 title='Attribute' jq-run='tooltip'
+                 ng-model="variable.name"
+                 disabled
+                 />
+              <input class="span5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
+            </div>
+          </div>
+
 
         </div>
       </div>

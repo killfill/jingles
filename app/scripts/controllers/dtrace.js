@@ -22,7 +22,16 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
 
 
     wiggle.dtrace.get({id: uuid}, function(res) {
-        console.log(res)
+        console.log(res);
+        res.cur_vars = [];
+        res.vars = [];
+        for (var n in res.config) {
+            res.cur_vars.push({name: n,
+                               value: res.config[n]});
+            res.vars.push({name: n,
+                           value: res.config[n]});
+        }
+
         $scope.script = res;
     });
 

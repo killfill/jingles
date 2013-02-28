@@ -73,13 +73,16 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             return;
         }
 
-
+        
+        var config = {};
+        vars.forEach(function(v){
+            if (v['name'] && v['value'])
+                config[v['name']] = v['value'];
+        });
         var dtrace = new wiggle.dtrace({
             name: $scope.name,
             script: $scope.script,
-            config: vars.filter(function(item) {
-                return item['name'] && item['value'];
-            })
+            config: config
         });
 
         dtrace.$create({},
