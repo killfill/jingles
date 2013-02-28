@@ -20,6 +20,22 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         cols.push([]);
     };
 
+    var finalize_vars = function(vars) {
+        return vars.map(function(v) {
+            if (typeof v != "string") {
+                return v;
+            } else if (v.value.match(/^\d+$/)) {
+                v.value = parseInt(v.value);
+            } else if (v.value == "true") {
+                v.value = true;
+            } else if (v.value == "false") {
+                v.value = false;
+            } else if (v.value == "null") {
+                v.value = null;
+            };
+            return v;
+        });
+    }
 
     wiggle.dtrace.get({id: uuid}, function(res) {
         console.log(res);
@@ -125,6 +141,7 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             socket.close();
         }
     });
+
     $scope.start = function start() {
         if ('MozWebSocket' in window) {
             WebSocket = MozWebSocket;
@@ -144,7 +161,12 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         };
 
         socket.onopen = function() {
-            socket.send('');
+            var config = {};
+            finalize_vars($scope.script.cur_vars).forEach(function(v){
+                if (v['name'] && v['value'])
+                    config[v['name']] = v['value'];
+            });
+            socket.send(JSON.stringify(config));
         }
     }
     $scope.stop = function() {

@@ -73,7 +73,6 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             return;
         }
 
-        
         var config = {};
         vars.forEach(function(v){
             if (v['name'] && v['value'])
