@@ -17,17 +17,13 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             /* If none of the fields are present, just ignore it. */
             var nonePresent = !item['value'] && !item['name'];
             if (nonePresent) {
-                item.error = false
                 return;
-            }
+            };
 
             if ((item['value'] == undefined) || (item['name'] == undefined) || !item['name'].match(/^\w+$/)) {
                 console.log(item)
                 valid = false;
-                item.error = true;
-            }
-            else
-                item.error = false
+            };
 
         })
         return valid;
