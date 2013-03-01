@@ -37,6 +37,27 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         });
     }
 
+    $scope.hypervisors = {}
+    wiggle.hypervisors.list(function(ids){
+        ids.forEach(function(id) {
+            $scope.hypervisors[id] = {name: id};
+            wiggle.hypervisors.get({id: id}, function(e) {
+                $scope.hypervisors[id] = e
+            });
+        })
+    });
+
+    $scope.vms = {}
+    wiggle.vms.list(function(ids){
+        ids.forEach(function(id) {
+            $scope.vms[id] = {name: id};
+            wiggle.vms.get({id: id}, function(e) {
+                $scope.vms[id] = e
+            });
+
+        })
+    });
+
     wiggle.dtrace.get({id: uuid}, function(res) {
         console.log(res);
         res.cur_vars = [];
@@ -141,11 +162,14 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             socket.close();
         }
     });
+    $scope.sel_hyps = [];
+    $scope.sel_vms = [];
 
     $scope.start = function start() {
         if ('MozWebSocket' in window) {
             WebSocket = MozWebSocket;
         }
+
         var wsurl = window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host +'/api/0.1.0/dtrace/' + uuid + '/stream';
         console.log(wsurl);
         socket = new WebSocket(wsurl);
@@ -168,7 +192,10 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
                 if (v['name'] && v['value'])
                     config[v['name']] = v['value'];
             });
-            socket.send(JSON.stringify(config));
+            var data = {config: config,
+                        servers: $scope.sel_hyps,
+                        vms: $scope.sel_vms};
+            socket.send(JSON.stringify(data));
         }
     }
     $scope.stop = function() {

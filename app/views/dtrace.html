@@ -40,15 +40,44 @@
                  />
               <input class="span5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
             </div>
-
             <br/>
-
           </div>
         </div>
       </div>
       <div class="tab-pane" id="run">
         <div class="row-fluid">
-          <div class="span8 box">
+          <div class="span3 accordion box" id="dtrace-targets">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#dtrace-targets" href="#dtrace-target-hypervisors" ng-click="sel_vms = []">
+                  <span class="badge badge-info">Hypervisors</span>
+                </a>
+              </div>
+              <div id="dtrace-target-hypervisors" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  <select class="span12" multiple="multiple" ng-model="sel_hyps">
+                    <option ng-repeat="(id, h) in hypervisors" value="{{id}}">{{h.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#dtrace-targets" href="#dtrace-target-vms" ng-click="sel_hyps = []">
+                  <span class="badge badge-info">vms</span>
+                </a>
+              </div>
+              <div id="dtrace-target-vms" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <select class="span12" multiple="multiple" ng-model="sel_vms">
+                    <option ng-repeat="(id, h) in vms" value="{{id}}">{{h.config.alias}}({{h.uuid}})</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="span5 box">
             <div class="header">
               <i class="icon-tasks"></i>
               <span class="badge badge-info">Script</span>
@@ -57,6 +86,7 @@
             <div style="width: 300px;" id="content">
             </div>
           </div>
+
           <div class="span3 box">
             <div class="header">
               <i class="icon-tasks"></i>
