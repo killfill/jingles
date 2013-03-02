@@ -85,7 +85,7 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
                     case "heatmap":
                     default:
                     renderer = new Heatmap("#content", message.config);
-                }l
+                };
 
             } else {
                 if (renderer)
