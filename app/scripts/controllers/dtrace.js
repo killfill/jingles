@@ -81,7 +81,6 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         socket.onmessage = function(message){
             var message = JSON.parse(message.data);
             if (message.config) {
-                
                 switch (message.config.type) {
                     case "heatmap":
                     default:

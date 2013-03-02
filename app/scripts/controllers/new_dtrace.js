@@ -20,7 +20,9 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
                 return;
             };
 
-            if ((item['value'] == undefined) || (item['name'] == undefined) || !item['name'].match(/^\w+$/)) {
+            if ((item['value'] == undefined) ||
+                (item['name'] == undefined) ||
+                !item['name'].match(/^\w+$/)) {
                 valid = false;
             };
 
@@ -30,7 +32,7 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
 
     var finalize_vars = function(vars) {
         return vars.map(function(v) {
-            if (typeof v != "string") {
+            if (typeof v.value != "string") {
                 return v;
             } else if (v.value.match(/^\d+$/)) {
                 v.value = parseInt(v.value);
@@ -86,6 +88,7 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             return keep;
         });
     };
+
     $scope.script_change = function() {
         $scope.variables = add_missing_vars($scope.script, $scope.variables);
     };
@@ -96,12 +99,12 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             status.error('Some variables are not valid. Please fix them');
             return;
         }
-
         var config = {};
         vars.forEach(function(v){
-            if (v['name'] && v['value'])
+            if (v['name'] != undefined && v['value'] != undefined )
                 config[v['name']] = v['value'];
         });
+        console.log(vars, config);
         var dtrace = new wiggle.dtrace({
             name: $scope.name,
             script: $scope.script,

@@ -63,8 +63,6 @@ Heatmap.prototype.render = function render(data) {
         return total;
     }
 
-
-
     for (var element in data) {
         for (var bucket in data[element]) {
             var val = data[element][bucket];
