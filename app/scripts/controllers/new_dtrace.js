@@ -1,5 +1,5 @@
 'use strict';
-
+var x;
 fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) {
 
     $scope.add_var = function() {
@@ -21,7 +21,6 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
             };
 
             if ((item['value'] == undefined) || (item['name'] == undefined) || !item['name'].match(/^\w+$/)) {
-                console.log(item)
                 valid = false;
             };
 
@@ -46,11 +45,29 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
         });
     }
 
-    function add_mising_vars(text, old_vars) {
+    // reserved placeholders
+    var reserved = ["filter"];
+
+    /*
+     * Check which variables are used in the script and add the new ones to the
+     * variable list.
+     */
+    function add_missing_vars(text, old_vars) {
         var found = text.match(/\$\w+\$/g);
+        // we can return early when nothing was found.
         if (!found)
             return old_vars;
-        var vars = found.map(function(e){return e.replace(/\$/g,'')});
+
+        // we need to strip the results from $'s and filter out reserved
+        // variables like filter.
+        var vars = found.map(function(e){
+            return e.replace(/\$/g,'')
+        }).filter(function(e) {
+            return reserved.indexOf(e) == -1
+        });
+
+        // We add all those not already in the list, this is a bit tricky
+        // since the list isn't a k/v pair but a array of objects.
         vars.forEach(function(v) {
             var existing = false
             old_vars.forEach(function(v1){
@@ -60,10 +77,17 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
                 old_vars.push({name: v})
             };
         });
-        return old_vars;
+
+        // we filter out variables that do not apear in the code nor are set.
+        // this prevents spamming when a variable is changed.
+        return old_vars.filter(function(e) {
+            var keep = vars.indexOf(e.name) >= 0 ||
+                e.value != undefined;
+            return keep;
+        });
     };
     $scope.script_change = function() {
-        add_mising_vars($scope.script, $scope.variables);
+        $scope.variables = add_missing_vars($scope.script, $scope.variables);
     };
     $scope.create_dtrace = function() {
         var vars = finalize_vars($scope.variables);
