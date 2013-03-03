@@ -70,6 +70,11 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     $scope.sel_vms = [];
 
     $scope.start = function start() {
+        if ($scope.sel_hyps.length == 0 && $scope.sel_vms.length == 0) {
+            status.error('You must select at least one hypervisor or one VM!');
+            return;
+        };
+
         if ('MozWebSocket' in window) {
             WebSocket = MozWebSocket;
         }
@@ -96,6 +101,16 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         socket.onopen = function() {
             var config = {};
             finalize_vars($scope.script.cur_vars).forEach(function(v){
+                if (typeof v.value != "string") {
+                } else if (v.value.match(/^\d+$/)) {
+                    v.value = parseInt(v.value);
+                } else if (v.value == "true") {
+                    v.value = true;
+                } else if (v.value == "false") {
+                    v.value = false;
+                } else if (v.value == "null") {
+                    v.value = null;
+                };
                 config[v['name']] = v['value'];
             });
             var data = {config: config,
