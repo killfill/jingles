@@ -48,7 +48,7 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
     }
 
     // reserved placeholders
-    var reserved = ["filter"];
+    var reserved = ["filter", "partial_filter"];
 
     /*
      * Check which variables are used in the script and add the new ones to the

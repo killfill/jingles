@@ -96,8 +96,7 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         socket.onopen = function() {
             var config = {};
             finalize_vars($scope.script.cur_vars).forEach(function(v){
-                if (v['name'] && v['value'])
-                    config[v['name']] = v['value'];
+                config[v['name']] = v['value'];
             });
             var data = {config: config,
                         servers: $scope.sel_hyps,
