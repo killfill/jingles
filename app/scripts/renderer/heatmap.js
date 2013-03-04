@@ -1,11 +1,12 @@
+var x = [];
 function Heatmap(target, config) {
     console.log("New heatmap renderer:", config);
     this.target = target;
     this.config = config;
     //heght of each row in the heatmap
-    this.h = 5;
+    this.h = 10;
     //width of each column in the heatmap
-    this.w = 15;
+    this.w = 20;
     this.cols = [];
 
     //number of seconds to show.
@@ -26,9 +27,23 @@ function Heatmap(target, config) {
     for (var i = 0; i < this.history_size; i ++) {
         this.cols.push([]);
     };
+    d3.select(this.target)
+        .attr("style", "background: white;")
+
+    this.play = true;
+}
+
+Heatmap.prototype.start = function() {
+    this.play = true;
+}
+
+Heatmap.prototype.stop = function() {
+    this.play = false;
 }
 
 Heatmap.prototype.render = function render(data) {
+    if (!this.play)
+        return;
 
     /*
      * Thank you javascript, we can't use this in function callbacks it seems -.-
@@ -114,7 +129,8 @@ Heatmap.prototype.render = function render(data) {
     var heatmapRects = mySVG
         .selectAll(".rect")
         .data(flat)
-        .enter().append("svg:rect")
+        .enter()
+        .append("svg:rect")
         .attr('width', w)
         .attr('height', h)
         .attr('x', function(d) {
@@ -126,6 +142,18 @@ Heatmap.prototype.render = function render(data) {
         .style('fill',function(d) {
             return colorScale(d[2]);
         });
+
+    $(heatmapRects[0]).tooltip({
+        html: true,
+        title: function(e) {
+        var start = this.__data__[1];
+        var cnt = this.__data__[2];
+        var details = this.__data__[3];
+        details = details.reduce(function (acc, e) {
+            return acc + "<br/><b>" + e[0] + "</b>: " + e[1];
+        }, "");
+        return "Bucket[" + start + "]: <b>" + cnt + "</b>" + details;
+    }});
 
     this.cols.push({svg: mySVG, data: flat});
 };

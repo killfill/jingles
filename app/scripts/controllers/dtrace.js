@@ -4,7 +4,8 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     var uuid = $routeParams.uuid;
     var socket = false;
 
-    var renderer;
+    $scope.renderer = false;
+
     var finalize_vars = function(vars) {
         return vars.map(function(v) {
             if (typeof v != "string") {
@@ -70,6 +71,13 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     $scope.sel_vms = [];
 
     $scope.start = function start() {
+
+        // if we already created a $scope.renderer we just need to enable it again.
+        if ($scope.renderer) {
+            $scope.renderer.play();
+            return
+        }
+
         if ($scope.sel_hyps.length == 0 && $scope.sel_vms.length == 0) {
             status.error('You must select at least one hypervisor or one VM!');
             return;
@@ -89,12 +97,12 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
                 switch (message.config.type) {
                     case "heatmap":
                     default:
-                    renderer = new Heatmap("#content", message.config);
+                    $scope.renderer = new Heatmap("#content", message.config);
                 };
 
             } else {
-                if (renderer)
-                    renderer.render(message);
+                if ($scope.renderer)
+                    $scope.renderer.render(message);
             }
         };
 
@@ -117,6 +125,12 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
                         servers: $scope.sel_hyps,
                         vms: $scope.sel_vms};
             socket.send(JSON.stringify(data));
+        }
+    }
+
+    $scope.pause = function() {
+        if ($scope.renderer) {
+            $scope.renderer.stop();
         }
     }
     $scope.stop = function() {
