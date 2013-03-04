@@ -4,7 +4,7 @@ function Heatmap(target, config) {
     this.target = target;
     this.config = config;
     //heght of each row in the heatmap
-    this.h = 10;
+    this.h = 7;
     //width of each column in the heatmap
     this.w = 20;
     this.cols = [];

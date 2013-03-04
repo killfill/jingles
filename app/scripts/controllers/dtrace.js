@@ -4,7 +4,8 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     var uuid = $routeParams.uuid;
     var socket = false;
 
-    $scope.renderer = false;
+    var renderer;
+    $scope.running = false;
 
     var finalize_vars = function(vars) {
         return vars.map(function(v) {
@@ -58,23 +59,23 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     });
 
 
-
-
-
     $scope.$on('$destroy', function() {
         // we want to close the websocket when we lave the page.
         if (socket) {
             socket.close();
         }
     });
+    
     $scope.sel_hyps = [];
     $scope.sel_vms = [];
 
     $scope.start = function start() {
+//        $scope.running = true;
 
-        // if we already created a $scope.renderer we just need to enable it again.
-        if ($scope.renderer) {
-            $scope.renderer.play();
+        // if we already created a renderer we just need to enable it again.
+        if (renderer) {
+            $scope.running = true;
+            renderer.play();
             return
         }
 
@@ -95,14 +96,16 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             var message = JSON.parse(message.data);
             if (message.config) {
                 switch (message.config.type) {
-                    case "heatmap":
-                    default:
-                    $scope.renderer = new Heatmap("#content", message.config);
+                case "heatmap":
+                default:
+                    $scope.$apply(function() {$scope.running = true});
+                    renderer = new Heatmap("#content", message.config);
+
                 };
 
             } else {
-                if ($scope.renderer)
-                    $scope.renderer.render(message);
+                if (renderer)
+                    renderer.render(message);
             }
         };
 
@@ -129,12 +132,15 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
     }
 
     $scope.pause = function() {
-        if ($scope.renderer) {
-            $scope.renderer.stop();
+        if (renderer) {
+            $scope.running = false;
+            renderer.stop();
         }
     }
     $scope.stop = function() {
         if (socket) {
+            $scope.running = false;
+            renderer = undefined;
             socket.close();
             socket = false;
         }
