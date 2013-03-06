@@ -4,6 +4,14 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status) {
 
     $scope.datasets = {}
 
+    $scope.import = function() {
+        wiggle.datasets.import({},
+                               {url: $scope.url},
+                               function(r) {
+                                   console.log(r);
+                               });
+    };
+
     $scope.show = function() {
 
         wiggle.datasets.list(function (ids) {

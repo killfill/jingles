@@ -50,7 +50,9 @@ fifoApp.factory('wiggle', function($resource, $http) {
                             {id: '@id'},
                             {create: {method: 'POST'}}
                            ),
-        datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
+        datasets: $resource(endpoint + 'datasets/:id',
+                            {id: '@id'},
+                           {import: {method: 'POST'}}),
         packages: $resource(endpoint + 'packages/:id',
                             {id: '@id'},
                             {create: {method: 'POST'},
