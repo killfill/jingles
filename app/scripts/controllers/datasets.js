@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat) {
+fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl) {
 
     $scope.datasets = {}
 
@@ -12,9 +12,17 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat) 
         wiggle.datasets.import({},
                                {url: url},
                                function(r) {
-                                   console.log(r);
+                                   var uuid = r.dataset;
+                                   howl.join(uuid);
+                                   $scope.datasets[uuid] = r;
                                });
     };
+
+    $scope.$on('progress', function(e, msg) {
+        $scope.$apply(function() {
+            $scope.datasets[msg.channel].imported = msg.message.data.imported;
+        });
+    })
 
     $scope.show = function() {
         wiggle.datasets.list(function (ids) {
@@ -22,6 +30,8 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat) 
             ids.length > 0 && status.update('Loading datasets', {total: ids.length})
 
             ids.forEach(function(id) {
+                howl.join(id);
+
                 $scope.datasets[id] = {}
                 wiggle.datasets.get({id: id},
                                     function success(res) {
@@ -37,7 +47,6 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat) 
 
             })
             datasetsat.datasets.list(function (data) {
-                console.log(data[0]);
                 $scope.datasetsat = data.map(function(e) {
                     if ($scope.datasets[e.uuid]) {
                         e.imported = true;

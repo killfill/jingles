@@ -49,6 +49,7 @@
                   <th>UUID</th>
                   <th>Imported</th>
                   <th>Type</th>
+                  <th>Size</th>
                 </tr>
               </thead>
               <tbody>
@@ -63,6 +64,8 @@
                             ng-click='import(data)'>Import!</button>
                   </td>
                   <td>{{data.type}}</td>
+                  <td>{{data.files[0].size|bytes}}</td>
+
                 </tr>
               </tbody>
             </table>
