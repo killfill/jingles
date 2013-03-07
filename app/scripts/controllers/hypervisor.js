@@ -20,6 +20,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
                 name: key,
                 value: ''
             })
+            $scope.$apply()
         })
     }
 
