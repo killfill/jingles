@@ -1,4 +1,4 @@
-VERSION=0.1.2
+VERSION=0.1.2p1
 COMPONENT=jingles
 
 .PHONY: build_info package package_list
