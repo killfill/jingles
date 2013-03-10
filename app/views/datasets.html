@@ -10,7 +10,7 @@
           <div class="tab-pane active" id="installed">
             <div class="pane-nav">
                 <input class="input" type="text" ng-model="url" placeholder="image url" style='margin-bottom: 0px;'/>
-                <button class='btn btn-success' ng-click='import()'>Import!</button>
+                <button class='btn btn btn-success' ng-click='import()'>Import</button>
             </div>
             <table class="table table-condensed table-hover">
               <thead>
@@ -62,9 +62,9 @@
                   <td>{{data.description}}</td>
                   <td>
                     <i ng-show="data.imported" class="icon-ok"></i>
-                    <button class='btn btn-success'
+                    <button class='btn btn-small btn-success'
                             ng-hide="data.imported"
-                            ng-click='import(data)'>Import!</button>
+                            ng-click='import(data)'>Import</button>
                   </td>
                   <td class='light nowrap'>{{data.type}}</td>
                   <td>{{data.files[0].size|bytes}}</td>
