@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+    $scope.setTitle('User details')
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
     $scope.p3 = false;

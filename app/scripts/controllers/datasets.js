@@ -1,13 +1,14 @@
 'use strict';
 
 fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl) {
+    $scope.setTitle('Datasets')
 
     $scope.datasets = {}
 
     $scope.import = function(dataset) {
         var url = $scope.url
         if (dataset)
-            url = 'http://datasets.at/datasets/' + dataset.uuid;
+            url = 'http://' + Config.datasets + '/datasets/' + dataset.uuid;
 
         wiggle.datasets.import({},
                                {url: url},
@@ -15,6 +16,8 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                    var uuid = r.dataset;
                                    howl.join(uuid);
                                    $scope.datasets[uuid] = r;
+                                   dataset.imported = true;
+                                   status.success('Importing ' + r.name + ' ' + r.version)
                                });
     };
 
@@ -25,6 +28,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
     })
 
     $scope.show = function() {
+
         wiggle.datasets.list(function (ids) {
 
             ids.length > 0 && status.update('Loading datasets', {total: ids.length})
@@ -46,6 +50,10 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                    )
 
             })
+
+            if (!Config.datasets)
+                return status.error('Make sure your config has an URL for the remote datasets')
+
             datasetsat.datasets.list(function (data) {
                 $scope.datasetsat = data.map(function(e) {
                     if ($scope.datasets[e.uuid]) {

@@ -1,6 +1,7 @@
 'use strict';
 
-fifoApp.controller('AboutCtrl', function($scope, $rootScope, wiggle, $http) {
+fifoApp.controller('AboutCtrl', function($scope, wiggle, $http) {
+    $scope.setTitle('About')
 
     var opts = {transformRequest:function(a,b){
         delete b()["X-Snarl-Token"];

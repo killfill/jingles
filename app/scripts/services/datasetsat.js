@@ -2,10 +2,7 @@
 
 fifoApp.factory('datasetsat', function($resource, $http) {
 
-
-    var endpoint = "http://datasets.at/"
-
-
+    var endpoint = "http://" + Config.datasets + "/"
     var services = {
         datasets: $resource(endpoint + 'datasets/:id',
                             {id: '@id'}),

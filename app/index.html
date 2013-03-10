@@ -70,6 +70,10 @@
             <img ng-show="loading" style="margin-left: 10px; margin-right: 10px;" src="images/loading.gif"/>
           </a>
 
+          <ul class="nav">
+            <h3>{{title}}</h3>
+          </ul>
+
           <ul class='nav' ng-repeat='st in status'>
             <li style='padding-top: 15px; padding-left: 20px; color: white;'>{{st.name}}</li>
             <li class='span2' style='padding-top: 15px; height: 10px' ng-show='st.current'>
@@ -149,6 +153,7 @@
     <script src="scripts/controllers/hypervisor.js"></script>
     <script src="scripts/controllers/networks.js"></script>
     <script src="scripts/controllers/datasets.js"></script>
+    <script src="scripts/controllers/dataset.js"></script>
     <script src="scripts/controllers/packages.js"></script>
     <script src="scripts/controllers/package.js"></script>
     <script src="scripts/controllers/groups.js"></script>

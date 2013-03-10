@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('HypervisorsCtrl', function($scope, wiggle, status) {
+    $scope.setTitle('Hypervisors')
 
     $scope.hypervisors = {}
 

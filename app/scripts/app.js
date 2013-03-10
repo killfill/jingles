@@ -63,6 +63,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/datasets.html',
         controller: 'DatasetsCtrl'
     })
+    .when('/datasets/:uuid', {
+        templateUrl: 'views/dataset.html',
+        controller: 'DatasetCtrl'
+    })
     .when('/packages', {
         templateUrl: 'views/packages.html',
         controller: 'PackagesCtrl'

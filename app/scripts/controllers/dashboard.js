@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('DashboardCtrl', function($scope, wiggle) {
+    $scope.setTitle('Dashboard')
 
     var roundedInt = function(num) {
         return parseInt(Math.round(num), 10)

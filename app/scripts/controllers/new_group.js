@@ -1,6 +1,8 @@
 'use strict';
 
 fifoApp.controller('NewGroupCtrl', function($scope, $location, wiggle, status) {
+    $scope.setTitle('New group')
+
     $scope.create_group = function() {
         var user = new wiggle.groups({name: $scope.name});
         user.$create({},

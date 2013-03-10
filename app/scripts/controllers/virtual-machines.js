@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status, modal, howl, vmService) {
+    $scope.setTitle('Virtual Machines')
 
     $scope.vms = {}
 

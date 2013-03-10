@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('DTracesCtrl', function($scope, wiggle, status, modal) {
+    $scope.setTitle('DTrace')
 
     $scope.dtraces = {}
 

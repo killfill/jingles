@@ -371,8 +371,12 @@ dd {
 .box-small {
     width: 21% !important;
 }
+
 .box-medium {
     width: 33% !important;
+}
+.box-medium > .dl-horizontal dd {
+    margin-left: 100px;
 }
 
 .box {
@@ -590,3 +594,23 @@ form {
 input[type='text'].alertify-text {
     height: 30px;
 }
+
+.pane-nav {
+    float: right;
+    margin-bottom: 15px;
+}
+.pane-nav > * {
+    margin-right: 10px;
+}
+
+ul.nav > h3 {
+    font-size: 1.5em;
+    padding-left: 65px;
+    color: #bbb;
+    text-shadow: 2px 2px rgb(40, 40, 40)
+}
+
+.progress {
+    margin-bottom: 0px;
+}
+

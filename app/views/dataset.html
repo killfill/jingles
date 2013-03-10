@@ -1,0 +1,33 @@
+<div class="tab-pane" ng-show="true">
+
+
+    <div class="box box-medium pull-left">
+        <div class="header">
+          Dataset
+          <span class="badge badge-info">
+            {{dataset.name}} {{dataset.version}}
+          </span>
+          <img jq-run='tooltip' title="{{dataset.os || 'unknown'}}"
+               ng-src="images/logos/{{dataset.os || 'unknown'}}.png" class='oslogo'/>
+        </div>
+
+        <dl class="dl-horizontal">
+          <dt>UUID</dt><dd><small>{{dataset.dataset}}</small></dd>
+          <dt>Info</dt><dd>{{dataset.description}}</dd>
+        </dl>
+    </div>
+
+    <div class="box box-medium pull-left">
+        <div class="header">Details</div>
+        <dl class="dl-horizontal">
+            <dt>Type:</dt><dd>{{dataset.type}}</dd>
+            <dt>OS:</dt><dd>{{dataset.os}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-repeat="net in dataset.networks">
+            <dt>{{net.name}}</dt>
+            <dd>{{net.description}}</dd>
+        </dl>
+    </div>
+
+
+</div>

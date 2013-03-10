@@ -1,23 +1,18 @@
           <div class="tab-pane" id="virtual-machines">
-            <div class="row-fluid">
-              <div class="span12">
-              	<h2>Virtual Machines
-              		<a title='Create a new Machine' jq-run='tooltip' style="float: right; margin-left: 20px;" href="#/virtual-machines/new" class="btn btn-inverse">
-              			<i class="icon-white icon-plus"></i> New
-              		</a>
-                    <column-selector class='hidden' id='popupContent'>
-                    </column-selector>
-                    <button
-                        title='Show the following columns'
-                        jq-run='popover' jq-options="{placement: 'bottom', content: showPopupContent}"
-                        style='float: right; margin-left: 20px;'
-                        class='btn btn-info'>
-                        <i class='icon-white icon-list'></i>
-                    </button>
-              		<input style="float: right" type="text" class="search-query span3" placeholder='Filter' ng-model='searchQuery'>
-              	</h2>
-                <hr/>
-              </div>
+            <div class="pane-nav">
+                <input type="text" class="search-query span5" placeholder='Filter' ng-model='searchQuery'>
+
+                <column-selector class='hidden' id='popupContent'>
+                </column-selector>
+                <button
+                    title='Show the following columns'
+                    jq-run='popover' jq-options="{placement: 'bottom', content: showPopupContent}"
+                    class='btn btn-info'>
+                    <i class='icon-white icon-list'></i>
+                </button>
+                <a title='Create a new Machine' jq-run='tooltip' href="#/virtual-machines/new" class="btn btn-inverse">
+                    <i class="icon-white icon-plus"></i> New
+                </a>
             </div>
             <div class="row-fluid">
               <div class="span12">

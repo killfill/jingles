@@ -1,6 +1,8 @@
 'use strict';
 
 fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+    $scope.setTitle('Hypervisor details')
+
     var uuid = $routeParams.uuid
     $scope.characteristics = []
 
