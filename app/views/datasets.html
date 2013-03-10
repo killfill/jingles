@@ -51,12 +51,12 @@
                   <th>Name</th>
                   <th>Description</th>
                   <th>Imported</th>
-                  <th>Type</th>
+                  <th>Published</th>
                   <th>Size</th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="data in datasetsat | hash2array | orderBy: ['-os', 'name','-version']">
+                <tr ng-repeat="data in datasetsat | hash2array | orderBy: ['-published_at', '-os', 'name','-version']">
                   <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
                   <td title='{{data.uuid}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</td>
                   <td>{{data.description}}</td>
@@ -66,8 +66,8 @@
                             ng-hide="data.imported"
                             ng-click='import(data)'>Import</button>
                   </td>
-                  <td class='light nowrap'>{{data.type}}</td>
-                  <td>{{data.files[0].size|bytes}}</td>
+                  <td title="{{data.published_at | date:'medium'}}" jq-run='tooltip'>{{data.published_at | fromNow}}</td>
+                  <td class='light nowrap'>{{data.files[0].size|bytes}}</td>
 
                 </tr>
               </tbody>
