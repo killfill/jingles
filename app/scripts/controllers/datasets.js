@@ -4,6 +4,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
     $scope.setTitle('Datasets')
 
     $scope.datasets = {}
+    $scope.endpoint = Config.datasets
 
     $scope.import = function(dataset) {
         var url = $scope.url
