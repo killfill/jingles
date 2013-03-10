@@ -17,7 +17,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                    var uuid = r.dataset;
                                    howl.join(uuid);
                                    $scope.datasets[uuid] = r;
-                                   dataset.imported = true;
+                                   dataset && dataset.imported = true;
                                    status.success('Importing ' + r.name + ' ' + r.version)
                                });
     };

@@ -53,6 +53,7 @@
                   <th>Imported</th>
                   <th>Published</th>
                   <th>Size</th>
+                  <th>Creator</th>
                 </tr>
               </thead>
               <tbody>
@@ -66,9 +67,9 @@
                             ng-hide="data.imported"
                             ng-click='import(data)'>Import</button>
                   </td>
-                  <td title="{{data.published_at | date:'medium'}}" jq-run='tooltip'>{{data.published_at | fromNow}}</td>
+                  <td class='nowrap' title="{{data.published_at | date:'medium'}}" jq-run='tooltip'>{{data.published_at | fromNow}}</td>
                   <td class='light nowrap'>{{data.files[0].size|bytes}}</td>
-
+                  <td class='light'><small>{{data.creator_name}}</small></td>
                 </tr>
               </tbody>
             </table>
