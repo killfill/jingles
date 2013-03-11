@@ -14,11 +14,12 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
         wiggle.datasets.import({},
                                {url: url},
                                function(r) {
-                                   var uuid = r.dataset;
-                                   howl.join(uuid);
-                                   $scope.datasets[uuid] = r;
-                                   dataset && dataset.imported = true;
-                                   status.success('Importing ' + r.name + ' ' + r.version)
+                                    var uuid = r.dataset;
+                                    howl.join(uuid);
+                                    $scope.datasets[uuid] = r;
+                                    status.success('Importing ' + r.name + ' ' + r.version)
+                                    if (dataset)
+                                        dataset.imported = true;
                                });
     };
 
