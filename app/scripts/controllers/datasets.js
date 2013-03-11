@@ -17,7 +17,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                     var uuid = r.dataset;
                                     howl.join(uuid);
                                     $scope.datasets[uuid] = r;
-                                    status.success('Importing ' + r.name + ' ' + r.version)
+                                    status.info('Importing ' + r.name + ' ' + r.version)
                                     if (dataset)
                                         dataset.imported = true;
                                });
@@ -35,6 +35,12 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
             wiggle.datasets.delete({id: dataset.dataset}, function() {
                 delete $scope.datasets[dataset.dataset]
                 status.success('Dataset deleted.')
+
+                /* Search the remote dataset element, and set it as not imported. */
+                var remoteDs = $scope.datasetsat.filter(function(i) { 
+                    return i.uuid == dataset.dataset 
+                }).pop()
+                if (remoteDs) remoteDs.imported = false;
             })
         })
 
