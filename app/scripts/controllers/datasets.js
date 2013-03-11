@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl) {
+fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl, modal) {
     $scope.setTitle('Datasets')
 
     $scope.datasets = {}
@@ -21,6 +21,23 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                    status.success('Importing ' + r.name + ' ' + r.version)
                                });
     };
+
+    $scope.delete = function(dataset) {
+
+        modal.confirm({
+            btnClass: 'btn-danger',
+            btnText: 'Delete',
+            header: 'Confirm Dataset Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete dataset <b>' +
+                dataset.name + " v" + dataset.version + " (" + dataset.dataset + ")</b> Are you 100% sure you really want to do this?</p>"
+        }, function() {
+            wiggle.datasets.delete({id: dataset.dataset}, function() {
+                delete $scope.datasets[dataset.dataset]
+                status.success('Dataset deleted.')
+            })
+        })
+
+    }
 
     $scope.$on('progress', function(e, msg) {
         $scope.$apply(function() {
