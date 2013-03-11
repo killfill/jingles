@@ -40,7 +40,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                 $scope.datasets[id] = {}
                 wiggle.datasets.get({id: id},
                                     function success(res) {
-                                        if (res) $scope.datasets[id] = addFields(res)
+                                        if (res) $scope.datasets[id] = res
                                         status.update('Loading datasets', {add: 1})
                                     },
                                     function error (res) {
@@ -71,8 +71,4 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
 
     $scope.show()
 
-    var addFields = function(ds) {
-        ds._nets = (ds.networks || []).map(function(e) { return e.name + ': ' + e.description}).join(", ");
-        return ds;
-    }
 });
