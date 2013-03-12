@@ -1,10 +1,9 @@
 <div class="tab-pane" ng-show='vm.uuid'>
   <div class="row-fluid">
     <span class="span8">
-      <h3 style='display: inline-block; margin-top: 10px;'>Machine {{vm._name}}</h3>
+      <h3 style='display: inline-block; margin-top: 10px;'>{{vm._name}}</h3>
       <span style='margin: 0px 5px 5px 5px; vertical-align: middle;' class='label label-{{vm._state_label}}'>{{vm.state}}</span>
       <span class='light'>{{vm.mdata('description')}}</span>
-
     </span>
     <div class='span4'>
       <div class="btn-toolbar btn-group pull-right">

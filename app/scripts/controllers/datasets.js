@@ -1,22 +1,50 @@
 'use strict';
 
-fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl) {
+fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, howl, modal) {
+    $scope.setTitle('Datasets')
 
     $scope.datasets = {}
+    $scope.endpoint = Config.datasets
 
     $scope.import = function(dataset) {
         var url = $scope.url
         if (dataset)
-            url = 'http://datasets.at/datasets/' + dataset.uuid;
+            url = 'http://' + Config.datasets + '/datasets/' + dataset.uuid;
 
         wiggle.datasets.import({},
                                {url: url},
                                function(r) {
-                                   var uuid = r.dataset;
-                                   howl.join(uuid);
-                                   $scope.datasets[uuid] = r;
+                                    var uuid = r.dataset;
+                                    howl.join(uuid);
+                                    $scope.datasets[uuid] = r;
+                                    status.info('Importing ' + r.name + ' ' + r.version)
+                                    if (dataset)
+                                        dataset.imported = true;
                                });
     };
+
+    $scope.delete = function(dataset) {
+
+        modal.confirm({
+            btnClass: 'btn-danger',
+            btnText: 'Delete',
+            header: 'Confirm Dataset Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete dataset <b>' +
+                dataset.name + " v" + dataset.version + " (" + dataset.dataset + ")</b> Are you 100% sure you really want to do this?</p>"
+        }, function() {
+            wiggle.datasets.delete({id: dataset.dataset}, function() {
+                delete $scope.datasets[dataset.dataset]
+                status.success('Dataset deleted.')
+
+                /* Search the remote dataset element, and set it as not imported. */
+                var remoteDs = $scope.datasetsat.filter(function(i) { 
+                    return i.uuid == dataset.dataset 
+                }).pop()
+                if (remoteDs) remoteDs.imported = false;
+            })
+        })
+
+    }
 
     $scope.$on('progress', function(e, msg) {
         $scope.$apply(function() {
@@ -25,6 +53,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
     })
 
     $scope.show = function() {
+
         wiggle.datasets.list(function (ids) {
 
             ids.length > 0 && status.update('Loading datasets', {total: ids.length})
@@ -35,7 +64,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                 $scope.datasets[id] = {}
                 wiggle.datasets.get({id: id},
                                     function success(res) {
-                                        if (res) $scope.datasets[id] = addFields(res)
+                                        if (res) $scope.datasets[id] = res
                                         status.update('Loading datasets', {add: 1})
                                     },
                                     function error (res) {
@@ -46,6 +75,10 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                                    )
 
             })
+
+            if (!Config.datasets)
+                return status.error('Make sure your config has an URL for the remote datasets')
+
             datasetsat.datasets.list(function (data) {
                 $scope.datasetsat = data.map(function(e) {
                     if ($scope.datasets[e.uuid]) {
@@ -62,8 +95,4 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
 
     $scope.show()
 
-    var addFields = function(ds) {
-        ds._nets = (ds.networks || []).map(function(e) { return e.name + ': ' + e.description}).join(", ");
-        return ds;
-    }
 });

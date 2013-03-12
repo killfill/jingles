@@ -20,6 +20,12 @@ Config = {
     howl: window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host+"/howl",
     //howl: 'ws://IP/howl',
 
+    /*
+     * The URL of the remote dataset repository
+     *
+    */
+    datasets: 'datasets.at',
+
     /* Here you can define the rules by which the UI decides if metrics are good or bad.
      * 'type'  values of warning or error are shown as a big red X, values of info are
      * just listed.

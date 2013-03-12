@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
+    $scope.setTitle('Users')
 
     $scope.users = {}
 

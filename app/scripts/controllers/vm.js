@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+    $scope.setTitle('Machine details')
 
     var uuid = $routeParams.uuid;
 

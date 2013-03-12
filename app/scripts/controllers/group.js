@@ -1,6 +1,8 @@
 'use strict';
 
 fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+    $scope.setTitle('Group details')
+
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
     $scope.p3 = false;

@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('PackagesCtrl', function($scope, wiggle, status, modal) {
+    $scope.setTitle('Packages')
 
     $scope.packages = {}
 

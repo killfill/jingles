@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle, user, status) {
+    $scope.setTitle('New machine')
 
     $scope.create_machine = function() {
 
@@ -86,7 +87,8 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         wiggle.datasets.list(function(ids) {
             ids.forEach(function(id) {
                 wiggle.datasets.get({id: id}, function(res) {
-                    $scope.datasets.push(res)
+                    if (res.imported == 1)
+                        $scope.datasets.push(res)
                 })
             })
         })

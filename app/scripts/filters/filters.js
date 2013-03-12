@@ -52,7 +52,7 @@ var formatBytes = function(defaultPow1024) {
         var str = ( bytes / Math.pow(1024, Math.floor(number)) ).toFixed(precision);
 
         str = str.replace(/(.\d*?)0*$/, "$1").replace(/(.*?)\.$/, "$1"); //trim right-zeros
-        return str +  ' ' + units[number];
+        return str +  '' + units[number];
     }
 }
 

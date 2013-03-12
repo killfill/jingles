@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
+fifoApp.factory('vmService', function(wiggle, status, modal) {
 
     var padLeft = function(nr, n, str){
         return Array(n-String(nr).length+1).join(str||'0')+nr;

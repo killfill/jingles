@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
+    $scope.setTitle('Networks')
 
     $scope.networks = {}
 

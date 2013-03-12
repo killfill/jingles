@@ -1,9 +1,4 @@
 <div class="row-fluid">
-	<div class="span12">
-		<h2>Create a new Machine</h2>
-		<hr/>
-	</div>
-
 	<div class="span10">
 		<div class="alert alert-info">
 			Create a <strong>{{selectedPackage.name}}</strong>
@@ -26,7 +21,7 @@
 					<th>Version</th>
 				</tr>
 				<tr class='clickable'
-					ng-repeat="d in datasets | orderBy: ['-os', 'name', '-version']"
+					ng-repeat="d in datasets | filter:{imported: 1} | orderBy: ['-os', 'name', '-version']"
 					ng-click='click_dataset(d)'
 					ng-class="selectedDataset.dataset==d.dataset && 'success'">
 					<td><img jq-run='tooltip' ng-src="images/logos/{{d.os || 'unknown'}}.png" class='oslogo' /></td>

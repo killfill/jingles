@@ -1,6 +1,7 @@
 'use strict';
 var x;
 fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) {
+    $scope.setTitle('New script')
 
     $scope.add_var = function() {
         $scope.variables.push({})
