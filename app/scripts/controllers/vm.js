@@ -2,7 +2,7 @@
 
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
     $scope.setTitle('Machine details')
-
+    $scope.force = false;
     var uuid = $routeParams.uuid;
 
     /* Get the all the packages */
@@ -145,7 +145,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     }
 
     $scope.action = function(action, vm) {
-        vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, function() {
+        vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, $scope.force, function() {
             if (action=='delete')
                 $location.path('/virtual-machines')
         })
