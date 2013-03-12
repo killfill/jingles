@@ -49,7 +49,7 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
             datasetsat.datasets.list(function (data) {
                 $scope.datasetsat = data.map(function(e) {
                     if ($scope.datasets[e.uuid]) {
-                        e.imported = true;
+                        e.imported = !$scope.datasets[e.uuid].imported ||  $scope.datasets[e.uuid].imported == 1;
                     } else {
                         e.imported = false;
                     }
