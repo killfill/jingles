@@ -154,7 +154,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     $scope.lock = function() {
         $scope.vm.mdata_set({locked: !$scope.vm.mdata('locked')})
     }
-    
+
     $scope.vnc = function(vm) {
         window.open("vnc.html?uuid=" + vm.uuid)
     }

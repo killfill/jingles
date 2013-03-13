@@ -27,7 +27,7 @@ function run(){
     if ('MozWebSocket' in window) {
         WebSocket = MozWebSocket;
     }
-    socket = new WebSocket('ws://127.0.0.1/api/0.1.0/dtrace/b620ffaf-870c-4801-ac92-e2b45ce16326/stream');
+    socket = new WebSocket('ws://127.0.0.1/api/0.1.0/dtrace/b620ffaf-870c-4801-ac92-e2b45ce16326/stream', 'msgpack');
     /* The only messages we recieve should contain contain the dtrace aggregation data we requested
        on connection. */
     socket.onmessage = function(message){

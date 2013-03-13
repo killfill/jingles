@@ -65,7 +65,7 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             socket.close();
         }
     });
-    
+
     $scope.sel_hyps = [];
     $scope.sel_vms = [];
 
@@ -89,11 +89,14 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         }
 
         var wsurl = window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host +'/api/0.1.0/dtrace/' + uuid + '/stream';
-        socket = new WebSocket(wsurl);
+        console.log("msgpack!")
+        socket = new WebSocket(wsurl, 'msgpack');
+        socket.binaryType = "arraybuffer";
+
         /* The only messages we recieve should contain contain the dtrace aggregation data we requested
            on connection. */
         socket.onmessage = function(message){
-            var message = JSON.parse(message.data);
+            var message = msgpack.unpack(new Uint8Array(message.data));
             if (message.config) {
                 switch (message.config.type) {
                 case "heatmap":
@@ -127,7 +130,9 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             var data = {config: config,
                         servers: $scope.sel_hyps,
                         vms: $scope.sel_vms};
-            socket.send(JSON.stringify(data));
+            var bin = new Uint8Array(msgpack.pack(data));
+            console.log(data, msgpack.pack(data));
+            socket.send(bin.buffer);
         }
     }
 
