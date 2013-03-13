@@ -89,7 +89,6 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         }
 
         var wsurl = window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host +'/api/0.1.0/dtrace/' + uuid + '/stream';
-        console.log("msgpack!")
         socket = new WebSocket(wsurl, 'msgpack');
         socket.binaryType = "arraybuffer";
 
