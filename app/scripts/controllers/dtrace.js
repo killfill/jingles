@@ -131,7 +131,6 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
                         servers: $scope.sel_hyps,
                         vms: $scope.sel_vms};
             var bin = new Uint8Array(msgpack.pack(data));
-            console.log(data, msgpack.pack(data));
             socket.send(bin.buffer);
         }
     }
