@@ -3,7 +3,7 @@
 fifoApp.factory('howl', function($rootScope, $compile) {
 
     howl._wsMessage = function(e) {
-        var msg = JSON.parse(e.data),
+        var msg = howl.decode(e.data),
         type = msg.message && msg.message.event || 'main';
 
         $rootScope.$broadcast(type, msg)
@@ -31,6 +31,13 @@ var howl = {
     _connected: false,
     _token: false,
     _join_channels_on_connect: [],
+    decode: function(e) {
+        var r = msgpack.unpack(new Uint8Array(e));
+        return r;
+    },
+    encode: function(d) {
+        return (new Uint8Array(msgpack.pack(d))).buffer;
+    },
     _wsOpen: function(e) {
         howl.send({token: howl._token});
         Config.mode == 'dev' && console.log('[howl] connection open')
@@ -70,7 +77,8 @@ var howl = {
         if (token)
             howl._token = token
 
-        howl.ws = new WebSocket(Config.howl)
+        howl.ws = new WebSocket(Config.howl, 'msgpack')
+        howl.ws.binaryType = "arraybuffer";
         howl.ws.onopen = howl._wsOpen
         howl.ws.onclose = howl._wsClose
         howl.ws.onmessage = howl._wsMessage
@@ -79,7 +87,7 @@ var howl = {
     send: function(data) {
         if (Config.mode=='dev' && !data.ping)
             console.debug('[howl] send:   ', data)
-        howl.ws.send(JSON.stringify(data))
+        howl.ws.send(howl.encode(data))
     },
 
     join: function(channel) {
