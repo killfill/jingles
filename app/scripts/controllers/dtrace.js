@@ -56,6 +56,20 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         }
 
         $scope.script = res;
+
+        //It seems we neet to so this at the end of the work queue. not sure how to do that, but this works:
+        setTimeout(function() {
+            CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                theme: 'solarized light',
+                lineWrapping: true,
+                onKeyEvent: function(cm) {
+                    $scope.script.script = cm.getValue()
+                    $scope.$apply()
+                }
+            });
+        });
+
     });
 
 

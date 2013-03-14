@@ -29,7 +29,7 @@
 
                   <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
-                  <td class='uuid'>{{data.description}}</td>
+                  <td>{{data.description}}</td>
                   <td>
                     <i ng-show="data.imported == 1" class="icon-ok" style=""></i>
                     <div ng-hide="data.imported == 1" class="progress progress-striped active">
@@ -44,7 +44,7 @@
           </div>
           <div class="tab-pane" id="datasetsat">
             <div class="pane-nav">
-                Datasets are hosted and manged by <a href="http://{{endpoint}}">{{endpoint}}</a>
+                Datasets are hosted and managed by <a href="http://{{endpoint}}">{{endpoint}}</a>
             </div>
             <table class="table table-condensed table-hover">
               <thead>

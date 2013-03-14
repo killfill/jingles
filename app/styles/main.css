@@ -614,3 +614,6 @@ ul.nav > h3 {
     margin-bottom: 0px;
 }
 
+.CodeMirror {
+    font-size: 12px;
+}
