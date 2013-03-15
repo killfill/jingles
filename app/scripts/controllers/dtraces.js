@@ -13,10 +13,10 @@ fifoApp.controller('DTracesCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete the dtrace <b>' +
                 el.dt.name +"(" + el.dt.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
-            status.info('Will delete' + el.dt.name +"(" + el.dt.uuid + ")");
             wiggle.dtrace.delete({id: el.dt.uuid},
                                  function success (data, h) {
                                      delete $scope.dtraces[el.dt.uuid];
+                                     status.success('Script ' + el.dt.name + ' deleted');
                                  },
                                  function error (data) {
                                      console.error('Delete dtrace error:', data);
