@@ -90,9 +90,11 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
         });
     };
 
-    $scope.script_change = function() {
+    $scope.$watch('script', function(a) {
+        if (!a) return;
         $scope.variables = add_missing_vars($scope.script, $scope.variables);
-    };
+    })
+        
     $scope.create_dtrace = function() {
         var vars = finalize_vars($scope.variables);
 
@@ -114,7 +116,8 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
 
         dtrace.$create({},
                        function success(data, headers) {
-                           $location.path('/dtrace');
+                            status.success('Script ' + $scope.name + ' created')
+                            $location.path('/dtrace');
                        },
                        function error(data) {
                            console.error('Create Dtrace error:', data);
@@ -126,6 +129,20 @@ fifoApp.controller('NewDtraceCtrl', function($scope, $location, wiggle, status) 
 
     $scope.init = function() {
         $scope.variables = [];
+
+        //It seems we neet to so this at the end of the work queue. not sure how to do that, but this works:
+        setTimeout(function() {
+            CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                theme: 'solarized light',
+                lineWrapping: true,
+                onKeyEvent: function(cm) {
+                    $scope.script = cm.getValue()
+                    $scope.$apply()
+                }
+            });
+        });
+
     }
 
     $scope.init()
