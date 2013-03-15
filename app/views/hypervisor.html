@@ -143,7 +143,14 @@
               <dd ng-show="data['NIC Names'].length>0">{{data['NIC Names'].join(', ')}}</dd>
             </dl>
           </div>
-
+          <div class="hyperbox">
+            <div class="header">
+              <i class="icon-signal"></i>
+              <span class="badge badge-info">CPU</span>
+            </div>
+            <canvas id="cpuusage" width="400" height="100">
+            </canvas>
+          </div>
         </div>
       </div>
 

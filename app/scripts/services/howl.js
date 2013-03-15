@@ -5,7 +5,6 @@ fifoApp.factory('howl', function($rootScope, $compile) {
     howl._wsMessage = function(e) {
         var msg = howl.decode(e.data),
         type = msg.message && msg.message.event || 'main';
-
         $rootScope.$broadcast(type, msg)
         if (Config.mode == 'dev' && !msg.pong)
             console.debug('[howl] receive:', msg, type)
@@ -98,6 +97,13 @@ var howl = {
             return howl._join_channels_on_connect.push(channel)
 
         howl.send({join: channel})
+    },
+    leave: function(channel) {
+        if (typeof channel.forEach == 'function')
+            return channel.forEach(howl.leave)
+
+        howl.send({leave: channel})
     }
+
 
 }
