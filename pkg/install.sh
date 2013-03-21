@@ -47,7 +47,7 @@ emailAddress=blah@blah.com
             openssl req \
                 -new \
                 -batch \
-                -subj "$(/opt/local/gnu/bin/echo -n "$SUBJ" | /opt/local/gnu/bin/tr "\n" "/")" \
+                -subj "$(echo -n "$SUBJ" | tr "\n" "/")" \
                 -key $CERTDIR/$CERTPREFIX.key \
                 -out $CERTDIR/$CERTPREFIX.csr \
                 -passin env:PASSPHRASE
