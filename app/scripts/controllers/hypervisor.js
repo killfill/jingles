@@ -1,5 +1,6 @@
 'use strict';
 
+
 fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
     $scope.setTitle('Hypervisor details')
 
@@ -15,28 +16,47 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
         }
 
     });
-    var smoothie = new SmoothieChart({
-        grid: { strokeStyle:'rgb(255, 255, 255)', fillStyle:'rgb(0, 0, 0)',
-                lineWidth: 1, millisPerLine: 250, verticalSections: 4},
-        labels: { fillStyle:'rgb(255, 255, 255)' }
-    });
+
+    var size = 30;
+    var usr = [];
+    var sys = [];
+    for (var i = 0; i <= size; i++) {
+        usr.push(0);
+        sys.push(0);
+    }
+
+    var make_data = function (usr, sys) {
+        var sysH = sys.map(function(v, i) {
+            return {x: i, y: v}
+        });
+        var usrH = usr.map(function(v, i) {
+            return {x: i, y: v + sys[i]}
+        });
+        return {
+            "xScale": "linear",
+            "yMin": 0,
+            "yMax": 100,
+            "xMin": 0,
+            "xMax": 30,
+            "yScale": "linear",
+            "type": "line",
+            "main":[
+                {"className": ".sys",
+                 "data": sysH},
+                {"className": ".usr",
+                 "data": usrH}
+            ]};
+    };
+    var chart = new xChart('line', make_data(usr, sys), '#cpuusage');
     var last_usr = 0;
     var last_sys = 0;
     var last_idl = 0;
 
-    smoothie.streamTo(document.getElementById("cpuusage"), 1000);
-    var usr = new TimeSeries();
-    var sys = new TimeSeries();
-    var idl = new TimeSeries();
-    smoothie.addTimeSeries(usr);
-    smoothie.addTimeSeries(sys);
-    smoothie.addTimeSeries(idl);
 
     howl.join(uuid + '-metrics');
 
     $scope.$on('$destroy', function() {
         howl.leave(uuid + '-metrics');
-        sm
     });
 
     $scope.$on('mpstat', function(e, msg) {
@@ -57,9 +77,12 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             var idld = idlv - last_idl;
             var t = usrd + sysd + idld;
             var n = new Date().getTime();
-            usr.append(n, usrd/t);
-            sys.append(n, sysd/t);
-            idl.append(n, idld/t);
+            usr.shift();
+            usr.push(100*usrd/t);
+            sys.shift();
+            sys.push(100*sysd/t);
+//            console.log(make_data(usr, sys))
+            chart.setData(make_data(usr, sys));
         }
         last_sys = sysv;
         last_usr = usrv;
