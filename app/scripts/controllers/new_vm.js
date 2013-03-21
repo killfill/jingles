@@ -85,6 +85,12 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         $scope.networks = []
 
         wiggle.datasets.list(function(ids) {
+
+            if (ids.length<1) {
+                status.error('Import a dataset first');
+                return $location.path('/datasets')
+            }
+
             ids.forEach(function(id) {
                 wiggle.datasets.get({id: id}, function(res) {
                     if (res.imported == 1)
