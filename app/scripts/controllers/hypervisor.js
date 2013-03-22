@@ -47,13 +47,13 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             ]};
     };
     var cpu_chart = new MetricsGraph("#cpuusage", "%", 30, [
-        {scale: 1,
+        {scale: 10000000,
          color: "red",
          key: "sys"},
-        {scale: 1,
+        {scale: 10000000,
          color: "blue",
          key: "usr"},
-        {scale: 1,
+        {scale: 10000000,
          color: "green",
          key: "idel"},
 
