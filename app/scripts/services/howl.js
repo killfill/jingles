@@ -107,3 +107,83 @@ var howl = {
 
 
 }
+
+function MetricSeries(size, scale) {
+    var _scale = scale || 1;
+    var _raw = [];
+    var values = [];
+    var _last;
+    for (var i = 0; i < size; i ++) {
+        _raw[i] = 0;
+        values[i] = 0;
+    }
+
+    this.add = function(v) {
+        _raw.shift();
+        _raw.push(v);
+
+        if (_last) {
+            values.shift();
+            values.push((v - _last)/_scale);
+        }
+        _last = v;
+    };
+
+    this.data_points = function() {
+        return values.map(function(v, i) {
+            return {x: i, y: v};
+        });
+    };
+}
+
+
+function MetricsGraph(id, unit, size, series) {
+    var chart;
+
+    var _series = series.map(function(s) {
+        s._metric = new MetricSeries(size, s.scale || 1);
+        return s;
+    });
+
+    var _colors = ["red", "blue", "green"]
+    var redraw = function() {
+        var data = _series.map(function(s, i ) {
+            return {
+                "key": s.key || "unnamed",
+                "color": s.color || _colors[i],
+                "values": s._metric.data_points()
+            }
+        });
+
+        d3.select(id +' svg')
+            .datum(data)
+            .call(chart);
+
+    }
+
+    nv.addGraph(function () {
+        chart = nv.models.lineChart();
+        chart.lines
+            .interactive(false)
+            .interpolate("cardinal")
+            .scatter.size(0);
+        chart
+            .tooltips(false)
+            .interactive(false);
+        chart.xAxis
+            .axisLabel('Time')
+            .tickFormat(d3.format(',r'));
+        chart.yAxis
+            .axisLabel('unit')
+            .tickFormat(d3.format('.0f'));
+        nv.utils.windowResize(redraw);
+        return chart;
+    });
+
+    this.add = function (es) {
+        es.forEach(function(e, i) {
+            _series[i]._metric.add(e);
+        });
+        redraw();
+    };
+};

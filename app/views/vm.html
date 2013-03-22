@@ -143,7 +143,6 @@
                 </dl>
                 <button class="btn btn-small pull-right">Save</button>
               </form>
-
             </dl>
           </div>
 
@@ -192,6 +191,18 @@
             </dl>
 
           </div>
+          <div class="box box-small pull-left">
+            <div class="header">
+              IO Ops
+            </div>
+            <div id="ops"><svg></svg></div>
+          </div>
+          <div class="box box-small pull-left">
+            <div class="header">
+              IO Throughput
+            </div>
+            <div id="throughput"><svg></svg></div>
+          </div>
         </div>
       </div>
 
@@ -203,6 +214,7 @@
           </tr>
         </table>
       </div>
+
       <div class="tab-pane" id="snapshots">
         <p class='pull-right'>
           <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;'>To rollback, please stop the machine</span>

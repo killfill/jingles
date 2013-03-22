@@ -1,6 +1,5 @@
 'use strict';
 
-
 fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
     $scope.setTitle('Hypervisor details')
 
@@ -47,10 +46,18 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
                  "data": usrH}
             ]};
     };
-    var chart = new xChart('line', make_data(usr, sys), '#cpuusage');
-    var last_usr = 0;
-    var last_sys = 0;
-    var last_idl = 0;
+    var cpu_chart = new MetricsGraph("#cpuusage", "%", 30, [
+        {scale: 1,
+         color: "red",
+         key: "sys"},
+        {scale: 1,
+         color: "blue",
+         key: "usr"},
+        {scale: 1,
+         color: "green",
+         key: "idel"},
+
+    ]);
 
 
     howl.join(uuid + '-metrics');
@@ -68,25 +75,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             idlv = idlv + o.idl;
             cnt = cnt + 1
         });
-        usrv = usrv/cnt;
-        sysv = sysv/cnt;
-        idlv = idlv/cnt;
-        if (last_usr || last_sys || last_idl) {
-            var usrd = usrv - last_usr;
-            var sysd = sysv - last_sys;
-            var idld = idlv - last_idl;
-            var t = usrd + sysd + idld;
-            var n = new Date().getTime();
-            usr.shift();
-            usr.push(100*usrd/t);
-            sys.shift();
-            sys.push(100*sysd/t);
-//            console.log(make_data(usr, sys))
-            chart.setData(make_data(usr, sys));
-        }
-        last_sys = sysv;
-        last_usr = usrv;
-        last_idl = idlv;
+        cpu_chart.add([sysv/cnt, usrv/cnt, idlv/cnt])
     });
 
     $scope.add = function() {
