@@ -10,6 +10,7 @@
   <div class="tabbable tabs-top">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#characteristics" data-toggle="tab">Characteristics</a></li>
     </ul>
 
@@ -143,10 +144,16 @@
               <dd ng-show="data['NIC Names'].length>0">{{data['NIC Names'].join(', ')}}</dd>
             </dl>
           </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="performance">
+        <div class="row-fluid">
+
           <div class="hyperbox">
             <div class="header">
-              <i class="icon-signal"></i>
-              <span class="badge badge-info">CPU</span>
+              <i class="icon-tasks"></i>
+              <span class="badge badge-info">CPU Load</span>
             </div>
             <div id="cpuusage"><svg></svg></div>
           </div>
