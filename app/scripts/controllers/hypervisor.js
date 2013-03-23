@@ -23,29 +23,6 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
         usr.push(0);
         sys.push(0);
     }
-
-    var make_data = function (usr, sys) {
-        var sysH = sys.map(function(v, i) {
-            return {x: i, y: v}
-        });
-        var usrH = usr.map(function(v, i) {
-            return {x: i, y: v + sys[i]}
-        });
-        return {
-            "xScale": "linear",
-            "yMin": 0,
-            "yMax": 100,
-            "xMin": 0,
-            "xMax": 30,
-            "yScale": "linear",
-            "type": "line",
-            "main":[
-                {"className": ".sys",
-                 "data": sysH},
-                {"className": ".usr",
-                 "data": usrH}
-            ]};
-    };
     var cpu_chart = new MetricsGraph("#cpuusage", "%", 30, [
         {scale: 10000000,
          color: "red",
@@ -70,9 +47,9 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
         var data = msg.message.data;
         var usrv = 0, sysv = 0, idlv = 0, cnt = 0;
         msg.message.data.forEach(function(o) {
-            usrv = usrv + o.usr;
-            sysv = sysv + o.sys;
-            idlv = idlv + o.idl;
+            usrv = usrv + o.user;
+            sysv = sysv + o.kernel;
+            idlv = idlv + o.idle;
             cnt = cnt + 1
         });
         cpu_chart.add([sysv/cnt, usrv/cnt, idlv/cnt])
