@@ -108,12 +108,14 @@ var howl = {
 
 }
 
-function MetricSeries(size, scale) {
-    var _scale = scale || 1;
+function MetricSeries(opts) {
+    var _scale = opts.scale || 1;
+    var _size = opts.size || 30;
+    var _type = opts.type || "progressive";
     var _raw = [];
     var values = [];
     var _last;
-    for (var i = 0; i < size; i ++) {
+    for (var i = 0; i < _size; i ++) {
         _raw[i] = 0;
         values[i] = 0;
     }
@@ -121,10 +123,16 @@ function MetricSeries(size, scale) {
     this.add = function(v) {
         _raw.shift();
         _raw.push(v);
-
-        if (_last) {
+        switch (_type) {
+        case "progressive":
+            if (_last) {
+                values.shift();
+                values.push((v - _last)/_scale);
+            }
+            break;
+        case "absolute":
             values.shift();
-            values.push((v - _last)/_scale);
+            values.push(v/_scale);
         }
         _last = v;
     };
@@ -137,52 +145,73 @@ function MetricSeries(size, scale) {
 }
 
 
-function MetricsGraph(id, unit, size, series) {
-    var chart;
+function MetricsGraph(id, opts) {
+    var _unit = opts.unit || "";
+    var _series = opts.series || [];
 
-    var _series = series.map(function(s) {
-        s._metric = new MetricSeries(size, s.scale || 1);
-        return s;
+    var _chart;
+
+    var _metrics = _series.map(function(s) {
+        s.size = opts.size;
+        return new MetricSeries(s);
     });
 
     var _colors = ["red", "blue", "green"]
     var redraw = function() {
-        var data = _series.map(function(s, i ) {
+        var datapoints = _metrics.map(function(m) {
+            return m.data_points();
+        });
+        if (opts.type == "percentage") {
+            for (var i = 0; i < opts.size; i++) {
+                var total = 0;
+                datapoints.forEach(function(d) {
+                    total = total + d[i].y;
+                });
+
+                if (total > 0) {
+                    datapoints = datapoints.map(function(d) {
+                        d[i].y = 100*(d[i].y/total);
+                        return d;
+                    })
+                }
+
+            };
+        }
+
+        var data = _series.map(function(s, i) {
             return {
                 "key": s.key || "unnamed",
                 "color": s.color || _colors[i],
-                "values": s._metric.data_points()
+                "values": datapoints[i]
             }
         });
 
         d3.select(id +' svg')
             .datum(data)
-            .call(chart);
-
+            .call(_chart);
     }
 
     nv.addGraph(function () {
-        chart = nv.models.lineChart();
-        chart.lines
+        _chart = nv.models.lineChart();
+        _chart.lines
             .interactive(false)
-//            .interpolate("cardinal")
             .scatter.size(0);
-        chart
+        _chart
             .tooltips(false)
             .interactive(false);
-        chart.xAxis
+        _chart.xAxis
             .axisLabel('Time')
             .tickFormat(d3.format(',r'));
-        chart.yAxis
-            .axisLabel('unit')
+        _chart.yAxis
+            .axisLabel(_unit)
             .tickFormat(d3.format('.0f'));
         nv.utils.windowResize(redraw);
-        return chart;
+        return _chart;
     });
 
     this.add = function (es) {
         es.forEach(function(e, i) {
-            _series[i]._metric.add(e);
+            _metrics[i].add(e);
         });
         redraw();
     };

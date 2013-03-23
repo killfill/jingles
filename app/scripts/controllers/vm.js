@@ -26,21 +26,55 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         });
     });
 
-    var throughtput_chart = new MetricsGraph("#throughput", "KB/s", 60, [
-        {scale: 1024,
-         color: "B6E7AC",
-         key: "read KB/s"},
-        {scale: 1024,
-         color: "E16767",
-         key: "write KB/s"},
-    ]);
+    var throughtput_chart = new MetricsGraph("#throughput", {
+        unit: "KB/s",
+        size: 60,
+        series: [
+            {scale: 1024,
+             color: "B6E7AC",
+             key: "read KB/s"},
+            {scale: 1024,
+             color: "E16767",
+             key: "write KB/s"},
+        ]});
 
-    var ops_chart = new MetricsGraph("#ops", "KB/s", 60, [
+    var ops_chart = new MetricsGraph("#ops", {
+        unit: "OPS/s",
+        size: 60,
+        series:[
         {color: "B6E7AC",
-         key: "read"},
+         key: "read OPS/s"},
         {color: "E16767",
-         key: "write"},
-    ]);
+         key: "write OPS/s"},
+        ]});
+
+    var mem_chart = new MetricsGraph("#memory", {
+        unit:"MB",
+        size: 60,
+        series: [
+            {color: "B6E7AC",
+             key: "memory cap",
+             scale: 1024*1024,
+             type: "absolute"},
+            {color: "E16767",
+             key: "RSS",
+             scale: 1024*1024,
+             type: "absolute"},
+        ]});
+
+    var swap_chart = new MetricsGraph("#swap", {
+        unit:"MB",
+        size: 60,
+        series: [
+            {color: "B6E7AC",
+             key: "swap cap",
+             scale: 1024*1024,
+             type: "absolute"},
+            {color: "E16767",
+             key: "swap",
+             scale: 1024*1024,
+             type: "absolute"},
+        ]});
 
     howl.join(uuid + '-metrics');
 
@@ -53,6 +87,13 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         var data = msg.message.data;
         ops_chart.add([data.reads, data.writes]);
         throughtput_chart.add([data.nread, data.nwritten]);
+    });
+
+    $scope.$on('memstat', function(e, msg) {
+        var data = msg.message.data;
+        mem_chart.add([data.physcap, data.rss]);
+        swap_chart.add([data.swapcap, data.swap]);
+
     });
 
     var updateVm = function(cb) {
