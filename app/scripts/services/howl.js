@@ -165,7 +165,7 @@ function MetricsGraph(id, unit, size, series) {
         chart = nv.models.lineChart();
         chart.lines
             .interactive(false)
-            .interpolate("cardinal")
+//            .interpolate("cardinal")
             .scatter.size(0);
         chart
             .tooltips(false)
