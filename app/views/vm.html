@@ -81,6 +81,7 @@
   <div class="tabbable tabs-top" ng-show='vm.config'>
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
       <li><a href="#resize" data-toggle="tab">Resize</a></li>
       <li><a href="#history" data-toggle="tab">History</a></li>
@@ -189,21 +190,23 @@
               <dt ng-show='net.model'>Model</dt>
               <dd ng-show='net.model'>{{net.model | orDefault:'-'}}</dd>
             </dl>
-
           </div>
-          <div class="box box-small pull-left">
+        </div>
+      </div>
+
+      <div class="tab-pane" id="performance">
+          <div class="perfbox pull-left">
             <div class="header">
-              IO Ops
+              <span class="badge badge-info">Disk IOPS</span>
             </div>
             <div id="ops"><svg></svg></div>
           </div>
-          <div class="box box-small pull-left">
+          <div class="perfbox pull-left">
             <div class="header">
-              IO Throughput
+              <span class="badge badge-info">Disk Throughput</span>
             </div>
             <div id="throughput"><svg></svg></div>
           </div>
-        </div>
       </div>
 
       <div class="tab-pane" id="history">

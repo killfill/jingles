@@ -26,19 +26,19 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         });
     });
 
-    var throughtput_chart = new MetricsGraph("#throughput", "KB/s", 30, [
+    var throughtput_chart = new MetricsGraph("#throughput", "KB/s", 60, [
         {scale: 1024,
-         color: "red",
-         key: "read"},
+         color: "B6E7AC",
+         key: "read KB/s"},
         {scale: 1024,
-         color: "blue",
-         key: "write"},
+         color: "E16767",
+         key: "write KB/s"},
     ]);
 
-    var ops_chart = new MetricsGraph("#ops", "KB/s", 30, [
-        {color: "red",
+    var ops_chart = new MetricsGraph("#ops", "KB/s", 60, [
+        {color: "B6E7AC",
          key: "read"},
-        {color: "blue",
+        {color: "E16767",
          key: "write"},
     ]);
 
