@@ -195,25 +195,25 @@
       </div>
 
       <div class="tab-pane" id="performance">
-          <div class="perfbox pull-left">
+          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
             <div class="header">
               <span class="badge badge-info">Disk IOPS</span>
             </div>
             <div id="ops"><svg></svg></div>
           </div>
-          <div class="perfbox pull-left">
+          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
             <div class="header">
               <span class="badge badge-info">Disk Throughput</span>
             </div>
             <div id="throughput"><svg></svg></div>
           </div>
-          <div class="perfbox pull-left">
+          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
             <div class="header">
               <span class="badge badge-info">Memory Usage</span>
             </div>
             <div id="memory"><svg></svg></div>
           </div>
-          <div class="perfbox pull-left">
+          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
             <div class="header">
               <span class="badge badge-info">Swap Usage</span>
             </div>
