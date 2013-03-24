@@ -52,11 +52,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         unit:"MB",
         size: 60,
         series: [
-            {color: "B6E7AC",
+            {color: "E16767",
              key: "memory cap",
              scale: 1024*1024,
              type: "absolute"},
-            {color: "E16767",
+            {color: "B6E7AC",
              key: "RSS",
              scale: 1024*1024,
              type: "absolute"},
@@ -66,22 +66,52 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         unit:"MB",
         size: 60,
         series: [
-            {color: "B6E7AC",
+            {color: "E16767",
              key: "swap cap",
              scale: 1024*1024,
              type: "absolute"},
-            {color: "E16767",
+            {color: "B6E7AC",
              key: "swap",
              scale: 1024*1024,
              type: "absolute"},
         ]});
 
+    var netpkg_chart = new MetricsGraph("#netpkg", {
+        unit:"PKG/s",
+        size: 60,
+        series: [
+            {color: "B6E7AC",
+             key: "in PKG/s"},
+            {color: "69B3E4",
+             key: "out PKG/s"},
+            {color: "E16767",
+             key: "in error/s"},
+            {color: "E16767",
+             key: "out error/s"},
+        ]});
+
+    var netdata_chart = new MetricsGraph("#netdata", {
+        unit:"KB/s",
+        size: 60,
+        series: [
+            {color: "B6E7AC",
+             key: "in KB/s",
+             scale: 1024},
+            {color: "69B3E4",
+             key: "out KB/s",
+             scale: 1024},
+        ]});
     howl.join(uuid + '-metrics');
 
     $scope.$on('$destroy', function() {
         howl.leave(uuid + '-metrics');
     });
 
+    $scope.$on('net', function(e, msg) {
+        var data = msg.message.data;
+        netpkg_chart.add([data.ipackets64, data.opackets64, data.ierrors, data.oerrors]);
+        netdata_chart.add([data.rbytes64, data.obytes64]);
+    });
 
     $scope.$on('vfs', function(e, msg) {
         var data = msg.message.data;
