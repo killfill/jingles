@@ -31,8 +31,8 @@
                         <td>{{net.gateway}}</td>
                         <td>{{net.first}}</td>
                         <td>{{net.last}}</td>
-                        <td ng-show='net.current > net.last' class='text-error'>full</td>
-                        <td ng-hide='net.current > net.last'>{{net.current}}</td>
+                        <td ng-show='net.full' class='text-error'>full</td>
+                        <td ng-hide='net.full'>{{net.current}}</td>
                         <td>{{net.vlan}}</td>
                         <td>{{net.free.length}}</td>
                         <td>
