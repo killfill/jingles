@@ -34,7 +34,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
              color: "B6E7AC",
              key: "read KB/s"},
             {scale: 1024,
-             color: "E16767",
+             color: "69B3E4",
              key: "write KB/s"},
         ]});
 
@@ -43,20 +43,20 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         size: 60,
         series:[
         {color: "B6E7AC",
-         key: "read OPS/s"},
-        {color: "E16767",
-         key: "write OPS/s"},
+         key: "read iops"},
+        {color: "69B3E4",
+         key: "write iops"},
         ]});
 
     var mem_chart = new MetricsGraph("#memory", {
         unit:"MB",
         size: 60,
         series: [
-            {color: "E16767",
+            {color: "FFA455",
              key: "memory cap",
              scale: 1024*1024,
              type: "absolute"},
-            {color: "B6E7AC",
+            {color: "9E9AC8",
              key: "RSS",
              scale: 1024*1024,
              type: "absolute"},
@@ -66,11 +66,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         unit:"MB",
         size: 60,
         series: [
-            {color: "E16767",
+            {color: "FFA455",
              key: "swap cap",
              scale: 1024*1024,
              type: "absolute"},
-            {color: "B6E7AC",
+            {color: "9E9AC8",
              key: "swap",
              scale: 1024*1024,
              type: "absolute"},
@@ -118,16 +118,16 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         }
         if (!netpkg_chart[ifname]) {
             var id = "netpkg_" + ifname;
-            make_nethtml(ifname + ": Packages", id);
+            make_nethtml(ifname + ": Packets", id);
             netpkg_chart[ifname] = new MetricsGraph("#" + id, {
                 unit:"PKG/s",
                 size: 60,
                 series: [
                     {color: "B6E7AC",
-                     key: "in PKG/s"},
+                     key: "in rate"},
                     {color: "69B3E4",
-                     key: "out PKG/s"},
-                    {color: "E16767",
+                     key: "out rate"},
+                    {color: "D73027",
                      key: "in error/s"},
                     {color: "E16767",
                      key: "out error/s"},
