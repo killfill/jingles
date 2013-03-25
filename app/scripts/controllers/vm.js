@@ -76,6 +76,21 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
              type: "absolute"},
         ]});
 
+    var cpu_chart = new MetricsGraph("#cpu", {
+        unit:"%",
+        size: 60,
+        series: [
+            {color: "FFA455",
+             key: "usage",
+             type: "absolute"},
+            {color: "9E9AC8",
+             key: "max",
+             type: "absolute"},
+            {color: "black",
+             type: "absolute"},
+
+        ]});
+
     var netpkg_chart = {};
 
     var netdata_chart = {};
@@ -148,6 +163,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         mem_chart.add([data.physcap, data.rss]);
         swap_chart.add([data.swapcap, data.swap]);
 
+    });
+
+    $scope.$on('cpu', function(e, msg) {
+        var data = msg.message.data;
+        cpu_chart.add([data.usage, data.value, 0]);
     });
 
     var updateVm = function(cb) {
