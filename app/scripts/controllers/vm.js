@@ -33,12 +33,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             {scale: 1024,
              options: {
                  color: "#B6E7AC",
-                 label: "read KB/s"
+                 label: "read"
              }},
             {scale: 1024,
              options: {
                  color: "#69B3E4",
-                 label: "write KB/s"
+                 label: "write"
              }},
         ]});
 
@@ -48,11 +48,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         series:[
             {options: {
                 color: "#B6E7AC",
-                label: "read iops"
+                label: "read"
             }},
             {options: {
                 color: "#69B3E4",
-                label: "write iops"
+                label: "write"
             }},
         ]});
 
@@ -63,7 +63,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             {scale: 1024*1024,
              options: {
                  color: "#FFA455",
-                 label: "memory cap"},
+                 label: "cap"},
              type: "absolute"},
             {options: {
                 color: "#9E9AC8",
@@ -73,15 +73,15 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         ]});
 
     var swap_chart = new MetricsGraph("swap", {
-        unit:"MB",
+        unit:"Megabyte with a really long title",
         size: 60,
         series: [
             {color: "#FFA455",
-             label: "swap cap",
+             label: "cap",
              scale: 1024*1024,
              type: "absolute"},
             {color: "#9E9AC8",
-             label: "swap",
+             label: "used",
              scale: 1024*1024,
              type: "absolute"},
         ]});
