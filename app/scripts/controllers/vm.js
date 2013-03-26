@@ -89,6 +89,8 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     var cpu_chart = new MetricsGraph("cpu", {
         unit:"%",
         size: 60,
+        min: 0,
+        max: 150,
         series: [
             {options: {
                 color: "#FFA455",
@@ -98,11 +100,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 color: "#9E9AC8",
                 label: "max"},
              type: "absolute"},
-            {options: {
-                color: "#black",
-                label: "0"},
-             type: "absolute"},
-
         ]});
 
     var netpkg_chart = {};
@@ -187,7 +184,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     $scope.$on('cpu', function(e, msg) {
         var data = msg.message.data;
-        cpu_chart.add([data.usage, data.value, 0]);
+        cpu_chart.add([data.usage, data.value]);
     });
 
     var updateVm = function(cb) {
