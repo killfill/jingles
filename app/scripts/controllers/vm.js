@@ -87,6 +87,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
              key: "max",
              type: "absolute"},
             {color: "black",
+             key: "0",
              type: "absolute"},
 
         ]});
