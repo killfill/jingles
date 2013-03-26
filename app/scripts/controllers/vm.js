@@ -26,68 +26,81 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         });
     });
 
-    var throughtput_chart = new MetricsGraph("#throughput", {
+    var throughtput_chart = new MetricsGraph("throughput", {
         unit: "KB/s",
         size: 60,
         series: [
             {scale: 1024,
-             color: "B6E7AC",
-             key: "read KB/s"},
+             options: {
+                 color: "#B6E7AC",
+                 label: "read KB/s"
+             }},
             {scale: 1024,
-             color: "69B3E4",
-             key: "write KB/s"},
+             options: {
+                 color: "#69B3E4",
+                 label: "write KB/s"
+             }},
         ]});
 
-    var ops_chart = new MetricsGraph("#ops", {
+    var ops_chart = new MetricsGraph("ops", {
         unit: "OPS/s",
         size: 60,
         series:[
-        {color: "B6E7AC",
-         key: "read iops"},
-        {color: "69B3E4",
-         key: "write iops"},
+            {options: {
+                color: "#B6E7AC",
+                label: "read iops"
+            }},
+            {options: {
+                color: "#69B3E4",
+                label: "write iops"
+            }},
         ]});
 
-    var mem_chart = new MetricsGraph("#memory", {
+    var mem_chart = new MetricsGraph("memory", {
         unit:"MB",
         size: 60,
         series: [
-            {color: "FFA455",
-             key: "memory cap",
-             scale: 1024*1024,
+            {scale: 1024*1024,
+             options: {
+                 color: "#FFA455",
+                 label: "memory cap"},
              type: "absolute"},
-            {color: "9E9AC8",
-             key: "RSS",
+            {options: {
+                color: "#9E9AC8",
+                label: "RSS"},
              scale: 1024*1024,
              type: "absolute"},
         ]});
 
-    var swap_chart = new MetricsGraph("#swap", {
+    var swap_chart = new MetricsGraph("swap", {
         unit:"MB",
         size: 60,
         series: [
-            {color: "FFA455",
-             key: "swap cap",
+            {color: "#FFA455",
+             label: "swap cap",
              scale: 1024*1024,
              type: "absolute"},
-            {color: "9E9AC8",
-             key: "swap",
+            {color: "#9E9AC8",
+             label: "swap",
              scale: 1024*1024,
              type: "absolute"},
         ]});
 
-    var cpu_chart = new MetricsGraph("#cpu", {
+    var cpu_chart = new MetricsGraph("cpu", {
         unit:"%",
         size: 60,
         series: [
-            {color: "FFA455",
-             key: "usage",
+            {options: {
+                color: "#FFA455",
+                label: "usage"},
              type: "absolute"},
-            {color: "9E9AC8",
-             key: "max",
+            {options: {
+                color: "#9E9AC8",
+                label: "max"},
              type: "absolute"},
-            {color: "black",
-             key: "0",
+            {options: {
+                color: "#black",
+                label: "0"},
              type: "absolute"},
 
         ]});
@@ -108,7 +121,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             '<div class="header">' +
             '<span class="badge badge-info">' + title + '</span>'+
             '</div>'+
-            '<div id="'+ id + '"><svg></svg></div>'+
+            '<div id="'+ id + '" class="metric"></div>'+
             '</div>';
         $("#performance").append(html);
     }
@@ -120,33 +133,39 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         if (!netdata_chart[ifname]) {
             var id = "netdata_" + ifname;
             make_nethtml(ifname + ": Throughput", id);
-            netdata_chart[ifname] = new MetricsGraph("#" + id, {
+            netdata_chart[ifname] = new MetricsGraph("" + id, {
                 unit:"KB/s",
                 size: 60,
                 series: [
-                    {color: "B6E7AC",
-                     key: "in KB/s",
+                    {options: {
+                        color: "#B6E7AC",
+                        label: "in KB/s"},
                      scale: 1024},
-                    {color: "69B3E4",
-                     key: "out KB/s",
+                    {options: {
+                        color: "#69B3E4",
+                        label: "out KB/s"},
                      scale: 1024},
                 ]});
         }
         if (!netpkg_chart[ifname]) {
             var id = "netpkg_" + ifname;
             make_nethtml(ifname + ": Packets", id);
-            netpkg_chart[ifname] = new MetricsGraph("#" + id, {
+            netpkg_chart[ifname] = new MetricsGraph("" + id, {
                 unit:"PKG/s",
                 size: 60,
                 series: [
-                    {color: "B6E7AC",
-                     key: "in rate"},
-                    {color: "69B3E4",
-                     key: "out rate"},
-                    {color: "D73027",
-                     key: "in error/s"},
-                    {color: "E16767",
-                     key: "out error/s"},
+                    {options: {
+                        color: "#B6E7AC",
+                        label: "in rate"}},
+                    {options: {
+                        color: "#69B3E4",
+                        label: "out rate"}},
+                    {options: {
+                        color: "#D73027",
+                        label: "in error/s"}},
+                    {options: {
+                        color: "#E16767",
+                        label: "out error/s"}},
                 ]});
         }
         netpkg_chart[ifname].add([data.ipackets64, data.opackets64, data.ierrors, data.oerrors]);

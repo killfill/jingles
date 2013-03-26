@@ -139,18 +139,18 @@ function MetricSeries(opts) {
 
     this.data_points = function() {
         return values.map(function(v, i) {
-            return {x: i, y: v};
+            return [ i, v];
         });
     };
 }
 
 
+
 function MetricsGraph(id, opts) {
     var _unit = opts.unit || "";
     var _series = opts.series || [];
-
-    var _chart;
-
+    var _graph;
+    var _container = document.getElementById(id);
     var _metrics = _series.map(function(s) {
         s.size = opts.size;
         return new MetricSeries(s);
@@ -158,6 +158,8 @@ function MetricsGraph(id, opts) {
 
     var _colors = ["red", "blue", "green"]
     var redraw = function() {
+        if (!$(_container).is(":visible"))
+            return;
         var datapoints = _metrics.map(function(m) {
             return m.data_points();
         });
@@ -165,49 +167,37 @@ function MetricsGraph(id, opts) {
             for (var i = 0; i < opts.size; i++) {
                 var total = 0;
                 datapoints.forEach(function(d) {
-                    total = total + d[i].y;
+                    total = total + d[i][1];
                 });
 
                 if (total > 0) {
                     datapoints = datapoints.map(function(d) {
-                        d[i].y = 100*(d[i].y/total);
+                        d[i][1] = 100*(d[i][1]/total);
                         return d;
                     })
                 }
 
             };
         }
-
-        var data = _series.map(function(s, i) {
-            return {
-                "key": s.key || "unnamed",
-                "color": s.color || _colors[i],
-                "values": datapoints[i]
+        datapoints = datapoints.map(function(d, i) {
+            var data = {};
+            if (_series[i].options) {
+                data = _series[i].options;
             }
+            data.data = d;
+            return data;
         });
+        var _config = {yaxis:{},
+                       xaxis:{}};
+        if (opts.unit)
+            _config.yaxis.title = opts.unit;
+        if (opts.min)
+            _config.yaxis.min = opts.min;
+        if (opts.max)
+            _config.yaxis.max = opts.max;
 
-        d3.select(id +' svg')
-            .datum(data)
-            .call(_chart);
+        _graph = Flotr.draw(_container, datapoints, _config)
     }
-
-    nv.addGraph(function () {
-        _chart = nv.models.lineChart();
-        _chart.lines
-            .interactive(false)
-            .scatter.size(0);
-        _chart
-            .tooltips(false)
-            .interactive(false);
-        _chart.xAxis
-            .axisLabel('Time')
-            .tickFormat(d3.format(',r'));
-        _chart.yAxis
-            .axisLabel(_unit)
-            .tickFormat(d3.format('.0f'));
-        nv.utils.windowResize(redraw);
-        return _chart;
-    });
 
     this.add = function (es) {
         es.forEach(function(e, i) {

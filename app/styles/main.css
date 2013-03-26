@@ -661,3 +661,10 @@ ul.nav > h3 {
 .CodeMirror {
     font-size: 12px;
 }
+
+.metric {
+    width: 400px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
