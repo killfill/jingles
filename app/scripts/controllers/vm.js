@@ -73,7 +73,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         ]});
 
     var swap_chart = new MetricsGraph("swap", {
-        unit:"Megabyte with a really long title",
+        unit:"MB",
         size: 60,
         series: [
             {color: "#FFA455",
