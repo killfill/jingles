@@ -139,7 +139,7 @@ function MetricSeries(opts) {
 
     this.data_points = function() {
         return values.map(function(v, i) {
-            return [_size - i, v];
+            return [i - _size, v];
         });
     };
 }
@@ -188,7 +188,10 @@ function MetricsGraph(id, opts) {
             return data;
         });
         var _config = {HtmlText : false,
-                       yaxis:{titleAngle: 90}};
+                       yaxis:{titleAngle: 90},
+                       legend : {
+                           position : 'ne'
+                       }};
         if (opts.unit)
             _config.yaxis.title = opts.unit;
         if (opts.min)
