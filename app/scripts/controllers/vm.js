@@ -318,12 +318,13 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         $scope.vm.mdata_set({locked: !$scope.vm.mdata('locked')})
     }
 
-    $scope.vnc = function(vm) {
-        window.open("vnc.html?uuid=" + vm.uuid)
-    }
 
     $scope.console = function(vm) {
-        window.open("console.html?uuid=" + vm.uuid)
+        if (vm.config.type == 'kvm') {
+            window.open("vnc.html?uuid=" + vm.uuid)
+        } else {
+            window.open("console.html?uuid=" + vm.uuid)
+        }
     }
 
     $scope.notes = []

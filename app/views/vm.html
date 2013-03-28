@@ -1,3 +1,4 @@
+
 <div class="tab-pane" ng-show='vm.uuid'>
   <div class="row-fluid">
     <span class="span8">
@@ -8,26 +9,22 @@
     <div class='span4'>
       <div class="btn-toolbar btn-group pull-right">
         <div class="btn-group" style="margin-right: 20px;">
-          <button ng-show="vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down'"
-                  ng-click="action('delete', vm)" ng-disabled="vm.mdata('locked')" class="btn btn-small"
+          <button ng-click="action('delete', vm)"
+                  ng-disabled="vm.mdata('locked') ||
+                               !(vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down')"
+                  class="btn btn-small"
                   title='Delete' jq-run='tooltip'>
             <i class='icon-trash'></i>
           </button>
-          <button ng-click='vnc(vm)'
-                  ng-show="vm.config && (vm.config.type == 'kvm') && vm.state=='running'"
-                  title='vnc'
-                  jq-run='tooltip'
-                  class="btn btn-small">
-            <i class='icon-desktop'></i>
-          </button>
           <button ng-click='console(vm)'
-                  ng-show="vm.config && (vm.config.type != 'kvm') && vm.state=='running'"
-                  title='Console'
+                  ng-enabled="vm.state=='running' && vm.config"
+                  title='console'
                   jq-run='tooltip'
                   class="btn btn-small">
             <i class='icon-desktop'></i>
           </button>
-          <button ng-click="lock()" class="btn btn-small"
+          <button ng-click="lock()"
+                  ng-class="vm.mdata('locked') && 'btn btn-danger btn-small' || 'btn btn-small'"
                   title='Lock vm to prevent changes' jq-run='tooltip'>
             <i class='icon-lock'></i>
           </button>
@@ -195,36 +192,36 @@
       </div>
 
       <div class="tab-pane" id="performance">
-          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
-            <div class="header">
-              <span class="badge badge-info">Disk IOPS</span>
-            </div>
-            <div id="ops" class="metric"></div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Disk IOPS</span>
           </div>
-          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
-            <div class="header">
-              <span class="badge badge-info">Disk Throughput</span>
-            </div>
-            <div id="throughput" class="metric"></div>
+          <div id="ops" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Disk Throughput</span>
           </div>
-          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
-            <div class="header">
-              <span class="badge badge-info">Memory Usage</span>
-            </div>
-            <div id="memory" class="metric"></div>
+          <div id="throughput" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Memory Usage</span>
           </div>
-          <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
-            <div class="header">
-              <span class="badge badge-info">Swap Usage</span>
-            </div>
-            <div id="swap" class="metric"></div>
+          <div id="memory" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Swap Usage</span>
           </div>
-          <div class="perfbox pull-left">
-            <div class="header">
-              <span class="badge badge-info">CPU Usage</span>
-            </div>
-            <div id="cpu" class="metric"></div>
+          <div id="swap" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left">
+          <div class="header">
+            <span class="badge badge-info">CPU Usage</span>
           </div>
+          <div id="cpu" class="metric"></div>
+        </div>
 
       </div>
 
