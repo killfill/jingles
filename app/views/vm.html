@@ -47,15 +47,12 @@
           </button>
           <button ng-click="action('stop', vm)"
                   ng-disabled="vm.state!='running' || vm.mdata('locked')"
-                  title='Stop'
+                  title="{{force && 'Force ' || ''}} Stop"
                   jq-run='tooltip'
-                  class="btn">
-            <i class='icon-stop'></i>
+                  class="btn {{force && 'btn-warning' || ''}}">
+            <i class='icon-stop'>{{force && ' Force' || ''}}</i>
           </button>
         </div>
-        <label class="checkbox pull-right">
-          <input type="checkbox" ng-model="force"> force!
-        </label>
       </div>
     </div>
   </div>

@@ -26,6 +26,9 @@ Config = {
     */
     datasets: 'datasets.at',
 
+     /* Time in seconds to wait to show the force stop button for the VM's */
+     timeForceButton: 10,
+
     /* Here you can define the rules by which the UI decides if metrics are good or bad.
      * 'type'  values of warning or error are shown as a big red X, values of info are
      * just listed.

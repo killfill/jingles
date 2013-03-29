@@ -251,6 +251,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         $scope.vm.state = msg.message.data
         vmService.updateCustomFields($scope.vm)
         updateVm()
+
+        /* In case the vm was forced to stop, restore the force value */
+        if ($scope.vm.state === 'stopped')
+            $scope.force = false;
+
         $scope.$apply()
     })
 
@@ -304,10 +309,20 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                        }
                       )
 
-
     }
 
     $scope.action = function(action, vm) {
+
+        /* If the machine didnt stopped, let the user force */
+        if (action == 'stop') {
+            setTimeout(function() {
+                if ($scope.vm.state != 'running') 
+                    return;
+                $scope.force = true;
+                $scope.$apply()
+            }, Config.timeForceButton * 1000);
+        }
+
         vmService.executeAction(action, vm.uuid, vm.config && vm.config.alias, $scope.force, function() {
             if (action=='delete')
                 $location.path('/virtual-machines')
@@ -317,7 +332,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     $scope.lock = function() {
         $scope.vm.mdata_set({locked: !$scope.vm.mdata('locked')})
     }
-
 
     $scope.console = function(vm) {
         if (vm.config.type == 'kvm') {
