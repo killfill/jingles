@@ -21,6 +21,13 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
     $scope.show = function() {
 
+        $scope.searchQuery = user.mdata('vm_searchQuery')
+
+        $scope.$watch('searchQuery', function(val) {
+            if (!val) return;
+            user.mdata_set({vm_searchQuery: val})
+        })
+
         var allColumns = [
             {name: 'Name',      visible: true,  field: 'config.alias'},
             {name: 'Description',visible: false, field: 'metadata.jingles.description'},
