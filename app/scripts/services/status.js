@@ -2,6 +2,11 @@
 
 fifoApp.factory('status', function($rootScope) {
 
+    $rootScope.setTitle = function(text) {
+        $rootScope.title = text
+        document.title = text ? text + ' - FiFo' : 'FiFo Cloud'
+    }
+
     var status = {};
 
     var updateText = function(status) {

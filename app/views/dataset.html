@@ -1,0 +1,38 @@
+<div class="tab-pane" ng-show="true">
+
+
+  <div class="box box-medium pull-left">
+    <div class="header">
+      Dataset
+      <span class="badge badge-info">
+        {{dataset.name}} {{dataset.version}}
+      </span>
+      <img jq-run='tooltip' title="{{dataset.os || 'unknown'}}"
+           ng-src="images/logos/{{dataset.os || 'unknown'}}.png" class='oslogo'/>
+    </div>
+
+    <dl class="dl-horizontal">
+      <dt>UUID</dt><dd><small>{{dataset.dataset}}</small></dd>
+      <dt>Info</dt><dd>{{dataset.description}}</dd>
+    </dl>
+  </div>
+
+  <div class="box box-small pull-left">
+    <div class="header">Details</div>
+    <dl class="dl-horizontal">
+      <dt>Type</dt><dd>{{dataset.type}}</dd>
+      <dt>OS</dt><dd>{{dataset.os}}</dd>
+      <dt ng-show='dataset.image_size'>Size</dt><dd ng-show='dataset.image_size'>{{dataset.image_size | Mbytes}}</dd>
+      <dt ng-show='dataset.disk_driver'>Disk driver</dt><dd ng-show='dataset.disk_driver'>{{dataset.disk_driver}}</dd>
+    </dl>
+    <dl class="dl-horizontal" ng-repeat="net in networks">
+      <dt>{{net.name}}</dt>
+      <dd><input ng-model='net.description'></dd>
+    </dl>
+    <div class="btn-group">
+      <button class="btn btn-small pull-left" title='Add network' jq-run='tooltip' ng-click="networks.push({name: 'net' + networks.length, description: 'new network'})">+</button>
+      <button class='btn btn-small pull-left' ng-show='networks.length > 1' title='Remove network' jq-run='tooltip' ng-click='networks.pop()'>-</button>
+    </div>
+    <button class="btn btn-small pull-right btn-info" ng-click='save(networks)'>Save</button>
+  </div>
+</div>

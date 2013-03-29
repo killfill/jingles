@@ -1,6 +1,7 @@
 'use strict';
 
-fifoApp.controller('StatusCtrl', function($scope, $rootScope, $cookies, wiggle) {
+fifoApp.controller('StatusCtrl', function($scope, $cookies, wiggle) {
+    $scope.setTitle() //Clean title
 
     $scope.msgTrClass = function(type) {
         return type == 'critical' ? 'error': type;

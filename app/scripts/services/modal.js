@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.factory('modal', function($rootScope, $compile) {
+fifoApp.factory('modal', function($compile) {
 
     return {
 

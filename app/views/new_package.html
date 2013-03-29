@@ -1,12 +1,6 @@
 <div class="row-fluid">
-  <div class="span12">
-    <h2>Create a new Package</h2>
-    <hr/>
-  </div>
-
-
   <div class="span10 alert alert-info">
-      Create a package called: <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
+    Create a package called: <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
   </div>
   <div class="span1">
     <button class='btn btn-success' ng-disabled='form.$invalid || !name' ng-click='create_package()'>Create!</button>
@@ -14,8 +8,8 @@
 
   <div class="span3 box">
     <div class="header">
-        <i class="icon-tasks"></i>
-        <span class="badge badge-info">Resources</span>
+      <i class="icon-tasks"></i>
+      <span class="badge badge-info">Resources</span>
     </div>
     <form name='form' novalidate>
       <div class="input-append">
@@ -37,81 +31,81 @@
   <div class="span7">
 
     <div ng-repeat='rule in rules' ng-class="rule.error && 'error'" class='thumbnail2'>
-        <div class="span11"><br/>Rule {{$index+1}}</div>
-        
-        <select class="span3" title='Weight' jq-run='tooltip' ng-model="rule.weight">
-            <option>must</option>
-            <option>cant</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>20</option>
-            <option>30</option>
-            <option>40</option>
-            <option>50</option>
-            <option>60</option>
-            <option>70</option>
-            <option>80</option>
-            <option>90</option>
-            <option>-1</option>
-            <option>-2</option>
-            <option>-3</option>
-            <option>-4</option>
-            <option>-5</option>
-            <option>-6</option>
-            <option>-7</option>
-            <option>-8</option>
-            <option>-9</option>
-            <option>-10</option>
-            <option>-20</option>
-            <option>-30</option>
-            <option>-40</option>
-            <option>-50</option>
-            <option>-60</option>
-            <option>-70</option>
-            <option>-80</option>
-            <option>-90</option>
-        </select>
-        <input
-            class="span8"
-            placeholder="Key"
-            type="text"
-            title='Attribute' jq-run='tooltip'
-            ng-model="rule.attribute"
-            data-provide='typeahead'
-            data-items='10'
-            data-source='{{availableOptions.attribute}}'
-        />
-        
-        <select class="span3" title='Condition' jq-run='tooltip' ng-model="rule.condition">
-            <option>&gt;=</option>
-            <option>&gt;</option>
-            <option>=&lt;</option>
-            <option>&lt;</option>
-            <option>=:=</option>
-            <option>=/=</option>
-            <option>subset</option>
-            <option>superset</option>
-            <option>disjoint</option>
-            <option>element</option>
-        </select>
-        <input class="span8" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="rule.value"/>
-        <button class="btn btn-small btn-danger pull-right" title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_rule($index)">-</button>
+      <div class="span11"><br/>Rule {{$index+1}}</div>
+
+      <select class="span3" title='Weight' jq-run='tooltip' ng-model="rule.weight">
+        <option>must</option>
+        <option>cant</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>20</option>
+        <option>30</option>
+        <option>40</option>
+        <option>50</option>
+        <option>60</option>
+        <option>70</option>
+        <option>80</option>
+        <option>90</option>
+        <option>-1</option>
+        <option>-2</option>
+        <option>-3</option>
+        <option>-4</option>
+        <option>-5</option>
+        <option>-6</option>
+        <option>-7</option>
+        <option>-8</option>
+        <option>-9</option>
+        <option>-10</option>
+        <option>-20</option>
+        <option>-30</option>
+        <option>-40</option>
+        <option>-50</option>
+        <option>-60</option>
+        <option>-70</option>
+        <option>-80</option>
+        <option>-90</option>
+      </select>
+      <input
+         class="span8"
+         placeholder="Key"
+         type="text"
+         title='Attribute' jq-run='tooltip'
+         ng-model="rule.attribute"
+         data-provide='typeahead'
+         data-items='10'
+         data-source='{{availableOptions.attribute}}'
+         />
+
+      <select class="span3" title='Condition' jq-run='tooltip' ng-model="rule.condition">
+        <option>&gt;=</option>
+        <option>&gt;</option>
+        <option>=&lt;</option>
+        <option>&lt;</option>
+        <option>=:=</option>
+        <option>=/=</option>
+        <option>subset</option>
+        <option>superset</option>
+        <option>disjoint</option>
+        <option>element</option>
+      </select>
+      <input class="span8" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="rule.value"/>
+      <button class="btn btn-small btn-danger pull-right" title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_rule($index)">-</button>
     </div>
 
     <br/>
 
     <button class="btn btn-small btn-success pull-right" ng-click="add_rule()">+</button>
   </div>
-    <hr/>
-    <center class='span12'>
-        The rules are optional, they help FiFo decide wich hypervisor to use. <a href="http://project-fifo.net/display/PF/Hypervisor+Requirements" target=_blank>More info</a>
-    </center>
+  <hr/>
+  <center class='span12'>
+    The rules are optional, they help FiFo decide wich hypervisor to use. <a href="http://project-fifo.net/display/PF/Hypervisor+Requirements" target=_blank>More info</a>
+  </center>
 </div>

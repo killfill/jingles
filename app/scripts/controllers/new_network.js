@@ -1,6 +1,7 @@
 'use strict';
 
 fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wiggle, status) {
+    $scope.setTitle('New network')
 
     $scope.rules = [{}];
 

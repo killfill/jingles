@@ -10,24 +10,25 @@
 |    * Change the address of the wiggle server.                                |
 |    * Change the address of the howl server.                                  |
 |                                                                              |
-| Wiggle ui comes with example config files for both nginx as a server for     |
-| static content and for haproxy as a reverse proxy to combine all FiFo        |
-| services into one endpoint. Those files can be found in the folder:          |
+| Wiggle ui comes with example config files for the nginx web a server.        |
+| This file can be found in the folder:                                        |
 |   /opt/local/jingles/config                                                  |
-| Please either copy them to:                                                  |
-|   /opt/local/etc/nginx/nginx.conf and /opt/local/etc/haproxy.cfg             |
-| or merge them manually if you have an existing configuration.                |
+| Please either copy it to:                                                    |
+|   /opt/local/etc/nginx/nginx.conf                                            |
+| or merge it manually if you have an existing configuration.                  |
 |                                                                              |
 | To copy the files into the right place do:                                   |
 |                                                                              |
 `------------------------------------------------------------------------------'
 
 cp /opt/local/jingles/config/nginx.conf /opt/local/etc/nginx/nginx.conf
-cp /opt/local/jingles/config/haproxy.cfg /opt/local/etc/haproxy.cfg
 
 .------------------------------------------------------------------------------.
 |                                                                              |
 | Note: nginx is not enabled by default - you need to do that manually.        |
-| Note: haproxy is not enabled by default - you need to do that manually.      |
+|                                                                              |
+| There is an automatic SSL certificate generated, please note that you might  |
+| need to change the settings for the certificates to work propperly, there is |
+| a generation scriipt in /opt/local/jingles/config/autocert.sh to help you.   |
 |                                                                              |
 `------------------------------------------------------------------------------'

@@ -1,5 +1,7 @@
 'use strict';
 fifoApp.controller('GroupsCtrl', function($scope, wiggle, status) {
+    $scope.setTitle('Groups')
+
     $scope.groups = {};
     $scope.show = function() {
         wiggle.groups.list(function (ids) {

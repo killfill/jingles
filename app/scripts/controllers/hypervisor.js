@@ -1,6 +1,8 @@
 'use strict';
 
 fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+    $scope.setTitle('Hypervisor details')
+
     var uuid = $routeParams.uuid
     $scope.characteristics = []
 
@@ -12,6 +14,50 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             })
         }
 
+    });
+
+    var size = 30;
+    var usr = [];
+    var sys = [];
+    for (var i = 0; i <= size; i++) {
+        usr.push(0);
+        sys.push(0);
+    }
+    var cpu_chart = new MetricsGraph("cpuusage", {
+        unit:"%",
+        size: 60,
+        type: "percentage",
+        min: 0,
+        max: 100,
+        series: [
+            {options: {
+                color: "#FFA455",
+                label: "system"}},
+            {options: {
+                color: "#69B3E4",
+                label: "user"}},
+            {options: {
+                color: "#B6E7AC",
+                label: "idle"}},
+        ]});
+
+
+    howl.join(uuid + '-metrics');
+
+    $scope.$on('$destroy', function() {
+        howl.leave(uuid + '-metrics');
+    });
+
+    $scope.$on('mpstat', function(e, msg) {
+        var data = msg.message.data;
+        var usrv = 0, sysv = 0, idlv = 0, cnt = 0;
+        msg.message.data.forEach(function(o) {
+            usrv = usrv + o.user;
+            sysv = sysv + o.kernel;
+            idlv = idlv + o.idle;
+            cnt = cnt + 1
+        });
+        cpu_chart.add([sysv/cnt, usrv/cnt, idlv/cnt])
     });
 
     $scope.add = function() {
@@ -36,7 +82,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             data[i.name] = i.value
 
             wiggle.hypervisors.put(
-                {id: uuid, controller: 'characteristics'}, 
+                {id: uuid, controller: 'characteristics'},
                 data
             )
         })
@@ -74,7 +120,7 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
         return newArr.filter(function(i){
 
             var newVal = newArr[idx],
-                oldVal = oldArr[idx]
+            oldVal = oldArr[idx]
 
             idx++
             if (!oldVal) return true

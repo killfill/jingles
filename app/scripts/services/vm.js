@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
+fifoApp.factory('vmService', function(wiggle, status, modal) {
 
     var padLeft = function(nr, n, str){
         return Array(n-String(nr).length+1).join(str||'0')+nr;
@@ -16,11 +16,14 @@ fifoApp.factory('vmService', function($rootScope, wiggle, status, modal) {
     return {
 
         /* So far action can be: start/stop/reboot/delete. More info: http://project-fifo.net/display/PF/API */
-        executeAction: function(action, uuid, alias, cb) {
+        executeAction: function(action, uuid, alias, force, cb) {
             var name = alias || uuid;
 
             if (action!='delete') {
-                return wiggle.vms.put({id: uuid}, {action: action},
+                var b = {action: action};
+                if (force && (action == "stop" || action == "reboot"))
+                    b.force = true;
+                return wiggle.vms.put({id: uuid}, b,
                     function success(r, headers) {
                         if (!headers)
                             return status.error('An error 500 has occur. :(');

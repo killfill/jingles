@@ -26,41 +26,51 @@ fifoApp.factory('wiggle', function($resource, $http) {
                           create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
         groups: $resource(endpoint + 'groups/:id/:controller/:controller_id/:controller_id1/:controller_id2',
-                         {id: '@id',
-                          controller: '@controller',
-                          controller_id: '@controller_id',
-                          controller_id1: '@controller_id1',
-                          controller_id2: '@controller_id2'},
-                         {put: {method: 'PUT'},
-                          grant: {method: 'PUT'},
-                          revoke: {method: 'DELETE'},
-                          create: {method: 'POST'},
-                          delete: {method: 'DELETE'}}),
+                          {id: '@id',
+                           controller: '@controller',
+                           controller_id: '@controller_id',
+                           controller_id1: '@controller_id1',
+                           controller_id2: '@controller_id2'},
+                          {put: {method: 'PUT'},
+                           grant: {method: 'PUT'},
+                           revoke: {method: 'DELETE'},
+                           create: {method: 'POST'},
+                           delete: {method: 'DELETE'}}),
         cloud: $resource(endpoint + 'cloud/:controller', {controller: '@controller'}),
         hypervisors: $resource(endpoint + 'hypervisors/:id/:controller/:controller_id',
-            {id: '@id', controller: '@controller', controller_id: '@controller_id'},
-            {put: {method: 'PUT'},
-             delete: {method: 'DELETE'}}
-        ),
+                               {id: '@id', controller: '@controller', controller_id: '@controller_id'},
+                               {put: {method: 'PUT'},
+                                delete: {method: 'DELETE'}}
+                              ),
         vms: $resource(endpoint + 'vms/:id/:controller/:controller_id',
-            {id: '@id', controller: '@controller', controller_id: '@controller_id'},
-            {put: {method: 'PUT'}}
-        ),
+                       {id: '@id', controller: '@controller', controller_id: '@controller_id'},
+                       {put: {method: 'PUT'}}
+                      ),
         ipranges: $resource(endpoint + 'ipranges/:id',
-            {id: '@id'},
-            {create: {method: 'POST'}}
-        ),
-        datasets: $resource(endpoint + 'datasets/:id', {id: '@id'}),
+                            {id: '@id'},
+                            {create: {method: 'POST'}}
+                           ),
+        datasets: $resource(endpoint + 'datasets/:id',
+                            {id: '@id'},
+                           {import: {method: 'POST'},
+                            put: {method: 'PUT'}}),
         packages: $resource(endpoint + 'packages/:id',
-            {id: '@id'},
-            {create: {method: 'POST'}}
-        ),
+                            {id: '@id'},
+                            {create: {method: 'POST'},
+                             delete: {method: 'DELETE'}}
+                           ),
+        dtrace: $resource(endpoint + 'dtrace/:id',
+                          {id: '@id'},
+                          {create: {method: 'POST'},
+                           delete: {method: 'DELETE'}}
+                         ),
+
     }
 
     /* Response with list of strings are not $resource friendly..
        https://groups.google.com/forum/#!msg/angular/QjhN9-UeBVM/UjSgc5CNDqMJ */
     endpoint = endpoint.replace("\\", '');
-    ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users', 'sessions', 'groups'].forEach(function(resource) {
+    ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users', 'sessions', 'groups', 'dtrace'].forEach(function(resource) {
         services[resource].list = function(cb, error) {
             return $http.get(endpoint + resource)
                 .success(cb)
@@ -73,7 +83,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
         if (services[resource].put) {
             services[resource].prototype.mdata_set = function(obj, cb) {
                 var id = this.uuid,
-                    that = this;
+                that = this;
 
                 return services[resource].put({id: id, controller: 'metadata', controller_id: 'jingles'}, obj, function() {
                     Object.keys(obj).forEach(function(k) {
@@ -131,27 +141,27 @@ fifoApp.factory('wiggle', function($resource, $http) {
                 checkIfReady();
             else
                 services.datasets.get({id: res.config.dataset},
-                    function (ds) {
-                        res.config._dataset = ds;
-                        checkIfReady()
-                    },
-                    function err(ds) {
-                        checkIfReady()
-                    }
-                )
+                                      function (ds) {
+                                          res.config._dataset = ds;
+                                          checkIfReady()
+                                      },
+                                      function err(ds) {
+                                          checkIfReady()
+                                      }
+                                     )
 
             if (!res.package)
                 checkIfReady();
             else
                 services.packages.get({id: res.package},
-                    function (p) {
-                        res._package = p
-                        checkIfReady()
-                    },
-                    function err() {
-                        checkIfReady()
-                    }
-                )
+                                      function (p) {
+                                          res._package = p
+                                          checkIfReady()
+                                      },
+                                      function err() {
+                                          checkIfReady()
+                                      }
+                                     )
         })
     }
 

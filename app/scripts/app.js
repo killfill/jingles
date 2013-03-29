@@ -19,6 +19,18 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
     })
+    .when('/dtrace/new', {
+        templateUrl: 'views/new_dtrace.html',
+        controller: 'NewDtraceCtrl'
+    })
+    .when('/dtrace/:uuid', {
+        templateUrl: 'views/dtrace.html',
+        controller: 'DTraceCtrl'
+    })
+    .when('/dtrace', {
+        templateUrl: 'views/dtraces.html',
+        controller: 'DTracesCtrl'
+    })
     .when('/virtual-machines', {
         templateUrl: 'views/virtual-machines.html',
         controller: 'Virtual-MachinesCtrl'
@@ -50,6 +62,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
     .when('/datasets', {
         templateUrl: 'views/datasets.html',
         controller: 'DatasetsCtrl'
+    })
+    .when('/datasets/:uuid', {
+        templateUrl: 'views/dataset.html',
+        controller: 'DatasetCtrl'
     })
     .when('/packages', {
         templateUrl: 'views/packages.html',
