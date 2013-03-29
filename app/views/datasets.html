@@ -12,35 +12,44 @@
                 <input class="input" type="text" ng-model="url" placeholder="image url" style='margin-bottom: 0px;'/>
                 <button class='btn btn btn-success' ng-click='import()'>Import</button>
             </div>
-            <table class="table table-condensed table-hover">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th style='min-width: 80px'>Ready</th>
-                  <th>Type</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
-                  <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
+            <div class="row-fluid">
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th style='min-width: 80px'>Ready</th>
+                      <th>Type</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
+                      <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
 
-                  <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
+                      <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
-                  <td>{{data.description}}</td>
-                  <td>
-                    <i ng-show="data.imported == 1" class="icon-ok" style=""></i>
-                    <div ng-hide="data.imported == 1" class="progress progress-striped active">
-                        <div class="bar" style="width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
-                    </div>
-                  </td>
-                  <td class='light'>{{data.type}}</td>
-                  <td><i ng-click="delete(data)" jq-run="tooltip" class="icon-remove-sign clickable" title="delete"></i></td>
-                </tr>
-              </tbody>
-            </table>
+                      <td>{{data.description}}</td>
+                      <td ng-show='!data.imported && data.imported !=0'>
+                        <button class='btn btn-small icon-download-alt'
+                            ng-hide="data.imported == 1"
+                            title='You need to download this dataset with FiFo'
+                            jq-run='tooltip'
+                            ng-click='import(data.dataset)'>Import</button>
+                      </td>
+                      <td ng-show='data.imported > -1'>
+                        <i ng-hide="data.imported < 1" class="icon-ok" style=""></i>
+                        <div ng-show="data.imported < 1" class="progress progress-striped active">
+                            <div class="bar" style="width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
+                        </div>
+                      </td>
+                      <td class='light'>{{data.type}}</td>
+                      <td><i ng-click="delete(data)" jq-run="tooltip" class="icon-remove-sign clickable" title="delete"></i></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
           </div>
           <div class="tab-pane" id="datasetsat">
             <div class="pane-nav">
@@ -65,13 +74,13 @@
                   <td>{{data.description}}</td>
                   <td>
                     <i ng-show="data.imported" class="icon-ok"></i>
-                    <button class='btn btn-small btn-success'
-                            ng-hide="data.imported"
-                            ng-click='import(data)'>Import</button>
+                    <button class='btn btn-small icon-download-alt'
+                            ng-hide="data.imported == 1"
+                            ng-click='import(data.uuid)'>Import</button>
                   </td>
                   <td class='nowrap' title="{{data.published_at | date:'medium'}}" jq-run='tooltip'>{{data.published_at | fromNow}}</td>
                   <td class='light nowrap'>{{data.files[0].size|bytes}}</td>
-                  <td class='light'><small>{{data.creator_name}}</small></td>
+                  <td class='light' style='max-width: 80px;'><small>{{data.creator_name}}</small></td>
                 </tr>
               </tbody>
             </table>
