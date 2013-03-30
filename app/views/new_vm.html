@@ -51,18 +51,24 @@
 		</div>
 	</div>
 
-	<div class="span5">
+	<div class="span5" ng-show='selectedDataset'>
 		<div class="thumbnail">
 			<table class="table table-hover small">
 				<tr class='small'>
 					<th></th>
 					<th>Network</th>
 					<th>Next avail IP</th>
+					<th></th>
 				</tr>
-				<tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'" ng-click='click_network(n)' ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
+				<tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'" 
+					ng-click='click_network(n)' 
+					ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
 					<td><strong>{{n.name}}</strong></td>
-					<td>{{n.network}} / {{n.netmask}}</td>
+					<td>{{n.network}}</td>
 					<td>{{n.current}}</td>
+					<td ng-show='selectedNetworks.indexOf(n) > -1'>
+						<span class='badge'>{{selectedNetworks.indexOf(n) + 1}}: {{selectedDataset.networks[selectedNetworks.indexOf(n)].description}}</span>
+					</td>
 				</tr>
 			</table>
 		</div>

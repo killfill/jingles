@@ -50,14 +50,21 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
 
     $scope.click_dataset = function(dataset) {
         $scope.selectedDataset = dataset
+        $scope.selectedNetworks.length = 0
     }
 
     $scope.click_network = function(network) {
         var idx = $scope.selectedNetworks.indexOf(network)
+
+        /* Toggle off */
         if (idx>-1)
+            return $scope.selectedNetworks.splice(idx, 1)
+        
+        /* Limit nr of selected networks based on the database nr of networks */
+        if ($scope.selectedNetworks.length >= $scope.selectedDataset.networks.length)
             $scope.selectedNetworks.splice(idx, 1)
-        else
-            $scope.selectedNetworks.push(network)
+
+        $scope.selectedNetworks.push(network)
     }
 
     $scope.metadata = []
