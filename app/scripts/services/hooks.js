@@ -30,13 +30,15 @@ angular.module('fifoHooks', [], function($provide, $httpProvider) {
 fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, status) {
 
     $rootScope.$on('response', function(evt, statusCode, res) {
+
         if (statusCode < 300 || statusCode == 404) return;
 
         if (statusCode == 403) {
 
             /* When user is loggin in, we could get a 403 (access denied..) */
-            if (res.config.url.indexOf('sessions' > -1))
+            if (res.config.url.indexOf('sessions') > -1)
                 return;
+
             //If the session is valid, its something with the permition
             return wiggle.sessions.get({id: $cookies["X-Snarl-Token"]},
                 function success(data) {
