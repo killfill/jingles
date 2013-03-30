@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.factory('wiggle', function($resource, $http) {
+fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
 
 
     var endpoint = Config.wiggle
@@ -103,12 +103,16 @@ fifoApp.factory('wiggle', function($resource, $http) {
     });
 
     /* Gets with cache! */
+    var cacheObj = $cacheFactory('fifoCache');
     services.datasets.get = function(obj, success, error) {
-        return $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
+        return $http.get(endpoint + 'datasets/' + obj.id, {cache: cacheObj})
             .success(success)
             .error(function(data) {
                 error && error(data)
             })
+    }
+    services.datasets.clearCache = function(id) {
+        cacheObj.remove(endpoint + 'datasets/' + id)
     }
     services.packages.get = function(obj, success, error) {
         return $http.get(endpoint + 'packages/' + obj.id, {cache: true})
