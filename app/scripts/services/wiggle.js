@@ -3,6 +3,22 @@
 fifoApp.factory('wiggle', function($resource, $http) {
 
 
+    var is_empty = function is_empty(obj) {
+
+        // null and undefined are empty
+        if (obj == null) return true;
+        // Assume if it has a length property with a non-zero value
+        // that that property is correct.
+        if (obj.length && obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+
+        for (var key in obj) {
+            if (hasOwnProperty.call(obj, key))    return false;
+        }
+
+        return true;
+    }
+
     var endpoint = Config.wiggle
 
     //The port : needs to be escaped to \\:
@@ -52,8 +68,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
                            ),
         datasets: $resource(endpoint + 'datasets/:id',
                             {id: '@id'},
-                           {import: {method: 'POST'},
-                            put: {method: 'PUT'}}),
+                            {import: {method: 'POST'},
+                             put: {method: 'PUT'}}),
         packages: $resource(endpoint + 'packages/:id',
                             {id: '@id'},
                             {create: {method: 'POST'},
@@ -84,7 +100,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
             services[resource].prototype.mdata_set = function(obj, cb) {
                 var id = this.uuid,
                 that = this;
-
+                if (is_empty(obj))
+                    return;
                 return services[resource].put({id: id, controller: 'metadata', controller_id: 'jingles'}, obj, function() {
                     Object.keys(obj).forEach(function(k) {
                         if (!that.metadata) that.metadata = {}
