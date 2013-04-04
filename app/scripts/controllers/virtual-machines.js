@@ -24,7 +24,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         $scope.searchQuery = user.mdata('vm_searchQuery')
 
         $scope.$watch('searchQuery', function(val) {
-            user.mdata_set({vm_searchQuery: val})
+            if (val)
+                user.mdata_set({vm_searchQuery: val})
         })
 
         var allColumns = [
@@ -111,7 +112,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         else
             $scope.orderField = field;
 
-        user.mdata_set({vm_sort_field: $scope.orderField});
+        if ($scope.orderField)
+            user.mdata_set({vm_sort_field: $scope.orderField});
     };
 
     $scope.orderStyle = function(field) {
