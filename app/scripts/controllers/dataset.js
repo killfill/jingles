@@ -14,6 +14,7 @@ fifoApp.controller('DatasetCtrl', function($scope, $routeParams, wiggle, status)
                             {networks: nets},
                             function success(res) {
                                 status.success('Dataset changed')
+                                wiggle.datasets.clearCache(uuid)
                             })
     }
 })
