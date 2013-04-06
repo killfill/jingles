@@ -24,7 +24,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         $scope.searchQuery = user.mdata('vm_searchQuery')
 
         $scope.$watch('searchQuery', function(val) {
-            if (val)
+            if (typeof val != 'undefined')
                 user.mdata_set({vm_searchQuery: val})
         })
 
