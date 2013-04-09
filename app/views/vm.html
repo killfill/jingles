@@ -163,7 +163,7 @@
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
               <dt>Info</dt>
                 <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
-                <dd ng-hide='vm.config._dataset'>Unknown</dd>
+                <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
             </dl>
           </div>
 
