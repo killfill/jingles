@@ -90,7 +90,7 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
         ids.forEach(function(id) {
             wiggle.hypervisors.get({id: id}, function(res) {
                 res.networks && res.networks.forEach(function(net) {
-                    if ($scope.network_tags.indexOf(res.networks)<0)
+                    if ($scope.network_tags.indexOf(net)<0)
                         $scope.network_tags.push(net)
                 })
                 
