@@ -21,7 +21,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
     $scope.show = function() {
 
-        $scope.searchQuery = user.mdata('vm_searchQuery')
+        $scope.searchQuery = user.mdata('vm_searchQuery');
+        $scope.orderField = user.mdata('vm_sort_field') || 'config.alias';
 
         $scope.$watch('searchQuery', function(val) {
             if (typeof val != 'undefined')
@@ -99,10 +100,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         })
     }
 
-    $scope.show()
-
     /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
-    $scope.orderField = user.mdata('vm_sort_field') || 'config.alias';
     $scope.order = function(field, evt) {
         //var el = angular.element(evt.currentTarget)
 
@@ -137,5 +135,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
     $scope.showHideColumn = function() {
         user.mdata_set({vm_fields: $scope.columns});
     };
+
+
+    /* Wait until user is logged in */
+    $scope.$on('user_login', function() {
+        $scope.show()
+    })
+
+    if (user.logged())
+        $scope.show();
+
 
 });

@@ -190,7 +190,7 @@ function MetricsGraph(id, opts) {
         var _config = {HtmlText : false,
                        yaxis:{titleAngle: 90},
                        legend : {
-                           position : 'ne'
+                           position : 'nw'
                        }};
         if (opts.unit)
             _config.yaxis.title = opts.unit;

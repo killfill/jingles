@@ -149,7 +149,7 @@
           </div>
 
 
-          <div class="box box-small pull-left" ng-show="vm.config._dataset">
+          <div class="box box-small pull-left" ng-show="vm.config.dataset">
             <div class="header">
               Dataset
               <span ng-show='vm.config._dataset' class="badge badge-info">
@@ -161,7 +161,9 @@
 
             <dl class="dl-horizontal">
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
-              <dt>Info</dt><dd>{{vm.config._dataset.description}}</dd>
+              <dt>Info</dt>
+                <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
+                <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
             </dl>
           </div>
 

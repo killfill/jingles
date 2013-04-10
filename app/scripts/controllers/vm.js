@@ -426,4 +426,16 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         }
 
     }
+
+    $scope.import_dataset = function() {
+        var url = 'http://' + Config.datasets + '/datasets/' + $scope.vm.config.dataset;
+        wiggle.datasets.import(
+            {},
+            {url: url},
+            function(r) {
+                howl.join(uuid);
+                status.info('Importing ' + r.name + ' ' + r.version);
+                updateVm();
+           });
+    }
 });
