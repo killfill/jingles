@@ -58,6 +58,9 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             }
 
             clearInterval(connectionPoller);
+
+            /* Inyect the login event */
+            $rootScope.$broadcast('user_login', $rootScope.loggedUser)
         },
 
         logout: function() {
