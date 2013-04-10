@@ -83,4 +83,18 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
             }
         );
     }
+
+    /* Get all the available network tags to build the selector */
+    $scope.network_tags = []
+    wiggle.hypervisors.list(function(ids) {
+        ids.forEach(function(id) {
+            wiggle.hypervisors.get({id: id}, function(res) {
+                res.networks && res.networks.forEach(function(net) {
+                    if ($scope.network_tags.indexOf(res.networks)<0)
+                        $scope.network_tags.push(net)
+                })
+                
+            })
+        })
+    })
 })
