@@ -141,7 +141,7 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
 
     /* VM GET: include the asociated data */
     services.vms._get = services.vms.get;
-    services.vms.get = function(obj, returnCb) {
+    services.vms.get = function(obj, returnCb, errorCb) {
 
         return services.vms._get(obj, function(res) {
 
@@ -158,34 +158,37 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                     return returnCb(res)
             }
 
-            if (!res.config.dataset || res.config.dataset === 1)
+            if (!res.config.dataset || res.config.dataset === 1) {
                 checkIfReady();
-            else
-                services.datasets.get({id: res.config.dataset},
-                                      function (ds) {
-                                          res.config._dataset = ds;
-                                          checkIfReady()
-                                      },
-                                      function err(ds) {
-                                          checkIfReady()
-                                      }
-                                     )
-
-            if (!res.package)
+            } else {
+                services.datasets.get(
+                    {id: res.config.dataset},
+                    function (ds) {
+                        res.config._dataset = ds;
+                        checkIfReady();
+                    },
+                    function err(ds) {
+                        checkIfReady();
+                    }
+                )
+            };
+            if (!res.package) {
                 checkIfReady();
-            else
-                services.packages.get({id: res.package},
-                                      function (p) {
-                                          res._package = p
-                                          checkIfReady()
-                                      },
-                                      function err() {
-                                          checkIfReady()
-                                      }
-                                     )
-        })
+            } else {
+                services.packages.get(
+                    {id: res.package},
+                    function (p) {
+                        res._package = p;
+                        checkIfReady();
+                    },
+                    function err() {
+                        checkIfReady();
+                    }
+                )
+            }
+        }, errorCb);
     }
 
-    return services
+    return services;
 
 });

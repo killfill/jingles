@@ -55,16 +55,16 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
-
                 $scope.vms[id] = {uuid: id, state: 'loading'}
-                wiggle.vms.get({id: id}, function(res) {
-
+                wiggle.vms.get({id: id}, function success(res) {
                     status.update('Loading machines', {add: 1})
                     //If the vm is deleting, delete them from the list..
                     if (res.state == 'deleting')
                         delete $scope.vms[id];
                     else
                         $scope.vms[id] = vmService.updateCustomFields(res);
+                }, function error(res) {
+                    status.update('Loading machines', {add: 1})
                 })
             })
         })

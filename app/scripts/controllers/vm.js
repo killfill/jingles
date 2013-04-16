@@ -316,7 +316,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         /* If the machine didnt stopped, let the user force */
         if (action == 'stop') {
             setTimeout(function() {
-                if ($scope.vm.state != 'running') 
+                if ($scope.vm.state != 'running')
                     return;
                 $scope.force = true;
                 $scope.$apply()
@@ -436,6 +436,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 howl.join(uuid);
                 status.info('Importing ' + r.name + ' ' + r.version);
                 updateVm();
-           });
+            });
     }
 });
