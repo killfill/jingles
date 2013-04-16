@@ -6,9 +6,11 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
     $scope.create_machine = function() {
 
         if ($scope.selectedNetworks.length != $scope.selectedDataset.networks.length) {
-            status.error('Your network selection is invalid. You have either too many or too fiew networks selected.');
+            status.error('Your network selection is invalid. ' +
+                         'You have either too many or too fiew networks selected.');
             return;
-        }
+        };
+
         var vm = new wiggle.vms({
             package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
