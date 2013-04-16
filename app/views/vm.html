@@ -267,7 +267,7 @@
             Change to
             <select class='input-small' style='margin: 0px; height: 20px;'
                     ng-model="new_pkg"
-                    ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
+                    ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
             </select>
           </div>
           <package pkg='packages[new_pkg]'></package>
