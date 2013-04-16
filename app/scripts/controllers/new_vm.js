@@ -5,6 +5,10 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
 
     $scope.create_machine = function() {
 
+        if ($scope.selectedNetworks.length != $scope.selectedDataset.networks.length) {
+            status.error('Your network selection is invalid. You have either too many or too fiew networks selected.');
+            return;
+        }
         var vm = new wiggle.vms({
             package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
@@ -39,8 +43,8 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             howl.join(data.uuid);
             $location.path('/virtual-machines')
         }, function error(data) {
-            console.error('Create VM error:', data, data.headers(), vm)
-            status.error('There was an error creating your vm. See the javascript console.')
+            console.error('Create VM error:', data, data.headers(), vm);
+            status.error('There was an error creating your vm. See the the VMs logs or js console for details.');
         })
     }
 
