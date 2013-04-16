@@ -48,6 +48,9 @@ fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, sta
         case 409:
             status.error('The request failed because of a data conflict.');
             break;
+        case 503:
+            status.error('Not all services are available.');
+            break;
         case 505:
             status.error('There was an internal server error processing the request.<br/>' +
                          'See the details in the browsers javascript console.');
