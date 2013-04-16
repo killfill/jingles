@@ -59,10 +59,11 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
                 wiggle.vms.get({id: id}, function success(res) {
                     status.update('Loading machines', {add: 1})
                     //If the vm is deleting, delete them from the list..
-                    if (res.state == 'deleting')
+                    if (res.state == 'deleting') {
                         delete $scope.vms[id];
-                    else
+                    } else {
                         $scope.vms[id] = vmService.updateCustomFields(res);
+                    }
                 }, function error(res) {
                     status.update('Loading machines', {add: 1})
                 })
@@ -72,8 +73,25 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         $scope.$on('state', function(e, msg) {
             var vm = $scope.vms[msg.channel];
             if (!vm) return;
-
-            vm.state = msg.message.data
+            var failed = function(reason) {
+                status.error("The creation of the VM " + vm.config.alias +
+                             "(" + vm.uuid + ") failed. <br/>" + reason);
+            }
+            vm.state = msg.message.data;
+            switch (vm.state) {
+                case 'failed-get_ips':
+                failed("No IP address for the machine could be obtained.");
+                break;
+                case 'failed-get_dataset':
+                failed("The dataset could not be retrieved.");
+                break;
+                case 'failed-get_package':
+                failed("The package could not be retrieved.");
+                break;
+                case 'failed-get_server':
+                failed("No suitable server to deploy the VM on could be found.");
+                break;
+            }
             vmService.updateCustomFields(vm)
             $scope.$apply()
         })
