@@ -48,8 +48,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             $scope.columns = allColumns
         else
             $scope.columns = customColumns.length != allColumns.length
-                                ? allColumns
-                                : customColumns
+            ? allColumns
+            : customColumns
 
         wiggle.vms.list(function (ids) {
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
@@ -78,21 +78,10 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
                              "(" + vm.uuid + ") failed. <br/>" + reason);
             }
             vm.state = msg.message.data;
-            switch (vm.state) {
-                case 'failed-get_ips':
-                failed("No IP address for the machine could be obtained.");
-                break;
-                case 'failed-get_dataset':
-                failed("The dataset could not be retrieved.");
-                break;
-                case 'failed-get_package':
-                failed("The package could not be retrieved.");
-                break;
-                case 'failed-get_server':
-                failed("No suitable server to deploy the VM on could be found.");
-                break;
-            }
-            vmService.updateCustomFields(vm)
+            vmService.updateCustomFields(vm);
+            if (vm.state == 'failed') {
+                failed(vm.state_description);
+            };
             $scope.$apply()
         })
 
