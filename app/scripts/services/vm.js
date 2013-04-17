@@ -85,17 +85,21 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 break;
             case 'creating':
                 vm.state_description = "The VM is currently bing provisioned on the hypervisor."
+                vm._state_label = 'warning';
                 break;
             case 'installing_dataset':
                 vm.state_description = "The dataset for the VM is currently being installed on the hypervisor."
                 vm.state = 'creating';
+                vm._state_label = 'warning';
                 break;
             case 'shutting_down':
                 vm.state_description = "The VM is currently shutting down."
                 vm.state = 'shutting down';
+                vm._state_label = 'warning';
                 break;
             case 'booting':
                 vm.state_description = "The VM is currently booting."
+                vm._state_label = 'warning';
                 break;
             default:
                 vm.state_description = vm.state;
