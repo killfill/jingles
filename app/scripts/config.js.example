@@ -95,7 +95,7 @@ Config = {
                 element: e.element,
                 type: e.type,
                 max: e.max,
-                percent: parseInt((v * 100), 10),
+                percent: parseInt(Math.round(v * 100), 10),
                 ok: ok,
                 message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
             });
