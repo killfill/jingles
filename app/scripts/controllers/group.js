@@ -130,7 +130,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                 };
                 break;
             case "dtraces":
-                wiggle.dtraces.list(function(ids) {
+                wiggle.dtrace.list(function(ids) {
                     if (ids.length > 0)
                         $scope.p2 = {
                             "...": {id: "...", name: "Everything"},
@@ -138,7 +138,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
-                        wiggle.dtraces.get({id: id}, function(dtrace) {
+                        wiggle.dtrace.get({id: id}, function(dtrace) {
                             $scope.p2[id].name = dtrace.name;
                         })
                     })
