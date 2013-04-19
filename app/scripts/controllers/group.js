@@ -325,6 +325,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                         {id:"get", name: "See"},
                         {id:"create", name: "Create VM's here"},
                         {id:"edit", name: "Edit Metadata"},
+                        {id:"stream", name: "Stream"},
                         {id:"delete", name: "Delete"}
                     ];
                     break;

@@ -336,7 +336,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                     $scope.p3 = [
                         {id:"get", name: "See"},
                         {id:"create", name: "Create VM's here"},
-                        {id:"edit", name: "Edit Metadata"},
+                        {id:"edit", name: "Edit"},
+                        {id:"stream", name: "Stream"},
                         {id:"delete", name: "Delete"}
                     ];
                     break;
