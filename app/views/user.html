@@ -29,50 +29,51 @@
 
         <div class="userbox">
 
-            <div class="header">
-                <i class="icon-user"></i>
-                <span class="badge badge-info">{{user.name}}</span>
-            </div>
+          <div class="header">
+            <i class="icon-user"></i>
+            <span class="badge badge-info">{{user.name}}</span>
+          </div>
 
-            <dl class="dl-horizontal">
-                    <dt>User UUID</dt>
-                    <dd>{{user.uuid}}</dd>
-            </dl>
+          <dl class="dl-horizontal">
+            <dt>User UUID</dt>
+            <dd>{{user.uuid}}</dd>
+          </dl>
           </br>
           <small>Change Password :</small>
-            <div class="input-prepend">
-      <span class="add-on"><i class="icon-key"></i></span>
-      <input ng-model="pass1" class="span2" type="password" placeholder="New password">
-      <span class="add-on"><i class="icon-key"></i></span>
-      <input ng-model="pass2" class="span2" type="password" placeholder="Confirm Password">
-    </div>
-    
-    <div>
-      <button class="btn" ng-click="passwd()" style='margin-bottom: 10px;'>Change</button>
-    </div> 
+          <div class="input-prepend">
+            <span class="add-on"><i class="icon-key"></i></span>
+            <input ng-model="pass1" class="span2" type="password" placeholder="New password">
+            <span class="add-on"><i class="icon-key"></i></span>
+            <input ng-model="pass2" class="span2" type="password" placeholder="Confirm Password">
+          </div>
+
+          <div>
+            <button class="btn" ng-click="passwd()" style='margin-bottom: 10px;'>Change</button>
+          </div>
         </div>
-  
-        </div>
+
+      </div>
       <div class="tab-pane" id="permisisons">
         <select ng-model="perm1" ng-change="perm_change(1)">
           <option value="...">Everything</option>
           <option value="cloud">Cloud</option>
-          <option value="users">Users</option>
+          <option value="datasets">Datasets</option>
+          <option value="dtraces">DTrace</option>
           <option value="groups">Groups</option>
           <option value="hypervisors">Hypervisors</option>
-          <option value="vms">Virtual Machines</option>
           <option value="ipranges">Networks</option>
-          <option value="datasets">Datasets</option>
           <option value="packages">Packages</option>
+          <option value="users">Users</option>
+          <option value="vms">Virtual Machines</option>
         </select>
-          <select ng-model="perm2" ng-show="p2 != false" ng-change="perm_change(2)">
+        <select ng-model="perm2" ng-show="p2 != false" ng-change="perm_change(2)">
           <option ng-repeat="p in p2 | hash2array" value="{{p.id}}">{{p.name}}</option>
         </select>
-          <select ng-model="perm3" ng-show="p3 != false" ng-change="perm_change(3)">
+        <select ng-model="perm3" ng-show="p3 != false" ng-change="perm_change(3)">
           <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
         </select>
         <button ng-click="grant()" ng-show="permission">Grant</button>
-        
+
         <table class='table table-condensed table-bordered'>
           <tr>
             <th>Permission</th>

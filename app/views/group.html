@@ -32,13 +32,14 @@
         <select ng-model="perm1" ng-change="perm_change(1)">
           <option value="...">Everything</option>
           <option value="cloud">Cloud</option>
-          <option value="users">Users</option>
+          <option value="datasets">Datasets</option>
+          <option value="dtraces">DTrace</option>
           <option value="groups">Groups</option>
           <option value="hypervisors">Hypervisors</option>
-          <option value="vms">Virtual Machines</option>
           <option value="ipranges">Networks</option>
-          <option value="datasets">Datasets</option>
           <option value="packages">Packages</option>
+          <option value="users">Users</option>
+          <option value="vms">Virtual Machines</option>
         </select>
         <select ng-model="perm2" ng-show="p2 != false" ng-change="perm_change(2)">
           <option ng-repeat="p in p2 | hash2array" value="{{p.id}}">{{p.name}}</option>
