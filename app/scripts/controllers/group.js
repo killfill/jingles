@@ -117,7 +117,7 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
                 break;
             case "cloud":
                 $scope.p2 = {
-                    "could": {id: "cloud", name: "Cloud"},
+                    "cloud": {id: "cloud", name: "Cloud"},
                     "users": {id: "users", name: "Users"},
                     "groups": {id: "groups", name: "Groups"},
                     "hypervisors": {id: "hypervisors", name: "Hypervisors"},
