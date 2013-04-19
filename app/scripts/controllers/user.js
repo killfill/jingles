@@ -34,6 +34,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             case "users":
             case "groups":
             case "packages":
+            case "dtraces":
             case "ipranges":
                 cache(p[0], p[1], function (e) {
                     we_need_a_stupid_copy_thank_you_js[1] = e.name;
@@ -339,7 +340,6 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         {id:"delete", name: "Delete"}
                     ];
                     break;
-
                 case "hypervisors":
                     $scope.p3 = [
                         {id:"get", name: "See"},
