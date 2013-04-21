@@ -4,22 +4,22 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
     $scope.setTitle('Datasets')
 
     $scope.datasets = {}
+    $scope.datasetsat = {}
     $scope.endpoint = Config.datasets
 
-    $scope.import = function(dataset) {
+    $scope.import = function(uuid) {
         var url = $scope.url
-        if (dataset)
-            url = 'http://' + Config.datasets + '/datasets/' + dataset.uuid;
+        if (uuid)
+            url = 'http://' + Config.datasets + '/datasets/' + uuid;
 
         wiggle.datasets.import({},
                                {url: url},
                                function(r) {
-                                    var uuid = r.dataset;
                                     howl.join(uuid);
                                     $scope.datasets[uuid] = r;
                                     status.info('Importing ' + r.name + ' ' + r.version)
-                                    if (dataset)
-                                        dataset.imported = true;
+                                    if ($scope.datasetsat[uuid])
+                                        $scope.datasetsat[uuid].imported = true;
                                });
     };
 
@@ -37,10 +37,9 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
                 status.success('Dataset deleted.')
 
                 /* Search the remote dataset element, and set it as not imported. */
-                var remoteDs = $scope.datasetsat.filter(function(i) { 
-                    return i.uuid == dataset.dataset 
-                }).pop()
-                if (remoteDs) remoteDs.imported = false;
+                var remoteDs = $scope.datasetsat[dataset.dataset]
+                if (remoteDs)
+                    remoteDs.imported = false;
             })
         })
 
@@ -79,15 +78,13 @@ fifoApp.controller('DatasetsCtrl', function($scope, wiggle, status, datasetsat, 
             if (!Config.datasets)
                 return status.error('Make sure your config has an URL for the remote datasets')
 
+            /* Get the available datasets */
             datasetsat.datasets.list(function (data) {
-                $scope.datasetsat = data.map(function(e) {
-                    if ($scope.datasets[e.uuid]) {
-                        e.imported = !$scope.datasets[e.uuid].imported ||  $scope.datasets[e.uuid].imported == 1;
-                    } else {
-                        e.imported = false;
-                    }
-                    return e;
-                });
+                data.forEach(function(e) {
+                    var localOne = $scope.datasets[e.uuid];
+                    e.imported = localOne && localOne.imported && localOne.imported > 0 || false
+                    $scope.datasetsat[e.uuid] = e
+                })
             });
 
         })

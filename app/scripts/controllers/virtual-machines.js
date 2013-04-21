@@ -21,6 +21,14 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
     $scope.show = function() {
 
+        $scope.searchQuery = user.mdata('vm_searchQuery');
+        $scope.orderField = user.mdata('vm_sort_field') || 'config.alias';
+
+        $scope.$watch('searchQuery', function(val) {
+            if (typeof val != 'undefined')
+                user.mdata_set({vm_searchQuery: val})
+        })
+
         var allColumns = [
             {name: 'Name',      visible: true,  field: 'config.alias'},
             {name: 'Description',visible: false, field: 'metadata.jingles.description'},
@@ -40,23 +48,24 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             $scope.columns = allColumns
         else
             $scope.columns = customColumns.length != allColumns.length
-                                ? allColumns
-                                : customColumns
+            ? allColumns
+            : customColumns
 
         wiggle.vms.list(function (ids) {
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
-
                 $scope.vms[id] = {uuid: id, state: 'loading'}
-                wiggle.vms.get({id: id}, function(res) {
-
+                wiggle.vms.get({id: id}, function success(res) {
                     status.update('Loading machines', {add: 1})
                     //If the vm is deleting, delete them from the list..
-                    if (res.state == 'deleting')
+                    if (res.state == 'deleting') {
                         delete $scope.vms[id];
-                    else
+                    } else {
                         $scope.vms[id] = vmService.updateCustomFields(res);
+                    }
+                }, function error(res) {
+                    status.update('Loading machines', {add: 1})
                 })
             })
         })
@@ -64,9 +73,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         $scope.$on('state', function(e, msg) {
             var vm = $scope.vms[msg.channel];
             if (!vm) return;
-
-            vm.state = msg.message.data
-            vmService.updateCustomFields(vm)
+            var failed = function(reason) {
+                status.error("The creation of the VM " + vm.config.alias +
+                             "(" + vm.uuid + ") failed. <br/>" + reason);
+            }
+            vm.state = msg.message.data;
+            vmService.updateCustomFields(vm);
+            if (vm.state == 'failed') {
+                failed(vm.state_description);
+            };
             $scope.$apply()
         })
 
@@ -92,10 +107,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         })
     }
 
-    $scope.show()
-
     /* Ordering stuff: If any other table need something like this, probably a directive would be greate. */
-    $scope.orderField = user.mdata('vm_sort_field') || 'config.alias';
     $scope.order = function(field, evt) {
         //var el = angular.element(evt.currentTarget)
 
@@ -105,7 +117,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         else
             $scope.orderField = field;
 
-        user.mdata_set({vm_sort_field: $scope.orderField});
+        if ($scope.orderField)
+            user.mdata_set({vm_sort_field: $scope.orderField});
     };
 
     $scope.orderStyle = function(field) {
@@ -129,5 +142,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
     $scope.showHideColumn = function() {
         user.mdata_set({vm_fields: $scope.columns});
     };
+
+
+    /* Wait until user is logged in */
+    $scope.$on('user_login', function() {
+        $scope.show()
+    })
+
+    if (user.logged())
+        $scope.show();
+
 
 });

@@ -24,14 +24,14 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 if (force && (action == "stop" || action == "reboot"))
                     b.force = true;
                 return wiggle.vms.put({id: uuid}, b,
-                    function success(r, headers) {
-                        if (!headers)
-                            return status.error('An error 500 has occur. :(');
+                                      function success(r, headers) {
+                                          if (!headers)
+                                              return status.error('An error 500 has occur. :(');
 
-                        status.info(actionDescrition[action] + ' machine ' + name)
-                        cb && cb(action, uuid)
-                    }
-                )
+                                          status.info(actionDescrition[action] + ' machine ' + name)
+                                          cb && cb(action, uuid)
+                                      }
+                                     )
             }
 
             modal.confirm({
@@ -41,11 +41,11 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
             }, function() {
                 wiggle.vms.delete({id: uuid},
-                    function success(data, h) {
-                        status.info('Deleting machine '  + name)
-                        cb && cb(action, uuid)
-                    }
-                )
+                                  function success(data, h) {
+                                      status.info('Deleting machine '  + name)
+                                      cb && cb(action, uuid)
+                                  }
+                                 )
 
             })
 
@@ -54,11 +54,58 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
         updateCustomFields: function(vm) {
 
             vm._name = (vm.config && vm.config.alias) || vm.uuid && vm.uuid.split('-')[0]
-            vm._state_label = vm.state=='running'
-                ? 'success'
-                : vm.state == 'stopped'
-                    ? 'warning'
-                    : 'important'
+
+            switch (vm.state) {
+            case 'failed-get_ips':
+                vm.state_description = "No IP address for the machine could be obtained.";
+                vm.state = 'failed';
+                vm._state_label = 'important';
+                break;
+            case 'failed-get_dataset':
+                vm.state_description = "The dataset could not be retrieved.";
+                vm.state = 'failed';
+                vm._state_label = 'important';
+                break;
+            case 'failed-get_package':
+                vm.state_description = "The package could not be retrieved.";
+                vm.state = 'failed';
+                vm._state_label = 'important';
+                break;
+            case 'failed-get_server':
+                vm.state_description = "No suitable server to deploy the VM on could be found.";
+                vm.state = 'failed';
+                vm._state_label = 'important';
+                break;
+            case 'running':
+                vm.state_description = "The VM is running."
+                vm._state_label = 'success';
+                break;
+            case 'stopped':
+                vm.state_description = "The VM is stopped."
+                break;
+            case 'creating':
+                vm.state_description = "The VM is currently bing provisioned on the hypervisor."
+                vm._state_label = 'warning';
+                break;
+            case 'installing_dataset':
+                vm.state_description = "The dataset for the VM is currently being installed on the hypervisor."
+                vm.state = 'creating';
+                vm._state_label = 'warning';
+                break;
+            case 'shutting_down':
+                vm.state_description = "The VM is currently shutting down."
+                vm.state = 'shutting down';
+                vm._state_label = 'warning';
+                break;
+            case 'booting':
+                vm.state_description = "The VM is currently booting."
+                vm._state_label = 'warning';
+                break;
+            default:
+                vm.state_description = vm.state;
+                vm._state_label = 'warning';
+                break;
+            };
 
             if (!vm.config)
                 return vm;
@@ -75,7 +122,7 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 .filter(function(i) {return vm.config.networks.length<2 || i.primary=='true'})
                 .map(function(e) { return e.ip})
 
-                //Take the undefined elements out of the array (i.e. when there is no ip attribute)
+            //Take the undefined elements out of the array (i.e. when there is no ip attribute)
                 .filter(function(i) {return i;});
 
             //If there is nothing to show, just show the one of the first network
@@ -91,7 +138,7 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 ips.map(function(e) {
                     return e && e.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ")
-                : vm.config.networks[0].ip;
+            : vm.config.networks[0].ip;
 
             return vm;
         }

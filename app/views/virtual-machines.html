@@ -1,6 +1,5 @@
           <div class="tab-pane" id="virtual-machines">
             <div class="pane-nav">
-                <input type="text" class="search-query span5" placeholder='Filter' ng-model='searchQuery'>
 
                 <column-selector class='hidden' id='popupContent'>
                 </column-selector>
@@ -10,6 +9,8 @@
                     class='btn btn-info'>
                     <i class='icon-white icon-list'></i>
                 </button>
+                <input type="text" class="search-query span5" placeholder='Filter' ng-model='searchQuery'>
+
                 <a title='Create a new Machine' jq-run='tooltip' href="#/virtual-machines/new" class="btn btn-inverse">
                     <i class="icon-white icon-plus"></i> New
                 </a>
@@ -34,9 +35,9 @@
                       </td>
                       <td ng-show="columns[1].visible">{{vm.mdata('description')}}</td>
                       <td ng-show="columns[2].visible"
-                            title='{{vm.config._dataset.description}}'
-                            class='nowrap'
-                            jq-run='tooltip'>
+                          title='{{vm.config._dataset.description}}'
+                          class='nowrap'
+                          jq-run='tooltip'>
                             <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
                             {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}
                       </td>
@@ -48,7 +49,11 @@
                       <td ng-show="columns[8].visible" jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}" class='light nowrap'>{{vm.config.created_at | fromNow}}</td>
                       </td>
                       <td ng-show="columns[9].visible">
-                        <span class='label label-{{vm._state_label}}'>{{vm.state}}</span>
+                        <span class='label label-{{vm._state_label}}'
+                              title='{{vm.state_description}}'
+                              jq-run='tooltip'>
+                          {{vm.state}}
+                        </span>
                       </td>
                       <td ng-show="columns[10].visible">
                         <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"

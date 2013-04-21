@@ -10,8 +10,7 @@
     <div id="create-networks-form" class="form-horizontal" novalidate="novalidate">
       <div class="control-group">
         <label class="control-label" for="network-tag" title="Valid nic tag as listed by `sysinfo`" jq-run='tooltip'>Tag &nbsp;</label>
-        <input id="network-tag" ng-model='tag' name="network-tag" type="text" class="valid" placeholder="eg. admin">
-        <label for="network-tag" generated="true" class="error" style="display: block;"></label>
+        <select ng-model="tag" ng-options="t for t in network_tags"></select>
       </div>
       <div class="control-group">
         <label class="control-label" for="network-network">Network &nbsp;</label>

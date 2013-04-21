@@ -34,6 +34,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             case "users":
             case "groups":
             case "packages":
+            case "dtraces":
             case "ipranges":
                 cache(p[0], p[1], function (e) {
                     we_need_a_stupid_copy_thank_you_js[1] = e.name;
@@ -129,15 +130,31 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                 break;
             case "cloud":
                 $scope.p2 = {
-                    "could": {id: "cloud", name: "Cloud"},
+                    "cloud": {id: "cloud", name: "Cloud"},
                     "users": {id: "users", name: "Users"},
                     "groups": {id: "groups", name: "Groups"},
                     "hypervisors": {id: "hypervisors", name: "Hypervisors"},
                     "vms": {id: "vms", name: "Virtual Machines"},
                     "ipranges": {id: "ipranges", name: "Networks"},
                     "datasets": {id: "datasets", name: "Datasets"},
-                    "packages": {id: "packages", name: "Packages"}
+                    "packages": {id: "packages", name: "Packages"},
+                    "dtraces": {id: "dtraces", name: "DTrace"},
                 };
+                break;
+            case "dtraces":
+                wiggle.dtrace.list(function(ids) {
+                    if (ids.length > 0)
+                        $scope.p2 = {
+                            "...": {id: "...", name: "Everything"},
+                            "_": {id: "_", name: "All Users"},
+                        };
+                    ids.forEach(function(id){
+                        $scope.p2[id] = {id: id, name: id};
+                        wiggle.dtrace.get({id: id}, function(dtrace) {
+                            $scope.p2[id].name = dtrace.name;
+                        })
+                    })
+                });
                 break;
             case "users":
                 wiggle.users.list(function(ids) {
@@ -266,6 +283,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                     case "groups":
                     case "vms":
                     case "packages":
+                    case "dtraces":
                     case "ipranges":
                         $scope.p3 = [
                             {id: "list", name: "List"},
@@ -312,6 +330,15 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         {id:"snapshot", name: "Create a Snapshot"},
                         {id:"rollback", name: "Rollback a Snapshot"},
                         {id:"delete_snapshot", name: "Delete a Snapshot"}
+                    ];
+                    break;
+                case "dtraces":
+                    $scope.p3 = [
+                        {id:"get", name: "See"},
+                        {id:"create", name: "Create VM's here"},
+                        {id:"edit", name: "Edit"},
+                        {id:"stream", name: "Stream"},
+                        {id:"delete", name: "Delete"}
                     ];
                     break;
                 case "hypervisors":
@@ -363,8 +390,8 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                              {password: $scope.pass1},
                              function() {
                                  status.success("Password for user " +
-                                       $scope.user.name +
-                                       " changed.");
+                                                $scope.user.name +
+                                                " changed.");
                              });
 
         } else {

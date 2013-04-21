@@ -2,3 +2,4 @@
 app/scripts/config.js
 pkg/build-info
 pkg/packlist
+node_modules

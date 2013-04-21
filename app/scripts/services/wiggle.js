@@ -1,7 +1,23 @@
 'use strict';
 
-fifoApp.factory('wiggle', function($resource, $http) {
+fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
 
+
+    var is_empty = function is_empty(obj) {
+
+        // null and undefined are empty
+        if (obj == null) return true;
+        // Assume if it has a length property with a non-zero value
+        // that that property is correct.
+        if (obj.length && obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+
+        for (var key in obj) {
+            if (hasOwnProperty.call(obj, key))    return false;
+        }
+
+        return true;
+    }
 
     var endpoint = Config.wiggle
 
@@ -52,8 +68,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
                            ),
         datasets: $resource(endpoint + 'datasets/:id',
                             {id: '@id'},
-                           {import: {method: 'POST'},
-                            put: {method: 'PUT'}}),
+                            {import: {method: 'POST'},
+                             put: {method: 'PUT'}}),
         packages: $resource(endpoint + 'packages/:id',
                             {id: '@id'},
                             {create: {method: 'POST'},
@@ -84,7 +100,8 @@ fifoApp.factory('wiggle', function($resource, $http) {
             services[resource].prototype.mdata_set = function(obj, cb) {
                 var id = this.uuid,
                 that = this;
-
+                if (is_empty(obj))
+                    return;
                 return services[resource].put({id: id, controller: 'metadata', controller_id: 'jingles'}, obj, function() {
                     Object.keys(obj).forEach(function(k) {
                         if (!that.metadata) that.metadata = {}
@@ -103,12 +120,16 @@ fifoApp.factory('wiggle', function($resource, $http) {
     });
 
     /* Gets with cache! */
+    var cacheObj = $cacheFactory('fifoCache');
     services.datasets.get = function(obj, success, error) {
-        return $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
+        return $http.get(endpoint + 'datasets/' + obj.id, {cache: cacheObj})
             .success(success)
             .error(function(data) {
                 error && error(data)
             })
+    }
+    services.datasets.clearCache = function(id) {
+        cacheObj.remove(endpoint + 'datasets/' + id)
     }
     services.packages.get = function(obj, success, error) {
         return $http.get(endpoint + 'packages/' + obj.id, {cache: true})
@@ -120,7 +141,7 @@ fifoApp.factory('wiggle', function($resource, $http) {
 
     /* VM GET: include the asociated data */
     services.vms._get = services.vms.get;
-    services.vms.get = function(obj, returnCb) {
+    services.vms.get = function(obj, returnCb, errorCb) {
 
         return services.vms._get(obj, function(res) {
 
@@ -137,34 +158,37 @@ fifoApp.factory('wiggle', function($resource, $http) {
                     return returnCb(res)
             }
 
-            if (!res.config.dataset || res.config.dataset === 1)
+            if (!res.config.dataset || res.config.dataset === 1) {
                 checkIfReady();
-            else
-                services.datasets.get({id: res.config.dataset},
-                                      function (ds) {
-                                          res.config._dataset = ds;
-                                          checkIfReady()
-                                      },
-                                      function err(ds) {
-                                          checkIfReady()
-                                      }
-                                     )
-
-            if (!res.package)
+            } else {
+                services.datasets.get(
+                    {id: res.config.dataset},
+                    function (ds) {
+                        res.config._dataset = ds;
+                        checkIfReady();
+                    },
+                    function err(ds) {
+                        checkIfReady();
+                    }
+                )
+            };
+            if (!res.package) {
                 checkIfReady();
-            else
-                services.packages.get({id: res.package},
-                                      function (p) {
-                                          res._package = p
-                                          checkIfReady()
-                                      },
-                                      function err() {
-                                          checkIfReady()
-                                      }
-                                     )
-        })
+            } else {
+                services.packages.get(
+                    {id: res.package},
+                    function (p) {
+                        res._package = p;
+                        checkIfReady();
+                    },
+                    function err() {
+                        checkIfReady();
+                    }
+                )
+            }
+        }, errorCb);
     }
 
-    return services
+    return services;
 
 });

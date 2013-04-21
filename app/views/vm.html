@@ -3,7 +3,10 @@
   <div class="row-fluid">
     <span class="span8">
       <h3 style='display: inline-block; margin-top: 10px;'>{{vm._name}}</h3>
-      <span style='margin: 0px 5px 5px 5px; vertical-align: middle;' class='label label-{{vm._state_label}}'>{{vm.state}}</span>
+      <span style='margin: 0px 5px 5px 5px; vertical-align: middle;'
+            title='{{vm.state_description}}'
+            jq-run='tooltip'
+            class='label label-{{vm._state_label}}'>{{vm.state}}</span>
       <span class='light'>{{vm.mdata('description')}}</span>
     </span>
     <div class='span4'>
@@ -47,15 +50,12 @@
           </button>
           <button ng-click="action('stop', vm)"
                   ng-disabled="vm.state!='running' || vm.mdata('locked')"
-                  title='Stop'
+                  title="{{force && 'Force ' || ''}} Stop"
                   jq-run='tooltip'
-                  class="btn">
-            <i class='icon-stop'></i>
+                  class="btn {{force && 'btn-warning' || ''}}">
+            <i class='icon-stop'>{{force && ' Force' || ''}}</i>
           </button>
         </div>
-        <label class="checkbox pull-right">
-          <input type="checkbox" ng-model="force"> force!
-        </label>
       </div>
     </div>
   </div>
@@ -152,7 +152,7 @@
           </div>
 
 
-          <div class="box box-small pull-left" ng-show="vm.config._dataset">
+          <div class="box box-small pull-left" ng-show="vm.config.dataset">
             <div class="header">
               Dataset
               <span ng-show='vm.config._dataset' class="badge badge-info">
@@ -164,7 +164,9 @@
 
             <dl class="dl-horizontal">
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
-              <dt>Info</dt><dd>{{vm.config._dataset.description}}</dd>
+              <dt>Info</dt>
+                <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
+                <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
             </dl>
           </div>
 
@@ -268,7 +270,7 @@
             Change to
             <select class='input-small' style='margin: 0px; height: 20px;'
                     ng-model="new_pkg"
-                    ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: 'name'">
+                    ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
             </select>
           </div>
           <package pkg='packages[new_pkg]'></package>
