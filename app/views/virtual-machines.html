@@ -1,6 +1,5 @@
           <div class="tab-pane" id="virtual-machines">
             <div class="pane-nav">
-                <input type="text" class="search-query span5" placeholder='Filter' ng-model='searchQuery'>
 
                 <column-selector class='hidden' id='popupContent'>
                 </column-selector>
@@ -10,6 +9,8 @@
                     class='btn btn-info'>
                     <i class='icon-white icon-list'></i>
                 </button>
+                <input type="text" class="search-query span5" placeholder='Filter' ng-model='searchQuery'>
+
                 <a title='Create a new Machine' jq-run='tooltip' href="#/virtual-machines/new" class="btn btn-inverse">
                     <i class="icon-white icon-plus"></i> New
                 </a>
