@@ -6,6 +6,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
     $scope.setTitle('Machine details')
     $scope.force = false;
     var uuid = $routeParams.uuid;
+    var inc_version = function inc_version(v) {
+        var a = v.split('.').map(function(e) {return parseInt(e)});
+        a[a.length - 1] = a[a.length - 1] + 1;
+        return a.join(".");
+    }
 
     /* Get the all the packages */
     $scope.packages = {};
@@ -224,7 +229,12 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 $scope.snapshots.push(val)
             })
             $scope.snapshots = $scope.vm.snapshots
-            cb && cb($scope.vm)
+            cb && cb($scope.vm);
+            console.log($scope.vm)
+            $scope.img_name = $scope.vm.config.alias;
+            $scope.img_version = inc_version($scope.vm.config._dataset.version);
+            $scope.img_os = $scope.vm.config._dataset.os;
+            $scope.img_desc = $scope.vm.config._dataset.description;
         })
     }
 
@@ -437,5 +447,24 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 status.info('Importing ' + r.name + ' ' + r.version);
                 updateVm();
             });
+    }
+    $scope.mk_image = function mk_image(vm, snap) {
+        var config = {
+            name: $scope.img_name,
+            version: $scope.img_version,
+            os: $scope.img_os,
+            description: $scope.img_desc
+        };
+        wiggle.datasets.import(
+            {},
+            {config: config,
+             snapshot: snap,
+             vm: vm},
+            function(r) {
+                howl.join(uuid);
+                status.info('Creating ' + r.name + ' ' + r.version);
+                updateVm();
+            });
+        console.log(vm + "@" + snap, config);
     }
 });
