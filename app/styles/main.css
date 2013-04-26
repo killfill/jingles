@@ -109,7 +109,7 @@ table thead tr th.sorted-up {
 
 /* form label width was too big, at least for the network creation.. */
 .form-horizontal .control-label {
-    width: 85px;
+    width: 75px;
 }
 .form-horizontal .control-group {
     margin-bottom: 5px;
