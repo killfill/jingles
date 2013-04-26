@@ -6,23 +6,23 @@
   </div>
   <button class='btn btn-small btn-success pull-right' ng-show='name && tag && network && netmask && gateway && first && last' ng-click='create_network()'>Create</button>
 
-  <div class="span5 thumbnail">
+  <div class="span6 thumbnail">
     <div id="create-networks-form" class="form-horizontal" novalidate="novalidate">
       <div class="control-group">
         <label class="control-label" for="network-tag" title="Valid nic tag as listed by `sysinfo`" jq-run='tooltip'>Tag &nbsp;</label>
-        <select ng-model="tag" class="valid input-medium" ng-options="t for t in network_tags"></select>
+        <select ng-model="tag" ng-options="t for t in network_tags"></select>
       </div>
       <div class="control-group">
         <label class="control-label" for="network-network">Network &nbsp;</label>
-        <input id="network-network" ng-model='network' name="network-network" type="text" placeholder="eg. 10.1.1.0" class="valid input-medium"><label for="network-network" generated="true" class="error" style="display: block;"></label>
+        <input id="network-network" ng-model='network' name="network-network" type="text" placeholder="eg. 10.1.1.0" class="valid"><label for="network-network" generated="true" class="error" style="display: block;"></label>
       </div>
       <div class="control-group">
         <label class="control-label" for="network-netmask">Netmask &nbsp;</label>
-        <input id="network-netmask" ng-model='netmask' name="network-netmask" type="text" placeholder="eg. 255.255.255.0" class="valid input-medium"><label for="network-netmask" generated="true" class="error" style="display: block;"></label>
+        <input id="network-netmask" ng-model='netmask' name="network-netmask" type="text" placeholder="eg. 255.255.255.0" class="valid"><label for="network-netmask" generated="true" class="error" style="display: block;"></label>
       </div>
       <div class="control-group">
         <label class="control-label" for="network-gateway">Gateway &nbsp;</label>
-        <input id="network-gateway" ng-model='gateway' name="network-gateway" type="text" placeholder="eg. 10.1.1.1" class="valid input-medium"><label for="network-gateway" generated="true" class="error" style="display: block;"></label>
+        <input id="network-gateway" ng-model='gateway' name="network-gateway" type="text" placeholder="eg. 10.1.1.1" class="valid"><label for="network-gateway" generated="true" class="error" style="display: block;"></label>
       </div>
     </div>
   </div>
@@ -30,12 +30,12 @@
     <div class="form-horizontal">
       <div class="control-group">
         <label class="control-label" for="network-first">First IP &nbsp;</label>
-        <input id="network-first" ng-model='first' name="network-first" type="text" placeholder="10.1.1.100" class="valid input-medium">
+        <input id="network-first" ng-model='first' name="network-first" type="text" placeholder="10.1.1.100" class="valid input-small">
         <label for="network-first" generated="true" class="error" style="display: block;"></label>
       </div>
       <div class="control-group">
         <label class="control-label" for="network-last">Last IP &nbsp;</label>
-        <input id="network-last" ng-model='last' name="network-last" type="text" placeholder="10.1.1.200" class="valid input-medium">
+        <input id="network-last" ng-model='last' name="network-last" type="text" placeholder="10.1.1.200" class="valid input-small">
         <label for="network-last" generated="true" class="error" style="display: block;"></label>
       </div>
       <div class="control-group">

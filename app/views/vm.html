@@ -80,7 +80,6 @@
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
-      <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
       <li><a href="#resize" data-toggle="tab">Resize</a></li>
       <li><a href="#history" data-toggle="tab">History</a></li>
       <li><a href="#notes" data-toggle="tab">Notes</a></li>
@@ -245,7 +244,6 @@
         <table class="table table-condensed table-hover pull-left">
           <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
             <td><strong>{{snap.comment}}</strong></td>
-            <td class='nowrap light'>{{snap.size | bytes}}</td>
             <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
             <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
             <td class='nowrap'>
@@ -259,43 +257,8 @@
           </tr>
         </table>
       </div>
-      <div class="tab-pane" id="imaging">
-        <p class='pull-right'>
-          <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;'>Before creating a image from a VM you should follow the imaging procedure as described <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here under the section Creating a Custom Image</a>.</span>
-        </p>
-        <p>
-          <dl class='dl-horizontal'>
-            <dt>Name</dt>
-            <dd>
-              <input type='text' maxlength='25' ng-model="img_name"/>
-            </dd>
-            <dt>Version</dt>
-            <dd>
-              <input type='text' maxlength='25' ng-model="img_version"/>
-            </dd>
-            <dt>OS</dt>
-            <dd>
-              <input type='text' ng-model="img_os"/>
-            </dd>
-            <dt>Description</dt>
-            <dd>
-              <input type='text' ng-model="img_desc"/>
-            </dd>
-          </dl>
-        </p>
-        <table class="table table-condensed table-hover pull-left">
-          <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
-            <td><strong>{{snap.comment}}</strong></td>
-            <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
-            <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
-            <td class='nowrap'>
-              <i ng-click="mk_image(vm.uuid, snap.uuid)" jq-run="tooltip" title="create image" class="icon-hdd clickable"></i>
-            </td>
-          </tr>
-        </table>
-      </div>
-
       <div class="tab-pane" id="resize">
+
         <div class="box span4">
           <div class="header">
             Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
