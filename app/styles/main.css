@@ -118,6 +118,21 @@ table thead tr th.sorted-up {
     margin-top: 10px;
 }
 
+.form-horizontal1 {
+    margin-top: 2px;
+    
+}
+
+
+.form-horizontal1 .control-plabel {
+    
+}
+
+.form-horizontal1 .control-pass {
+    }
+
+
+
 /* Small table */
 .table.small {
     margin-bottom: 0px;
