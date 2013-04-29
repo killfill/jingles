@@ -683,3 +683,7 @@ ul.nav > h3 {
     margin-left: auto;
     margin-right: auto;
 }
+
+.strong {
+    font-weight: bold;
+}

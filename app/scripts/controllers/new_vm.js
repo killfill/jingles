@@ -97,6 +97,9 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         $scope.packages = []
         $scope.networks = []
 
+        /* Get the latest version of a dataset */
+        $scope.latestDatasets = {}
+
         wiggle.datasets.list(function(ids) {
 
             if (ids.length<1) {
@@ -106,8 +109,12 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
 
             ids.forEach(function(id) {
                 wiggle.datasets.get({id: id}, function(res) {
-                    if (res.imported == 1)
-                        $scope.datasets.push(res)
+                    if (res.imported != 1) return;
+
+                    if (!$scope.latestDatasets[res.name] || $scope.latestDatasets[res.name] < res.version)
+                        $scope.latestDatasets[res.name] = res.version
+
+                    $scope.datasets.push(res)
                 })
             })
         })
