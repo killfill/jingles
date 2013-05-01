@@ -687,3 +687,19 @@ ul.nav > h3 {
 .strong {
     font-weight: bold;
 }
+
+
+/* Graphs */
+g.vm circle {
+    fill: #999;
+    stroke: black;
+}
+g text {
+    stroke-width: 0.5px;
+    stroke: black;
+    fill: gray;
+}
+g.vm text.ram {
+    font-size: 0.8em;
+    stroke: #bbb;
+}
