@@ -58,7 +58,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             .attr('class', 'ram')
             .attr('x', logoSize/2)
             .attr('y', 5)
-            .text(function(d) { return d.config.ram/1024 + 'G' })
+            .text(function(d) { return parseInt(d.config.ram/1024,10) + 'G' })
 
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
