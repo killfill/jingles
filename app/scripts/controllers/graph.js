@@ -182,16 +182,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
 
     $scope.vms = [];
     $scope.hypers = [];
-    window.vms = $scope.vms;
-    window.hypers = $scope.hypers;
-    var Xlinks = 0;
-    var Xnodes = 0;
 
     $scope.$watch('hypers.length', buildHypers)
     $scope.$watch('vms.length', function() {
-        //if (vms.length<12) return;
-        /* Trigger if hypers are present, for the link building */
-        $scope.hypers.length && setupForceLayout()
+        setupForceLayout()
         buildVms()
     });
 
@@ -201,23 +195,26 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             ids.forEach(function(id) {
                 wiggle.hypervisors.get({id: id}, function(res) {
                     $scope.hypers.push(res)
+
+                    //Load vms after hypers, so we can draw links and calculate force layout
+                    if (ids.length == $scope.hypers.length) loadVms()
                 })
             })
         })
 
-        wiggle.vms.list(function(ids) {
-            ids.forEach(function(id) {
-                wiggle.vms.get({id: id}, function(res) {
-                    $scope.vms.push(res)
+        var loadVms = function() {
+            wiggle.vms.list(function(ids) {
+                ids.forEach(function(id) {
+                    wiggle.vms.get({id: id}, function(res) {
+                        $scope.vms.push(res)
+                    })
                 })
-            })
-        })
-
+            })    
+        }
         
     }
 
     $scope.$on('user_login', init)
     if (user.logged()) init()
-    
 
 });
