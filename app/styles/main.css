@@ -642,7 +642,7 @@ form {
 .center {
     text-align: center;
 }
-.right {
+.align-right {
     text-align: right;
 }
 
@@ -686,4 +686,32 @@ ul.nav > h3 {
 
 .strong {
     font-weight: bold;
+}
+
+
+/* Graphs */
+g.vm circle {
+    fill: #999;
+    stroke: black;
+}
+g text {
+    stroke-width: 0.1px;
+    stroke: black;
+    fill: #555;
+}
+
+g.vm text.ram {
+    font-size: 0.65em;
+    stroke: #bbb;
+}
+
+g.hyper text {
+    fill: black;
+    stroke-width: 0.3px;
+}
+
+g line.link {
+  fill: none;
+  stroke: rgba(114, 144, 160, 0.4);
+  stroke-dasharray: 4;
 }

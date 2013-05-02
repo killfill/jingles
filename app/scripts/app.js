@@ -107,6 +107,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
     })
+    .when('/graph', {
+        templateUrl: 'views/graph.html',
+        controller: 'GraphCtrl'
+    })
 
     .otherwise({
         redirectTo: '/status'
