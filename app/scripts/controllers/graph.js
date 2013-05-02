@@ -99,12 +99,13 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
 
 
         /* This is an experiment, should be handled more elegantly! */
+         
+        var min = d3.min($scope.hypers, function(d) {return d.resources['total-memory']})
+        var max = d3.max($scope.hypers, function(d) {return d.resources['total-memory']})
+        if (min == max) min = 8000
         var hyperScale = d3.scale.linear()
-            .domain([
-                d3.min($scope.hypers, function(d) {return 10}), 
-                d3.max($scope.hypers, function(d) {return d.resources['total-memory']})
-            ])
-            .range([10, 60])
+            .domain([min, max])
+            .range([25, 60])
         newHypersNode.append('image')
             .attr('xlink:href', 'images/server.png')
             .attr({
