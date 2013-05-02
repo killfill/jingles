@@ -232,7 +232,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         
     }
 
-    var canvasOpts = {w: 800, h: 400},
+    var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
         canvas = window.viz = setup('#container', canvasOpts),
         forceLayout = d3.layout.force()
             //.charge(-220)
