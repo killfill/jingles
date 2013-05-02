@@ -73,6 +73,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
     var buildHypers = function() {
         $scope.hypersNodes = ($scope.hypersNodes || canvas.selectAll('g.hyper'))
             .data($scope.hypers)
+
         var newHypersNode = $scope.hypersNodes.enter()
             .append('g')
                 .attr('class', 'hyper')
@@ -113,6 +114,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
     var buildLinks = function(linksArray) {
         $scope.links = ($scope.links || canvas.selectAll('line.link'))
             .data(linksArray);
+
         $scope.links
                 .enter()
                     .insert('line', '.hyper')
@@ -155,70 +157,13 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
                 console.log('WARN: no hidx for ' + vm.hypervisor)
         })
 
-        console.log('ASI QUEDARON:', nodes, links)
         forceLayout.nodes(nodes).links(links).start()
 
         buildLinks(links)
     }
 
-    var canvasOpts = {w: 800, h: 400},
-        canvas = window.viz = setup('#container', canvasOpts),
-
-        forceLayout = d3.layout.force()
-            //.charge(-220)
-            .charge(function(d) {
-                return -400
-
-                //TODO!
-                //Charge of the node ~ to the ram.
-                var charge;
-                if (d.name)
-                    //hyper
-                    charge = -d.resources['total-memory']/100
-                else
-                    charge = -d.config.ram/10
-
-                return charge
-            })
-            .linkDistance(100)
-            .size([canvasOpts.w, canvasOpts.h])
-            .on('tick', function() {
-
-                $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
-                $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
-
-                $scope.links.attr("x1", function(d) { return d.source.x; })
-                    .attr("y1", function(d) { return d.source.y; })
-                    .attr("x2", function(d) { return d.target.x; })
-                    .attr("y2", function(d) { return d.target.y; });
-
-            })
-
-    $scope.vms = [];
-    $scope.hypers = [];
-
-    /*$scope.$watch('hypers.length', buildHypers)
-    $scope.$watch('vms.length', function() {
-        setupForceLayout()
-        buildVms()
-    });
-*/
-    var initSimu = function() {
-
-        $scope.hypers.push({name: 'uno', resources: {}})
-        $scope.hypers.push({name: 'dos', resources: {}})
-        $scope.hypers.push({name: 'tres', resources: {}})
-
-        $scope.vms.push({hypervisor: 'uno', config: {alias: 'vm1', ram: '1024'}})
-        $scope.vms.push({hypervisor: 'uno', config: {alias: 'vm2', ram: '1024'}})
-        $scope.vms.push({hypervisor: 'dos', config: {alias: 'vm3', ram: '1024'}})
-        $scope.vms.push({hypervisor: 'tres', config: {alias: 'vm3', ram: '1024'}})
-
-        buildHypers()
-        setupForceLayout();
-        buildVms()
-    }
-    var init= function() {
+    /* Go and get the data */
+    var init = function() {
 
         wiggle.hypervisors.list(function(ids) {
             ids.forEach(function(id) {
@@ -248,7 +193,48 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         
     }
 
+    var canvasOpts = {w: 800, h: 400},
+        canvas = window.viz = setup('#container', canvasOpts),
+        forceLayout = d3.layout.force()
+            //.charge(-220)
+            .charge(function(d) {
+                //Charge of the node ~ to the ram.
+                var charge;
+                if (d.name)
+                    //hyper
+                    charge = -d.resources['total-memory']/100
+                else
+                    charge = -d.config.ram/10
+
+                return charge
+            })
+            .linkDistance(80)
+            .size([canvasOpts.w, canvasOpts.h])
+            .on('tick', function() {
+
+                $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
+                $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
+
+                $scope.links.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+            })
+
+    $scope.vms = [];
+    $scope.hypers = [];
+
     $scope.$on('user_login', init)
     if (user.logged()) init()
+
+    /* Could make the load incremental with something like this, if there are too many vms
+    $scope.$watch('hypers.length', buildHypers)
+    $scope.$watch('vms.length', function() {
+        setupForceLayout()
+        buildVms()
+    });
+    */
+
 
 });
