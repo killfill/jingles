@@ -94,14 +94,26 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
                 })
+
         var hyperSize = 60;
+
+
+        /* This is an experiment, should be handled more elegantly! */
+        var hyperScale = d3.scale.linear()
+            .domain([
+                d3.min($scope.hypers, function(d) {return 10}), 
+                d3.max($scope.hypers, function(d) {return d.resources['total-memory']})
+            ])
+            .range([10, 60])
         newHypersNode.append('image')
             .attr('xlink:href', 'images/server.png')
             .attr({
-                width: hyperSize,
-                height: hyperSize,
-                x: -hyperSize/2,
-                y: -hyperSize/2
+                width: function(d) {return hyperScale(d.resources['total-memory'])},
+                height: function(d) {return hyperScale(d.resources['total-memory'])},
+                transform: function(d, i) { 
+                    var middle = hyperScale(d.resources['total-memory']) / 2
+                    return 'translate('+-middle+','+-middle+')'
+                }
             })
 
         //Testing the concept :P
