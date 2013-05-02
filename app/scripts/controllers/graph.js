@@ -31,21 +31,34 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             .append('g')
                 .attr('class', 'vm')
                 .call(forceLayout.drag)
+                .on('mouseover', function(h) {
 
+                    var pop = document.querySelector('#popover')
+                    pop.style.display='block'
+                    pop.style.top = h.y  + 25+ 'px'
+                    pop.style.left = h.x + 210 + 'px'
+
+                    pop.querySelector('.popover-title').innerHTML = h.config.alias + ':'
+                    pop.querySelector('.popover-content').innerHTML = 'Memory: ' + h.config.ram/1024 + 'GB'
+
+                })
+                .on('mouseout', function() {
+                    document.querySelector('#popover').style.display = 'none'
+                })
         var logoSize = 30;
         //newVmsNodes.append('circle')
         //    .attr('r', function(d) {return d.config.ram / 150})
-        newVmsNodes.append('text')
+    /*    newVmsNodes.append('text')
             .attr('class', 'alias')
             .attr('x', logoSize/2)
             .attr('y', -4)
             .text(function(d) { return d.config.alias })
-
+*/
         newVmsNodes.append('text')
             .attr('class', 'ram')
             .attr('x', logoSize/2)
-            .attr('y', 10)
-            .text(function(d) { return d.config.ram/1024 + 'GB' })
+            .attr('y', 5)
+            .text(function(d) { return d.config.ram/1024 + 'G' })
 
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
@@ -58,13 +71,28 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
 
     /* Build the Hypervisor nodes */
     var buildHypers = function() {
-
         $scope.hypersNodes = ($scope.hypersNodes || canvas.selectAll('g.hyper'))
             .data($scope.hypers)
         var newHypersNode = $scope.hypersNodes.enter()
             .append('g')
                 .attr('class', 'hyper')
                 .call(forceLayout.drag)
+                .on('mouseover', function(h) {
+
+                    var pop = document.querySelector('#popover')
+                    pop.style.display='block'
+                    pop.style.top = h.y  + 25+ 'px'
+                    pop.style.left = h.x + 210 + 'px'
+
+                    pop.querySelector('.popover-title').innerHTML = h.name + ':'
+                    pop.querySelector('.popover-content').innerHTML = 'Free memory: ' + 
+                        parseInt(h.resources['free-memory']/1024) + ' of ' + 
+                        parseInt(h.resources['total-memory']/1024) + 'GB'
+
+                })
+                .on('mouseout', function() {
+                    document.querySelector('#popover').style.display = 'none'
+                })
         var hyperSize = 60;
         newHypersNode.append('image')
             .attr('xlink:href', 'images/server.png')
@@ -85,15 +113,17 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
     var buildLinks = function(linksArray) {
         $scope.links = ($scope.links || canvas.selectAll('line.link'))
             .data(linksArray);
-
         $scope.links
                 .enter()
-                    .append('line')
+                    .insert('line', '.hyper')
                         .attr('class', 'link')
                         .attr('x1', function(d) {return d.source.x})
                         .attr('y1', function(d) {return d.source.y})
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
+                        .attr('stroke-width', function(d) {
+                            return d.target.config.ram/1024 * 2
+                        })
     }
 
     /* Setup the force layout and build */
@@ -123,18 +153,30 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         canvas = window.viz = setup('#container', canvasOpts),
 
         forceLayout = d3.layout.force()
-            .charge(-220)
+            //.charge(-220)
+            .charge(function(d) {
+
+                //Charge of the node ~ to the ram.
+                var charge;
+                if (d.name)
+                    //hyper
+                    charge = -d.resources['total-memory']/100
+                else
+                    charge = -d.config.ram/10
+
+                return charge
+            })
             .linkDistance(100)
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
+
+                $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
+                $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
 
                 $scope.links.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-
-                $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
-                $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
 
             })
 
@@ -145,12 +187,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
     var Xlinks = 0;
     var Xnodes = 0;
 
-    $scope.$watch('hypers.length', buildHypers);
+    $scope.$watch('hypers.length', buildHypers)
     $scope.$watch('vms.length', function() {
         //if (vms.length<12) return;
-        buildVms()
         /* Trigger if hypers are present, for the link building */
         $scope.hypers.length && setupForceLayout()
+        buildVms()
     });
 
     var init = function() {

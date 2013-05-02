@@ -642,7 +642,7 @@ form {
 .center {
     text-align: center;
 }
-.right {
+.align-right {
     text-align: right;
 }
 
@@ -712,6 +712,6 @@ g.hyper text {
 
 g line.link {
   fill: none;
-  stroke: rgba(114, 144, 160, 0.16);
-  stroke-width: 1.5px;
+  stroke: rgba(114, 144, 160, 0.4);
+  stroke-dasharray: 4;
 }
