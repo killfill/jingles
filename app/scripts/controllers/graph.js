@@ -103,6 +103,32 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
                 x: -hyperSize/2,
                 y: -hyperSize/2
             })
+
+        //Testing the concept :P
+        var progressSize = hyperSize * 3/4
+        newHypersNode.append('rect')
+            .attr({
+                fill: 'rgb(255, 178, 39)',
+                height: 5,
+                x: -progressSize/2,
+                y: 11
+            })
+            .attr('width', function(d) {
+                var percent = d.resources['provisioned-memory'] * 100 / d.resources['total-memory'];
+                return percent/100 * progressSize
+            })
+        newHypersNode.append('rect')
+            .attr({
+                fill: 'none',
+                'stroke-width':1,
+                stroke: 'rgb(114, 74, 0)',
+                width: progressSize,
+                height: 5,
+                x: -progressSize/2,
+                y: 11
+            })
+
+
         newHypersNode.append('text')
             .attr('y', hyperSize/2)
             .attr('text-anchor', 'middle')
