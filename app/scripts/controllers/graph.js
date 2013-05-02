@@ -58,7 +58,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             .attr('class', 'ram')
             .attr('x', logoSize/2)
             .attr('y', 5)
-            .text(function(d) { return d.config.ram/1024 + 'G' })
+            .text(function(d) { return parseInt(d.config.ram/1024,10) + 'G' })
 
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
@@ -232,7 +232,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         
     }
 
-    var canvasOpts = {w: 800, h: 400},
+    var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
         canvas = window.viz = setup('#container', canvasOpts),
         forceLayout = d3.layout.force()
             //.charge(-220)
