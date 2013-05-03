@@ -700,7 +700,7 @@ g text {
     fill: #555;
 }
 
-g.vm text.ram {
+g text.ram {
     font-size: 0.65em;
     stroke: #bbb;
 }

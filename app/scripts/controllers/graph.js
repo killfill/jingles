@@ -59,8 +59,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('x', logoSize/2)
             .attr('y', 5)
             .text(function(d) { 
-                var bytes = $filter('Mbytes')
-                return bytes(d.config.ram)
+                return MbytesFilter(d.config.ram)
             })
 
         newVmsNodes.append('image')
@@ -149,12 +148,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('y', hyperSize/2)
             .attr('text-anchor', 'middle')
             .text(function(d) { return d.name })
-/*
+
         newHypersNode.append('text')
+            .attr('class', 'ram')
             .attr('y', -5)
             .attr('text-anchor', 'middle')
-            .text(function(d) { return 'lala' })
-*/
+            .text(function(d) { return MbytesFilter(d.resources['total-memory']) })
     }
 
     /* Build the links between hypers and vm's */
@@ -274,6 +273,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     $scope.$on('user_login', init)
     if (user.logged()) init()
+
+    var MbytesFilter = $filter('Mbytes')
 
     /* Could make the load incremental with something like this, if there are too many vms
     $scope.$watch('hypers.length', buildHypers)
