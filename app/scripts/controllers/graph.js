@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
+fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     $scope.setTitle('Graph');
 
     /* Setup canvas */
@@ -58,7 +58,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             .attr('class', 'ram')
             .attr('x', logoSize/2)
             .attr('y', 5)
-            .text(function(d) { return parseInt(d.config.ram/1024,10) + 'G' })
+            .text(function(d) { 
+                var bytes = $filter('Mbytes')
+                return bytes(d.config.ram)
+            })
 
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
@@ -146,7 +149,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
             .attr('y', hyperSize/2)
             .attr('text-anchor', 'middle')
             .text(function(d) { return d.name })
-
+/*
+        newHypersNode.append('text')
+            .attr('y', -5)
+            .attr('text-anchor', 'middle')
+            .text(function(d) { return 'lala' })
+*/
     }
 
     /* Build the links between hypers and vm's */
@@ -247,7 +255,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
 
                 return charge
             })
-            .linkDistance(80)
+            .linkDistance(100)
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
 
