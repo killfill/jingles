@@ -255,7 +255,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
                 return charge
             })
-            .linkDistance(80)
+            .linkDistance(100)
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
 
