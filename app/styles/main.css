@@ -691,8 +691,9 @@ ul.nav > h3 {
 
 /* Graphs */
 g.vm circle {
-    fill: #999;
-    stroke: black;
+    fill: none;
+    --stroke: rgb(255, 163, 0);
+    stroke-width: 2;
 }
 g text {
     stroke-width: 0.1px;

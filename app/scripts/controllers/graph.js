@@ -25,7 +25,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     var buildVms = function() {
 
         $scope.vmsNodes = ($scope.vmsNodes || canvas.selectAll('g.vm'))
-            .data($scope.vms)
+            .data($scope.vms, function key (d) { return d.uuid })
 
         var newVmsNodes = $scope.vmsNodes.enter()
             .append('g')
@@ -58,9 +58,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('class', 'ram')
             .attr('x', logoSize/2)
             .attr('y', 5)
-            .text(function(d) { 
-                return MbytesFilter(d.config.ram)
-            })
+            .text(function(d) { return byteFormater(d.config.ram) })
 
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
@@ -74,7 +72,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     /* Build the Hypervisor nodes */
     var buildHypers = function() {
         $scope.hypersNodes = ($scope.hypersNodes || canvas.selectAll('g.hyper'))
-            .data($scope.hypers)
+            .data($scope.hypers, function key(d) { return d.name })
 
         var newHypersNode = $scope.hypersNodes.enter()
             .append('g')
@@ -98,7 +96,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 })
 
         var hyperSize = 60;
-
 
         /* This is an experiment, should be handled more elegantly! */
          
@@ -153,7 +150,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('class', 'ram')
             .attr('y', -5)
             .attr('text-anchor', 'middle')
-            .text(function(d) { return MbytesFilter(d.resources['total-memory']) })
+            .text(function(d) { return byteFormater(d.resources['total-memory']) })
     }
 
     /* Build the links between hypers and vm's */
@@ -170,7 +167,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
                         .attr('stroke-width', function(d) {
-                            
                             return d.target.config? d.target.config.ram/1024 * 2: 0;
                         })
     }
@@ -209,7 +205,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     }
 
     /* Go and get the data */
-    var init = function() {
+    var getData = function() {
 
         wiggle.hypervisors.list(function(ids) {
             ids.forEach(function(id) {
@@ -239,21 +235,24 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         
     }
 
+    /* Charge each particle in the force layout */
+    var layoutParticlesCharge = function(d) {
+        //Charge is ~ to the ram.
+        var charge;
+        if (d.name)
+            //hyper
+            charge = -d.resources['total-memory']/100
+        else
+            charge = -d.config.ram/10
+
+        return charge
+    }
+
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
-        canvas = window.viz = setup('#container', canvasOpts),
+        canvas = setup('#container', canvasOpts),
         forceLayout = d3.layout.force()
             //.charge(-220)
-            .charge(function(d) {
-                //Charge of the node ~ to the ram.
-                var charge;
-                if (d.name)
-                    //hyper
-                    charge = -d.resources['total-memory']/100
-                else
-                    charge = -d.config.ram/10
-
-                return charge
-            })
+            .charge(layoutParticlesCharge)
             .linkDistance(100)
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
@@ -268,13 +267,53 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
             })
 
-    $scope.vms = [];
-    $scope.hypers = [];
+    $scope.vms = []
+    $scope.hypers = []
+    $scope.$on('user_login', getData)
+    if (user.logged()) getData()
 
-    $scope.$on('user_login', init)
-    if (user.logged()) init()
+    var byteFormater = $filter('Mbytes')
 
-    var MbytesFilter = $filter('Mbytes')
+    /* VM change its size */
+    $scope.$on('update', function(_, d) {
+
+        var changedVm = d.message.data
+        changedVm.uuid = d.channel
+
+        /* D3 replace the orig object when changing it in second .data call: 
+            https://github.com/mbostock/d3/blob/master/src/selection/data.js#L52
+           So, get the old one, merge the new ones there, and throw that one to d3!
+           (to not loose x, y, and other data of the node).
+         */
+
+         //iterate in all items, should not be too slo, d3 does it anyway :P
+         var vm;
+         $scope.vmsNodes.each(function(d) {
+            if (d.uuid == changedVm.uuid) {
+                $.extend(true, d, changedVm)
+                vm = d;
+            }
+         })
+
+
+        /* Select the element based on the uuid to match up the previous version */
+        var sel = $scope.vmsNodes.data([vm], function(d) { return d.uuid })
+
+
+        sel.select('text.ram').text(function(d) { return byteFormater(d.config.ram) })
+        sel.append('circle')
+            .attr('r', 10)
+            .attr('stroke', 'red')
+            .transition()
+                .duration(1000)
+                .attr('r', 30)
+                .style('stroke-opacity', 0)
+                .remove()
+
+        forceLayout.charge(layoutParticlesCharge).start()
+
+    })
+    
 
     /* Could make the load incremental with something like this, if there are too many vms
     $scope.$watch('hypers.length', buildHypers)
