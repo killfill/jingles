@@ -225,9 +225,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         $scope.vms.push(res)
                         $scope.vmsHash[id] = res
 
-                        //if (id == '29b366be-6e6e-4267-89e6-c32dab396044')
-                        howl.join(id+ '-metrics')
-
                         if (ids.length == $scope.vms.length)
                             buildvmScale()
                     })
@@ -251,6 +248,13 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         
                             buildHypers()
                             buildVms()
+
+                            $scope.vms.forEach(function(vm) {
+                                //if (vm.uuid == '29b366be-6e6e-4267-89e6-c32dab396044')
+                                howl.join(vm.uuid + '-metrics')
+                            })
+                            
+
                             setupForceLayout()
                         }
                     })
