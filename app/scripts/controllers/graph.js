@@ -48,6 +48,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
         var logoSize = 30;
 
+        newVmsNodes.append('circle')
+            .attr('class', 'cpu')
+            .attr('r', logoSize/2)
+            .attr('fill', 'red')
+            .attr('fill-opacity', 0)
+
         newVmsNodes.append('image')
             .attr('xlink:href', function(d) { return 'images/logos/' + (d.config._dataset && d.config._dataset.os || 'unknown') + '.png' })
             .attr('width', logoSize)
@@ -217,6 +223,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 ids.forEach(function(id) {
                     wiggle.vms.get({id: id}, function(res) {
                         $scope.vms.push(res)
+                        $scope.vmsHash[id] = res
+
+                        //if (id == '29b366be-6e6e-4267-89e6-c32dab396044')
+                        howl.join(id+ '-metrics')
 
                         if (ids.length == $scope.vms.length)
                             buildvmScale()
@@ -285,6 +295,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .attr('x', function(d) {return -d._logoSize/2})
                 .attr('y', function(d) {return -d._logoSize/2})
 
+        sel.select('circle.cpu')
+            .transition()
+                .duration(1500)
+                .attr('r', function(d) {return d._logoSize/2})
+
         forceLayout.charge(layoutParticlesCharge).start()
 
     }
@@ -301,28 +316,34 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
            (to not loose x, y, and other data of the node).
          */
 
-         //iterate in all items to search, should not be too slow, d3 does it anyway :P
-         var vm;
-         $scope.vmsNodes.each(function(d) {
-            if (d.uuid == changedVm.uuid) {
-                $.extend(true, d, changedVm)
-                vm = d;
-            }
-         })
+         var vm = $scope.vmsHash[changedVm.uuid]
+         $.extend(true, vm, changedVm)
 
         /* Select the element based on the uuid to match up the previous version */
         var sel = $scope.vmsNodes.data([vm], function(d) { return d.uuid })
         sel.call(updateVms)
 
-        sel.append('circle')
+        sel.append('circle.highlight')
             .attr('r', 8)
             .attr('stroke', 'red')
+            .attr('fill', 'none')
             .transition()
                 .duration(1500)
                 .attr('r', 30)
                 .style('stroke-opacity', 0)
                 .style('stroke-width', 5)
                 .remove()
+    }
+
+    var cpuScale = d3.scale.linear().domain([20, 100]).range([0, 0.85])
+    var onCpuChanged = function(_, d) {
+        var uuid = d.channel.split('-metrics')[0]
+
+        var vm = $scope.vmsHash[uuid]
+        var sel = $scope.vmsNodes.data([vm], function(d) { return d.uuid })
+
+        sel.select('circle.cpu')
+            .attr('fill-opacity', cpuScale(d.message.data.usage))
     }
 
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
@@ -348,13 +369,21 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     $scope.vms = []
     $scope.hypers = []
-    $scope.vmScale = false
+    $scope.vmsHash = {} //Search vms based on uuid.
     $scope.$on('user_login', getData)
     if (user.logged()) getData()
 
     var byteFormater = $filter('Mbytes')
 
     $scope.$on('update', onVmUpdate)
+    $scope.$on('cpu', onCpuChanged)
+
+    /* Disconnect metrics monitor */
+    $scope.$on('$destroy', function() {
+        $scope.vms.forEach(function(vm) {
+            howl.leave(vm.uuid + '-metrics');
+        })
+    });
 
     /* Could make the load incremental with something like this, if there are too many vms
     $scope.$watch('hypers.length', buildHypers)

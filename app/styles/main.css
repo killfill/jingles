@@ -700,9 +700,6 @@ svg {
   user-select: none;
 }
 
-g.vm circle {
-    fill: none;
-}
 g text {
     stroke-width: 0.1px;
     stroke: black;
