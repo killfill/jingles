@@ -204,8 +204,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     /* Go and get the data */
     var getData = function() {
-
-
         wiggle.hypervisors.list(function(ids) {
             ids.forEach(function(id) {
                 wiggle.hypervisors.get({id: id}, function(res) {
@@ -226,40 +224,29 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         $scope.vmsHash[id] = res
 
                         if (ids.length == $scope.vms.length)
-                            buildvmScale()
+                            buildWorld()
                     })
                 })
             })    
         }
 
-        var buildvmScale = function() {
-            wiggle.packages.list(function(ids) {
-                var rams = []
-                ids.forEach(function(id) {
-                    wiggle.packages.get({id: id}, function(res) {
+        var buildWorld = function() {
 
-                        rams.push(res.ram)
+            /* Scale based on vms, not packages, there probably will be vms without packages.. */
+            var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
 
-                        if (ids.length == rams.length) {
+            //Use squeare scale, becouse logo is square ~ ram.. :P
+            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([20, 50])
 
-                            var minMax = d3.extent(rams)
-                            //Use squeare scale, becouse logo is square ~ ram.. :P
-                            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([20, 60])
-        
-                            buildHypers()
-                            buildVms()
+            buildHypers()
+            buildVms()
 
-                            $scope.vms.forEach(function(vm) {
-                                //if (vm.uuid == '29b366be-6e6e-4267-89e6-c32dab396044')
-                                howl.join(vm.uuid + '-metrics')
-                            })
-                            
-
-                            setupForceLayout()
-                        }
-                    })
-                })
+            $scope.vms.forEach(function(vm) {
+                //if (vm.uuid == '29b366be-6e6e-4267-89e6-c32dab396044')
+                howl.join(vm.uuid + '-metrics')
             })
+
+            setupForceLayout()
         }
         
     }
@@ -287,8 +274,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         })
 
         sel.select('text.ram')
-            .attr('x', function(d) {return d._logoSize/3})
-            .attr('y', function(d) {return -d._logoSize/4})
+            .attr('x', function(d) {return d._logoSize*2/5})
+            .attr('y', function(d) {return -d._logoSize/5})
             .text(function(d) { return byteFormater(d.config.ram) })
 
         sel.select('image')
