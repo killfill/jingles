@@ -30,6 +30,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         var newVmsNodes = $scope.vmsNodes.enter()
             .append('g')
                 .attr('class', 'vm')
+                .attr('opacity', function(d) { 
+                    return d.state == 'running'? 1: 0.3
+                })
                 .call(forceLayout.drag)
                 .on('mouseover', function(h) {
 
@@ -45,6 +48,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
                 })
+                
 
         var logoSize = 30;
 
@@ -339,12 +343,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .duration(dur)
                 .attr('r', function(d) { return d._logoSize/2 })
 
-
         forceLayout.charge(layoutParticlesCharge).start()
     }
 
     /* VM is updated. i.e. resize */
-    var onVmUpdate = function(_, d) {
+    var onVmUpdateEvent = function(_, d) {
 
         var changedVm = d.message.data
         changedVm.uuid = d.channel
@@ -373,6 +376,16 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .style('stroke-opacity', 0)
                 .style('stroke-width', 5)
                 .remove()
+    }
+
+    var onVmStateEvent = function(_, d) {
+        var vm = $scope.vmsHash[d.channel]
+        vm.state = d.message.data
+
+        $scope.vmsNodes
+            .data([vm], function(d) { return d.uuid })
+            .transition()
+                .attr('opacity', vm.state == 'running'? 1: 0.3)
     }
 
     var cpuScale = d3.scale.linear().domain([20, 100]).range([0, 0.85])
@@ -440,7 +453,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     var byteFormater = $filter('Mbytes')
 
-    $scope.$on('update', onVmUpdate)
+    $scope.$on('update', onVmUpdateEvent)
+    $scope.$on('state', onVmStateEvent)
     $scope.$on('cpu', onCpuEvent)
     $scope.$on('memstat', onMemoryEvent)
 
