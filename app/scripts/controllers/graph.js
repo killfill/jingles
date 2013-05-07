@@ -65,6 +65,15 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('class', 'ram')
             .text(function(d) { return byteFormater(d.config.ram) })
 
+        newVmsNodes.call(progressBarWidget({
+            fill: 'rgb(255, 178, 39)',
+            width: logoSize,
+            height: 5,
+            progress: function(d) {
+                return .4;
+            }
+        }))
+
         $scope.vmsNodes.call(updateVms)
     }
 
@@ -117,27 +126,15 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
         //Testing the concept :P
         var progressSize = hyperSize * 3/4
-        newHypersNode.append('rect')
-            .attr({
-                fill: 'rgb(255, 178, 39)',
-                height: 5,
-                x: -progressSize/2,
-                y: 11
-            })
-            .attr('width', function(d) {
-                var percent = d.resources['provisioned-memory'] * 100 / d.resources['total-memory'];
-                return percent/100 * progressSize
-            })
-        newHypersNode.append('rect')
-            .attr({
-                fill: 'none',
-                'stroke-width':1,
-                stroke: 'rgb(114, 74, 0)',
-                width: progressSize,
-                height: 5,
-                x: -progressSize/2,
-                y: 11
-            })
+
+        newHypersNode.call(progressBarWidget({
+            border: 'rgb(114, 74, 0)',
+            fill: 'rgb(255, 178, 39)',
+            width: progressSize,
+            progress: function(d) {
+                return d.resources['provisioned-memory'] / d.resources['total-memory']
+            }
+        }))
 
         newHypersNode.append('text')
             .attr('y', hyperSize/2)
@@ -149,6 +146,43 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .attr('y', -5)
             .attr('text-anchor', 'middle')
             .text(function(d) { return byteFormater(d.resources['total-memory']) })
+    }
+
+    /* Add a progress bar */
+    var progressBarWidget = function(opts) {
+        opts.width = opts.width || 20
+        opts.x = opts.x || -opts.width/2
+        opts.y = opts.y || 11
+        opts.height = opts.height || 5
+
+        return function(sel) {
+            sel.append('rect')
+                .attr({
+                    class: 'progress',
+                    fill: opts.fill || 'green',
+                    height: opts.height,
+                    width: function(d) {
+                        var val = opts.progress(d)
+                        return val * opts.width
+                    },
+                    x: opts.x,
+                    y: opts.y,
+                })
+
+            if (!opts.border) return;
+
+            sel.append('rect')
+                .attr({
+                    class: 'progress-border',
+                    fill: 'none',
+                    stroke: opts.border || 'black',
+                    'stroke-width': opts['stroke-width'] || 1,
+                    height: opts.height,
+                    width: opts.width,
+                    x: opts.x,
+                    y: opts.y,
+                })
+        }
     }
 
     /* Build the links between hypers and vm's */
@@ -235,14 +269,15 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             /* Scale based on vms, not packages, there probably will be vms without packages.. */
             var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
 
-            //Use squeare scale, becouse logo is square ~ ram.. :P
-            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([20, 50])
+            //Use square scale, becouse logo is square ~ ram.. :P
+            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 50])
 
             buildHypers()
             buildVms()
 
             $scope.vms.forEach(function(vm) {
-                //if (vm.uuid == '29b366be-6e6e-4267-89e6-c32dab396044')
+                //if (vm.uuid == '9e09239b-4001-4760-805b-8b2d3ad0a6e2') //kvm
+                //if (vm.uuid == 'e7adb1b5-8124-4413-b5c8-4eef45a158ab') //zone
                 howl.join(vm.uuid + '-metrics')
             })
 
@@ -264,9 +299,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         return charge
     }
 
-
     /* D3 call for vm updates */
     var updateVms = function(sel) {
+
+        var dur = 1500;
 
         /* Logo size based on ram */
         sel.each(function(d) {
@@ -274,25 +310,37 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         })
 
         sel.select('text.ram')
-            .attr('x', function(d) {return d._logoSize*2/5})
-            .attr('y', function(d) {return -d._logoSize/5})
-            .text(function(d) { return byteFormater(d.config.ram) })
+            .transition()
+                .duration(dur)
+                .attr('x', function(d) {return d._logoSize*2/5})
+                .attr('y', function(d) {return -d._logoSize/5})
+                .text(function(d) { return byteFormater(d.config.ram) })
 
         sel.select('image')
             .transition()
-                .duration(1500)
+                .duration(dur)
                 .attr('width',  function(d) { return d._logoSize })
-                .attr('height', function(d) { return d._logoSize})
+                .attr('height', function(d) { return d._logoSize })
                 .attr('x', function(d) {return -d._logoSize/2})
                 .attr('y', function(d) {return -d._logoSize/2})
 
         sel.select('circle.cpu')
             .transition()
-                .duration(1500)
-                .attr('r', function(d) {return d._logoSize/2})
+                .duration(dur)
+                .attr('r', function(d) {return d._logoSize / 2.5})
+
+        sel.select('rect.progress')
+            .transition()
+                .duration(dur)
+                .attr('y', function(d) { return d._logoSize * 2/5 })
+
+        sel.select('circle.highlight')
+            .transition()
+                .duration(dur)
+                .attr('r', function(d) { return d._logoSize/2 })
+
 
         forceLayout.charge(layoutParticlesCharge).start()
-
     }
 
     /* VM is updated. i.e. resize */
@@ -314,9 +362,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         var sel = $scope.vmsNodes.data([vm], function(d) { return d.uuid })
         sel.call(updateVms)
 
-        sel.append('circle.highlight')
+        sel.append('circle')
+            .attr('class', 'highlight')
             .attr('r', 8)
-            .attr('stroke', 'red')
+            .attr('stroke', 'green')
             .attr('fill', 'none')
             .transition()
                 .duration(1500)
@@ -327,14 +376,39 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     }
 
     var cpuScale = d3.scale.linear().domain([20, 100]).range([0, 0.85])
-    var onCpuChanged = function(_, d) {
-        var uuid = d.channel.split('-metrics')[0]
+    var onCpuEvent = function(_, d) {
+        var uuid = d.channel.split('-metrics')[0],
+             vm = $scope.vmsHash[uuid]
 
-        var vm = $scope.vmsHash[uuid]
-        var sel = $scope.vmsNodes.data([vm], function(d) { return d.uuid })
+        $scope.vmsNodes
+            .data([vm], function(d) { return d.uuid })
+            .select('circle.cpu')
+                .transition()
+                .attr('fill-opacity', cpuScale(d.message.data.usage))
+    }
 
-        sel.select('circle.cpu')
-            .attr('fill-opacity', cpuScale(d.message.data.usage))
+    var onMemoryEvent = function(_, d) {
+        var uuid = d.channel.split('-metrics')[0],
+            vm = $scope.vmsHash[uuid]
+
+        //{physcap: 5368709120, rss: 0, swap: 4347887616, swapcap: 5368709120}
+        var percent = d.message.data.rss / d.message.data.physcap
+
+        $scope.vmsNodes
+            .data([vm], function(d) {return d.uuid})
+            .select('rect.progress')
+                .attr('width', function(d) {return percent * d._logoSize})
+                .attr('x', function(d) {
+                    //center the bar
+                    return - percent * d._logoSize / 2
+                })
+    }
+
+    var onNetworkEvent = function(_, d) {
+        var uuid = d.channel.split('-metrics')[0],
+            vm = $scope.vmsHash[uuid]
+
+        console.log('NET', d.message.data)
     }
 
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
@@ -367,7 +441,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     var byteFormater = $filter('Mbytes')
 
     $scope.$on('update', onVmUpdate)
-    $scope.$on('cpu', onCpuChanged)
+    $scope.$on('cpu', onCpuEvent)
+    $scope.$on('memstat', onMemoryEvent)
+
+    //$scope.$on('net', onNetworkEvent)
+    //$scope.$on('vfs', onNetworkEvent)
 
     /* Disconnect metrics monitor */
     $scope.$on('$destroy', function() {
