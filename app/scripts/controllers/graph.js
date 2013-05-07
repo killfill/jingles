@@ -48,6 +48,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
                 })
+                .on('click', function(d) {
+                    window.open('#/virtual-machines/' + d.uuid, '_blank')
+                })
                 
 
         var logoSize = 30;
@@ -105,6 +108,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 })
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
+                })
+                .on('click', function(d) {
+                    window.open('#/hypervisors/' + d.name, '_blank')
                 })
 
         var hyperSize = 60;
@@ -410,11 +416,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         $scope.vmsNodes
             .data([vm], function(d) {return d.uuid})
             .select('rect.progress')
-                .attr('width', function(d) {return percent * d._logoSize})
-                .attr('x', function(d) {
-                    //center the bar
-                    return - percent * d._logoSize / 2
-                })
+                .transition()
+                    .attr('width', function(d) {return percent * d._logoSize})
+                    .attr('x', function(d) {
+                        //center the bar
+                        return - percent * d._logoSize / 2
+                    })
     }
 
     var onNetworkEvent = function(_, d) {
