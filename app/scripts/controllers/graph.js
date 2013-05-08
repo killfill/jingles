@@ -441,7 +441,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             .linkDistance(function(link) {
                 console.log(link.target._logoSize)
                 return link.target.config
-                    ? 2.6 * link.target._logoSize - 5
+                    //? 2.6 * link.target._logoSize - 5
+                    ? 100
                     : 150
             })
             .size([canvasOpts.w, canvasOpts.h])
