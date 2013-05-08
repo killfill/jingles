@@ -75,10 +75,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         newVmsNodes.call(progressBarWidget({
             fill: 'rgb(255, 178, 39)',
             width: logoSize,
-            height: 5,
-            progress: function(d) {
-                return .4;
-            }
+            height: 5
         }))
 
         $scope.vmsNodes.call(updateVms)
@@ -172,6 +169,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                     fill: opts.fill || 'green',
                     height: opts.height,
                     width: function(d) {
+                        if (!opts.progress) return 0
+
+                        if (typeof opts.progress == 'number')
+                            return opts.progress * opts.width
+                        
                         var val = opts.progress(d)
                         return val * opts.width
                     },
@@ -209,7 +211,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
                         .attr('stroke-width', function(d) {
-                            return d.target.config? 2: 0;
+                            return d.target.config? 1: 0;
                         })
     }
 
@@ -280,7 +282,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
 
             //Use square scale, becouse logo is square ~ ram.. :P
-            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 50])
+            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 40])
 
             buildHypers()
             buildVms()
@@ -437,7 +439,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             //.charge(-220)
             .charge(layoutParticlesCharge)
             .linkDistance(function(link) {
-                return link.target.config? 100: 150
+                console.log(link.target._logoSize)
+                return link.target.config
+                    ? 2.6 * link.target._logoSize - 5
+                    : 150
             })
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
