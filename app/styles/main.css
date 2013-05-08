@@ -692,12 +692,15 @@ ul.nav > h3 {
 /* Graphs */
 
 svg {
-  cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+g image {
+    cursor: pointer;
 }
 
 g text {

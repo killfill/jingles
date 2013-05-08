@@ -30,6 +30,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         var newVmsNodes = $scope.vmsNodes.enter()
             .append('g')
                 .attr('class', 'vm')
+                .attr('opacity', function(d) { 
+                    return d.state == 'running'? 1: 0.3
+                })
                 .call(forceLayout.drag)
                 .on('mouseover', function(h) {
 
@@ -45,6 +48,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
                 })
+                .on('click', function(d) {
+                    window.open('#/virtual-machines/' + d.uuid, '_blank')
+                })
+                
 
         var logoSize = 30;
 
@@ -68,10 +75,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         newVmsNodes.call(progressBarWidget({
             fill: 'rgb(255, 178, 39)',
             width: logoSize,
-            height: 5,
-            progress: function(d) {
-                return .4;
-            }
+            height: 5
         }))
 
         $scope.vmsNodes.call(updateVms)
@@ -101,6 +105,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 })
                 .on('mouseout', function() {
                     document.querySelector('#popover').style.display = 'none'
+                })
+                .on('click', function(d) {
+                    window.open('#/hypervisors/' + d.name, '_blank')
                 })
 
         var hyperSize = 60;
@@ -162,6 +169,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                     fill: opts.fill || 'green',
                     height: opts.height,
                     width: function(d) {
+                        if (!opts.progress) return 0
+
+                        if (typeof opts.progress == 'number')
+                            return opts.progress * opts.width
+                        
                         var val = opts.progress(d)
                         return val * opts.width
                     },
@@ -199,7 +211,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
                         .attr('stroke-width', function(d) {
-                            return d.target.config? 2: 0;
+                            return d.target.config? 1: 0;
                         })
     }
 
@@ -270,7 +282,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
 
             //Use square scale, becouse logo is square ~ ram.. :P
-            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 50])
+            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 40])
 
             buildHypers()
             buildVms()
@@ -339,12 +351,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .duration(dur)
                 .attr('r', function(d) { return d._logoSize/2 })
 
-
         forceLayout.charge(layoutParticlesCharge).start()
     }
 
     /* VM is updated. i.e. resize */
-    var onVmUpdate = function(_, d) {
+    var onVmUpdateEvent = function(_, d) {
 
         var changedVm = d.message.data
         changedVm.uuid = d.channel
@@ -375,6 +386,16 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .remove()
     }
 
+    var onVmStateEvent = function(_, d) {
+        var vm = $scope.vmsHash[d.channel]
+        vm.state = d.message.data
+
+        $scope.vmsNodes
+            .data([vm], function(d) { return d.uuid })
+            .transition()
+                .attr('opacity', vm.state == 'running'? 1: 0.3)
+    }
+
     var cpuScale = d3.scale.linear().domain([20, 100]).range([0, 0.85])
     var onCpuEvent = function(_, d) {
         var uuid = d.channel.split('-metrics')[0],
@@ -397,11 +418,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         $scope.vmsNodes
             .data([vm], function(d) {return d.uuid})
             .select('rect.progress')
-                .attr('width', function(d) {return percent * d._logoSize})
-                .attr('x', function(d) {
-                    //center the bar
-                    return - percent * d._logoSize / 2
-                })
+                .transition()
+                    .attr('width', function(d) {return percent * d._logoSize})
+                    .attr('x', function(d) {
+                        //center the bar
+                        return - percent * d._logoSize / 2
+                    })
     }
 
     var onNetworkEvent = function(_, d) {
@@ -417,7 +439,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             //.charge(-220)
             .charge(layoutParticlesCharge)
             .linkDistance(function(link) {
-                return link.target.config? 100: 150
+                console.log(link.target._logoSize)
+                return link.target.config
+                    ? 2.6 * link.target._logoSize - 5
+                    : 150
             })
             .size([canvasOpts.w, canvasOpts.h])
             .on('tick', function() {
@@ -440,7 +465,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     var byteFormater = $filter('Mbytes')
 
-    $scope.$on('update', onVmUpdate)
+    $scope.$on('update', onVmUpdateEvent)
+    $scope.$on('state', onVmStateEvent)
     $scope.$on('cpu', onCpuEvent)
     $scope.$on('memstat', onMemoryEvent)
 
