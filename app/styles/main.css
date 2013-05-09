@@ -690,17 +690,26 @@ ul.nav > h3 {
 
 
 /* Graphs */
-g.vm circle {
-    fill: #999;
-    stroke: black;
+
+svg {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
+
+g image {
+    cursor: pointer;
+}
+
 g text {
     stroke-width: 0.1px;
     stroke: black;
     fill: #555;
 }
 
-g.vm text.ram {
+g text.ram {
     font-size: 0.65em;
     stroke: #bbb;
 }
@@ -715,3 +724,4 @@ g line.link {
   stroke: rgba(114, 144, 160, 0.4);
   stroke-dasharray: 4;
 }
+

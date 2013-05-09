@@ -230,7 +230,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             })
             $scope.snapshots = $scope.vm.snapshots
             cb && cb($scope.vm);
-            console.log($scope.vm)
             $scope.img_name = $scope.vm.config.alias;
             $scope.img_version = inc_version($scope.vm.config._dataset.version);
             $scope.img_os = $scope.vm.config._dataset.os;
