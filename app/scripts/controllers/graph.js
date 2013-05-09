@@ -122,7 +122,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
                         .attr('stroke-width', function(d) {
-                            return d.target.config.ram/1024 * 2
+                            
+                            return d.target.config? d.target.config.ram/1024 * 2: 0;
                         })
     }
 
@@ -137,13 +138,24 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         var hyperIdx = {}
         $scope.hypers.forEach(function(hyper, hIdx) {
             hyperIdx[hyper.name] = hIdx
+
+            /* Add links between hypers */
+            nodes.forEach(function(other) {
+                links.push({source: hIdx, target: hyperIdx[other.name]})
+            })
+
             nodes.push(hyper)
         })
         $scope.vms.forEach(function(vm, idx) {
             nodes.push(vm)
-            links.push({source: hyperIdx[vm.hypervisor], target: nodes.length-1})
+            var hIdx = hyperIdx[vm.hypervisor]
+            if (typeof hIdx == 'number')
+                links.push({source: hIdx, target: nodes.length-1})
+            else
+                console.log('WARN: no hidx for ' + vm.hypervisor)
         })
 
+        console.log('ASI QUEDARON:', nodes, links)
         forceLayout.nodes(nodes).links(links).start()
 
         buildLinks(links)
@@ -155,7 +167,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
         forceLayout = d3.layout.force()
             //.charge(-220)
             .charge(function(d) {
+                return -400
 
+                //TODO!
                 //Charge of the node ~ to the ram.
                 var charge;
                 if (d.name)
@@ -183,13 +197,28 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
     $scope.vms = [];
     $scope.hypers = [];
 
-    $scope.$watch('hypers.length', buildHypers)
+    /*$scope.$watch('hypers.length', buildHypers)
     $scope.$watch('vms.length', function() {
         setupForceLayout()
         buildVms()
     });
+*/
+    var initSimu = function() {
 
-    var init = function() {
+        $scope.hypers.push({name: 'uno', resources: {}})
+        $scope.hypers.push({name: 'dos', resources: {}})
+        $scope.hypers.push({name: 'tres', resources: {}})
+
+        $scope.vms.push({hypervisor: 'uno', config: {alias: 'vm1', ram: '1024'}})
+        $scope.vms.push({hypervisor: 'uno', config: {alias: 'vm2', ram: '1024'}})
+        $scope.vms.push({hypervisor: 'dos', config: {alias: 'vm3', ram: '1024'}})
+        $scope.vms.push({hypervisor: 'tres', config: {alias: 'vm3', ram: '1024'}})
+
+        buildHypers()
+        setupForceLayout();
+        buildVms()
+    }
+    var init= function() {
 
         wiggle.hypervisors.list(function(ids) {
             ids.forEach(function(id) {
@@ -207,6 +236,11 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user) {
                 ids.forEach(function(id) {
                     wiggle.vms.get({id: id}, function(res) {
                         $scope.vms.push(res)
+                        if (ids.length == $scope.vms.length) {
+                            buildHypers()
+                            setupForceLayout();
+                            buildVms()
+                        }
                     })
                 })
             })    

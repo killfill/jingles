@@ -37,7 +37,7 @@ fifoApp.factory('hookListener', function($rootScope, $cookies, wiggle, user, sta
             if (res.config.url.indexOf('sessions') > -1)
                 return;
             //If the session is valid, its something with the permition
-            return wiggle.sessions.get({id: $cookies["X-Snarl-Token"]}, function success(data) {
+            return wiggle.sessions.get({id: $cookies["x-snarl-token"]}, function success(data) {
                 console.log('Not allowed', statusCode, res.config)
                 return status.info('Not allowed')
             }, function error() {

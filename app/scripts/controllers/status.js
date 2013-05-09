@@ -27,7 +27,7 @@ fifoApp.controller('StatusCtrl', function($scope, $cookies, wiggle) {
 
     }
 
-    $cookies["X-Snarl-Token"] && $scope.show()
+    $cookies["x-snarl-token"] && $scope.show()
 
     /* Update data on memory change */
     $scope.$on('memorychange', $scope.show)
