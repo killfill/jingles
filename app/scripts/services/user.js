@@ -42,7 +42,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         login: function(sessionData) { //token, login) {
 
             /* Access token */
-            $cookies["X-Snarl-Token"] = sessionData.session;
+            $cookies["x-snarl-token"] = sessionData.session;
             $http.defaults.headers.common['X-Snarl-Token'] = sessionData.session;
 
             /* Create a user object based on the sessionData, so later we can use loggedUser.mdata_set */
@@ -54,7 +54,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
             if ('WebSocket' in window) {
                 wiggle.vms.list(howl.join)
                 wiggle.hypervisors.list(howl.join)
-                howl.connect($cookies["X-Snarl-Token"])
+                howl.connect($cookies["x-snarl-token"])
             }
 
             clearInterval(connectionPoller);
@@ -64,8 +64,8 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
         },
 
         logout: function() {
-            var session = $cookies["X-Snarl-Token"];
-            delete $cookies["X-Snarl-Token"];
+            var session = $cookies["x-snarl-token"];
+            delete $cookies["x-snarl-token"];
             session && wiggle.sessions.delete({id: session});
 
             $rootScope.loggedUser = null;
