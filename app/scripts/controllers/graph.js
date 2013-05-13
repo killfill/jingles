@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
+fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) {
     $scope.setTitle('Graph');
 
     /* Setup canvas */
@@ -200,7 +200,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     /* Build the links between hypers and vm's */
     var buildLinks = function(linksArray) {
         $scope.links = ($scope.links || canvas.selectAll('line.link'))
-            .data(linksArray);
+            .data(d3.values(linksArray), function(l) {return l.target.uuid}); //map by the target vm uuid
 
         $scope.links
                 .enter()
@@ -210,6 +210,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                         .attr('y1', function(d) {return d.source.y})
                         .attr('x2', function(d) {return d.target.x})
                         .attr('y2', function(d) {return d.target.y})
+                        .attr('stroke', 'rgba(114, 144, 160, 0.4)')
                         .attr('stroke-width', function(d) {
                             return d.target.config? 1: 0;
                         })
@@ -245,14 +246,23 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
         forceLayout.nodes(nodes).links(links).start()
 
-        buildLinks(links)
+        /* Build the links hash */
+        links.forEach(function(link) {
+            $scope.linksHash[link.target.uuid] = link
+        })
+
+        buildLinks($scope.linksHash)
     }
 
     /* Go and get the data */
     var getData = function() {
         wiggle.hypervisors.list(function(ids) {
+
+            ids.length > 0 && status.update('Loading hypervisors', {total: ids.length})
             ids.forEach(function(id) {
                 wiggle.hypervisors.get({id: id}, function(res) {
+
+                    status.update('Loading hypervisors', {add: 1})
                     $scope.hypers.push(res)
 
                     //Load vms after hypers, so we can draw links and calculate force layout
@@ -264,8 +274,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
         var loadVms = function() {
             wiggle.vms.list(function(ids) {
+                ids.length > 0 && status.update('Loading machines', {total: ids.length})
+
                 ids.forEach(function(id) {
                     wiggle.vms.get({id: id}, function(res) {
+
+                        status.update('Loading machines', {add: 1})
                         $scope.vms.push(res)
                         $scope.vmsHash[id] = res
 
@@ -277,7 +291,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         }
 
         var buildWorld = function() {
-
             /* Scale based on vms, not packages, there probably will be vms without packages.. */
             var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
 
@@ -386,6 +399,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
                 .remove()
     }
 
+    /* VM status updated: stopped, started, etc. */
     var onVmStateEvent = function(_, d) {
         var vm = $scope.vmsHash[d.channel]
         vm.state = d.message.data
@@ -428,9 +442,18 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
 
     var onNetworkEvent = function(_, d) {
         var uuid = d.channel.split('-metrics')[0],
-            vm = $scope.vmsHash[uuid]
+            link = $scope.linksHash[uuid]
 
-        console.log('NET', d.message.data)
+        var lastActivity = link.target.netActivity || d.message.data.obytes64 + d.message.data.rbytes64;
+        link.target.netActivity = d.message.data.obytes64 + d.message.data.rbytes64
+
+        /* bps is an aproximation.. :P */
+        var bps = link.target.bps = link.target.netActivity - lastActivity;
+
+        $scope.links
+            .data([link], function(d) {return d.target.uuid;})
+            .attr('stroke-width', bps? 2: 1 )
+            .attr('stroke', bps? 'blue': 'rgba(114, 144, 160, 0.4)')
     }
 
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
@@ -439,7 +462,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
             //.charge(-220)
             .charge(layoutParticlesCharge)
             .linkDistance(function(link) {
-                console.log(link.target._logoSize)
                 return link.target.config
                     //? 2.6 * link.target._logoSize - 5
                     ? 100
@@ -461,6 +483,8 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     $scope.vms = []
     $scope.hypers = []
     $scope.vmsHash = {} //Search vms based on uuid.
+    $scope.linksHash = {}
+    
     $scope.$on('user_login', getData)
     if (user.logged()) getData()
 
@@ -471,7 +495,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
     $scope.$on('cpu', onCpuEvent)
     $scope.$on('memstat', onMemoryEvent)
 
-    //$scope.$on('net', onNetworkEvent)
+    $scope.$on('net', onNetworkEvent)
     //$scope.$on('vfs', onNetworkEvent)
 
     /* Disconnect metrics monitor */
@@ -488,6 +512,5 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter) {
         buildVms()
     });
     */
-
 
 });

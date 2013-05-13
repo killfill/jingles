@@ -721,7 +721,6 @@ g.hyper text {
 
 g line.link {
   fill: none;
-  stroke: rgba(114, 144, 160, 0.4);
   stroke-dasharray: 4;
 }
 
