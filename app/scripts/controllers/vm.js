@@ -1,7 +1,7 @@
 'use strict';
 
 
-fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status, user) {
 
     $scope.setTitle('Machine details')
     $scope.force = false;
@@ -12,24 +12,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         return a.join(".");
     }
 
-    /* Get the all the packages */
-    $scope.packages = {};
-    wiggle.packages.list(function(res) {
-        res.forEach(function(pid) {
-            $scope.packages[pid] = {
-                name: pid,
-                id: pid
-            };
-            wiggle.packages.get({id: pid}, function(pkg) {
-                $scope.packages[pid] = pkg;
 
-                /* Additional fields GET does not provide */
-                $scope.packages[pid].id = pid;
-                $scope.packages[pid].vcpus = pkg.cpu_cap/100;
-                $scope.packages[pid].cpu_shares = pkg.ram;
-            });
-        });
-    });
 
     var throughtput_chart = new MetricsGraph("throughput", {
         unit: "KB/s",
@@ -111,7 +94,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     var netdata_chart = {};
 
-    howl.join(uuid + '-metrics');
 
     $scope.$on('$destroy', function() {
         howl.leave(uuid + '-metrics');
@@ -254,7 +236,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                        });
     };
 
-    updateVm()
+    
 
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
@@ -466,4 +448,33 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
             });
         console.log(vm + "@" + snap, config);
     }
+
+
+    var init = function() {
+        /* Get the all the packages */
+        $scope.packages = {};
+        wiggle.packages.list(function(res) {
+            res.forEach(function(pid) {
+                $scope.packages[pid] = {
+                    name: pid,
+                    id: pid
+                };
+                wiggle.packages.get({id: pid}, function(pkg) {
+                    $scope.packages[pid] = pkg;
+
+                    /* Additional fields GET does not provide */
+                    $scope.packages[pid].id = pid;
+                    $scope.packages[pid].vcpus = pkg.cpu_cap/100;
+                    $scope.packages[pid].cpu_shares = pkg.ram;
+                });
+            });
+        });
+
+        howl.join(uuid + '-metrics');
+        updateVm()
+    }
+
+    $scope.$on('user_login', init)
+    if (user.logged()) init()
+
 });
