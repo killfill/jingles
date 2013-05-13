@@ -440,20 +440,41 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                     })
     }
 
+    var networkScale = d3.scale.linear().domain([2048, 2048]).range([1, 7]),
+        max = 2048
     var onNetworkEvent = function(_, d) {
         var uuid = d.channel.split('-metrics')[0],
-            link = $scope.linksHash[uuid]
+            link = $scope.linksHash[uuid],
+            data = d.message.data
 
-        var lastActivity = link.target.netActivity || d.message.data.obytes64 + d.message.data.rbytes64;
-        link.target.netActivity = d.message.data.obytes64 + d.message.data.rbytes64
+        /* Bukets for remember old values */
+        link.target.netActivity = link.target.netActivity || {}
 
-        /* bps is an aproximation.. :P */
-        var bps = link.target.bps = link.target.netActivity - lastActivity;
+        /* netActivity = {net0: 123, net1: 3443} */
+        var netActivity = link.target.netActivity,
+            newActivity = data.obytes64 + data.rbytes64,
+            lastActivity = netActivity[data.ifname]
+
+        /* Save last value */
+        link.target.netActivity[data.ifname] = newActivity
+
+        /* ticks are ~ 1 per second, so this should be bps....*/
+        var bps = newActivity - lastActivity,
+            label = $filter('bytes')(bps)
+
+        if (bps > max) {
+            max = bps
+            networkScale.domain([2048, max])
+            //console.log('MAX=', max, label)
+        }
+
+        //console.log('->', link.target.config.alias, data.ifname, label)
 
         $scope.links
             .data([link], function(d) {return d.target.uuid;})
-            .attr('stroke-width', bps? 2: 1 )
-            .attr('stroke', bps? 'blue': 'rgba(114, 144, 160, 0.4)')
+            .transition()
+                .attr('stroke-width', bps>2048? networkScale(bps): 1 )
+                .attr('stroke',       bps>2048? 'blue': 'rgba(114, 144, 160, 0.4)')
     }
 
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
