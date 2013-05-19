@@ -10,6 +10,7 @@
                     <i class='icon-list'></i>
                 </button>
                 <input type="text" class="search-query span3" placeholder='Filter' ng-model='searchQuery'>
+                <span class="clear" ng-click="searchQuery=''" style="{{searchQuery.length<1 && 'visibility: hidden' || ''}}">x</span>
 
                 <a href="#/virtual-machines/new" class="btn btn-small btn-info">
                     <i class="icon-white"></i> <strong>New machine</strong>

@@ -724,3 +724,10 @@ g line.link {
   stroke-dasharray: 4;
 }
 
+.clear
+ {
+  position: relative;
+  left: -33px;
+  font-size: 10pt;
+  cursor: pointer;
+}
