@@ -25,7 +25,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
     var buildVms = function() {
 
         $scope.vmsNodes = ($scope.vmsNodes || canvas.selectAll('g.vm'))
-            .data($scope.vms, function key (d) { return d.uuid })
+            .data(d3.values($scope.vmsHash), function key (d) { return d.uuid })
 
         var newVmsNodes = $scope.vmsNodes.enter()
             .append('g')
@@ -35,21 +35,15 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                 })
                 .call(forceLayout.drag)
                 .on('mouseover', function(h) {
-
-                    var pop = document.querySelector('#popover')
-                    pop.style.display='block'
-                    pop.style.top = h.y  + 25+ 'px'
-                    pop.style.left = h.x + 210 + 'px'
-
-                    pop.querySelector('.popover-title').innerHTML = h.config.alias + ':'
-                    pop.querySelector('.popover-content').innerHTML = 'Memory: ' + h.config.ram/1024 + 'GB'
-
+                  $scope.vm = h
+                  $scope.$digest()
                 })
                 .on('mouseout', function() {
-                    document.querySelector('#popover').style.display = 'none'
+                  $scope.vm = undefined
+                  $scope.$digest()
                 })
                 .on('click', function(d) {
-                    window.open('#/virtual-machines/' + d.uuid, '_blank')
+                  window.open('#/virtual-machines/' + d.uuid, '_blank')
                 })
                 
 
@@ -81,41 +75,35 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         $scope.vmsNodes.call(updateVms)
     }
 
+    var hyperSize = 60
+
+    var hyperMemThredhold = Config.could_test.filter(function(d) { if (d.element=='memory') return d; }).pop().max
+    var hyperMemoryColor = function(perc) { return perc > hyperMemThredhold? 'red': 'rgb(255, 178, 39)'; }
     /* Build the Hypervisor nodes */
     var buildHypers = function() {
         $scope.hypersNodes = ($scope.hypersNodes || canvas.selectAll('g.hyper'))
-            .data($scope.hypers, function key(d) { return d.name })
+            .data(d3.values($scope.hypersHash), function key(d) { return d.name })
 
         var newHypersNode = $scope.hypersNodes.enter()
             .append('g')
                 .attr('class', 'hyper')
                 .call(forceLayout.drag)
                 .on('mouseover', function(h) {
-
-                    var pop = document.querySelector('#popover')
-                    pop.style.display='block'
-                    pop.style.top = h.y  + 25+ 'px'
-                    pop.style.left = h.x + 210 + 'px'
-
-                    pop.querySelector('.popover-title').innerHTML = h.name + ':'
-                    pop.querySelector('.popover-content').innerHTML = 'Free memory: ' + 
-                        parseInt(h.resources['free-memory']/1024) + ' of ' + 
-                        parseInt(h.resources['total-memory']/1024) + 'GB'
-
+                  $scope.hyper = h
+                  $scope.$digest()
                 })
                 .on('mouseout', function() {
-                    document.querySelector('#popover').style.display = 'none'
+                  $scope.hyper = undefined
+                  $scope.$digest()
                 })
                 .on('click', function(d) {
-                    window.open('#/hypervisors/' + d.name, '_blank')
+                  window.open('#/hypervisors/' + d.name, '_blank')
                 })
-
-        var hyperSize = 60;
 
         /* This is an experiment, should be handled more elegantly! */
          
-        var min = d3.min($scope.hypers, function(d) {return d.resources['total-memory']})
-        var max = d3.max($scope.hypers, function(d) {return d.resources['total-memory']})
+        var min = d3.min(d3.values($scope.hypersHash), function(d) {return d.resources['total-memory']})
+        var max = d3.max(d3.values($scope.hypersHash), function(d) {return d.resources['total-memory']})
         if (min == max) min = 8000
         var hyperScale = d3.scale.sqrt()
             .domain([min, max])
@@ -136,7 +124,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
         newHypersNode.call(progressBarWidget({
             border: 'rgb(114, 74, 0)',
-            fill: 'rgb(255, 178, 39)',
+            fill: function(d) {return hyperMemoryColor(d.resources['provisioned-memory']/ d.resources['total-memory']);},
             width: progressSize,
             progress: function(d) {
                 return d.resources['provisioned-memory'] / d.resources['total-memory']
@@ -225,7 +213,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
            Add all node types into a common 'nodes' object, and calculate the links on them,
            so the force layout can work them out */
         var hyperIdx = {}
-        $scope.hypers.forEach(function(hyper, hIdx) {
+        d3.values($scope.hypersHash).forEach(function(hyper, hIdx) {
             hyperIdx[hyper.name] = hIdx
 
             /* Add links between hypers */
@@ -235,7 +223,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
             nodes.push(hyper)
         })
-        $scope.vms.forEach(function(vm, idx) {
+        d3.values($scope.vmsHash).forEach(function(vm, idx) {
             nodes.push(vm)
             var hIdx = hyperIdx[vm.hypervisor]
             if (typeof hIdx == 'number')
@@ -263,10 +251,10 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                 wiggle.hypervisors.get({id: id}, function(res) {
 
                     status.update('Loading hypervisors', {add: 1})
-                    $scope.hypers.push(res)
+                    $scope.hypersHash[res.name] = res
 
                     //Load vms after hypers, so we can draw links and calculate force layout
-                    if (ids.length == $scope.hypers.length) 
+                    if (ids.length == Object.keys($scope.hypersHash).length)
                         loadVms()
                 })
             })
@@ -280,10 +268,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                     wiggle.vms.get({id: id}, function(res) {
 
                         status.update('Loading machines', {add: 1})
-                        $scope.vms.push(res)
                         $scope.vmsHash[id] = res
 
-                        if (ids.length == $scope.vms.length)
+                        if (ids.length == Object.keys($scope.vmsHash).length)
                             buildWorld()
                     })
                 })
@@ -292,7 +279,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
         var buildWorld = function() {
             /* Scale based on vms, not packages, there probably will be vms without packages.. */
-            var minMax = d3.extent($scope.vms, function(d) {return d.config.ram})
+            var minMax = d3.extent(d3.values($scope.vmsHash), function(d) {return d.config.ram})
 
             //Use square scale, becouse logo is square ~ ram.. :P
             $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 40])
@@ -300,7 +287,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
             buildHypers()
             buildVms()
 
-            $scope.vms.forEach(function(vm) {
+            d3.values($scope.vmsHash).forEach(function(vm) {
                 //if (vm.uuid == '9e09239b-4001-4760-805b-8b2d3ad0a6e2') //kvm
                 //if (vm.uuid == 'e7adb1b5-8124-4413-b5c8-4eef45a158ab') //zone
                 howl.join(vm.uuid + '-metrics')
@@ -477,6 +464,52 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                 .attr('stroke',       bps>2048? 'blue': 'rgba(114, 144, 160, 0.4)')
     }
 
+    var onVmDeleteEvent = function(_, d) {
+        var uuid = d.channel
+        delete $scope.vmsHash[uuid]
+        var sel = $scope.vmsNodes
+            .data(d3.values($scope.vmsHash), function(d) {return d.uuid})
+            .exit()
+
+        delete $scope.linksHash[uuid]
+        $scope.links
+            .data(d3.values($scope.linksHash), function(d) {return d.target.uuid})
+            .exit()
+                .remove()
+
+        sel.append('circle')
+            .attr('class', 'highlight')
+            .attr('r', 40)
+            .attr('stroke', 'red')
+            .attr('fill', 'none')
+            .transition()
+                .duration(1000)
+                .attr('r', 8)
+                .style('stroke-opacity', 0)
+                .style('stroke-width', 5)
+                .remove()
+
+        sel.transition()
+            .delay(1000)
+            .remove()
+
+    }
+
+    var onHyperMemoryChangeEvent = function(_, d) {
+        var name = d.channel,
+            data = d.message.data,
+            hyper = $scope.hypersHash[name]
+
+        var percent = data.provisioned / (data.provisioned + data.free)
+
+        $scope.hypersNodes
+            .data([hyper], function(d) {return d.name})
+            .select('.progress')
+            .transition()
+                .attr('width', percent * hyperSize * 3/4)
+                .attr('fill', hyperMemoryColor(percent))
+    }
+
     var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
         canvas = setup('#container', canvasOpts),
         forceLayout = d3.layout.force()
@@ -501,8 +534,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
             })
 
-    $scope.vms = []
-    $scope.hypers = []
+    $scope.hypersHash = {}
     $scope.vmsHash = {} //Search vms based on uuid.
     $scope.linksHash = {}
     
@@ -519,13 +551,15 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
     $scope.$on('net', onNetworkEvent)
     //$scope.$on('vfs', onNetworkEvent)
 
+    $scope.$on('delete', onVmDeleteEvent)
+    $scope.$on('memorychange', onHyperMemoryChangeEvent)
+
     /* Disconnect metrics monitor */
     $scope.$on('$destroy', function() {
-        $scope.vms.forEach(function(vm) {
+        d3.values($scope.vmsHash).forEach(function(vm) {
             howl.leave(vm.uuid + '-metrics');
         })
     });
-
     /* Could make the load incremental with something like this, if there are too many vms
     $scope.$watch('hypers.length', buildHypers)
     $scope.$watch('vms.length', function() {

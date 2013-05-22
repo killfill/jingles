@@ -163,6 +163,11 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             })
         })
 
+        $scope.$watch('alias', function(newVal, oldVal) {
+            if (!$scope.hostname || $scope.hostname == oldVal)
+                $scope.hostname = newVal
+        })
+
     }
 
     $scope.init()

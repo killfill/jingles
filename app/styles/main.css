@@ -376,6 +376,13 @@ dd {
 }
 
 
+.dl-horizontal.small dt{
+    width: 55px;
+}
+.dl-horizontal.small dd {
+    margin-left: 70px;
+}
+
 .dl-horizontal.wide dt{
     width: 160px;
 }
@@ -724,3 +731,10 @@ g line.link {
   stroke-dasharray: 4;
 }
 
+.clear
+ {
+  position: relative;
+  left: -33px;
+  font-size: 10pt;
+  cursor: pointer;
+}
