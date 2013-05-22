@@ -1,12 +1,57 @@
 <div id="container"></div>
+
 <div id='popover' class="popover right" style="display: none; position: absolute;">
-	<div class="arrow"></div>
-	<div class="popover-inner">
-		<h3 class="popover-title">Show the following columns</h3>
-		<div class="popover-content">
-			<p>
-				Sipis!
-			</p>
-		</div>
-	</div>
+  <div class="arrow"></div>
+    <div class="popover-inner">
+      <h3 class="popover-title">Show the following columns</h3>
+      <div class="popover-content">
+      <p>
+        Sipis!
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="popover right" 
+  style="display: {{vm && 'block' || 'none'}}; position: absolute; top: {{vm.y}}px; left: {{vm.x+210}}px;">
+  <div class="arrow"></div>
+  <div class="popover-inner">
+    <h3 class="popover-title">
+      <center><span class="strong">{{vm.config.alias}}</span></center>
+    </h3>
+    <div class="popover-content">
+      <dl class='dl-horizontal small'>
+        <dt ng-show='vm.config._dataset'>Dataset</dt><dd ng-show='vm.config._dataset'>{{vm.config._dataset.name}} {{vm.config._dataset.version}}</dd>
+        <dt>Package</dt><dd>{{vm._package.name | orDefault:'custom'}}</dd>
+        <dt>Ram</dt><dd class='memory'>{{vm.config.ram | Mbytes}}</dd>
+        <div ng-repeat='net in vm.config.networks | orderBy:-interface'>
+          <dt>{{net.interface}}</dt><dd class='memory'>{{net.ip}}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<div class="popover right" 
+  style="display: {{hyper && 'block' || 'none'}}; position: absolute; top: {{hyper.y-10}}px; left: {{hyper.x+210}}px;">
+  <div class="arrow"></div>
+  <div class="popover-inner">
+    <h3 class="popover-title">
+      <center><span class="strong">{{hyper.name}}</span></center>
+    </h3>
+    <div class="popover-content">
+      <dl class='dl-horizontal'>
+        <dt>Mainboard</dt><dd>{{hyper.sysinfo["Product"]}}</dd>
+        <dt>Cores</dt><dd>{{hyper.sysinfo["CPU Total Cores"]}} ({{hyper.sysinfo["CPU Physical Cores"]}} cpus)</dd>
+        <dt>Memory</dt><dd>{{hyper.resources['free-memory'] | Mbytes }} free of {{hyper.resources['total-memory'] | Mbytes }}</dd>
+        <dt>L1 Arc</dt><dd>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</dd>
+        <dt ng-show='hyper.resources["l2hits"]'>L2 Arc</dt><dd ng-show='hyper.resources["l2hits"]'>{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
+        
+        <div ng-repeat='(name, data) in hyper.pools'>
+          <dt>{{name}} pool</dt><dd>{{data.free | Mbytes}} free of {{data.size | Mbytes}}</dd>
+        </div>
+
+      <dl>
+    </div>
+  </div>
 </div>

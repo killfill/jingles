@@ -376,6 +376,13 @@ dd {
 }
 
 
+.dl-horizontal.small dt{
+    width: 55px;
+}
+.dl-horizontal.small dd {
+    margin-left: 70px;
+}
+
 .dl-horizontal.wide dt{
     width: 160px;
 }
