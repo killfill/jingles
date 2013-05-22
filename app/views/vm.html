@@ -75,7 +75,7 @@
     </p>
   </span>
 
-  <div class="tabbable tabs-top" ng-show='vm.config'>
+  <div class="tabbable tabs-top" ng-show='vm.config' id="VMTab">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
@@ -166,14 +166,29 @@
             <dl class="dl-horizontal">
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
               <dt>Info</dt>
-                <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
-                <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
+              <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
+              <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
             </dl>
           </div>
 
           <div class="box box-small pull-left" ng-repeat='net in vm.config.networks'>
             <div class="header">
               Network <span class="badge badge-info">{{net.nic_tag}}</span>
+              <div class="btn-group pull-right">
+                <button ng-click="remove_nic(vm, net.mac)"
+                        ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
+                        class="btn btn-mini"
+                        title='Delete' jq-run='tooltip'>
+                  <i class='icon-trash'></i>
+                </button>
+                <button ng-click="primary_nic(vm, net.mac)"
+                        ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
+                        ng-show="!net.primary"
+                        class="btn btn-mini"
+                        title="Make primary" jq-run="tooltip">
+                  <i class="icon-check"></i>
+                </button>
+              </div>
             </div>
 
             <dl class="dl-horizontal">
@@ -309,14 +324,26 @@
                     ng-model="new_pkg"
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
             </select>
+            <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
+                    ng-disabled="vm.mdata('locked')"
+                    ng-show="packages[new_pkg].id != vm['package']"
+                    ng-click="update()">change</button>
           </div>
           <package pkg='packages[new_pkg]'></package>
         </div>
-        <div class="span8">
+        <div class="box span4">
+          <div class="header">
+            Add Network Interface <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+          </div>
+          <select class='input-small' style='margin: 0px; height: 20px;'
+                  ng-model="new_net"
+                  ng-options="net.id as net.name for net in networks | hash2array | orderBy: ['name']">
+          </select>
+
           <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
                   ng-disabled="vm.mdata('locked')"
-                  ng-show="packages[new_pkg].id != vm['package']"
-                  ng-click="update()">change</button>
+                  ng-show="networks[new_net]"
+                  ng-click="add_nic(vm, new_net)">add</button>
         </div>
       </div>
 

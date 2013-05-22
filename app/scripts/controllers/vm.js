@@ -1,6 +1,5 @@
 'use strict';
 
-
 fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status, user) {
 
     $scope.setTitle('Machine details')
@@ -11,7 +10,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         a[a.length - 1] = a[a.length - 1] + 1;
         return a.join(".");
     }
-
 
 
     var throughtput_chart = new MetricsGraph("throughput", {
@@ -236,7 +234,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                        });
     };
 
-    
+
 
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
@@ -299,6 +297,44 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                            $scope.vm.config.alias = h.alias;
                        }
                       )
+
+    }
+
+    $scope.primary_nic = function primary_nic(vm, mac) {
+        wiggle.vms.put({id: vm.uuid, controller: 'nics', controller_id: mac}, {primary: true},
+                       function sucess () {
+                           status.success('Primary NIC changed.')
+                       },
+                       function error (data) {
+                           status.error('Error when changing the primary nic. See the history')
+                           console.log(data)
+                       })
+    };
+
+    $scope.remove_nic = function remove_nic(vm, mac) {
+        console.log(vm, mac);
+        wiggle.vms.delete(
+            {id: vm.uuid, controller: 'nics', controller_id: mac},
+            function success() {
+                status.success('NIC ' + mac + ' deleted');
+            },
+            function error(data) {
+                status.error('Error deleting the nic. See your console')
+                console.log(data)
+            })
+    };
+
+    $scope.add_nic = function add_nic(vm, network) {
+        wiggle.vms.save({id: vm.uuid, controller: 'nics'},
+                        {network: network},
+                        function success(data, h) {
+                            status.success('NIC added.');
+                            $('#VMTab a[href="#details"]').tab('show');
+                        },
+                        function error(data) {
+                            status.error('Error creating NIC. See your console')
+                            console.log(data)
+                        });
 
     }
 
@@ -466,6 +502,22 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                     $scope.packages[pid].id = pid;
                     $scope.packages[pid].vcpus = pkg.cpu_cap/100;
                     $scope.packages[pid].cpu_shares = pkg.ram;
+                });
+            });
+        });
+
+        $scope.networks = {};
+        wiggle.ipranges.list(function(res) {
+            res.forEach(function(pid) {
+                $scope.networks[pid] = {
+                    name: pid,
+                    id: pid
+                };
+                wiggle.ipranges.get({id: pid}, function(pkg) {
+                    $scope.networks[pid] = pkg;
+
+                    /* Additional fields GET does not provide */
+                    $scope.networks[pid].id = pid;
                 });
             });
         });
