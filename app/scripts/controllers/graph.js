@@ -4,12 +4,14 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
     $scope.setTitle('Graph');
 
     var redraw = function() {
+
+      $scope.zoomValue = d3.event.scale
+      $scope.$digest()
+
       canvas.attr("transform",
         " translate(" + d3.event.translate + ")" + 
         " scale("     + d3.event.scale + ")");
 
-      $scope.zoomValue = d3.event.scale
-      $scope.$digest()
     }
 
     $scope.$watch('zoomValue', function(val) {
