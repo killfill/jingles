@@ -81,7 +81,7 @@
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
       <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
-      <li><a href="#resize" data-toggle="tab">Resize</a></li>
+      <li><a href="#resize" data-toggle="tab">Change</a></li>
       <li><a href="#history" data-toggle="tab">History</a></li>
       <li><a href="#notes" data-toggle="tab">Notes</a></li>
     </ul>
@@ -333,14 +333,13 @@
         </div>
         <div class="box span4">
           <div class="header">
-            Add Network Interface <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+            Add Network Interface
           </div>
-          <select class='input-small' style='margin: 0px; height: 20px;'
-                  ng-model="new_net"
+          <select ng-model="new_net"
                   ng-options="net.id as net.name for net in networks | hash2array | orderBy: ['name']">
           </select>
 
-          <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
+          <button style='margin-bottom: 10px;' class='btn btn-success'
                   ng-disabled="vm.mdata('locked')"
                   ng-show="networks[new_net]"
                   ng-click="add_nic(vm, new_net)">add</button>
