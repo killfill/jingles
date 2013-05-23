@@ -3,20 +3,61 @@
 fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) {
     $scope.setTitle('Graph');
 
+    var redraw = function() {
+      canvas.attr("transform",
+        " translate(" + d3.event.translate + ")" + 
+        " scale("     + d3.event.scale + ")");
+
+      $scope.zoomValue = d3.event.scale
+      $scope.$digest()
+    }
+
+    $scope.$watch('zoomValue', function(val) {
+      canvas.attr('transform', 'scale(' + val + ')');
+    })
+
+    $scope.distanceValue = 100
+    $scope.$watch('distanceValue', function(val) {
+      forceLayout.linkDistance(linkDistance).start()
+    })
+
+    $scope.chargeValue = 0.1
+    $scope.$watch('chargeValue', function(val) {
+      forceLayout.charge(layoutParticlesCharge).start()
+    })
+
+    $scope.elasticityValue = 0.15
+    $scope.$watch('elasticityValue', function(val) {
+      forceLayout.linkStrength(1-val).start()
+    })
+
+    $scope.reset = function() {
+      document.querySelector('#zoomBar').value = 1;
+      canvas.attr("transform",'translate(0,0)');
+      $scope.distanceValue = 100
+      $scope.zoomValue = 1
+      $scope.chargeValue = 0.1
+      $scope.elasticityValue = 0.15
+    }
+
     /* Setup canvas */
     var setup = function(parentEl, opts) {
-        opts = opts || {w: 500, h: 200}
+        opts = opts || {w: '100%', h: '100%'}
         opts.margin = opts.margin || {}
         opts.margin.w = opts.margin.w || 0
         opts.margin.h = opts.margin.w || 0
 
         var canvas = d3.select(parentEl)
             .append('svg')
-                .attr("width",  opts.w + opts.margin.w * 2)
-                .attr("height", opts.h + opts.margin.h * 2)
+              .attr('width',   '100%')
+              .attr('height',  '100%')
+              //.attr('viewBox', '0 0 1024 768')
+              //.attr('preserveAspectRatio', 'xMidYMid meet')
+              .call(d3.behavior.zoom().on('zoom', redraw))
             .append('g')
                 .attr("transform", "translate(" + opts.margin.w + "," + opts.margin.h + ")")
 
+        document.canvas = canvas;
         return canvas;
 
     }
@@ -46,7 +87,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                   window.open('#/virtual-machines/' + d.uuid, '_blank')
                 })
                 
-
         var logoSize = 30;
 
         newVmsNodes.append('circle')
@@ -240,6 +280,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         })
 
         buildLinks($scope.linksHash)
+        resizeForceLayout()
     }
 
     /* Go and get the data */
@@ -304,9 +345,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         var charge;
         if (d.name)
             //hyper
-            charge = -d.resources['total-memory']/50
+            charge = -d.resources['total-memory'] * 0.02
         else
-            charge = -d.config.ram/10
+            charge = -d.config.ram * $scope.chargeValue
 
         return charge
     }
@@ -510,29 +551,37 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                 .attr('fill', hyperMemoryColor(percent))
     }
 
-    var canvasOpts = {w: document.querySelector('#container').offsetWidth, h: window.innerHeight},
-        canvas = setup('#container', canvasOpts),
-        forceLayout = d3.layout.force()
-            //.charge(-220)
-            .charge(layoutParticlesCharge)
-            .linkDistance(function(link) {
-                return link.target.config
-                    //? 2.6 * link.target._logoSize - 5
-                    ? 100
-                    : 150
-            })
-            .size([canvasOpts.w, canvasOpts.h])
-            .on('tick', function() {
+    var linkDistance = function(link) {
+        return link.target.config ? $scope.distanceValue : 150
+    }
+    var canvas = setup('#container'),
+      forceLayout = d3.layout.force()
+        //.charge(-220)
+        .charge(layoutParticlesCharge)
+        .linkDistance(linkDistance)
+        .linkStrength(0.85)
+        .on('tick', function() {
 
-                $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
-                $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
+            if (!$scope.vmsNodes) return;
 
-                $scope.links.attr("x1", function(d) { return d.source.x; })
-                    .attr("y1", function(d) { return d.source.y; })
-                    .attr("x2", function(d) { return d.target.x; })
-                    .attr("y2", function(d) { return d.target.y; });
+            $scope.vmsNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
+            $scope.hypersNodes.attr('transform', function(d, i) { return "translate(" + (d.x) + "," + (d.y) + ")" })
 
-            })
+            $scope.links.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+        })
+
+
+    var resizeForceLayout = function() {
+      forceLayout && forceLayout
+        .size([$('svg').width(), $('svg').height()])
+        .start()
+    }
+    $(window).resize(resizeForceLayout)
+    
 
     $scope.hypersHash = {}
     $scope.vmsHash = {} //Search vms based on uuid.
@@ -567,5 +616,36 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         buildVms()
     });
     */
+
+    document.getElementById('fullscreen').onclick = function() {
+
+      /* Bloody prefixes.. */
+      var goFull = function(el) {
+        if(el.requestFullScreen) {
+          el.requestFullScreen();
+        } else if(el.mozRequestFullScreen) {
+          el.mozRequestFullScreen();
+        } else if(el.webkitRequestFullScreen) {
+          el.webkitRequestFullScreen();
+        }
+      }
+
+      var cancelFull = function() {
+        if(document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if(document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if(document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+
+      var inFullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+      
+      if (inFullScreen)
+        cancelFull()
+      else
+        goFull(document.getElementById('container'))
+    }
 
 });
