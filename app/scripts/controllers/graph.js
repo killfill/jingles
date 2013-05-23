@@ -576,7 +576,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
         })
 
-
     var resizeForceLayout = function() {
       forceLayout && forceLayout
         .size([$('svg').width(), $('svg').height()])
@@ -610,7 +609,33 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         d3.values($scope.vmsHash).forEach(function(vm) {
             howl.leave(vm.uuid + '-metrics');
         })
+
+        poll && clearInterval(poll);
     });
+
+    //Polling sucks, but if we want to show new Vms were creating there is still no other choise.
+    //Disabled by default.. :P
+    var pollForNewVms = function() {
+      wiggle.vms.list(function(ids) {
+        ids.forEach(function(id) {
+          if ($scope.vmsHash[id]) return;
+
+          wiggle.vms.get({id: id}, function(res) {
+            $scope.vmsHash[id] = res
+
+            buildVms()
+            setupForceLayout()
+
+            howl.join(id)
+            howl.join(id + '-metrics')
+          })
+
+        })
+      })
+    }
+
+    var poll = Config.newVmPolling && setInterval(pollForNewVms, Config.newVmPolling * 1000)
+
     /* Could make the load incremental with something like this, if there are too many vms
     $scope.$watch('hypers.length', buildHypers)
     $scope.$watch('vms.length', function() {

@@ -26,6 +26,9 @@ Config = {
     */
     datasets: 'datasets.at',
 
+     /* Polling interval in seconds for checking if there is a new VM */
+     newVmPolling: false,
+
      /* Time in seconds to wait to show the force stop button for the VM's */
      timeForceButton: 10,
 
