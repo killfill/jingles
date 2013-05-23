@@ -417,7 +417,6 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         sel.call(updateVms)
 
         sel.append('circle')
-            .attr('class', 'highlight')
             .attr('r', 8)
             .attr('stroke', 'green')
             .attr('fill', 'none')
@@ -427,6 +426,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                 .style('stroke-opacity', 0)
                 .style('stroke-width', 5)
                 .remove()
+
     }
 
     /* VM status updated: stopped, started, etc. */
