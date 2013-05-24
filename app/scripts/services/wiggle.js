@@ -121,15 +121,21 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
 
     /* Gets with cache! */
     var cacheObj = $cacheFactory('fifoCache');
+    services.datasets.clearCache = function(id) {
+        cacheObj.remove(endpoint + 'datasets/' + id)
+    }
     services.datasets.get = function(obj, success, error) {
         return $http.get(endpoint + 'datasets/' + obj.id, {cache: cacheObj})
-            .success(success)
+            .success(function(res) {
+              //If the dataset is not 100% ready, do not cache it.
+              success(res)
+              if (res.imported === 1)
+                return;
+              services.datasets.clearCache(obj.id)
+            })
             .error(function(data) {
                 error && error(data)
             })
-    }
-    services.datasets.clearCache = function(id) {
-        cacheObj.remove(endpoint + 'datasets/' + id)
     }
     services.packages.get = function(obj, success, error) {
         return $http.get(endpoint + 'packages/' + obj.id, {cache: true})
