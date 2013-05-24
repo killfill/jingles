@@ -287,57 +287,63 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
 
     /* Go and get the data */
     var getData = function() {
-        wiggle.hypervisors.list(function(ids) {
 
-            ids.length > 0 && status.update('Loading hypervisors', {total: ids.length})
-            ids.forEach(function(id) {
-                wiggle.hypervisors.get({id: id}, function(res) {
+      wiggle.hypervisors.list(function(ids) {
 
-                    status.update('Loading hypervisors', {add: 1})
-                    $scope.hypersHash[res.name] = res
+        var count = ids.length
+        var hyperResponse = function(res) {
+          if (res) //if no res, its the error callback
+            $scope.hypersHash[res.name] = res
+          status.update('Loading hypervisors', {add: 1})
+          if (--count < 1)
+            loadVms()
+        }
 
-                    //Load vms after hypers, so we can draw links and calculate force layout
-                    if (ids.length == Object.keys($scope.hypersHash).length)
-                        loadVms()
-                })
-            })
+        ids.length > 0 && status.update('Loading hypervisors', {total: ids.length})
+
+        ids.forEach(function(id) {
+          wiggle.hypervisors.get({id: id}, hyperResponse, hyperResponse)
         })
+      })
 
-        var loadVms = function() {
-            wiggle.vms.list(function(ids) {
-                ids.length > 0 && status.update('Loading machines', {total: ids.length})
+      var loadVms = function() {
+          wiggle.vms.list(function(ids) {
 
-                ids.forEach(function(id) {
-                    wiggle.vms.get({id: id}, function(res) {
+            var count = ids.length
+            var vmResponse = function(res) {
+              if (res) //if no res, its the error callback
+                $scope.vmsHash[res.uuid] = res
+              status.update('Loading machines', {add: 1})
+              if (--count < 1)
+                buildWorld()
+            }
 
-                        status.update('Loading machines', {add: 1})
-                        $scope.vmsHash[id] = res
+            ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
-                        if (ids.length == Object.keys($scope.vmsHash).length)
-                            buildWorld()
-                    })
-                })
-            })    
-        }
-
-        var buildWorld = function() {
-            /* Scale based on vms, not packages, there probably will be vms without packages.. */
-            var minMax = d3.extent(d3.values($scope.vmsHash), function(d) {return d.config.ram})
-
-            //Use square scale, becouse logo is square ~ ram.. :P
-            $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 40])
-
-            buildHypers()
-            buildVms()
-
-            d3.values($scope.vmsHash).forEach(function(vm) {
-                //if (vm.uuid == '9e09239b-4001-4760-805b-8b2d3ad0a6e2') //kvm
-                //if (vm.uuid == 'e7adb1b5-8124-4413-b5c8-4eef45a158ab') //zone
-                howl.join(vm.uuid + '-metrics')
+            ids.forEach(function(id) {
+                wiggle.vms.get({id: id}, vmResponse, vmResponse)
             })
+          })    
+      }
 
-            setupForceLayout()
-        }
+      var buildWorld = function() {
+          /* Scale based on vms, not packages, there probably will be vms without packages.. */
+          var minMax = d3.extent(d3.values($scope.vmsHash), function(d) {return d.config.ram})
+
+          //Use square scale, becouse logo is square ~ ram.. :P
+          $scope.vmScale = d3.scale.sqrt().domain(minMax).range([25, 40])
+
+          buildHypers()
+          buildVms()
+
+          d3.values($scope.vmsHash).forEach(function(vm) {
+              //if (vm.uuid == '9e09239b-4001-4760-805b-8b2d3ad0a6e2') //kvm
+              //if (vm.uuid == 'e7adb1b5-8124-4413-b5c8-4eef45a158ab') //zone
+              howl.join(vm.uuid + '-metrics')
+          })
+
+          setupForceLayout()
+      }
         
     }
 
