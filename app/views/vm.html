@@ -275,24 +275,24 @@
         </table>
       </div>
       <div class="tab-pane" id="imaging">
-        <div ng-hide="(snapshots|hash2array).length>0">
-          Before creating a new image, please take a snapshot of the VM.
-        </div>
-        <div ng-show="(snapshots|hash2array).length>0">
+        <div>
           <p>
             <span>
-              Create a new image from a VM in 3 steps:
+              To create a new image follow this steps:
               <ol>
-                <li>Execute <code>sm-prepare-image</code> inside the vm</li>
-                <li>Fill the form</li>
-                <li>Choose the snapshot you want to work with</li>
+                <li>Make sure everything is working fine on the vm</li>
+                <li>Execute <code>sm-prepare-image</code> to make the vm image-ready</li>
+                <li ng-show='(snapshots|hash2array).length>0'>Create a snapshot of the vm</li>
+                <li ng-hide='(snapshots|hash2array).length>0'><strong>Create a snapshot of the vm</strong></li>
+                <li>Set the data of the image, filling the form</li>
+                <li>Choose the snapshot you want to base the image on</li>
               </ol>
-                Then, wait until the image is ready, the <a href='#/datasets'>datasets</a> page will reflect that state.
-              More info <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here</a>
+                Then, wait until the image is ready, the <a href='#/datasets'>datasets</a> page will reflect that state. After that, a new vm could be created with the new image.
+              More info <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here</a>.
             </span>
             <br/>
           </p>
-          <div>
+          <div ng-show='(snapshots|hash2array).length>0'>
             <h3>Form</h3>
             <dl class='dl-horizontal'>
               <dt>Name</dt>
@@ -308,7 +308,7 @@
               </dd>
             </dl>
           </div>
-          <div>
+          <div ng-show='(snapshots|hash2array).length>0'>
             <h3>Snapshots</h3>
             <table class="table table-condensed table-hover pull-left">
               <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">

@@ -4,7 +4,7 @@
       Create a network called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='name' autofocus>
     </div>
   </div>
-  <button class='btn btn-small btn-success pull-right' ng-show='name && tag && network && netmask && gateway && first && last' ng-click='create_network()'>Create</button>
+  <button class='btn btn-success pull-right' ng-disabled='!(name && tag && network && netmask && gateway && first && last)' ng-click='create_network()'>Create</button>
 
   <div class="span5 thumbnail">
     <div id="create-networks-form" class="form-horizontal" novalidate="novalidate">
