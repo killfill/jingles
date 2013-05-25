@@ -7,7 +7,7 @@
 		</div>
 	</div>
 
-	<button class='btn btn-small btn-success pull-right' ng-show='alias && selectedDataset && selectedPackage' ng-click='create_machine()'>Create</button>
+	<button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()'>Create</button>
 
 	<div class="span5">
 		<div class="thumbnail">
