@@ -42,7 +42,10 @@
                             <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
                             {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}
                       </td>
-                      <td ng-show="columns[3].visible">{{vm._ips}}</td>
+                      <td ng-show="columns[3].visible">
+                        <span ng-repeat="net in vm.config.networks">
+                          <a target="_new" href="http://{{net.ip}}">{{net.ip}}</a>
+                          {{($last && ' ') || ', '}}</span></td>
                       <td ng-show="columns[4].visible">{{vm._package.name}}</td>
                       <td class='memory'ng-show="columns[5].visible">{{vm.config.ram | Mbytes}}</td>
                       <td ng-show="columns[6].visible" jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
