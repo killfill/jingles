@@ -1,30 +1,16 @@
 'use strict';
 
-
-fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status, user) {
 
     $scope.setTitle('Machine details')
     $scope.force = false;
     var uuid = $routeParams.uuid;
+    var inc_version = function inc_version(v) {
+        var a = v.split('.').map(function(e) {return parseInt(e)});
+        a[a.length - 1] = a[a.length - 1] + 1;
+        return a.join(".");
+    }
 
-    /* Get the all the packages */
-    $scope.packages = {};
-    wiggle.packages.list(function(res) {
-        res.forEach(function(pid) {
-            $scope.packages[pid] = {
-                name: pid,
-                id: pid
-            };
-            wiggle.packages.get({id: pid}, function(pkg) {
-                $scope.packages[pid] = pkg;
-
-                /* Additional fields GET does not provide */
-                $scope.packages[pid].id = pid;
-                $scope.packages[pid].vcpus = pkg.cpu_cap/100;
-                $scope.packages[pid].cpu_shares = pkg.ram;
-            });
-        });
-    });
 
     var throughtput_chart = new MetricsGraph("throughput", {
         unit: "KB/s",
@@ -106,7 +92,6 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
 
     var netdata_chart = {};
 
-    howl.join(uuid + '-metrics');
 
     $scope.$on('$destroy', function() {
         howl.leave(uuid + '-metrics');
@@ -224,7 +209,11 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 $scope.snapshots.push(val)
             })
             $scope.snapshots = $scope.vm.snapshots
-            cb && cb($scope.vm)
+            cb && cb($scope.vm);
+            $scope.img_name = $scope.vm.config.alias;
+            $scope.img_version = inc_version($scope.vm.config._dataset.version);
+            $scope.img_os = $scope.vm.config._dataset.os;
+            $scope.img_desc = $scope.vm.config._dataset.description;
         })
     }
 
@@ -245,7 +234,7 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                        });
     };
 
-    updateVm()
+
 
     $scope.$on('state', function(e, msg) {
         $scope.vm.state = msg.message.data
@@ -308,6 +297,44 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                            $scope.vm.config.alias = h.alias;
                        }
                       )
+
+    }
+
+    $scope.primary_nic = function primary_nic(vm, mac) {
+        wiggle.vms.put({id: vm.uuid, controller: 'nics', controller_id: mac}, {primary: true},
+                       function sucess () {
+                           status.success('Primary NIC changed.')
+                       },
+                       function error (data) {
+                           status.error('Error when changing the primary nic. See the history')
+                           console.log(data)
+                       })
+    };
+
+    $scope.remove_nic = function remove_nic(vm, mac) {
+        console.log(vm, mac);
+        wiggle.vms.delete(
+            {id: vm.uuid, controller: 'nics', controller_id: mac},
+            function success() {
+                status.success('NIC ' + mac + ' deleted');
+            },
+            function error(data) {
+                status.error('Error deleting the nic. See your console')
+                console.log(data)
+            })
+    };
+
+    $scope.add_nic = function add_nic(vm, network) {
+        wiggle.vms.save({id: vm.uuid, controller: 'nics'},
+                        {network: network},
+                        function success(data, h) {
+                            status.success('NIC added.');
+                            $('#VMTab a[href="#details"]').tab('show');
+                        },
+                        function error(data) {
+                            status.error('Error creating NIC. See your console')
+                            console.log(data)
+                        });
 
     }
 
@@ -438,4 +465,68 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
                 updateVm();
             });
     }
+    $scope.mk_image = function mk_image(vm, snap) {
+        var config = {
+            name: $scope.img_name,
+            version: $scope.img_version,
+            os: $scope.img_os,
+            description: $scope.img_desc
+        };
+        wiggle.datasets.import(
+            {},
+            {config: config,
+             snapshot: snap,
+             vm: vm},
+            function(r) {
+                howl.join(uuid);
+                status.info('Creating ' + r.name + ' ' + r.version);
+                updateVm();
+            });
+        console.log(vm + "@" + snap, config);
+    }
+
+
+    var init = function() {
+        /* Get the all the packages */
+        $scope.packages = {};
+        wiggle.packages.list(function(res) {
+            res.forEach(function(pid) {
+                $scope.packages[pid] = {
+                    name: pid,
+                    id: pid
+                };
+                wiggle.packages.get({id: pid}, function(pkg) {
+                    $scope.packages[pid] = pkg;
+
+                    /* Additional fields GET does not provide */
+                    $scope.packages[pid].id = pid;
+                    $scope.packages[pid].vcpus = pkg.cpu_cap/100;
+                    $scope.packages[pid].cpu_shares = pkg.ram;
+                });
+            });
+        });
+
+        $scope.networks = {};
+        wiggle.ipranges.list(function(res) {
+            res.forEach(function(pid) {
+                $scope.networks[pid] = {
+                    name: pid,
+                    id: pid
+                };
+                wiggle.ipranges.get({id: pid}, function(pkg) {
+                    $scope.networks[pid] = pkg;
+
+                    /* Additional fields GET does not provide */
+                    $scope.networks[pid].id = pid;
+                });
+            });
+        });
+
+        howl.join(uuid + '-metrics');
+        updateVm()
+    }
+
+    $scope.$on('user_login', init)
+    if (user.logged()) init()
+
 });

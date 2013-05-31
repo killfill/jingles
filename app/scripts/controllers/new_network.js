@@ -25,17 +25,17 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
         }
         if ((gateway & mask) != net ||
             gateway == net) {
-            status.error("Gateway is not in the netork range!");
+            status.error("Gateway is not in the network range!");
             return 1;
         }
         if ((first & mask) != net ||
             first == net) {
-            status.error("First is not in the netork range!");
+            status.error("First is not in the network range!");
             return 1;
         }
         if ((last & mask) != net ||
             last == net) {
-            status.error("Last is not in the netork range!");
+            status.error("Last is not in the network range!");
             return 1;
         }
         if (first > last) {
@@ -43,7 +43,7 @@ fifoApp.controller('NewNetworkCtrl', function($scope, $http, $location, howl, wi
             return 1;
         }
         if (first <= gateway && gateway <= last) {
-            status.error("The gateway is inbetwen first and last, this can't work!");
+            status.error("The gateway is in between first and last, this can't work!");
             return 1;
         }
         if (gateway == bc) {

@@ -7,7 +7,7 @@
 		</div>
 	</div>
 
-	<button class='btn btn-small btn-success pull-right' ng-show='alias && selectedDataset && selectedPackage' ng-click='create_machine()'>Create</button>
+	<button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()'>Create</button>
 
 	<div class="span5">
 		<div class="thumbnail">
@@ -23,13 +23,19 @@
 				<tr class='clickable'
 					ng-repeat="d in datasets | filter:{imported: 1} | orderBy: ['-os', 'name', '-version']"
 					ng-click='click_dataset(d)'
+					ng-show='showAllVersions || latestDatasets[d.name] == d.version'
 					ng-class="selectedDataset.dataset==d.dataset && 'success'">
 					<td><img jq-run='tooltip' ng-src="images/logos/{{d.os || 'unknown'}}.png" class='oslogo' /></td>
-					<td class='nowrap'><strong title='{{d.description}}' jq-run='tooltip'>{{d.name}}</strong></td>
+					<td class="nowrap {{latestDatasets[d.name] == d.version && 'strong' || ''}}" title='{{d.description}}' jq-run='tooltip'>{{d.name}}</td>
 					<td>{{d.version}}</td>
 				</tr>
 			</table>
 
+			<label class="checkbox pull-right light">
+				<input type='checkbox' ng-model='showAllVersions'>
+				Show old versions
+			</label>
+			<br/>
 		</div>
 	</div>
 	<div class="span5">
@@ -79,7 +85,7 @@
             <div class="accordion" id="optional">
               <div class="accordion-groupp">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions">
-                    Enable: Advanced Parameters
+                    Advanced Parameters
                   </a>
                 <div id="toggleOptions" class="collapse">
                   <div class="accordion-inner">

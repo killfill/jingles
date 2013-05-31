@@ -1,3 +1,4 @@
+app/tmp
 *.version
 app/scripts/config.js
 pkg/build-info

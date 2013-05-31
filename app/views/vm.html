@@ -75,12 +75,13 @@
     </p>
   </span>
 
-  <div class="tabbable tabs-top" ng-show='vm.config'>
+  <div class="tabbable tabs-top" ng-show='vm.config' id="VMTab">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#performance" data-toggle="tab">Performance</a></li>
       <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
-      <li><a href="#resize" data-toggle="tab">Resize</a></li>
+      <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
+      <li><a href="#resize" data-toggle="tab">Change</a></li>
       <li><a href="#history" data-toggle="tab">History</a></li>
       <li><a href="#notes" data-toggle="tab">Notes</a></li>
     </ul>
@@ -165,14 +166,29 @@
             <dl class="dl-horizontal">
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
               <dt>Info</dt>
-                <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
-                <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
+              <dd ng-show='vm.config._dataset'>{{vm.config._dataset.description}}</dd>
+              <dd ng-hide='vm.config._dataset'><button ng-click='import_dataset()' class='btn btn-small icon-download-alt' title='Import dataset for more info' jq-run='tooltip'>Import</button></dd>
             </dl>
           </div>
 
           <div class="box box-small pull-left" ng-repeat='net in vm.config.networks'>
             <div class="header">
               Network <span class="badge badge-info">{{net.nic_tag}}</span>
+              <div class="btn-group pull-right">
+                <button ng-click="remove_nic(vm, net.mac)"
+                        ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
+                        class="btn btn-mini"
+                        title='Delete' jq-run='tooltip'>
+                  <i class='icon-trash'></i>
+                </button>
+                <button ng-click="primary_nic(vm, net.mac)"
+                        ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
+                        ng-show="!net.primary"
+                        class="btn btn-mini"
+                        title="Make primary" jq-run="tooltip">
+                  <i class="icon-check"></i>
+                </button>
+              </div>
             </div>
 
             <dl class="dl-horizontal">
@@ -243,7 +259,8 @@
         </p>
         <table class="table table-condensed table-hover pull-left">
           <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
-            <td><strong>{{snap.comment}}</strong></td>
+            <td title='{{snap.uuid}}' jq-run='tooltip'><strong>{{snap.comment}}</strong></td>
+            <td class='nowrap light'>{{snap.size | bytes}}</td>
             <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
             <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
             <td class='nowrap'>
@@ -257,8 +274,58 @@
           </tr>
         </table>
       </div>
-      <div class="tab-pane" id="resize">
+      <div class="tab-pane" id="imaging">
+        <div>
+          <p>
+            <span>
+              To create a new image follow this steps:
+              <ol>
+                <li>Make sure everything is working fine on the vm</li>
+                <li>Execute <code>sm-prepare-image</code> to make the vm image-ready</li>
+                <li ng-show='(snapshots|hash2array).length>0'>Create a snapshot of the vm</li>
+                <li ng-hide='(snapshots|hash2array).length>0'><strong>Create a snapshot of the vm</strong></li>
+                <li>Set the data of the image, filling the form</li>
+                <li>Choose the snapshot you want to base the image on</li>
+              </ol>
+                Then, wait until the image is ready, the <a href='#/datasets'>datasets</a> page will reflect that state. After that, a new vm could be created with the new image.
+              More info <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here</a>.
+            </span>
+            <br/>
+          </p>
+          <div ng-show='(snapshots|hash2array).length>0'>
+            <h3>Form</h3>
+            <dl class='dl-horizontal'>
+              <dt>Name</dt>
+              <dd>
+                <input type='text' class='span5' maxlength='25' ng-model="img_name"/>
+                <input type='text' class='span1'   maxlength='10' ng-model="img_version" placeholder='version'/>
+                <input type='text' class='span2'  ng-model="img_os" placeholder='os'/>
+              </dd>
+              </dd>
+              <dt>Description</dt>
+              <dd>
+                <input type='text' ng-model="img_desc" class='span8'/>
+              </dd>
+            </dl>
+          </div>
+          <div ng-show='(snapshots|hash2array).length>0'>
+            <h3>Snapshots</h3>
+            <table class="table table-condensed table-hover pull-left">
+              <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
+                <td style='width: 40%;'><strong>{{snap.comment}}</strong></td>
+                <td class='nowrap light'>{{snap.timestamp/1000 | date:'medium'}}</td>
+                <td class='nowrap light'>{{snap.timestamp/1000 | fromNow}}</td>
+                <td class='nowrap'>
+                  <i ng-click="mk_image(vm.uuid, snap.uuid)" jq-run="tooltip" title="create image" class="icon-hdd clickable"></i>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+      </div>
 
+      <div class="tab-pane" id="resize">
         <div class="box span4">
           <div class="header">
             Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
@@ -272,14 +339,25 @@
                     ng-model="new_pkg"
                     ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
             </select>
+            <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
+                    ng-disabled="vm.mdata('locked')"
+                    ng-show="packages[new_pkg].id != vm['package']"
+                    ng-click="update()">change</button>
           </div>
           <package pkg='packages[new_pkg]'></package>
         </div>
-        <div class="span8">
-          <button style='margin-bottom: 10px;' class='btn btn-success pull-right'
+        <div class="box span4">
+          <div class="header">
+            Add Network Interface
+          </div>
+          <select ng-model="new_net"
+                  ng-options="net.id as net.name for net in networks | hash2array | orderBy: ['name']">
+          </select>
+
+          <button style='margin-bottom: 10px;' class='btn btn-success'
                   ng-disabled="vm.mdata('locked')"
-                  ng-show="packages[new_pkg].id != vm['package']"
-                  ng-click="update()">change</button>
+                  ng-show="networks[new_net]"
+                  ng-click="add_nic(vm, new_net)">add</button>
         </div>
       </div>
 

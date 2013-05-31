@@ -107,6 +107,10 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
     })
+    .when('/graph', {
+        templateUrl: 'views/graph.html',
+        controller: 'GraphCtrl'
+    })
 
     .otherwise({
         redirectTo: '/status'
@@ -120,7 +124,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
     /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
     delete $http.defaults.headers.common['X-Requested-With']
 
-    var token = $cookies["X-Snarl-Token"];
+    var token = $cookies["x-snarl-token"];
 
     if (token)
         wiggle.sessions.get({id: token},

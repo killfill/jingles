@@ -1,20 +1,11 @@
 'use strict';
 
-fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
+fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status, user) {
     $scope.setTitle('Hypervisor details')
 
     var uuid = $routeParams.uuid
     $scope.characteristics = []
 
-    wiggle.hypervisors.get({id: uuid}, function(res) {
-        $scope.hyper = res;
-        if (res.characteristics) {
-            Object.keys(res.characteristics).forEach(function(k) {
-                $scope.characteristics.push({name: k, value: res.characteristics[k]})
-            })
-        }
-
-    });
 
     var size = 30;
     var usr = [];
@@ -128,5 +119,20 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
             return newVal.value != oldVal.value
         })
     }
+
+    var init = function() {
+        wiggle.hypervisors.get({id: uuid}, function(res) {
+            $scope.hyper = res;
+            if (res.characteristics) {
+                Object.keys(res.characteristics).forEach(function(k) {
+                    $scope.characteristics.push({name: k, value: res.characteristics[k]})
+                })
+            }
+
+        });
+    }
+    
+    $scope.$on('user_login', init)
+    if (user.logged()) init()
 
 })
