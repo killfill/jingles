@@ -55,8 +55,14 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
     }
 
     $scope.click_dataset = function(dataset) {
-        $scope.selectedDataset = dataset
-        $scope.selectedNetworks.length = 0
+
+      /* Put a default machine alias name */
+      if (!$scope.alias || $scope.alias == $scope.selectedDataset.name)
+        $scope.alias = dataset.name
+
+      $scope.selectedDataset = dataset
+      $scope.selectedNetworks.length = 0
+
     }
 
     $scope.click_network = function(network) {
@@ -65,7 +71,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
         /* Toggle off */
         if (idx>-1)
             return $scope.selectedNetworks.splice(idx, 1)
-        
+
         /* Limit nr of selected networks based on the database nr of networks */
         if ($scope.selectedNetworks.length >= $scope.selectedDataset.networks.length)
             $scope.selectedNetworks.splice(idx, 1)
