@@ -18,14 +18,14 @@ fifoApp.factory('datasetsat', function($resource, $http) {
              * mutable variables. There seems to be no way to not
              * send a header for just one request or service or resource ...
              */
-            var token = $http.defaults.headers.common['X-Snarl-Token'];
-            delete $http.defaults.headers.common['X-Snarl-Token'];
+            var token = $http.defaults.headers.common['x-snarl-token'];
+            delete $http.defaults.headers.common['x-snarl-token'];
             var res = $http.get(endpoint + resource)
                 .success(cb)
                 .error(function(data) {
                     error && error(data)
                 });
-            $http.defaults.headers.common['X-Snarl-Token'] = token;
+            $http.defaults.headers.common['x-snarl-token'] = token;
 
             return res
         }
@@ -33,14 +33,14 @@ fifoApp.factory('datasetsat', function($resource, $http) {
 
     /* Gets with cache! */
     services.datasets.get = function(obj, success, error) {
-        var token = $http.defaults.headers.common['X-Snarl-Token'];
-        delete $http.defaults.headers.common['X-Snarl-Token'];
+        var token = $http.defaults.headers.common['x-snarl-token'];
+        delete $http.defaults.headers.common['x-snarl-token'];
         res = $http.get(endpoint + 'datasets/' + obj.id, {cache: true})
             .success(success)
             .error(function(data) {
                 error && error(data)
             });
-        $http.defaults.headers.common['X-Snarl-Token'] = token;
+        $http.defaults.headers.common['x-snarl-token'] = token;
         return res;
     }
     return services

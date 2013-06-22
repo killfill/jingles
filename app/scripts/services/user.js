@@ -43,7 +43,7 @@ fifoApp.factory('user', function($rootScope, $compile, $cookies, $http, wiggle, 
 
             /* Access token */
             $cookies["x-snarl-token"] = sessionData.session;
-            $http.defaults.headers.common['X-Snarl-Token'] = sessionData.session;
+            $http.defaults.headers.common['x-snarl-token'] = sessionData.session;
 
             /* Create a user object based on the sessionData, so later we can use loggedUser.mdata_set */
             $rootScope.loggedUser = new wiggle.users(sessionData)
