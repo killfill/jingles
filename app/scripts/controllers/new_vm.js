@@ -57,7 +57,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
     $scope.click_dataset = function(dataset) {
 
       /* Put a default machine alias name */
-      if (!$scope.alias || $scope.alias == $scope.selectedDataset.name)
+      if (!$scope.alias || ($scope.selectedDataset && $scope.alias == $scope.selectedDataset.name))
         $scope.alias = dataset.name
 
       $scope.selectedDataset = dataset
