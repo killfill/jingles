@@ -41,28 +41,38 @@ fifoApp.directive('package', function() {
             vmconfig: '=',
             title: '@title'
         },
-        template: "<dl class='dl-horizontal'>" + 
-                "<dt>CPU</dt>" + 
-                    "<dd ng-show='!vmconfig'>Share: {{pkg.ram}}<br/>Cap: {{pkg.cpu_cap}}</dd>" +
-                    "<dd ng-show='vmconfig.vcpus'>{{vmconfig.vcpus}}</dd>" +
-                    "<dd ng-hide='!vmconfig || vmconfig.vcpus'>" +
-                        "{{vmconfig.cpu_shares && 'Share: ' + vmconfig.cpu_shares}}</br>" +
-                        "{{vmconfig.cpu_cap && 'Cap: ' + vmconfig.cpu_cap}}</dd>" +
-                "<dt>Ram</dt>" +
-                    "<dd class='memory'>{{(pkg.ram || vmconfig.ram) | Mbytes}}</dd>" +
-                "<dt>Disk</dt>" +
-                    "<dd class='memory' ng-hide='vmconfig.disks'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
-                    "<dd class='memory' ng-repeat='disk in vmconfig.disks'><span title='{{disk.model}} {{disk.bool && \"(booteable)\" || \"\"}}' jq-run='tooltip'>{{disk.size | Mbytes}}</span></dd>" +
-                "<dt ng-show='vmconfig.zfs_io_priority'>IO Prio</dt>" +
-                    "<dd class='memory' ng-show='vmconfig.zfs_io_priority'>{{vmconfig.zfs_io_priority}}</dd>" +
-            "</dl>"    
-        }
+        template: "<dl class='dl-horizontal'>" +
+            "<dt>CPU</dt>" +
+            "<dd ng-show='!vmconfig'>Share: {{pkg.ram}}<br/>Cap: {{pkg.cpu_cap}}</dd>" +
+            "<dd ng-show='vmconfig.vcpus'>{{vmconfig.vcpus}}</dd>" +
+            "<dd ng-hide='!vmconfig || vmconfig.vcpus'>" +
+            "{{vmconfig.cpu_shares && 'Share: ' + vmconfig.cpu_shares}}</br>" +
+            "{{vmconfig.cpu_cap && 'Cap: ' + vmconfig.cpu_cap}}</dd>" +
+            "<dt>Ram</dt>" +
+            "<dd class='memory'>{{(pkg.ram || vmconfig.ram) | Mbytes}}</dd>" +
+            "<dt>Disk</dt>" +
+            "<dd class='memory' ng-hide='vmconfig.disks'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
+            "<dd class='memory' ng-repeat='disk in vmconfig.disks'><span title='{{disk.model}} {{disk.bool && \"(booteable)\" || \"\"}}' jq-run='tooltip'>{{disk.size | Mbytes}}</span></dd>" +
+            "<dt ng-show='vmconfig.zfs_io_priority'>IO Prio</dt>" +
+            "<dd class='memory' ng-show='vmconfig.zfs_io_priority'>{{vmconfig.zfs_io_priority}}</dd>" +
+            "</dl>"
+    }
 })
 
-
-
-
-
+fifoApp.directive('help', function() {
+    return {
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: {
+            link: '@link'
+        },
+        template:
+        '<div class="pull-right">' +
+            '  <a target="_new" href="{{link}}"><i class="icon-question-sign"></i></a>' +
+            '</div>'
+    }
+})
 
 fifoApp.directive('columnSelector', function($compile) {
     return {

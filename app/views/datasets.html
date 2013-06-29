@@ -1,3 +1,4 @@
+<help link="http://project-fifo.net/display/PF/Datasets"></help>
 <div class="tab-pane" id="datasets">
   <div class="row-fluid">
     <div class="span12">
@@ -9,47 +10,47 @@
         <div class="tab-content">
           <div class="tab-pane active" id="installed">
             <div class="row-fluid">
-                <table class="table table-condensed table-hover">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Name</th>
-                      <th>Description</th>
-                      <th style='min-width: 80px'>Ready</th>
-                      <th>Type</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
-                      <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
+              <table class="table table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th style='min-width: 80px'>Ready</th>
+                    <th>Type</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
+                    <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
 
-                      <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
+                    <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
-                      <td>{{data.description}}</td>
-                      <td ng-show='!data.imported && data.imported !=0'>
-                        <button class='btn btn-small icon-download-alt'
-                            ng-hide="data.imported == 1"
-                            title='You need to download this dataset with FiFo'
-                            jq-run='tooltip'
-                            ng-click='import(data.dataset)'>Import</button>
-                      </td>
-                      <td ng-show='data.imported > -1'>
-                        <i ng-hide="data.imported < 1" class="icon-ok" style=""></i>
-                        <div ng-show="data.imported < 1" class="progress progress-striped active">
-                            <div class="bar" style="width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
-                        </div>
-                      </td>
-                      <td class='light'>{{data.type}}</td>
-                      <td><i ng-click="delete(data)" jq-run="tooltip" class="icon-remove-sign clickable" title="delete"></i></td>
-                    </tr>
-                  </tbody>
-                </table>
+                    <td>{{data.description}}</td>
+                    <td ng-show='!data.imported && data.imported !=0'>
+                      <button class='btn btn-small icon-download-alt'
+                              ng-hide="data.imported == 1"
+                              title='You need to download this dataset with FiFo'
+                              jq-run='tooltip'
+                              ng-click='import(data.dataset)'>Import</button>
+                    </td>
+                    <td ng-show='data.imported > -1'>
+                      <i ng-hide="data.imported < 1" class="icon-ok" style=""></i>
+                      <div ng-show="data.imported < 1" class="progress progress-striped active">
+                        <div class="bar" style="width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
+                      </div>
+                    </td>
+                    <td class='light'>{{data.type}}</td>
+                    <td><i ng-click="delete(data)" jq-run="tooltip" class="icon-remove-sign clickable" title="delete"></i></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="tab-pane" id="datasetsat">
             <div class="pane-nav">
-                Datasets are hosted and managed by <a href="http://{{endpoint}}">{{endpoint}}</a>
+              Datasets are hosted and managed by <a href="http://{{endpoint}}">{{endpoint}}</a>
             </div>
             <table class="table table-condensed table-hover">
               <thead>
