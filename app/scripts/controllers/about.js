@@ -4,7 +4,7 @@ fifoApp.controller('AboutCtrl', function($scope, wiggle, $http) {
     $scope.setTitle('About')
 
     var opts = {transformRequest:function(a,b){
-        delete b()["X-Snarl-Token"];
+        delete b()["x-snarl-token"];
     }};
 
     var base = "http://release.project-fifo.net/pkg";
