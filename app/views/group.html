@@ -19,17 +19,17 @@
 
   <div class="tabbable tabs-top">
     <ul class="nav nav-tabs">
-      <tab-head section="groups" uuid="{{group.uuid}}" tab="details">Details</tab-head>
-      <tab-head  section="groups" uuid="{{group.uuid}}" tab="permisisons">Permissions</tab-head>
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
     </ul>
     <div class="tab-content">
-      <tab-body section="groups" uuid="{{group.uuid}}" tab="details">
+      <div class="tab-pane active" id="details">
         <table class='table table-bordered'>
           <tr><th>Name</th><td><b>{{group.name}}</b></td></tr>
           <tr><th>UUID</th><td><b>{{group.uuid}}</b></td></tr>
         </table>
-      </tab-body>
-      <tab-body section="groups" uuid="{{group.uuid}}" tab="permisisons">
+      </div>
+      <div class="tab-pane" id="permisisons">
         <select ng-model="perm1" ng-change="perm_change(1)">
           <option value="...">Everything</option>
           <option value="cloud">Cloud</option>
@@ -59,7 +59,7 @@
             <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
           </tr>
         </table>
-      </tab-body>
+      </div>
     </div>
   </div>
 </div>
