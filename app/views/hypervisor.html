@@ -9,13 +9,13 @@
 
   <div class="tabbable tabs-top">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-      <li><a href="#performance" data-toggle="tab">Performance</a></li>
-      <li><a href="#characteristics" data-toggle="tab">Characteristics</a></li>
+      <tab-head section="hypervisors" uuid="{{hyper.name}}" tab="details">Details</tab-head>
+      <tab-head section="hypervisors" uuid="{{hyper.name}}" tab="performance">Performance</tab-head>
+      <tab-head section="hypervisors" uuid="{{hyper.name}}" tab="characteristics">Characteristics</tab-head>
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane active" id="details">
+      <tab-body section="hypervisors" uuid="{{hyper.name}}" tab="details">
         <div class="row-fluid">
 
 
@@ -145,9 +145,9 @@
             </dl>
           </div>
         </div>
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="performance">
+      <tab-body section="hypervisors" uuid="{{hyper.name}}" tab="performance">
         <div class="row-fluid">
 
           <div class="perfbox pull-left">
@@ -158,9 +158,9 @@
             <div id="cpuusage" class="metric"></div>
           </div>
         </div>
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="characteristics">
+      <tab-body section="hypervisors" uuid="{{hyper.name}}" tab="characteristics">
         <p>
           Characteristics can be used when <a href="#/packages/new">creating packages</a>.
           <button class="btn btn-success pull-right" ng-click="add()">+</button>
@@ -178,7 +178,7 @@
             <td style='width: 40px;'><button class='btn btn-danger pull-right' ng-click='del(ch.name, $index)'>-</button></td>
           </tr>
         </table>
-      </div>
+      </tab-body>
     </div>
   </div>
 </div>
