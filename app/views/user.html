@@ -20,13 +20,13 @@
 
   <div class="tabbable tabs-top">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
-      <li><a href="#groups" data-toggle="tab">Groups</a></li>
-      <li><a href="#ssh_keys" data-toggle="tab">SSH Keys</a></li>
+      <tab-head section="users" uuid="{{user.uuid}}" tab="details">Details</tab-head>
+      <tab-head section="users" uuid="{{user.uuid}}" tab="permisisons">Permissions</tab-head>
+      <tab-head section="users" uuid="{{user.uuid}}" tab="groups">Groups</tab-head>
+      <tab-head section="users" uuid="{{user.uuid}}" tab="keys">SSH Keys</tab-head>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane active" id="details">
+      <tab-body section="users" uuid="{{user.uuid}}" tab="details">
 
         <div class="userbox">
 
@@ -52,8 +52,8 @@
           </div>
         </div>
 
-      </div>
-      <div class="tab-pane" id="permisisons">
+      </tab-body>
+      <tab-body section="users" uuid="{{user.uuid}}" tab="permisisons">
         <select ng-model="perm1" ng-change="perm_change(1)">
           <option value="...">Everything</option>
           <option value="cloud">Cloud</option>
@@ -84,8 +84,8 @@
             <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
           </tr>
         </table>
-      </div>
-      <div class="tab-pane" id="groups">
+      </tab-body>
+      <tab-body section="users" uuid="{{user.uuid}}" tab="groups">
         <select id="join_group" ng-model='group'>
           <option ng-repeat="group in groups | hash2array | orderBy: name" value="{{group.uuid}}">{{group.name}}</option>
         </select>
@@ -102,12 +102,12 @@
             <td><a ng-click="leave_group(group.uuid)">delete</a></td>
           </tr>
         </table>
-      </div>
-      <div class="tab-pane" id="ssh_keys">
+      </tab-body>
+      <tab-body section="users" uuid="{{user.uuid}}" tab="keys">
         <p>SSH Keys will be used when creating new machines.</p>
         <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
         <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Save</button></p>
-      </div>
+      </tab-body>
     </div>
   </div>
 </div>

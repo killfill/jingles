@@ -17,7 +17,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="dt in dtraces | hash2array">
-            <td><strong><a href="#/dtrace/{{dt.uuid}}">{{dt.name}}</a></strong></td>
+            <td><strong><a href="#/dtrace/{{dt.uuid}}/edit">{{dt.name}}</a></strong></td>
             <td>{{dt.uuid}}</td>
             <td>
               <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>

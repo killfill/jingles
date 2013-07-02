@@ -23,7 +23,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/new_dtrace.html',
         controller: 'NewDtraceCtrl'
     })
-    .when('/dtrace/:uuid', {
+    .when('/dtrace/:uuid/:section', {
         templateUrl: 'views/dtrace.html',
         controller: 'DTraceCtrl'
     })
@@ -39,11 +39,11 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/new_vm.html',
         controller: 'NewVmCtrl'
     })
-    .when('/virtual-machines/:uuid', {
+    .when('/virtual-machines/:uuid/:section', {
         templateUrl: 'views/vm.html',
         controller: 'VmCtrl'
     })
-    .when('/hypervisors/:uuid', {
+    .when('/hypervisors/:uuid/:section', {
         templateUrl: 'views/hypervisor.html',
         controller: 'HypervisorCtrl'
     })
@@ -87,7 +87,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/new_group.html',
         controller: 'NewGroupCtrl'
     })
-    .when('/groups/:uuid', {
+    .when('/groups/:uuid/:section', {
         templateUrl: 'views/group.html',
         controller: 'GroupCtrl'
     })
@@ -99,7 +99,7 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/new_user.html',
         controller: 'NewUserCtrl'
     })
-    .when('/users/:uuid', {
+    .when('/users/:uuid/:section', {
         templateUrl: 'views/user.html',
         controller: 'UserCtrl'
     })

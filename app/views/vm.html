@@ -77,16 +77,16 @@
 
   <div class="tabbable tabs-top" ng-show='vm.config' id="VMTab">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-      <li><a href="#performance" data-toggle="tab">Performance</a></li>
-      <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
-      <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
-      <li><a href="#resize" data-toggle="tab">Change</a></li>
-      <li><a href="#history" data-toggle="tab">History</a></li>
-      <li><a href="#notes" data-toggle="tab">Notes</a></li>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="details">Details</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="performance">Performance</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="snapshots">Snapshots</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="imaging">Imaging</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="resize">Change</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="history">History</tab-head>
+      <tab-head section="virtual-machines" uuid="{{vm.uuid}}" tab="notes">Notes</tab-head>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane active" id="details">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="details">
         <div class="row-fluid">
 
           <div class="box box-small pull-left">
@@ -207,9 +207,9 @@
             </dl>
           </div>
         </div>
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="performance">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="performance">
         <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
           <div class="header">
             <span class="badge badge-info">Disk IOPS</span>
@@ -241,18 +241,18 @@
           <div id="cpu" class="metric"></div>
         </div>
 
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="history">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="history">
         <table class="table table-condensed table-hover">
           <tr ng-repeat="log in vm.log | orderBy: '-date' ">
             <td><small>{{log.log}}</small></td>
             <td class='nowrap light' title="{{log.date/1000 | date:'medium'}}" jq-run='tooltip'><small>{{log.date/1000 | fromNow}}</small></td>
           </tr>
         </table>
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="snapshots">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="snapshots">
         <p class='pull-right'>
           <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;'>To rollback, please stop the machine</span>
           <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn" jq-run='tooltip' title='Take a new snapshot'><i class='icon-camera'></i> Snapshot</button>
@@ -273,8 +273,8 @@
             </td>
           </tr>
         </table>
-      </div>
-      <div class="tab-pane" id="imaging">
+      </tab-body>
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="imaging">
         <div>
           <p>
             <span>
@@ -287,7 +287,7 @@
                 <li>Set the data of the image, filling the form</li>
                 <li>Choose the snapshot you want to base the image on</li>
               </ol>
-                Then, wait until the image is ready, the <a href='#/datasets'>datasets</a> page will reflect that state. After that, a new vm could be created with the new image.
+              Then, wait until the image is ready, the <a href='#/datasets'>datasets</a> page will reflect that state. After that, a new vm could be created with the new image.
               More info <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here</a>.
             </span>
             <br/>
@@ -300,7 +300,6 @@
                 <input type='text' class='span5' maxlength='25' ng-model="img_name"/>
                 <input type='text' class='span1'   maxlength='10' ng-model="img_version" placeholder='version'/>
                 <input type='text' class='span2'  ng-model="img_os" placeholder='os'/>
-              </dd>
               </dd>
               <dt>Description</dt>
               <dd>
@@ -322,10 +321,9 @@
             </table>
           </div>
         </div>
-        
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="resize">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="resize">
         <div class="box span4">
           <div class="header">
             Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
@@ -359,17 +357,16 @@
                   ng-show="networks[new_net]"
                   ng-click="add_nic(vm, new_net)">add</button>
         </div>
-      </div>
+      </tab-body>
 
-      <div class="tab-pane" id="notes">
+      <tab-body section="virtual-machines" uuid="{{vm.uuid}}" tab="notes">
         <button class="btn btn-success pull-right" ng-click="note('create')">+</button>
         <div class='postit pull-left' ng-repeat='n in notes' jq-run='tooltip' title="{{n.created_at | date:'medium'}}">
           <button class="btn btn-mini pull-right" style='margin-left: 10px' ng-click="note('delete', $index)">x</button>
           {{n.text}}
           <br/><small style='color: black' class='nowrap uuid'>{{n.created_at | fromNow}}</small>
         </div>
-      </div>
-
+      </tab-body>
     </div>
   </div>
 </div>

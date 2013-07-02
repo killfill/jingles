@@ -29,7 +29,49 @@ fifoApp.directive('jqRun', function () {
             };
         }
     };
-});
+})
+    .directive('tabHead', ['$location', function($location) {
+        return {
+            restrict: 'E',
+            transclude: true,
+            replace: true,
+            scope: {
+                'section': '@',
+                'uuid': '@',
+                'tab': '@'
+            },
+            link: function (scope) {
+                scope.match_tab = function (section, uuid, tab) {
+                    return $location.url().match('^/' + section + '/' + uuid + '/' + tab);
+                };
+            },
+            template:
+            '<li ng-class="{active: match_tab(section, uuid, tab)}">' +
+                '<a href="#/{{section}}/{{uuid}}/{{tab}}" ng-transclude></a>' +
+                '</li>'
+        };
+    }])
+    .directive('tabBody', ['$location', function($location) {
+        return {
+            restrict: 'E',
+            transclude: true,
+            replace: true,
+            scope: {
+                'section': '@',
+                'uuid': '@',
+                'tab': '@'
+            },
+            link: function (scope) {
+                scope.match_tab_body = function (section, uuid, tab) {
+                    return $location.url().match('^/' + section + '/' + uuid + '/' + tab);
+                };
+            },
+            template:
+            '<div class="tab-pane" ng-class="{active: match_tab_body(section, uuid, tab)}"ng-transclude>' +
+                '</div>'
+        };
+    }]);
+
 
 fifoApp.directive('package', function() {
     return {
