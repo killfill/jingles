@@ -104,9 +104,33 @@
         </table>
       </div>
       <div class="tab-pane" id="ssh_keys">
-        <p>SSH Keys will be used when creating new machines.</p>
-        <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
-        <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Save</button></p>
+        <div class="fluid-row">
+          <div class="span12">
+            <table class="table table-condensed table-bordered">
+              <tbody>
+                <tr>
+                  <th>Key ID</th>
+                  <th>Key</th>
+                  <th>Delete</th>
+                </tr>
+                <tr ng-repeat="(key_id, key) in user.keys">
+                  <td>{{key_id}}</td>
+                  <td style="word-wrap: break-word; max-width: 64em;">{{key}}</td>
+                  <td><a ng-click="delete_sshkey(key_id)">delete</a></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="fluid-row">
+          <div class="span12">
+
+            <p>SSH Keys will be used when creating new machines.</p>
+            <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
+            <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Add</button></p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

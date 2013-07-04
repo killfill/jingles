@@ -68,6 +68,10 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         $scope.ssh_keys = $scope.user.mdata('ssh_keys')
         $scope.permissions = [];
         $scope.user._groups = {};
+        if ($scope.user.keys.length == 0) {
+            $scope.user.keys = {};
+        };
+
         $scope.user.groups.map(function (gid){
             if ($scope.groups[gid]) {
                 $scope.user._groups[gid] = $scope.groups[gid];
@@ -420,9 +424,29 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
                         );
     };
 
+    $scope.delete_sshkey = function(key) {
+        wiggle.users.delete({id: $scope.user.uuid,
+                             controller: 'keys',
+                             controller_id: key},
+                            function(){
+                                delete $scope.user.keys[key];
+                            });
+    }
     $scope.save_sshkeys = function() {
-        $scope.user.mdata_set({ssh_keys: $scope.ssh_keys})
-        status.info('SSH key saved')
+        var key = $scope.ssh_keys;
+        var key_id = key.split(" ")[2];
+        var o = {};
+        o[key_id] = key;
+        wiggle.users.put({id: $scope.user.uuid,
+                          controller: 'keys'},
+                         o,
+                         function() {
+                             console.log($scope.user.keys);
+                             $scope.user.keys[key_id] = key;
+                             console.log($scope.user.keys);
+                         });
+        //$scope.user.mdata_set({ssh_keys: $scope.ssh_keys})
+        //status.info('SSH key saved')
     }
 
     $scope.init = function() {
