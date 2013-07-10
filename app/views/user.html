@@ -126,7 +126,8 @@
         <div class="fluid-row">
           <div class="span12">
 
-            <p>SSH Keys will be used when creating new machines.</p>
+            <p>SSH Keys will be used when creating new KVM machines. They also will dynamically grant access
+              to SmartOS zones. Based on the console access to the zone.</p>
             <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
             <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Add</button></p>
           </div>
