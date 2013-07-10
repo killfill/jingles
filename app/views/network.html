@@ -1,0 +1,36 @@
+<help link="http://project-fifo.net/display/PF/Networks"></help>
+<div class="tab-pane" ng-show='network.uuid'>
+
+  <div class="row-fluid">
+    <div class="span8">
+      <h3>{{network.name}}</h3>
+    </div>
+    <div class='span4'>
+      <div class="btn-toolbar btn-group pull-right">
+
+        <div ng-show='network.uuid != loggedNetwork.uuid' class="btn-group">
+          <button ng-click="delete()" class="btn" title='Delete' jq-run='tooltip'>
+            <i class='icon-trash'></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <select id="add_iprange" ng-model='iprange'>
+    <option ng-repeat="iprange in ipranges | hash2array | orderBy: name" value="{{iprange.uuid}}">{{iprange.name}}</option>
+  </select>
+  <button ng-click="add_iprange()">Add</button>
+  <table class='table table-condensed table-bordered'>
+    <tr>
+      <th>Name</th>
+      <th>UUID</th>
+      <th>Actions</th>
+    </tr>
+    <tr ng-repeat="iprange in network._ipranges">
+      <td>{{iprange.name}}</td>
+      <td>{{iprange.uuid}}</td>
+      <td><a ng-click="remove_iprange(iprange.uuid)">delete</a></td>
+    </tr>
+  </table>
+</div>

@@ -141,7 +141,7 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             })
         })
 
-        wiggle.ipranges.list(function(ids) {
+        wiggle.networks.list(function(ids) {
 
             if (ids.length<1) {
                 status.error('Please create a new network');
@@ -149,21 +149,11 @@ fifoApp.controller('NewVmCtrl', function($scope, $http, $location, howl, wiggle,
             }
 
             ids.forEach(function(name) {
-                wiggle.ipranges.get({id: name}, function(res) {
-                    var cur = res.current.split(/\./);
-                    var last = res.last.split(/\./);
-                    var c = 0;
-                    var l = 0;
-                    for (var x=0; x<4; x++){
-                        c += Math.pow(256, 3-x)*cur[x];
-                        l += Math.pow(256, 3-x)*last[x];
-                    };
-                    if (c > l) return;
+                wiggle.networks.get({id: name}, function(res) {
                     $scope.networks.push(res)
                     if (!$scope.selectedNetworks)
                         $scope.selectedNetworks = [res]
                 })
-
             })
         })
 

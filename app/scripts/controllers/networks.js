@@ -14,7 +14,7 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
             body: '<p><font color="red">Warning!</font> you are about to delete network <b>' +
                 el.name +"(" + el.uuid + ")</b> Are you 100% sure you really want to do this?</p>"
         }, function() {
-            wiggle.ipranges.delete({id: el.uuid}, function success (data, h) {
+            wiggle.networks.delete({id: el.uuid}, function success (data, h) {
                 delete $scope.networks[el.uuid]
                 status.success(el.name + ' deleted')
             }, function error(data) {
@@ -27,23 +27,13 @@ fifoApp.controller('NetworksCtrl', function($scope, wiggle, status, modal) {
 
     $scope.show = function() {
 
-        wiggle.ipranges.list(function (ids) {
-
+        wiggle.networks.list(function (ids) {
             ids.length > 0 && status.update('Loading networks', {total: ids.length})
 
             ids.forEach(function(uuid) {
                 $scope.networks[uuid] = {uuid: uuid}
-                wiggle.ipranges.get({id: uuid}, function(res) {
-                    var cur = res.current.split(/\./);
-                    var last = res.last.split(/\./);
-                    var c = 0;
-                    var l = 0;
-                    for (var x=0; x<4; x++){
-                        c += Math.pow(256, 3-x)*cur[x];
-                        l += Math.pow(256, 3-x)*last[x];
-                    };
+                wiggle.networks.get({id: uuid}, function(res) {
                     $scope.networks[uuid] = res
-                    $scope.networks[uuid].full = (c > l);
                     status.update('Loading networks', {add: 1})
                 })
 

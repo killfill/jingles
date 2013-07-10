@@ -61,7 +61,8 @@
           <option value="dtraces">DTrace</option>
           <option value="groups">Groups</option>
           <option value="hypervisors">Hypervisors</option>
-          <option value="ipranges">Networks</option>
+          <option value="networks">Networks</option>
+          <option value="ipranges">IP Ranges</option>
           <option value="packages">Packages</option>
           <option value="users">Users</option>
           <option value="vms">Virtual Machines</option>
@@ -72,6 +73,7 @@
         <select ng-model="perm3" ng-show="p3 != false" ng-change="perm_change(3)">
           <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
         </select>
+        <input name="plast" ng-show="show_text" ng-model="perm_text"/>
         <button ng-click="grant()" ng-show="permission">Grant</button>
 
         <table class='table table-condensed table-bordered'>

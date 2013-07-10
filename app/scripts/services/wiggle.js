@@ -30,23 +30,25 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                             {id: '@id'},
                             {login: {method: 'POST'}}
                            ),
-        users: $resource(endpoint + 'users/:id/:controller/:controller_id/:controller_id1/:controller_id2',
+        users: $resource(endpoint + 'users/:id/:controller/:controller_id/:controller_id1/:controller_id2/:controller_id3',
                          {id: '@id',
                           controller: '@controller',
                           controller_id: '@controller_id',
                           controller_id1: '@controller_id1',
-                          controller_id2: '@controller_id2'},
+                          controller_id2: '@controller_id2',
+                          controller_id3: '@controller_id3'},
                          {put: {method: 'PUT'},
                           grant: {method: 'PUT'},
                           revoke: {method: 'DELETE'},
                           create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
-        groups: $resource(endpoint + 'groups/:id/:controller/:controller_id/:controller_id1/:controller_id2',
+        groups: $resource(endpoint + 'groups/:id/:controller/:controller_id/:controller_id1/:controller_id2/:controller_id3',
                           {id: '@id',
                            controller: '@controller',
                            controller_id: '@controller_id',
                            controller_id1: '@controller_id1',
-                           controller_id2: '@controller_id2'},
+                           controller_id2: '@controller_id2',
+                           controller_id3: '@controller_id3'},
                           {put: {method: 'PUT'},
                            grant: {method: 'PUT'},
                            revoke: {method: 'DELETE'},
@@ -64,7 +66,18 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                       ),
         ipranges: $resource(endpoint + 'ipranges/:id',
                             {id: '@id'},
-                            {create: {method: 'POST'}}
+                            {create: {method: 'POST'},
+                             delete: {method: 'DELETE'}}
+                           ),
+        networks: $resource(endpoint + 'networks/:id/:controller/:controller_id/:controller_id1/:controller_id2',
+                            {id: '@id',
+                             controller: '@controller',
+                             controller_id: '@controller_id',
+                             controller_id1: '@controller_id1',
+                             controller_id2: '@controller_id2'},
+                            {put: {method: 'PUT'},
+                             create: {method: 'POST'},
+                             delete: {method: 'DELETE'}}
                            ),
         datasets: $resource(endpoint + 'datasets/:id',
                             {id: '@id'},
@@ -86,7 +99,7 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
     /* Response with list of strings are not $resource friendly..
        https://groups.google.com/forum/#!msg/angular/QjhN9-UeBVM/UjSgc5CNDqMJ */
     endpoint = endpoint.replace("\\", '');
-    ['hypervisors','vms', 'ipranges', 'datasets', 'packages', 'users', 'sessions', 'groups', 'dtrace'].forEach(function(resource) {
+    ['hypervisors', 'vms', 'networks', 'ipranges', 'datasets', 'packages', 'users', 'sessions', 'groups', 'dtrace'].forEach(function(resource) {
         services[resource].list = function(cb, error) {
             return $http.get(endpoint + resource)
                 .success(cb)
@@ -127,11 +140,11 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
     services.datasets.get = function(obj, success, error) {
         return $http.get(endpoint + 'datasets/' + obj.id, {cache: cacheObj})
             .success(function(res) {
-              //If the dataset is not 100% ready, do not cache it.
-              success(res)
-              if (res.imported === 1)
-                return;
-              services.datasets.clearCache(obj.id)
+                //If the dataset is not 100% ready, do not cache it.
+                success(res)
+                if (res.imported === 1)
+                    return;
+                services.datasets.clearCache(obj.id)
             })
             .error(function(data) {
                 error && error(data)

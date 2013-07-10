@@ -1,142 +1,138 @@
 <div class="row-fluid">
-	<div class="span10">
-		<div class="alert alert-info">
-			Create a <strong>{{selectedPackage.name}}</strong>
-			machine <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
-			called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
-		</div>
-	</div>
+  <div class="span10">
+    <div class="alert alert-info">
+      Create a <strong>{{selectedPackage.name}}</strong>
+      machine <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
+      called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
+    </div>
+  </div>
 
-	<button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()'>Create</button>
+  <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()'>Create</button>
 
-	<div class="span5">
-		<div class="thumbnail">
-			<!--<div class="caption">
-				<h5>Select a dataset:</h5>
-			</div>-->
-			<table class="table table-hover small">
-				<tr class='small'>
-					<th></th>
-					<th>Dataset</th>
-					<th>Version</th>
-				</tr>
-				<tr class='clickable'
-					ng-repeat="d in datasets | filter:{imported: 1} | orderBy: ['-os', 'name', '-version']"
-					ng-click='click_dataset(d)'
-					ng-show='showAllVersions || latestDatasets[d.name] == d.version'
-					ng-class="selectedDataset.dataset==d.dataset && 'success'">
-					<td><img jq-run='tooltip' ng-src="images/logos/{{d.os || 'unknown'}}.png" class='oslogo' /></td>
-					<td class="nowrap {{latestDatasets[d.name] == d.version && 'strong' || ''}}" title='{{d.description}}' jq-run='tooltip'>{{d.name}}</td>
-					<td>{{d.version}}</td>
-				</tr>
-			</table>
+  <div class="span5">
+    <div class="thumbnail">
+      <!--<div class="caption">
+          <h5>Select a dataset:</h5>
+      </div>-->
+      <table class="table table-hover small">
+        <tr class='small'>
+          <th></th>
+          <th>Dataset</th>
+          <th>Version</th>
+        </tr>
+        <tr class='clickable'
+            ng-repeat="d in datasets | filter:{imported: 1} | orderBy: ['-os', 'name', '-version']"
+            ng-click='click_dataset(d)'
+            ng-show='showAllVersions || latestDatasets[d.name] == d.version'
+            ng-class="selectedDataset.dataset==d.dataset && 'success'">
+          <td><img jq-run='tooltip' ng-src="images/logos/{{d.os || 'unknown'}}.png" class='oslogo' /></td>
+          <td class="nowrap {{latestDatasets[d.name] == d.version && 'strong' || ''}}" title='{{d.description}}' jq-run='tooltip'>{{d.name}}</td>
+          <td>{{d.version}}</td>
+        </tr>
+      </table>
 
-			<label class="checkbox pull-right light">
-				<input type='checkbox' ng-model='showAllVersions'>
-				Show old versions
-			</label>
-			<br/>
-		</div>
-	</div>
-	<div class="span5">
-		<div class="thumbnail">
-			<table class="table table-hover small">
-				<tr class='small'>
-					<th></th>
-					<th>CPU</th>
-					<th>Memory</th>
-					<th>Disk</th>
-				</tr>
-				<tr class='clickable' ng-repeat="p in packages | hash2array | orderBy: ['ram', 'name']" ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
-					<td><strong>{{p.name}}</strong></td>
-					<td>{{p.cpu_cap}}</td>
-					<td>{{p.ram | Mbytes}}</td>
-					<td>{{p.quota | Gbytes}}</td>
-				</tr>
-			</table>
-		</div>
-	</div>
+      <label class="checkbox pull-right light">
+        <input type='checkbox' ng-model='showAllVersions'>
+        Show old versions
+      </label>
+      <br/>
+    </div>
+  </div>
+  <div class="span5">
+    <div class="thumbnail">
+      <table class="table table-hover small">
+        <tr class='small'>
+          <th></th>
+          <th>CPU</th>
+          <th>Memory</th>
+          <th>Disk</th>
+        </tr>
+        <tr class='clickable' ng-repeat="p in packages | hash2array | orderBy: ['ram', 'name']" ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
+          <td><strong>{{p.name}}</strong></td>
+          <td>{{p.cpu_cap}}</td>
+          <td>{{p.ram | Mbytes}}</td>
+          <td>{{p.quota | Gbytes}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
-	<div class="span5" ng-show='selectedDataset'>
-		<div class="thumbnail">
-			<table class="table table-hover small">
-				<tr class='small'>
-					<th></th>
-					<th>Network</th>
-					<th>Next avail IP</th>
-					<th></th>
-				</tr>
-				<tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'" 
-					ng-click='click_network(n)' 
-					ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
-					<td><strong>{{n.name}}</strong></td>
-					<td>{{n.network}}</td>
-					<td>{{n.current}}</td>
-					<td ng-show='selectedNetworks.indexOf(n) > -1'>
-						<span class='badge'>{{selectedNetworks.indexOf(n) + 1}}: {{selectedDataset.networks[selectedNetworks.indexOf(n)].description}}</span>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
+  <div class="span5" ng-show='selectedDataset'>
+    <div class="thumbnail">
+      <table class="table table-hover small">
+        <tr class='small'>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'"
+            ng-click='click_network(n)'
+            ng-class="selectedNetworks.indexOf(n)>-1 && 'success'">
+          <td><strong>{{n.name}}</strong></td>
+          <td ng-show='selectedNetworks.indexOf(n) > -1'>
+            <span class='badge'>{{selectedNetworks.indexOf(n) + 1}}: {{selectedDataset.networks[selectedNetworks.indexOf(n)].description}}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
-	<div class="span5">
-		<div class="thumbnail">
-            <div class="accordion" id="optional">
-              <div class="accordion-groupp">
-                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions">
-                    Advanced Parameters
-                  </a>
-                <div id="toggleOptions" class="collapse">
-                  <div class="accordion-inner">
-                    <table class="table table-hover small">
-                        <tr class='small' ng-show="selectedDataset.type == 'kvm'">
-                            <th class='nowrap'>SSH Keys</th>
-                            <td><textarea class='span12' type=text ng-model='ssh_keys'></textarea></td>
-                        </tr>
-                        <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                            <th class='nowrap'>Root password</th>
-                            <td><input class='span12' type='password' ng-model='root_pw'/></td>
-                        </tr>
-                        <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                            <th class='nowrap'>Admin password</th>
-                            <td><input class='span12' type='password' ng-model='admin_pw'/></td>
-                        </tr>
-                        <tr class='small'>
-                            <th class='nowrap'>Hostname</th>
-                            <td><input class='span12' type=text ng-model='hostname'/></td>
-                        </tr>
-                        <tr class='small'>
-                            <th class='nowrap'>Resolver 1</th>
-                            <td><input class='span12' type=text ng-model='resolver1'/></td>
-                        </tr>
-                        <tr class='small'>
-                            <th class='nowrap'>Resolver 2</th>
-                            <td><input class='span12' type=text ng-model='resolver2'/></td>
-                        </tr>
-                        <tr class="small">
-                            <th class="nowrap">User script</th>
-                            <td><input class='span12' type='text' ng-model='userScript'/></td>
-                        </tr>
+  <div class="span5">
+    <div class="thumbnail">
+      <div class="accordion" id="optional">
+        <div class="accordion-groupp">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions">
+            Advanced Parameters
+          </a>
+          <div id="toggleOptions" class="collapse">
+            <div class="accordion-inner">
+              <table class="table table-hover small">
+                <tr class='small' ng-show="selectedDataset.type == 'kvm'">
+                  <th class='nowrap'>SSH Keys</th>
+                  <td><textarea class='span12' type=text ng-model='ssh_keys'></textarea></td>
+                </tr>
+                <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
+                  <th class='nowrap'>Root password</th>
+                  <td><input class='span12' type='password' ng-model='root_pw'/></td>
+                </tr>
+                <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
+                  <th class='nowrap'>Admin password</th>
+                  <td><input class='span12' type='password' ng-model='admin_pw'/></td>
+                </tr>
+                <tr class='small'>
+                  <th class='nowrap'>Hostname</th>
+                  <td><input class='span12' type=text ng-model='hostname'/></td>
+                </tr>
+                <tr class='small'>
+                  <th class='nowrap'>Resolver 1</th>
+                  <td><input class='span12' type=text ng-model='resolver1'/></td>
+                </tr>
+                <tr class='small'>
+                  <th class='nowrap'>Resolver 2</th>
+                  <td><input class='span12' type=text ng-model='resolver2'/></td>
+                </tr>
+                <tr class="small">
+                  <th class="nowrap">User script</th>
+                  <td><input class='span12' type='text' ng-model='userScript'/></td>
+                </tr>
 
-                        <tr class='small' ng-repeat='meta in metadata'>
-                            <th class="nowrap">{{meta.key}}</th>
-                            <th class="nowrap">
-                                <input class='span11' type='text' ng-model='meta.value'/>
-                                <button class='btn btn-small btn-danger' style='margin-bottom: 10px;' ng-click="meta_action('delete', $index)">-</button>
-                            </th>
-                        </tr>
+                <tr class='small' ng-repeat='meta in metadata'>
+                  <th class="nowrap">{{meta.key}}</th>
+                  <th class="nowrap">
+                    <input class='span11' type='text' ng-model='meta.value'/>
+                    <button class='btn btn-small btn-danger' style='margin-bottom: 10px;' ng-click="meta_action('delete', $index)">-</button>
+                  </th>
+                </tr>
 
-                        <tr>
-                            <td colspan='2'><button class='btn btn-success pull-right' title='Add customer_metadata field' jq-run='tooltip' ng-click="meta_action('create')">+</button></td>
-                        </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
+                <tr>
+                  <td colspan='2'><button class='btn btn-success pull-right' title='Add customer_metadata field' jq-run='tooltip' ng-click="meta_action('create')">+</button></td>
+                </tr>
+              </table>
             </div>
+          </div>
+        </div>
+      </div>
 
-		</div>
-	</div>
+    </div>
+  </div>
 
 </div>
