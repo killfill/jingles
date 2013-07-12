@@ -103,6 +103,18 @@ var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks']
         templateUrl: 'views/group.html',
         controller: 'GroupCtrl'
     })
+    .when('/orgs', {
+        templateUrl: 'views/orgs.html',
+        controller: 'OrgsCtrl'
+    })
+    .when('/orgs/new', {
+        templateUrl: 'views/new_org.html',
+        controller: 'NewOrgCtrl'
+    })
+    .when('/orgs/:uuid', {
+        templateUrl: 'views/org.html',
+        controller: 'OrgCtrl'
+    })
     .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'

@@ -223,7 +223,6 @@ footer > hr {
     width: 100%
 }
 
-
 /*
  * Tab rider
  */
@@ -233,7 +232,7 @@ footer > hr {
 }
 
 .main-tab-content {
-    min-height: 460px;
+    min-height: 500px;
 }
 
 .tabs-left > .nav-tabs {
