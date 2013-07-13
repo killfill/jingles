@@ -6,6 +6,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     $scope.p2 = false;
     $scope.p3 = false;
 
+
     var cache=(function(){
         var c = {};
         return function(entity, e, callback) {
@@ -21,6 +22,51 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
             }
         }
     })();
+
+    $scope.orgs = {}
+
+    wiggle.orgs.list(function(ids) {
+        ids.forEach(function(id) {
+            $scope.orgs[id] = {uuid: id,
+                                name: id}
+            wiggle.orgs.get({id: id}, function(res) {
+                $scope.orgs[id] = res;
+            });
+        });
+    });
+
+    $scope.org_join = function () {
+        var org = $scope.org_to_join;
+        wiggle.users.put({
+            id: uuid,
+            controller: "orgs",
+            controller_id: org
+        }, {}, function(e) {
+            if ($scope.user.orgs.indexOf(org) == -1)
+                $scope.user.orgs.push(org)
+        });
+    }
+
+    $scope.org_select = function () {
+        var org = $scope.user.org;
+        wiggle.users.put({
+            id: uuid,
+            controller: "orgs",
+            controller_id: org
+        }, {active: true}, function(){});
+    };
+
+    $scope.org_leave = function (org) {
+        wiggle.users.delete({
+            id: uuid,
+            controller: "orgs",
+            controller_id: org
+        }, function() {
+            $scope.user.orgs = $scope.user.orgs.filter(function(o) {
+                return o != org;
+            });
+        });
+    };
 
     var update_permission = function(p) {
         var res = {
@@ -104,7 +150,7 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         if ($scope.show_text) {
             $scope.permission["controller_id3"] = $scope.perm_text
         }
-        
+
         wiggle.users.grant($scope.permission, function () {
             console.log("Granted");
             var p = [$scope.permission.controller_id];

@@ -23,6 +23,7 @@
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
       <li><a href="#groups" data-toggle="tab">Groups</a></li>
+      <li><a href="#orgs" data-toggle="tab">Organisation</a></li>
       <li><a href="#ssh_keys" data-toggle="tab">SSH Keys</a></li>
     </ul>
     <div class="tab-content">
@@ -38,6 +39,13 @@
           <dl class="dl-horizontal">
             <dt>User UUID</dt>
             <dd>{{user.uuid}}</dd>
+            <dt>Active Organisation</dt>
+            <dd>
+              <select ng-model="user.org" ng-change="org_select()"
+                      ng-options="org as orgs[org].name for org in user.orgs">
+              </select>
+            </dd>
+
           </dl>
           <small>Change Password :</small>
           <div class="input-prepend">
@@ -87,6 +95,7 @@
           </tr>
         </table>
       </div>
+
       <div class="tab-pane" id="groups">
         <select id="join_group" ng-model='group'>
           <option ng-repeat="group in groups | hash2array | orderBy: name" value="{{group.uuid}}">{{group.name}}</option>
@@ -105,6 +114,27 @@
           </tr>
         </table>
       </div>
+
+      <div class="tab-pane" id="orgs">
+        <select id="join_org" ng-model="org_to_join">
+          <option ng-repeat="org in orgs | hash2array | orderBy: name" value="{{org.uuid}}">{{org.name}}</option>
+        </select>
+        <button ng-click="org_join()">Join</button>
+        <table class='table table-condensed table-bordered'>
+          <tr>
+            <th>Name</th>
+            <th>UUID</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="org in user.orgs">
+            <td>{{orgs[org].name}}</td>
+            <td>{{orgs[org].uuid}}</td>
+            <td><a ng-click="org_leave(orgs[org].uuid)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+
+
       <div class="tab-pane" id="ssh_keys">
         <div class="fluid-row">
           <div class="span12">
