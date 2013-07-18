@@ -13,7 +13,7 @@ fifoApp.controller('NewIprangeCtrl', function($scope, $http, $location, howl, wi
 
     $scope.create_iprange = function() {
         var mask = ip_to_int($scope.netmask);
-        var net = ip_to_int($scope.iprange);
+        var net = ip_to_int($scope.network);
         var gateway = ip_to_int($scope.gateway);
         var first = ip_to_int($scope.first);
         var last = ip_to_int($scope.last);
@@ -57,7 +57,7 @@ fifoApp.controller('NewIprangeCtrl', function($scope, $http, $location, howl, wi
         var iprange = new wiggle.ipranges({
             name: $scope.name,
             tag: $scope.tag || 0,
-            iprange: $scope.iprange,
+            network: $scope.network,
             netmask: $scope.netmask,
             gateway: $scope.gateway,
             first: $scope.first,
