@@ -89,11 +89,10 @@ fifoApp.controller('NewIprangeCtrl', function($scope, $http, $location, howl, wi
     wiggle.hypervisors.list(function(ids) {
         ids.forEach(function(id) {
             wiggle.hypervisors.get({id: id}, function(res) {
-                res.ipranges && res.ipranges.forEach(function(net) {
+                res.networks && res.networks.forEach(function(net) {
                     if ($scope.iprange_tags.indexOf(net)<0)
                         $scope.iprange_tags.push(net)
                 })
-
             })
         })
     })
