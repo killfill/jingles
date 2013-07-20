@@ -30,17 +30,18 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         })
 
         var allColumns = [
-            {name: 'Name',      visible: true,  field: 'config.alias'},
-            {name: 'Description',visible: false, field: 'metadata.jingles.description'},
-            {name: 'Dataset',   visible: true,  field: 'config._dataset.name'},
-            {name: 'IPs',       visible: true,  field: '_ips_normalized'},
-            {name: 'Package',   visible: true,  field: 'package'},
-            {name: 'Memory',    visible: true,  field: 'config.ram'},
-            {name: 'CPU',       visible: false, field: '_cpu'},
-            {name: 'Hypervisor',visible: false, field: 'hypervisor'},
-            {name: 'Age',       visible: true,  field: 'config.created_at'},
-            {name: 'State',     visible: true,  field: 'state'},
-            {name: 'Actions',   visible: true}
+            {name: 'Name',        visible: true,  field: 'config.alias'},
+            {name: 'owner',       visible: true,  field: 'owner'},
+            {name: 'Description', visible: false, field: 'metadata.jingles.description'},
+            {name: 'Dataset',     visible: true,  field: 'config._dataset.name'},
+            {name: 'IPs',         visible: true,  field: '_ips_normalized'},
+            {name: 'Package',     visible: true,  field: 'package'},
+            {name: 'Memory',      visible: true,  field: 'config.ram'},
+            {name: 'CPU',         visible: false, field: '_cpu'},
+            {name: 'Hypervisor',  visible: false, field: 'hypervisor'},
+            {name: 'Age',         visible: true,  field: 'config.created_at'},
+            {name: 'State',       visible: true,  field: 'state'},
+            {name: 'Actions',     visible: true}
         ]
         var customColumns = user.mdata('vm_fields')
 
@@ -63,6 +64,15 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
                         delete $scope.vms[id];
                     } else {
                         $scope.vms[id] = vmService.updateCustomFields(res);
+                        if ($scope.vms[id].owner) {
+                            wiggle.orgs.get({id: $scope.vms[id].owner}, function(org) {
+                                $scope.vms[id]._owner = org;
+                            })
+                        } else {
+                            $scope.vms[id]._owner = {"name": ""};
+                        }
+
+
                     }
                 }, function error(res) {
                     status.update('Loading machines', {add: 1})
@@ -98,6 +108,11 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             wiggle.packages.get({id: vm.config.package}, function(pack) {
                 vm._package = pack
             })
+            if (vm.owner)
+                wiggle.orgs.get({id: vm.config.package}, function(org) {
+                    vm._owner = org
+                })
+
             $scope.$apply()
         })
 

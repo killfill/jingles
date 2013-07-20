@@ -1,80 +1,80 @@
-          <div class="tab-pane" id="virtual-machines">
-            <div class="pane-nav">
+<div class="tab-pane" id="virtual-machines">
+  <div class="pane-nav">
 
-                <column-selector class='hidden' id='popupContent'>
-                </column-selector>
-                <button
-                    title='Show the following columns'
-                    jq-run='popover' jq-options="{placement: 'bottom', content: showPopupContent}"
-                    class='btn btn-small'>
-                    <i class='icon-list'></i>
-                </button>
-                <input type="text" class="search-query span3" placeholder='Filter' ng-model='searchQuery'>
-                <span class="clear" ng-click="searchQuery=''" style="{{searchQuery.length<1 && 'visibility: hidden' || ''}}">x</span>
+    <column-selector class='hidden' id='popupContent'>
+    </column-selector>
+    <button
+       title='Show the following columns'
+       jq-run='popover' jq-options="{placement: 'bottom', content: showPopupContent}"
+       class='btn btn-small'>
+      <i class='icon-list'></i>
+    </button>
+    <input type="text" class="search-query span3" placeholder='Filter' ng-model='searchQuery'>
+    <span class="clear" ng-click="searchQuery=''" style="{{searchQuery.length<1 && 'visibility: hidden' || ''}}">x</span>
 
-                <a href="#/virtual-machines/new" class="btn btn-small btn-info">
-                    <i class="icon-white"></i> <strong>New machine</strong>
-                </a>
-            </div>
-            <div class="row-fluid">
-              <div class="span12">
-                <table class="table table-condensed table-hover">
-                  <thead>
-                    <tr>
-                        <th ng-repeat='col in columns'
-                            ng-click="col.field && order(col.field, $event)"
-                            ng-class="col.field && orderStyle(col.field)"
-                            ng-show="col.visible">
-                                {{col.name == 'Actions' && ' ' || col.name}}
-                        </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="background-color: {{vm.mdata('color')}}" ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
-                      <td ng-show="columns[0].visible" title="<span class=uuid>{{vm.uuid}}</div>" jq-run='tooltip' class='uuid nowrap' >
-                        <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
-                      </td>
-                      <td ng-show="columns[1].visible">{{vm.mdata('description')}}</td>
-                      <td ng-show="columns[2].visible"
-                          title='{{vm.config._dataset.description}}'
-                          class='nowrap'
-                          jq-run='tooltip'>
-                            <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
-                            {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}
-                      </td>
-                      <td ng-show="columns[3].visible">
-                        <span ng-repeat="net in vm.config.networks">
-                          <a target="_new" href="http://{{net.ip}}">{{net.ip}}</a>
-                          {{($last && ' ') || ', '}}</span></td>
-                      <td ng-show="columns[4].visible">{{vm._package.name}}</td>
-                      <td class='memory'ng-show="columns[5].visible">{{vm.config.ram | Mbytes}}</td>
-                      <td ng-show="columns[6].visible" jq-run='tooltip' title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
-                      <td ng-show="columns[7].visible">{{vm.hypervisor}}</td>
-                      <td ng-show="columns[8].visible" jq-run='tooltip' title="{{vm.config.created_at | date:'medium'}}" class='light nowrap'>{{vm.config.created_at | fromNow}}</td>
-                      </td>
-                      <td ng-show="columns[9].visible">
-                        <span class='label label-{{vm._state_label}}'
-                              title='{{vm.state_description}}'
-                              jq-run='tooltip'>
-                          {{vm.state}}
-                        </span>
-                      </td>
-                      <td ng-show="columns[10].visible">
-                        <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"
-                           ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
-                           class="icon-desktop clickable"></i>
+    <a href="#/virtual-machines/new" class="btn btn-small btn-info">
+      <i class="icon-white"></i> <strong>New machine</strong>
+    </a>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th ng-repeat="col in columns"
+                ng-click="col.field && order(col.field, $event)"
+                ng-class="col.field && orderStyle(col.field)"
+                ng-show="col.visible">
+              {{col.name == 'Actions' && ' ' || col.name}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color: {{vm.mdata('color')}}" ng-repeat="vm in vms | hash2array | filter:searchQuery | orderBy: orderField">
+            <td ng-show="columns[0].visible" title="<span class=uuid>{{vm.uuid}}</div>" jq-run="tooltip" class="uuid nowrap">
+              <a href='#/virtual-machines/{{vm.uuid}}'>{{vm._name}}</a>
+            </td>
+            <td ng-show="columns[1].visible"><a href="#/orgs/{{vm._owner.uuid}}">{{vm._owner.name}}</a></td>
+            <td ng-show="columns[2].visible">{{vm.mdata('description')}}</td>
+            <td ng-show="columns[3].visible"
+                title='{{vm.config._dataset.description}}'
+                class='nowrap'
+                jq-run='tooltip'>
+              <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" onerror='images/logos/unknown.png' class='oslogo'>
+              {{vm.config._dataset.name}} {{vm.config._dataset.version && '(' + vm.config._dataset.version + ')'}}
+            </td>
+            <td ng-show="columns[4].visible">
+              <span ng-repeat="net in vm.config.networks">
+                <a target="_new" href="http://{{net.ip}}">{{net.ip}}</a>
+                {{($last && ' ') || ', '}}</span></td>
+            <td ng-show="columns[5].visible">{{vm._package.name}}</td>
+            <td ng-show="columns[6].visible" class="memory">{{vm.config.ram | Mbytes}}</td>
+            <td ng-show="columns[7].visible" jq-run="tooltip" title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
+            <td ng-show="columns[8].visible">{{vm.hypervisor}}</td>
+            <td ng-show="columns[9].visible" jq-run="tooltip" title="{{vm.config.created_at | date:'medium'}}" class="light nowrap">{{vm.config.created_at | fromNow}}</td>
+            <td ng-show="columns[10].visible">
+              <span class="label label-{{vm._state_label}}"
+                    title="{{vm.state_description}}"
+                    jq-run="tooltip">
+                {{vm.state}}
+              </span>
+            </td>
+            <td ng-show="columns[11].visible">
+              <i ng-click="vnc(this.vm)" jq-run="tooltip" title="vnc"
+                 ng-show="vm.config && (vm.config.type == 'kvm') && (vm.state == 'running')"
+                 class="icon-desktop clickable"></i>
 
-                        <i ng-click="console(this.vm)" jq-run="tooltip" title="Console"
-                           ng-show="vm.config && (vm.config.type != 'kvm') && (vm.state == 'running')"
-                           class="icon-desktop clickable"></i>
+              <i ng-click="console(this.vm)" jq-run="tooltip" title="Console"
+                 ng-show="vm.config && (vm.config.type != 'kvm') && (vm.state == 'running')"
+                 class="icon-desktop clickable"></i>
 
-                        <i ng-click="action('start', this.vm)" jq-run="tooltip" title="Start"
-                           ng-hide="vm.state!='stopped'"
-                           class="icon-play clickable"></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+              <i ng-click="action('start', this.vm)" jq-run="tooltip" title="Start"
+                 ng-hide="vm.state!='stopped'"
+                 class="icon-play clickable"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

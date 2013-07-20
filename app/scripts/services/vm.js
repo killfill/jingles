@@ -23,15 +23,16 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 var b = {action: action};
                 if (force && (action == "stop" || action == "reboot"))
                     b.force = true;
-                return wiggle.vms.put({id: uuid}, b,
-                                      function success(r, headers) {
-                                          if (!headers)
-                                              return status.error('An error 500 has occur. :(');
+                return wiggle.vms.put(
+                    {id: uuid}, b,
+                    function success(r, headers) {
+                        if (!headers)
+                            return status.error('An error 500 has occur. :(');
 
-                                          status.info(actionDescrition[action] + ' machine ' + name)
-                                          cb && cb(action, uuid)
-                                      }
-                                     )
+                        status.info(actionDescrition[action] + ' machine ' + name)
+                        cb && cb(action, uuid)
+                    }
+                )
             }
 
             modal.confirm({
@@ -40,12 +41,13 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 header: 'Confirm VM Deletion',
                 body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
             }, function() {
-                wiggle.vms.delete({id: uuid},
-                                  function success(data, h) {
-                                      status.info('Deleting machine '  + name)
-                                      cb && cb(action, uuid)
-                                  }
-                                 )
+                wiggle.vms.delete(
+                    {id: uuid},
+                    function success(data, h) {
+                        status.info('Deleting machine '  + name)
+                        cb && cb(action, uuid)
+                    }
+                )
 
             })
 
