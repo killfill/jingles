@@ -31,7 +31,7 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
 
         var allColumns = [
             {name: 'Name',        visible: true,  field: 'config.alias'},
-            {name: 'owner',       visible: true,  field: 'owner'},
+            {name: 'Owner',       visible: true,  field: 'owner'},
             {name: 'Description', visible: false, field: 'metadata.jingles.description'},
             {name: 'Dataset',     visible: true,  field: 'config._dataset.name'},
             {name: 'IPs',         visible: true,  field: '_ips_normalized'},
