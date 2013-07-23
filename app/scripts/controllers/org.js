@@ -101,7 +101,7 @@ fifoApp.controller('OrgCtrl', function($scope, $routeParams, $location, wiggle, 
             controller_id: "user_create"
         }, {
             action: "join_group",
-            group: $scope.join_group
+            target: $scope.join_group
         }, function success() {
             wiggle.orgs.get({id: uuid}, function(res) {
                 init_scope($scope, res)
@@ -117,7 +117,7 @@ fifoApp.controller('OrgCtrl', function($scope, $routeParams, $location, wiggle, 
             controller_id: "user_create"
         }, {
             action: "join_org",
-            org: $scope.join_org
+            target: $scope.join_org
         }, function success() {
             wiggle.orgs.get({id: uuid}, function(res) {
                 init_scope($scope, res)

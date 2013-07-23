@@ -46,7 +46,8 @@
         <th>Actions</th>
       </tr>
       <tr ng-repeat="trigger in grant_triggers">
-        <td>{{trigger.target}}</td>
+        <td>{{(groups[trigger.target] ||
+          {name: "DELETED"}).name}}({{trigger.target}})</td>
         <td>{{trigger.permission.join("->")}}</td>
         <td><a ng-click="delete_grant_trigger(trigger)">delete</a>
         </td>
@@ -69,7 +70,9 @@
         <th>Actions</th>
       </tr>
       <tr ng-repeat="trigger in join_triggers">
-        <td>{{trigger.target}}</td>
+        <td>{{(orgs[trigger.target] ||
+          groups[trigger.target] ||
+          {name: "DELETED"}).name}}({{trigger.target}})</td>
         <td><a ng-click="delete_join_trigger(trigger)">delete</a>
         </td>
       </tr>
