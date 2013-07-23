@@ -2,7 +2,7 @@
 
 fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status, modal, howl, vmService) {
     $scope.setTitle('Virtual Machines')
-    var deleted = []
+    var deleted = [];
 
     $scope.vms = {}
 
@@ -57,8 +57,10 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
-                if (deleted.indexOf(id) != -1)
+                if (deleted.indexOf(id) != -1) {
+                    status.update('Loading machines', {add: 1})
                     return;
+                }
 
                 $scope.vms[id] = {uuid: id, state: 'loading'}
                 wiggle.vms.get({id: id}, function success(res) {
@@ -122,10 +124,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         })
 
         $scope.$on('delete', function(e, msg) {
-            console.log("delete:", msg.channel, $scope.vms);
-            delete $scope.vms[msg.channel];
             deleted.push(msg.channel);
-            console.log("deleted:", msg.channel, $scope.vms);
+            delete $scope.vms[msg.channel];
             $scope.$apply();
         })
     }
