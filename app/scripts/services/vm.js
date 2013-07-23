@@ -103,6 +103,10 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 vm.state_description = "The VM is currently booting."
                 vm._state_label = 'warning';
                 break;
+            case 'deleting':
+                vm.state_description = "The VM is being deleted."
+                vm._state_label = 'important';
+                break;
             default:
                 vm.state_description = vm.state;
                 vm._state_label = 'warning';

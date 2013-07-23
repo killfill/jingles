@@ -50,7 +50,7 @@
             <td ng-show="columns[5].visible">{{vm._package.name}}</td>
             <td ng-show="columns[6].visible" class="memory">{{vm.config.ram | Mbytes}}</td>
             <td ng-show="columns[7].visible" jq-run="tooltip" title="{{vm._cpu_tooltip}}">{{vm._cpu}}</td>
-            <td ng-show="columns[8].visible">{{vm.hypervisor}}</td>
+            <td ng-show="columns[8].visible"><a href="#/hypervisors/{{vm.hypervisor}}">{{vm.hypervisor}}</a></td>
             <td ng-show="columns[9].visible" jq-run="tooltip" title="{{vm.config.created_at | date:'medium'}}" class="light nowrap">{{vm.config.created_at | fromNow}}</td>
             <td ng-show="columns[10].visible">
               <span class="label label-{{vm._state_label}}"

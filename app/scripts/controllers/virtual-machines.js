@@ -2,6 +2,7 @@
 
 fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status, modal, howl, vmService) {
     $scope.setTitle('Virtual Machines')
+    var deleted = []
 
     $scope.vms = {}
 
@@ -56,24 +57,28 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
             ids.length > 0 && status.update('Loading machines', {total: ids.length})
 
             ids.forEach(function(id) {
+                if (deleted.indexOf(id) != -1)
+                    return;
+
                 $scope.vms[id] = {uuid: id, state: 'loading'}
                 wiggle.vms.get({id: id}, function success(res) {
                     status.update('Loading machines', {add: 1})
                     //If the vm is deleting, delete them from the list..
-                    if (res.state == 'deleting') {
-                        delete $scope.vms[id];
+                    /*
+                      if (res.state == 'deleting') {
+                      delete $scope.vms[id];
+                      } else {
+                    */
+                    $scope.vms[id] = vmService.updateCustomFields(res);
+                    if ($scope.vms[id].owner) {
+                        wiggle.orgs.get({id: $scope.vms[id].owner}, function(org) {
+                            $scope.vms[id]._owner = org;
+                        })
                     } else {
-                        $scope.vms[id] = vmService.updateCustomFields(res);
-                        if ($scope.vms[id].owner) {
-                            wiggle.orgs.get({id: $scope.vms[id].owner}, function(org) {
-                                $scope.vms[id]._owner = org;
-                            })
-                        } else {
-                            $scope.vms[id]._owner = {"name": ""};
-                        }
-
-
+                        $scope.vms[id]._owner = {"name": ""};
                     }
+
+                    //}
                 }, function error(res) {
                     status.update('Loading machines', {add: 1})
                 })
@@ -117,8 +122,11 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
         })
 
         $scope.$on('delete', function(e, msg) {
-            delete $scope.vms[msg.channel]
-            $scope.$apply()
+            console.log("delete:", msg.channel, $scope.vms);
+            delete $scope.vms[msg.channel];
+            deleted.push(msg.channel);
+            console.log("deleted:", msg.channel, $scope.vms);
+            $scope.$apply();
         })
     }
 
