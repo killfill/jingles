@@ -62,7 +62,8 @@ fifoApp.controller('Virtual-MachinesCtrl', function($scope, user, wiggle, status
                     return;
                 }
 
-                $scope.vms[id] = {uuid: id, state: 'loading'}
+                //This just makes loading slower and doesnt work with <300 vm.s.. 
+                //$scope.vms[id] = {uuid: id, state: 'loading'}
                 wiggle.vms.get({id: id}, function success(res) {
                     status.update('Loading machines', {add: 1})
                     //If the vm is deleting, delete them from the list..
