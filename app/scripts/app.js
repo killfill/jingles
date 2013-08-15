@@ -412,6 +412,7 @@ function mk_permission_fn(wiggle, $scope) {
                         {id:"console", name: "Console/VNC"},
                         {id:"snapshot", name: "Create a Snapshot"},
                         {id:"rollback", name: "Rollback a Snapshot"},
+                        {id:"edit", name: "Edit"},
                         {id:"delete_snapshot", name: "Delete a Snapshot"},
                         {id:"ssh", name:"SSH Login"}
                     ];
