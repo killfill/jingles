@@ -72,8 +72,8 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status)
         $scope.rules = [{}];
 
         $scope.availableOptions = {
-            attribute: [ 'resource.free-memory', 'resource.l1hits', 'resource.l1miss', 'resource.l1size',
-                         'resource.provisioned-memory', 'resource.total-memory']
+            attribute: [ 'resources.free-memory', 'resources.l1hits', 'resources.l1miss', 'resources.l1size',
+                         'resources.provisioned-memory', 'resources.total-memory']
         }
     }
 
