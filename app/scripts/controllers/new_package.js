@@ -50,18 +50,22 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status)
             cpu_cap: parseInt($scope.cpu_cap),
             requirements: $scope.rules.filter(function(item) {
                 return item['attribute'] && item['condition'] && item['weight'] && item['value'];
+            }).map(function(item) {
+                item['value'] = parseInt(item['value']);
+                if (item['weight'].match("^[0-9]+$")) {
+                    item['weight'] = parseInt(item['weight']);
+                }
+                return item;
             })
+            }
         });
 
-        pkg.$create({},
-            function success(data, headers) {
-                $location.path('/packages');
-            },
-            function error(data) {
-                console.error('Create Package error:', data);
-                status.error('There was an error creating your package. See the javascript console.');
-            }
-        );
+        pkg.$create({}, function success(data, headers) {
+            $location.path('/packages');
+        }, function error(data) {
+            console.error('Create Package error:', data);
+            status.error('There was an error creating your package. See the javascript console.');
+        });
     }
 
 
@@ -70,7 +74,7 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status)
 
         $scope.availableOptions = {
             attribute: [ 'resource.free-memory', 'resource.l1hits', 'resource.l1miss', 'resource.l1size',
-                          'resource.provisioned-memory', 'resource.total-memory']
+                         'resource.provisioned-memory', 'resource.total-memory']
         }
     }
 
