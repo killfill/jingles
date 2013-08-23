@@ -57,8 +57,7 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status)
                 }
                 return item;
             })
-            }
-        });
+        })
 
         pkg.$create({}, function success(data, headers) {
             $location.path('/packages');
