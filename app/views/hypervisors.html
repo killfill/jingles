@@ -23,7 +23,7 @@
             <td class='nowrap'><small>{{hyper['version'].split(',')[0]}}</small></td>
             <td class='align-right memory'>{{hyper.resources['total-memory']}} MB</td>
             <td class='align-right memory'>{{hyper.resources['free-memory']}} MB</td>
-            <td>{{hyper.networks.join(', ')}}</td>
+            <td>{{hyper.networks.sort().join(', ')}}</td>
             <td>{{hyper.virtualisation.join(', ')}}</td>
           </tr>
         </tbody>
