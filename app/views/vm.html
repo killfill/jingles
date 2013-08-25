@@ -133,7 +133,7 @@
                   </dd>
                   <dt>Hostname</dt>
                   <dd>
-                    <input type='text' maxlength='25' ng-model='configHash.hostname'/>
+                    <input type='text' maxlength='25' ng-disabled="vm.config.type != 'kvm'" ng-model='configHash.hostname'/>
                   </dd>
                   <dt>Resolvers</dt>
                   <dd>
