@@ -59,6 +59,37 @@ fifoApp.directive('package', function() {
     }
 })
 
+fifoApp.directive('typeahead', function($parse) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            source: '&',
+            show: '=' //no idea why ng-show behaviour doesnt get inherated, meanwhile, just copy it over. :S
+        },
+        template: "<input type='text' ng-show='show' />",
+        link: function(scope, element, attrs) {
+
+            function setScopeValue(val) {
+                //Set the freaking scope, $parse becouse of attrs.ngModel = 'rules.attributes'...
+                var model = $parse(attrs.ngModel);
+                model.assign(scope.$parent, val) ;
+                return val;
+            }
+
+            /* When value changes */
+            scope.$watch(attrs.ngModel, setScopeValue);
+
+            /* When autocomplete */
+            $(element).typeahead({
+               source: scope.source,
+               items: attrs.items,
+               updater: setScopeValue
+            })
+        }
+    }
+})
+
 fifoApp.directive('help', function() {
     return {
         restrict: 'E',

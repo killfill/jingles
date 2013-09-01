@@ -75,6 +75,9 @@ big {
     }
 }
 
+.rule-error {
+    background-color: lightgoldenrodyellow;
+}
 
 .thumbnail {
     margin-bottom: 20px;

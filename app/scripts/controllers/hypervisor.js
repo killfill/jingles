@@ -1,6 +1,6 @@
 'use strict';
 
-fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status, user) {
+fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, utils, wiggle, vmService, modal, status, user) {
     $scope.setTitle('Hypervisor details')
 
     var uuid = $routeParams.uuid
@@ -85,25 +85,11 @@ fifoApp.controller('HypervisorCtrl', function($scope, $routeParams, $location, w
 
         arrayDiff(newArr, oldArr).forEach(function(changed) {
             var hash = {}
-            hash[changed.name] = deserialize(changed.value)
+            hash[changed.name] = utils.deserialize(changed.value)
             wiggle.hypervisors.put({id: uuid, controller: 'characteristics'}, hash)
         })
 
     }, true)
-
-    var deserialize = function(value) {
-        var ret = value;
-
-        /* If it has commas, its an array of string */
-        if (value.indexOf(',')>-1)
-            ret = value.split(',')
-
-        /* See if its a number */
-        if ( (value - 0) == value && value.length > 0)
-            ret = parseFloat(value, 10)
-
-        return ret
-    }
 
     //Return the difference between 2 arrays
     var arrayDiff = function(newArr, oldArr) {

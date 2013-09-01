@@ -1,4 +1,4 @@
-<help link="http://project-fifo.net/display/PF/Networks"></help>
+<help link="http://project-fifo.net/display/PF/Packages"></help>
 <div class="row-fluid">
   <div class="span10 alert alert-info">
     Create a package called: <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
@@ -31,74 +31,44 @@
 
   <div class="span7">
 
-    <div ng-repeat='rule in rules' ng-class="rule.error && 'error'" class='thumbnail2'>
-      <div class="span11"><br/>Rule {{$index+1}}</div>
+    <div ng-repeat='rule in rules' ng-class="rule.error && 'rule-error'" class='thumbnail'>
+      <div class="span11">
+        Rule {{$index+1}}
+      </div>
 
-      <select class="span3" title='Weight' jq-run='tooltip' ng-model="rule.weight">
-        <option>must</option>
-        <option>cant</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-        <option>20</option>
-        <option>30</option>
-        <option>40</option>
-        <option>50</option>
-        <option>60</option>
-        <option>70</option>
-        <option>80</option>
-        <option>90</option>
-        <option>-1</option>
-        <option>-2</option>
-        <option>-3</option>
-        <option>-4</option>
-        <option>-5</option>
-        <option>-6</option>
-        <option>-7</option>
-        <option>-8</option>
-        <option>-9</option>
-        <option>-10</option>
-        <option>-20</option>
-        <option>-30</option>
-        <option>-40</option>
-        <option>-50</option>
-        <option>-60</option>
-        <option>-70</option>
-        <option>-80</option>
-        <option>-90</option>
+      <select class='span3' title='Weight' jq-run='tooltip' ng-model='rule.weight' 
+        ng-options='d.value group by d.group for d in weightOptions'>
       </select>
-      <input
-         class="span8"
-         placeholder="Key"
-         type="text"
-         title='Attribute' jq-run='tooltip'
-         ng-model="rule.attribute"
-         data-provide='typeahead'
-         data-items='10'
-         data-source='{{availableOptions.attribute}}'
-         />
 
-      <select class="span3" title='Condition' jq-run='tooltip' ng-model="rule.condition">
-        <option>&gt;=</option>
-        <option>&gt;</option>
-        <option>=&lt;</option>
-        <option>&lt;</option>
-        <option>=:=</option>
-        <option>=/=</option>
-        <option>subset</option>
-        <option>superset</option>
-        <option>disjoint</option>
-        <option>element</option>
+      <typeahead 
+        class="span8"
+        placeholder='Key' 
+        title='Attribute' jq-run='tooltip'
+        ng-model="rule.attribute"
+        data-items='10'
+        data-source='attributeOptions'
+        show="rule.weight.value != 'random'"
+      ></typeahead>
+
+      <select ng-hide="rule.weight.group == 'Special'"
+        class='span3' title='Condition' jq-run='tooltip' ng-model='rule.condition' 
+        ng-options='d for d in conditionOptions'>
       </select>
-      <input class="span8" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="rule.value"/>
-      <button class="btn btn-small btn-danger pull-right" title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_rule($index)">-</button>
+
+      <input ng-hide="rule.weight.group == 'Special'"
+        class="span8" title='Value' jq-run='tooltip' placeholder="Value" type="text"  ng-model="rule.value"/>
+
+      <!-- show this div to tab the low&high when scale is selected -->
+      <div ng-show="rule.weight.value == 'scale'" class='span3'></div>
+
+      <input ng-show='rule.weight.group=="Special"' 
+        class="span4" type='number' min='0' title='Low' jq-run='tooltip' placeholder="Low" type="text" ng-model="rule.low"/>
+      <input ng-show='rule.weight.group=="Special"' 
+        class="span4" type='number' min='1' title='High' jq-run='tooltip' placeholder="High" type="text" ng-model="rule.high"/>
+      
+      <button class="btn btn-small btn-danger pull-right" 
+        title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_rule($index)">-</button>
+
     </div>
 
     <br/>
