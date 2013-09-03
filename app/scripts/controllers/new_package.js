@@ -16,19 +16,42 @@ fifoApp.controller('NewPackageCtrl', function($scope, $location, wiggle, status,
 
         rules.forEach(function(item) {
 
+            item.error = false;
+
             /* If none of the fields are present, just ignore it. */
             var nonePresent = !item['attribute'] && !item['condition'] && !item['weight'] && !item['value']
             if (nonePresent) {
-                item.error = false
                 return;
             }
 
-            if (!item['attribute'] || !item['condition'] || !item['weight'] || !item['value']) {
+            if (!item.weight) {
                 valid = false;
                 item.error = true;
+                return false;
             }
-            else
-                item.error = false
+
+            switch (item.weight.value) {
+                case 'scale':
+                    if (!item.attribute || typeof item.low != 'number' || typeof item.high != 'number') {
+                        valid = false;
+                        item.error = true;
+                    }
+                    break;
+
+                case 'random':
+                    if (typeof item.low != 'number' || typeof item.high != 'number'){
+                        valid = false;
+                        item.error = true;                        
+                    }
+                    break;
+                
+                default:
+                    if (!item.condition || !item.attribute || !item.value) {
+                        valid = false;
+                        item.error = true;
+                    }
+                    break;
+            }
 
         })
         return valid;
