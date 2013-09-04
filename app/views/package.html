@@ -11,20 +11,17 @@
 
   <div class="box span6" ng-show='package.requirements.length > 0'>
     <div class="header">Rules</div>
-    <table class='span5'>
-      <tr class='small'>
-        <th>Weight</th>
-        <th>Attribute</th>
-        <th>Condition</th>
-        <th>Value</th>
-      </tr>
-      <tr ng-repeat='req in package.requirements'>
-        <td class='light center'>{{req.weight}}</td>
-        <td class='center'>{{req.attribute}}</td>
-        <td class='center'>{{req.condition}}</td>
-        <td>{{req.value}}</td>
-      </tr>
-    </table>
+
+
+    <div class="container span6" ng-repeat='rule in package.requirements'>
+        <span><strong>{{rule.weight}}</strong></span>
+        <dl class='dl-horizontal' ng-repeat='(k,v) in rule'>
+        <dt ng-hide='k=="weight"'>{{k}}</dt>
+        <dd ng-hide='k=="weight"'>{{v}}</dd>
+        </dl>
+        <br/>
+    </div>
+    
   </div>
 
 </div>
