@@ -106,7 +106,7 @@ Config = {
         }, []);
     },
 
-    adjustMessage: "You have not adjusted your config.js file at /opt/local/jingles/app/scripts/config.js " +
+    adjustMessage: "You have not adjusted your config.js file at /opt/local/fifo-jingles/app/scripts/config.js " +
                 "This is OK, but please keep in mind that the default warning levels in there " +
                 "might not apply to you. If you see warnings that you think you should not go " +
                 "there and change them, you can also remove this message there."

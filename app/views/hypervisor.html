@@ -1,8 +1,8 @@
 <help link="http://project-fifo.net/display/PF/Hypervisors"></help>
-<div class="tab-pane" ng-show="hyper.name">
+<div class="tab-pane" ng-show="hyper.uuid">
   <div class="row-fluid">
     <div class="span8">
-      <h3>{{hyper.name}}</h3>
+      <h3>{{hyper.uuid}}</h3>
     </div>
   </div>
   <hr/>
@@ -29,8 +29,10 @@
             <dl class="dl-horizontal">
               <dt>SmartOS ver</dt>
               <dd>{{hyper.sysinfo["Live Image"]}}</dd>
+              <dt>Node uuid</dt>
+              <dd>{{hyper.uuid}}</dd>
               <dt>Node name</dt>
-              <dd>{{hyper.name}}</dd>
+              <dd>{{hyper.alias}}</dd>
               <dt>Agent version</dt>
               <dd title="{{hyper.version.split(',')[1]}}" jq-run='tooltip'>{{hyper.version.split(',')[0]}}</dd>
               <dt>Booted</dt>
