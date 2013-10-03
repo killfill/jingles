@@ -2,7 +2,7 @@
 <div class="tab-pane" ng-show="hyper.uuid">
   <div class="row-fluid">
     <div class="span8">
-      <h3>{{hyper.uuid}}</h3>
+      <h3>{{hyper.alias}}</h3>
     </div>
   </div>
   <hr/>
@@ -130,7 +130,7 @@
 
             <dl class="dl-horizontal">
               <dt>Main IP</dt>
-              <dd>{{hyper.host}}</dd>
+              <dd><a href="ssh://root@{{hyper.host}}">{{hyper.host}}</a></dd>
               <dt>Network tags</dt>
               <dd>{{hyper.networks.join(", ")}}</dd>
             </dl>
