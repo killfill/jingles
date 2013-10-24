@@ -124,7 +124,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
     /* Build the Hypervisor nodes */
     var buildHypers = function() {
         $scope.hypersNodes = ($scope.hypersNodes || canvas.selectAll('g.hyper'))
-            .data(d3.values($scope.hypersHash), function key(d) { return d.name })
+            .data(d3.values($scope.hypersHash), function key(d) { return d.alias })
 
         var newHypersNode = $scope.hypersNodes.enter()
             .append('g')
@@ -139,7 +139,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
                   $scope.$digest()
                 })
                 .on('click', function(d) {
-                  window.open('#/hypervisors/' + d.name, '_blank')
+                  window.open('#/hypervisors/' + d.uuid, '_blank')
                 })
 
         /* This is an experiment, should be handled more elegantly! */
@@ -176,7 +176,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         newHypersNode.append('text')
             .attr('y', hyperSize/2)
             .attr('text-anchor', 'middle')
-            .text(function(d) { return d.name })
+            .text(function(d) { return d.alias })
 
         newHypersNode.append('text')
             .attr('class', 'ram')
@@ -256,11 +256,12 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
            so the force layout can work them out */
         var hyperIdx = {}
         d3.values($scope.hypersHash).forEach(function(hyper, hIdx) {
-            hyperIdx[hyper.name] = hIdx
+            hyperIdx[hyper.uuid] = hIdx
+
 
             /* Add links between hypers */
             nodes.forEach(function(other) {
-                links.push({source: hIdx, target: hyperIdx[other.name]})
+                links.push({source: hIdx, target: hyperIdx[other.uuid]})
             })
 
             nodes.push(hyper)
@@ -293,7 +294,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         var count = ids.length
         var hyperResponse = function(res) {
           if (res) //if no res, its the error callback
-            $scope.hypersHash[res.name] = res
+            $scope.hypersHash[res.uuid] = res
           status.update('Loading hypervisors', {add: 1})
           if (--count < 1)
             loadVms()
@@ -351,7 +352,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
     var layoutParticlesCharge = function(d) {
         //Charge is ~ to the ram.
         var charge;
-        if (d.name)
+        if (d.port)
             //hyper
             charge = -d.resources['total-memory'] * 0.02
         else
@@ -484,6 +485,9 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
             data = d.message.data
 
         /* Bukets for remember old values */
+        if (!link)
+            return console.log('ug, no link.. :(');
+
         link.target.netActivity = link.target.netActivity || {}
 
         /* netActivity = {net0: 123, net1: 3443} */
@@ -552,7 +556,7 @@ fifoApp.controller('GraphCtrl', function($scope, wiggle, user, $filter, status) 
         var percent = data.provisioned / (data.provisioned + data.free)
 
         $scope.hypersNodes
-            .data([hyper], function(d) {return d.name})
+            .data([hyper], function(d) {return d.alias})
             .select('.progress')
             .transition()
                 .attr('width', percent * hyperSize * 3/4)
