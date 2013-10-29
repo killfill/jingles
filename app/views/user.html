@@ -1,21 +1,23 @@
-<help link="http://project-fifo.net/display/PF/Users"></help>
 <div class="tab-pane" ng-show='user.uuid'>
 
   <div class="row-fluid">
-    <div class="span8">
+    <div class="col-md-8">
       <h3>{{user.name}}</h3>
     </div>
-    <div class='span4'>
+    <div class='col-md-4 pull-right'>
       <div class="btn-toolbar btn-group pull-right">
 
         <div ng-show='user.uuid != loggedUser.uuid' class="btn-group">
-          <button ng-click="delete()" class="btn" title='Delete' jq-run='tooltip'>
-            <i class='icon-trash'></i>
+          <button ng-click="delete()" class="btn btn-default" title='Delete' jq-run='tooltip' bs-modal="'views/partials/modal-confirm.html'">
+            <i class='glyphicon glyphicon-trash'></i>
           </button>
         </div>
       </div>
     </div>
   </div>
+
+  <br/>
+  <br/>
   <hr/>
 
   <div class="tabbable tabs-top">
@@ -23,7 +25,7 @@
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
       <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
       <li><a href="#groups" data-toggle="tab">Groups</a></li>
-      <li><a href="#orgs" data-toggle="tab">Organisation</a></li>
+      <li><a href="#orgs" data-toggle="tab">Organization</a></li>
       <li><a href="#ssh_keys" data-toggle="tab">SSH Keys</a></li>
     </ul>
     <div class="tab-content">
@@ -32,7 +34,7 @@
         <div class="userbox">
 
           <div class="header">
-            <i class="icon-user"></i>
+            <i class="glyphicon glyphicon-user"></i>
             <span class="badge badge-info">{{user.name}}</span>
           </div>
 
@@ -48,16 +50,17 @@
 
           </dl>
           <small>Change Password :</small>
-          <div class="input-prepend">
-            <span class="add-on"><i class="icon-key"></i></span>
-            <input ng-model="pass1" class="span3" type="password" placeholder="New password"></input><br/>
-            <span class="add-on"><i class="icon-key"></i></span>
-            <input ng-model="pass2" class="span3" type="password" placeholder="Confirm Password">
-          </div>
-
-          <div>
-            <button class="btn" ng-click="passwd()" style='margin-bottom: 10px;'>Change</button>
-          </div>
+          	<div class="input-group">
+          		<span class="input-group-addon"><i class='glyphicon glyphicon-lock'></i></span>
+	            <input ng-model="pass1" class="form-control" type="password" placeholder="New password" class='form-control'></input><br/>
+          	</div>
+          	<div class="input-group">
+          		<span class="input-group-addon"><i class='glyphicon glyphicon-lock'></i></span>
+	            <input ng-model="pass2" class="form-control" type="password" placeholder="Confirm Password">
+          	</div>
+          	
+            <button class="btn btn-primary pull-right" ng-click="passwd()" style='margin-bottom: 10px; margin-top: 10px'>Change</button>
+         
         </div>
 
       </div>
@@ -69,9 +72,8 @@
           <option value="dtraces">DTrace</option>
           <option value="groups">Groups</option>
           <option value="hypervisors">Hypervisors</option>
-          <option value="ipranges">IP Ranges</option>
           <option value="networks">Networks</option>
-          <option value="orgs">Organisations</option>
+          <option value="ipranges">IP Ranges</option>
           <option value="packages">Packages</option>
           <option value="users">Users</option>
           <option value="vms">Virtual Machines</option>
@@ -83,7 +85,7 @@
           <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
         </select>
         <input name="plast" ng-show="show_text" ng-model="perm_text"/>
-        <button ng-click="grant()" ng-show="permission">Grant</button>
+        <button ng-click="grant()" ng-show="permission" class='btn btn-default'>Grant</button>
 
         <table class='table table-condensed table-bordered'>
           <tr>
@@ -101,7 +103,7 @@
         <select id="join_group" ng-model='group'>
           <option ng-repeat="group in groups | hash2array | orderBy: name" value="{{group.uuid}}">{{group.name}}</option>
         </select>
-        <button ng-click="group_join()">Join</button>
+        <button ng-click="group_join()" class='btn btn-default'>Join</button>
         <table class='table table-condensed table-bordered'>
           <tr>
             <th>Name</th>
@@ -120,7 +122,7 @@
         <select id="join_org" ng-model="org_to_join">
           <option ng-repeat="org in orgs | hash2array | orderBy: name" value="{{org.uuid}}">{{org.name}}</option>
         </select>
-        <button ng-click="org_join()">Join</button>
+        <button ng-click="org_join()" class='btn btn-default'>Join</button>
         <table class='table table-condensed table-bordered'>
           <tr>
             <th>Name</th>
@@ -161,8 +163,8 @@
 
             <p>SSH Keys will be used when creating new KVM machines. They also will dynamically grant access
               to SmartOS zones. Based on the console access to the zone.</p>
-            <textarea rows="6" class='span10 uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
-            <p class='btn-toolbar'><button class='btn btn-info' ng-click='save_sshkeys()'>Add</button></p>
+            <textarea rows="6" class='form-control uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
+            <p class='btn-toolbar pull-right'><button class='btn btn-info' ng-click='save_sshkeys()'>Add</button></p>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.factory('datasetsat', function($resource, $http) {
-
+angular.module('fifoApp')
+  .factory('datasetsat', function ($resource, $http) {
+ 
     var endpoint = "http://" + Config.datasets + "/"
     var services = {
         datasets: $resource(endpoint + 'datasets/:id',
@@ -45,4 +46,4 @@ fifoApp.factory('datasetsat', function($resource, $http) {
     }
     return services
 
-});
+  });

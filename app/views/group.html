@@ -1,20 +1,22 @@
-<help link="http://project-fifo.net/display/PF/Groups"></help>
 <div class="tab-pane" ng-show='group.uuid'>
   <div class="row-fluid">
-    <div class="span8">
+    <div class="col-md-8">
       <h3>{{group.name}}</h3>
     </div>
-    <div class='span4'>
+    <div class='col-md-4'>
       <div class="btn-toolbar btn-group pull-right">
 
         <div class="btn-group">
-          <button ng-click="delete()" class="btn" title='Delete' jq-run='tooltip'>
-            <i class='icon-trash'></i>
+          <button ng-click="delete()" class="btn btn-default" title='Delete' jq-run='tooltip' bs-modal="'views/partials/modal-confirm.html'">
+            <i class='glyphicon glyphicon-trash'></i>
           </button>
         </div>
       </div>
     </div>
   </div>
+
+  <br/>
+  <br/>
   <hr/>
 
   <div class="tabbable tabs-top">
@@ -37,9 +39,8 @@
           <option value="dtraces">DTrace</option>
           <option value="groups">Groups</option>
           <option value="hypervisors">Hypervisors</option>
-          <option value="ipranges">IP Ranges</option>
           <option value="networks">Networks</option>
-          <option value="orgs">Organisations</option>
+          <option value="ipranges">IP Ranges</option>
           <option value="packages">Packages</option>
           <option value="users">Users</option>
           <option value="vms">Virtual Machines</option>
@@ -51,7 +52,7 @@
           <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
         </select>
         <input name="plast" ng-show="show_text" ng-model="perm_text"/>
-        <button ng-click="grant()" ng-show="permission">Grant</button>
+        <button ng-click="grant()" ng-show="permission" class='btn btn-default'>Grant</button>
         <table class='table table-bordered'>
           <tr>
             <th>Permission</th>

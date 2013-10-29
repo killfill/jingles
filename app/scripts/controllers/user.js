@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
-    $scope.setTitle('User details')
+angular.module('fifoApp')
+  .controller('UserCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+    
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
     $scope.p3 = false;
@@ -173,22 +174,23 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
     $scope.delete = function() {
         var name = $scope.user.name;
         var uuid = $scope.user.uuid;
-        modal.confirm({
+        $scope.modal = {
             btnClass: 'btn-danger',
-            btnText: 'Delete',
-            header: 'Confirm VM Deletion',
-            body: '<p><font color="red">Warning!</font> you are about to delete the User <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this User is gone forever!</p>"
-        }, function() {
-            wiggle.users.delete({id: uuid},
-                                function success(data, h) {
-                                    status.success(name + ' deleted');
-                                    $location.path('/users')
-                                },
-                                function error(data) {
-                                    console.error('Delete User error:', data);
-                                    status.error('There was an error deleting your user. See the javascript console.');
-                                });
-        })
+            confirm: 'Delete',
+            title: 'Confirm VM Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete the User <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this User is gone forever!</p>",
+            ok: function() {
+				wiggle.users.delete({id: uuid},
+	                function success(data, h) {
+	                    status.success(name + ' deleted');
+	                    $location.path('/configuration/users')
+	                },
+	                function error(data) {
+	                    console.error('Delete User error:', data);
+	                    status.error('There was an error deleting your user. See the javascript console.');
+	                });
+            }
+        }
     };
 
     $scope.passwd = function () {
@@ -269,4 +271,6 @@ fifoApp.controller('UserCtrl', function($scope, $routeParams, $location, wiggle,
         })
     };
     $scope.init();
-})
+    preventHrefTab();
+    
+  });

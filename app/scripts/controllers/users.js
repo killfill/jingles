@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
-    $scope.setTitle('Users')
+angular.module('fifoApp')
+  .controller('UsersCtrl', function ($scope, wiggle) {
+
 
     $scope.users = {}
 
@@ -21,8 +22,6 @@ fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
     $scope.show = function() {
         wiggle.users.list(function (ids) {
 
-            ids.length > 0 && status.update('Loading users', {total: ids.length})
-
             ids.forEach(function(id) {
                 $scope.users[id] = {name: id}
                 wiggle.users.get({id: id}, function(res) {
@@ -33,7 +32,6 @@ fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
                             $scope.users[id].groups[i] = go.name;
                         });
                     });
-                    status.update('Loading users', {add: 1});
                 });
             });
         });
@@ -48,4 +46,5 @@ fifoApp.controller('UsersCtrl', function($scope, wiggle, status) {
         return u;
     }
 
-});
+
+  });

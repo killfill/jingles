@@ -1,6 +1,8 @@
 'use strict';
 
-fifoApp.factory('vmService', function(wiggle, status, modal) {
+angular.module('fifoApp')
+  .factory('vmService', function (status, wiggle) {
+    
 
     var padLeft = function(nr, n, str){
         return Array(n-String(nr).length+1).join(str||'0')+nr;
@@ -19,37 +21,28 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
         executeAction: function(action, uuid, alias, force, cb) {
             var name = alias || uuid;
 
-            if (action!='delete') {
-                var b = {action: action};
-                if (force && (action == "stop" || action == "reboot"))
-                    b.force = true;
-                return wiggle.vms.put(
-                    {id: uuid}, b,
-                    function success(r, headers) {
-                        if (!headers)
-                            return status.error('An error 500 has occur. :(');
-
-                        status.info(actionDescrition[action] + ' machine ' + name)
-                        cb && cb(action, uuid)
-                    }
-                )
-            }
-
-            modal.confirm({
-                btnClass: 'btn-danger',
-                btnText: 'Delete',
-                header: 'Confirm VM Deletion',
-                body: '<p><font color="red">Warning!</font> you are about to delete VM <b id="delete-uuid">' + uuid + " "+ (alias? '(' + alias + ')': '') + "</b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this VM is gone forever!</p>"
-            }, function() {
-                wiggle.vms.delete(
-                    {id: uuid},
+            if (action == 'delete')
+                return wiggle.vms.delete({id: uuid},
                     function success(data, h) {
                         status.info('Deleting machine '  + name)
                         cb && cb(action, uuid)
-                    }
-                )
+                    })
 
-            })
+
+            var b = {action: action};
+            if (force && (action == "stop" || action == "reboot"))
+                b.force = true;
+
+            return wiggle.vms.put(
+                {id: uuid}, b,
+                function success(r, headers) {
+                    if (!headers)
+                        return status.error('An error 500 has occur. :(');
+
+                    status.info(actionDescrition[action] + ' machine ' + name)
+                    cb && cb(action, uuid)
+                }
+            )
 
         },
 
@@ -61,22 +54,22 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
             case 'failed-get_ips':
                 vm.state_description = "No IP address for the machine could be obtained.";
                 vm.state = 'failed';
-                vm._state_label = 'important';
+                vm._state_label = 'danger';
                 break;
             case 'failed-get_dataset':
                 vm.state_description = "The dataset could not be retrieved.";
                 vm.state = 'failed';
-                vm._state_label = 'important';
+                vm._state_label = 'danger';
                 break;
             case 'failed-get_package':
                 vm.state_description = "The package could not be retrieved.";
                 vm.state = 'failed';
-                vm._state_label = 'important';
+                vm._state_label = 'danger';
                 break;
             case 'failed-get_server':
                 vm.state_description = "No suitable server to deploy the VM on could be found.";
                 vm.state = 'failed';
-                vm._state_label = 'important';
+                vm._state_label = 'danger';
                 break;
             case 'running':
                 vm.state_description = "The VM is running."
@@ -105,7 +98,7 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
                 break;
             case 'deleting':
                 vm.state_description = "The VM is being deleted."
-                vm._state_label = 'important';
+                vm._state_label = 'danger';
                 break;
             default:
                 vm.state_description = vm.state;
@@ -149,4 +142,6 @@ fifoApp.factory('vmService', function(wiggle, status, modal) {
             return vm;
         }
     }
-});
+
+
+  });

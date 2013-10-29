@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
+angular.module('fifoApp')
 
+  .factory('wiggle', function ($resource, $http, $cacheFactory) {
 
     var is_empty = function is_empty(obj) {
 
@@ -19,7 +20,8 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
         return true;
     }
 
-    var endpoint = Config.wiggle
+    // var endpoint = Config.wiggle
+    var endpoint = '/api/0.1.0/';
 
     //The port : needs to be escaped to \\:
     if (endpoint.split(':').length>2)
@@ -169,8 +171,15 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                 error && error(data)
             })
     }
+    services.orgs.get = function(obj, success, error) {
+        return $http.get(endpoint + 'orgs/' + obj.id, {cache: true})
+            .success(success)
+            .error(function(data) {
+                error && error(data)
+            })
+    }
 
-    /* VM GET: include the asociated data */
+    /* VM GET: include the asociated data. WARNING: its getting ugly.... */
     services.vms._get = services.vms.get;
     services.vms.get = function(obj, returnCb, errorCb) {
 
@@ -182,14 +191,15 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                 return returnCb(res)
             }
 
-            var callsLeft = 2;
+            var callsLeft = 4;
             function checkIfReady() {
                 callsLeft--;
                 if (callsLeft < 1)
                     return returnCb(res)
             }
 
-            if (!res.config.dataset || res.config.dataset === 1) {
+            // if (angular.isUndefined(res.config.dataset) || res.config.dataset === 1) {
+            if (angular.isUndefined(res.config.dataset)) {
                 checkIfReady();
             } else {
                 services.datasets.get(
@@ -203,7 +213,8 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                     }
                 )
             };
-            if (!res.package) {
+
+            if (angular.isUndefined(res.package)) {
                 checkIfReady();
             } else {
                 services.packages.get(
@@ -217,9 +228,29 @@ fifoApp.factory('wiggle', function($resource, $http, $cacheFactory) {
                     }
                 )
             }
+
+            if (angular.isUndefined(res.owner)) {
+              checkIfReady();
+            } else {
+              services.orgs.get({id: res.owner}, 
+                function(org) { res._owner = org; checkIfReady(); }, 
+                function err() {checkIfReady();})
+            }
+
+            if (angular.isUndefined(res.hypervisor)) {
+              checkIfReady();
+            } else {
+              services.hypervisors.get({id: res.hypervisor}, 
+                function(data) { res._hypervisor = data; checkIfReady(); }, 
+                function err() {checkIfReady();})
+            }
+
+
         }, errorCb);
     }
 
     return services;
 
-});
+
+
+  });

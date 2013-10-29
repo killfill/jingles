@@ -1,8 +1,8 @@
 'use strict';
 
-fifoApp.controller('NetworkCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
-    $scope.setTitle('Network details')
-    var uuid = $routeParams.uuid;
+angular.module('fifoApp')
+  .controller('NetworkCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+     var uuid = $routeParams.uuid;
 
 
     var cache=(function(){
@@ -39,22 +39,24 @@ fifoApp.controller('NetworkCtrl', function($scope, $routeParams, $location, wigg
     $scope.delete = function() {
         var name = $scope.network.name;
         var uuid = $scope.network.uuid;
-        modal.confirm({
+
+        $scope.modal = {
             btnClass: 'btn-danger',
-            btnText: 'Delete',
-            header: 'Confirm VM Deletion',
-            body: '<p><font color="red">Warning!</font> you are about to delete the Network <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Network is gone forever!</p>"
-        }, function() {
-            wiggle.networks.delete({id: uuid},
-                                   function success(data, h) {
-                                       status.success(name + ' deleted');
-                                       $location.path('/networks')
-                                   },
-                                   function error(data) {
-                                       console.error('Delete Network error:', data);
-                                       status.error('There was an error deleting your network. See the javascript console.');
-                                   });
-        })
+            confirm: 'Delete',
+            title: 'Confirm VM Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete the Network <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Network is gone forever!</p>",
+            ok: function() {
+            	wiggle.networks.delete({id: uuid},
+                   function success(data, h) {
+                       status.success(name + ' deleted');
+                       $location.path('/configuration/networks')
+                   },
+                   function error(data) {
+                       console.error('Delete Network error:', data);
+                       status.error('There was an error deleting your network. See the javascript console.');
+                   });
+            }
+        }
     };
 
     $scope.remove_iprange = function(iprange) {
@@ -94,4 +96,4 @@ fifoApp.controller('NetworkCtrl', function($scope, $routeParams, $location, wigg
         })
     };
     $scope.init();
-})
+  });

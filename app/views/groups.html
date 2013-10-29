@@ -1,8 +1,7 @@
-<help link="http://project-fifo.net/display/PF/Groups"></help>
 <div class="tab-pane" id="groups">
   <div class="pane-nav">
-    <a href="#/groups/new" class="btn btn-small btn-info">
-      <i class="icon-white"></i><strong>add group</strong>
+    <a href="#/groups/new" class="btn btn-primary">
+      New Group
     </a>
   </div>
   <div class="row-fluid">
@@ -15,7 +14,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="g in groups">
-            <td><a href="#/groups/{{g.uuid}}">{{g.name}}</a></td>
+            <td><a href="#/configuration/groups/{{g.uuid}}">{{g.name}}</a></td>
           </tr>
         </tbody>
       </table>

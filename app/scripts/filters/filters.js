@@ -1,5 +1,7 @@
 'use strict';
 
+var fifoApp = angular.module('fifoApp');
+
 /* Call filterFilter with the values of the hash */
 fifoApp.filter('hash2array', function() {
 
@@ -24,12 +26,13 @@ fifoApp.filter('orDefault', function() {
     };
 });
 
-fifoApp.filter('fromNow', function() {
-    return function(dateString) {
-        if (!dateString) return;
-        return moment(new Date(dateString)).fromNow()
-    };
-});
+// OBSOLETE: use am-time-ago directive.
+// fifoApp.filter('fromNow', function() {
+//     return function(dateString) {
+//         if (!dateString) return;
+//         return moment(new Date(dateString)).fromNow()
+//     };
+// });
 
 var formatBytes = function(defaultPow1024) {
     return function(bytes, hash) {

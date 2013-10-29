@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.directive('simplecolorpicker', function() {
-
+angular.module('fifoApp')
+  .directive('simplecolorpicker', function () {
+    
     return {
         link: function(scope, element, attrs, controller) {
 
@@ -34,4 +35,4 @@ fifoApp.directive('simplecolorpicker', function() {
 
         }
     };
-});
+  });

@@ -1,4 +1,3 @@
-<help link="http://project-fifo.net/display/PF/Datasets"></help>
 <div class="tab-pane" id="datasets">
   <div class="row-fluid">
     <div class="span12">
@@ -25,24 +24,24 @@
                   <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
                     <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
 
-                    <td title='{{data.dataset}}' jq-run='tooltip'><a href='#/datasets/{{data.dataset}}'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
+                    <td><a href='#/datasets/{{data.dataset}}' title='{{data.dataset}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
                     <td>{{data.description}}</td>
                     <td ng-show='!data.imported && data.imported !=0'>
-                      <button class='btn btn-small icon-download-alt'
+                      <button class='btn btn-sm btn-default'
                               ng-hide="data.imported == 1"
                               title='You need to download this dataset with FiFo'
                               jq-run='tooltip'
-                              ng-click='import(data.dataset)'>Import</button>
+                              ng-click='import(data.dataset)'><i class='glyphicon glyphicon-download-alt'></i> Import</button>
                     </td>
                     <td ng-show='data.imported > -1'>
-                      <i ng-hide="data.imported < 1" class="icon-ok" style=""></i>
+                      <i ng-hide="data.imported < 1" class="glyphicon glyphicon-ok" style=""></i>
                       <div ng-show="data.imported < 1" class="progress progress-striped active">
-                        <div class="bar" style="width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
+                        <div class="progress-bar" style="color: black; width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
                       </div>
                     </td>
                     <td class='light'>{{data.type}}</td>
-                    <td><i ng-click="delete(data)" jq-run="tooltip" class="icon-remove-sign clickable" title="delete"></i></td>
+                    <td><i ng-click="delete(data)" jq-run="tooltip" class="glyphicon glyphicon-remove-sign clickable" title="Delete" bs-modal="'views/partials/modal-confirm.html'"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -67,15 +66,18 @@
               <tbody>
                 <tr ng-repeat="data in datasetsat | hash2array | orderBy: ['-published_at', '-os', 'name','-version']">
                   <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
-                  <td title='{{data.uuid}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</td>
+                  <td><span title='{{data.uuid}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</span></td>
                   <td>{{data.description}}</td>
                   <td>
-                    <i ng-show="data.imported" class="icon-ok"></i>
-                    <button class='btn btn-small icon-download-alt'
+                    <i ng-show="data.imported" class="glyphicon glyphicon-ok"></i>
+                    <button class='btn btn-default btn-sm'
                             ng-hide="data.imported == 1"
-                            ng-click='import(data.uuid)'>Import</button>
+                            ng-click='import(data.uuid)'>
+                            <i class='glyphicon glyphicon-download-alt'></i>
+                            Import
+                    </button>
                   </td>
-                  <td class='nowrap' title="{{data.published_at | date:'medium'}}" jq-run='tooltip'>{{data.published_at | fromNow}}</td>
+                  <td><span title="{{data.published_at | date:'medium'}}" jq-run='tooltip' am-time-ago='data.published_at' class='nowrap'></span></td>
                   <td class='light nowrap'>{{data.files[0].size|bytes}}</td>
                   <td class='light' style='max-width: 80px;'><small>{{data.creator_name}}</small></td>
                 </tr>
