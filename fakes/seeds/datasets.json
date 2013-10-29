@@ -1,0 +1,15 @@
+{
+    "dataset": "{{random.number(10)}}",
+    "description": "{{Lorem.sentence(1)}}",
+    "imported": 1,
+    "name": "{{random.bs_noun}}",
+    "networks": [
+        {
+            "description": "public",
+            "name": "net0"
+        }
+    ],
+    "os": "smartos",
+    "type": "zone",
+    "version": "13.2.0"
+}

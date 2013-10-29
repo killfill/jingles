@@ -1,0 +1,135 @@
+msgid ""
+msgstr ""
+
+#: app/views/machines.html
+#: app/views/main.html
+msgid "New Machine"
+msgstr ""
+
+#: app/views/machines.html
+msgid "Showing"
+msgstr ""
+
+#: app/views/machines.html
+msgid "of"
+msgstr ""
+
+#: app/views/machines.html
+#: app/views/main.html
+#: app/views/partials/header.html
+msgid "Machines"
+msgstr ""
+
+#: app/views/machines.html
+msgid "Filter"
+msgstr ""
+
+#: app/views/main.html
+msgid "Welcome _you_!"
+msgstr ""
+
+#: app/views/main.html
+msgid "You are part of the <u>Acme</u> organization, and of the <u>Powers</u> and <u>Fats</u> role group."
+msgstr ""
+
+#: app/views/main.html
+#: app/views/partials/header.html
+msgid "Servers"
+msgstr ""
+
+#: app/views/main.html
+msgid "Cloud View"
+msgstr ""
+
+#: app/views/main.html
+msgid "Messages"
+msgstr ""
+
+#: app/views/main.html
+msgid "Category"
+msgstr ""
+
+#: app/views/main.html
+msgid "Element"
+msgstr ""
+
+#: app/views/main.html
+msgid "Message"
+msgstr ""
+
+#: app/views/main.html
+msgid "{{cloud_resume}}"
+msgstr ""
+
+#: app/views/main.html
+msgid "Memory"
+msgstr ""
+
+#: app/views/main.html
+msgid "Disk usage"
+msgstr ""
+
+#: app/views/main.html
+#: app/views/partials/header.html
+msgid "Users"
+msgstr ""
+
+#: app/views/partials/breadcrumb.html
+msgid "Help"
+msgstr ""
+
+#: app/views/partials/breadcrumb.html
+msgid "Loading"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Datasets"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Configuration"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Packages"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Networks"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Groups"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "IP Ranges"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Permitions"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Organizations"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Scripts"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "DTrace"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "My info"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "About"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Logout"
+msgstr ""

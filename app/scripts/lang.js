@@ -1,0 +1,4 @@
+angular.module("gettext").run(['gettextCatalog', function (gettextCatalog) {
+    gettextCatalog.setStrings('es', {"Welcome {{name}}!":"Bienvenido {{name}}!","You are part of the <u>Acme</u> organization, and of the <u>Powers</u> and <u>Fats</u> role group.":"Eres parte de la organización <u>Acme</u>, y del grupo <u>Powers</u> y <u>Fats</u>.","New Machine":"Nueva máquina","Servers CPUs":"CPU de los servidores","Cloud View":"Vision nube","Messages":"Mensajes","Category":"categoria","Element":"Elemento","Message":"Mensaje","The Cloud looks fine":"La nube se ve bien","Memory":"Memoria","Disk usage":"Uso de disco","Machines":"Máquinas","Users":"Usuarios","Servers":"Servidores","Help":"Ayuda","Loading":"Cargando","Datasets":"","Configuration":"Confguración","Packages":"Paquetes","Groups":"Grupos","IP Ranges":"Rangos de IP","Permitions":"Permisos","Organizations":"Organizaciones","Scripts":"","DTrace":""});
+
+}]);

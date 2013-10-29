@@ -1,0 +1,157 @@
+@import 'app/bower_components/bootstrap/less/bootstrap.less';
+
+/* Load the original glyphicons (plural!) wich has more icons than the bootstrap version */
+//<i class='glyphicons display'></i>
+//@import 'app/styles/custom/glyphicons.less';
+
+@import 'app/styles/custom/fifo-widgets.less';
+@import 'app/styles/custom/animations.less';
+@import 'app/styles/custom/spinner.less';
+@import 'app/styles/custom/ng-table.less';
+@import 'app/styles/custom/legacy.less';
+
+.hide {
+	display: none;
+}
+
+/* HERLPES */
+//Strange margin at the side's
+.container {
+	max-width: 95% !important;
+}
+
+.clickable {
+    cursor: pointer;
+}
+.nowrap {
+	white-space: nowrap;
+}
+.capitalize {
+	text-transform: capitalize;
+}
+
+a.nocolor {
+	color: @text-color !important;
+}
+
+
+/* OTHERs */
+a {
+	.transition(all 200ms);
+}
+
+a:active {
+	border-style:dashed;
+	border-width:1px;
+	border-color:black;
+}
+
+
+.table th {
+	// text-decoration: underline;
+	text-transform: uppercase;
+    background-color: lighten(@custom-primary-color, 50%);
+    color: #666;
+}
+
+
+//flag of the header
+.flag-icon {
+	margin-top: 5px;
+}
+
+hr {
+	border-left:  none;
+	border-right: none;
+	border-top:   none;
+	border-bottom: 1px dashed #dcdcdc;
+}
+
+.mono {
+    font-family: Consolas, "Andale Mono", monospace, "Courier New";
+    text-decoration: none;
+}
+
+/* Gauge.js canvas */
+canvas.gauge {
+	height: 80px;
+}
+
+
+//badge-* was remove on bootstrap 3
+.badge-info{
+	background-color: @custom-primary-color;
+}
+
+.welcome {
+	.well;
+	margin-bottom: 30px;
+}
+
+@nav-tabs-active-link-hover-color: black;
+@nav-tabs-active-link-hover-bg: white;
+
+@logo-size: 20px;
+img.oslogo {
+
+    max-width: @logo-size;
+    max-height: @logo-size;
+    height: @logo-size; //reserve space while the logo loads...
+    width: @logo-size;
+}
+
+
+.navbar {
+	box-shadow: 0px 4px 27px 0px gray;
+}
+
+// @brand-primary:         #428bca;
+// @brand-primary:         @color-5;
+@brand-success:         #5cb85c;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
+@brand-info:            #5bc0de;
+
+
+
+//Menu stuff: default 768;
+// @grid-float-breakpoint: 995px;
+
+//Line between tr's
+@table-border-color: transparent;
+
+
+// @navbar-inverse-bg:	fade(#0f3c64, 85%);
+@navbar-inverse-bg:	@custom-primary-color;
+@navbar-height: 	40px;
+
+@navbar-inverse-color:       red;
+@navbar-inverse-border:      darken(@navbar-inverse-bg, 10%);
+@navbar-inverse-link-color:  lighten(#000, 75%);
+@navbar-inverse-link-hover-color: white;
+
+@breadcrumb-bg:               lighten(@custom-primary-color, 50%);
+@breadcrumb-color:            #e0e0e0;
+@breadcrumb-active-color:     #333;
+
+body {
+	padding-top: @navbar-height;
+}
+
+@body-bg: #DFC184;
+// @text-color: black;
+
+@border-radius-base:    2px;
+
+
+@font-size-base:          14px;
+@font-size-large:         ceil(@font-size-base * 1.25); // ~18px
+@font-size-small:         ceil(@font-size-base * 0.85); // ~12px
+
+// @table-bg-hover:        @color-4;
+@link-color:            @custom-primary-color;
+
+
+@table-condensed-cell-padding: 3px;
+
+// @input-border-focus: @color-4;

@@ -1,0 +1,112 @@
+<div class="row">
+	<div class="col-md-6">
+
+		<div class="welcome">
+			<h4 translate>Welcome {{user.name}}</h4>
+			<p translate>You are part of the <u>Acme</u> organization, and of the <u>Powers</u> and <u>Fats</u> role group.</p>
+			<p>Missing: status (userinfo) + cloudview + create new things + howl</p>
+			<p>VM stopped no tiene el label.. :S</p>
+<!-- 
+		<p>http://stackoverflow.com/questions/18756981/twitter-bootstrap-3-tab-view-fade-does-not-work-properly</p>
+			<ul>
+				<li>Other Clouds</li>
+				<ul>
+					<li>new vm euca: https://www.monosnap.com/image/A2vDkIn57jxfkRgXQYFcoRICY</li>
+					<li>Openstack: http://www.youtube.com/watch?v=Uu3TNAlX7vs</li>
+				</ul>
+				
+				<li>De todo (tablas, utils, etc, etc): http://starttheshift.github.io/MacGyver/example/index.html</li>
+				<li>buttons spinners: http://msurguy.github.io/ladda-bootstrap/ http://jsfiddle.net/AndrewDryga/zcX4h/1/</li>
+				<li>Graphs:</li>
+				<ul>
+					<li>http://cmaurer.github.io/angularjs-nvd3-directives/</li>
+					<li>https://github.com/petermelias/angular-chartjs</li>
+					<li>http://www.ng-newsletter.com/posts/d3-on-angular.html</li>
+				</ul>
+			</ul> -->
+			<p class='text-primary text-right'>An upgrade is available. See more details <a href='#/about'>here</a></p>
+		</div>
+
+		<div class="link-boxes">
+			<a href='#/machines/new'>
+				<i class="glyphicon glyphicon-plus"></i>
+				<span translate>New Machine</span>
+			</a>
+			<a href='#/servers'>
+				<i class="glyphicon glyphicon-dashboard"></i>
+				<span translate>Servers</span>
+			</a>
+			<a href='#/vizualizations/graph'>
+				<i class="glyphicon glyphicon-cloud"></i>
+				<span translate>Cloud View</span>
+			</a>
+			<a href='http://project-fifo.net/' target='_new'>
+				<i class="glyphicon glyphicon-info-sign"></i>
+				<span>FiFo Home Page</span>
+			</a>
+		</div>
+
+
+		<div class="panel panel-primary" ng-show='!cloud_ok'>
+			<div class="panel-heading">
+				<span class="panel-title" translate>Messages</span>
+			</div>
+			<table class="table table-condensed">
+				<th translate>Category</th>
+				<th translate>Element</th>
+				<th translate>Message</th>
+			</tr>
+			<tr class='{{msgTrClass(msg.type)}}' ng-repeat='msg in messages | filter:{ok: !true}'>
+				<td>{{msg.category}}</td>
+				<td>{{msg.element}}</td>
+				<td>{{msg.message}}</td>
+			</tr>
+		</table>
+	</div>
+
+</div>
+
+
+
+<div class="col-md-6">
+	<div class="panel {{cloud_ok? 'panel-success': 'panel-danger'}}">
+		<div class="panel-heading">
+			<span class="panel-title"><i class="glyphicon glyphicon-cloud"></i> <span translate>{{cloud_resume}}</span></span>
+		</div>
+		<div class="panel-body">
+
+			<div class="row">
+				<div class="widget big">
+					<h3 translate>Memory</h3> 
+					<span>{{messages[0].percent  || '0'}}%</span>
+					<gauge ng-model='messages[0].percent'></gauge>
+					<div>{{metrics['provisioned-memory'] | Mbytes}} of {{metrics['total-memory'] | Mbytes}}</div>
+				</div>
+				<div class="widget big">
+					<h3 translate>Disk usage</h3> 
+					<span>{{messages[1].percent || '0'}}%</span>
+					<gauge ng-model='messages[1].percent'></gauge>
+					<div>{{metrics.used | Mbytes}} of {{metrics.size | Mbytes}}</div>
+				</div>
+			</div>
+			<hr/>
+			<div class="widget">
+				<h4 translate>Machines</h4>
+				<div>{{metrics.vms}}</div>
+			</div>
+
+			<div class="widget">
+				<h4 translate>Users</h4>
+				<div>{{metrics.users}}</div>
+			</div>
+
+			<div class="widget">
+				<h4 translate>Servers</h4>
+				<div>{{metrics.hypervisors.length}}</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+</div>

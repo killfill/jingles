@@ -1,0 +1,30 @@
+@keyframes spin {
+    from { transform:rotate(0deg); }
+    to { transform:rotate(360deg); }
+}
+
+
+.spinner {
+
+	color: @gray;
+	padding-right: 20px;
+	.transition(all 0.25s);
+
+	/* Override the default display: none so we can fade it in and out.. :P */
+	&.ng-hide {
+		display: block !important;
+		opacity: 0;
+	}
+
+	i {
+		animation-name: spin;
+	   	animation-duration: 3000ms;
+	    animation-iteration-count: infinite;
+	    animation-timing-function: linear;
+	}
+	span {
+		padding-left: 3px;
+	}
+}
+
+

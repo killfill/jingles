@@ -1,0 +1,24 @@
+{
+  "name": "fifo",
+  "version": "0.1.0",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "bootstrap": "~3.0.0",
+    "angular": "1.2.0-rc.2",
+    "angular-route": "~1.2.0-rc.2",
+    "angular-animate": "~1.2.0-rc.2",
+    "angular-gettext": "~0.1.1",
+    "famfamfam-flags-sprite": "*",
+    "angular-resource": "1.2.0-rc.2",
+    "ng-table": "~0.2.1",
+    "nginfinitescroll": "~1.0.0",
+    "alertify.js": "0.4.0rc1",
+    "angular-moment": "~0.2.2",
+    "msgpack-javascript": "*",
+    "angular-sanitize": "1.2.0-rc.2",
+    "angular-cookies": "v1.2.0-rc.2"
+  },
+  "resolutions": {
+    "angular": "1.2.0-rc.2"
+  }
+}

@@ -1,0 +1,120 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Phillip <pneumann@gmail.com>\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: app/views/main.html
+msgid "Welcome {{name}}!"
+msgstr "Bienvenido {{name}}!"
+
+#: app/views/main.html
+msgid ""
+"You are part of the <u>Acme</u> organization, and of the <u>Powers</u> and "
+"<u>Fats</u> role group."
+msgstr ""
+"Eres parte de la organización <u>Acme</u>, y del grupo <u>Powers</u> y "
+"<u>Fats</u>."
+
+#: app/views/main.html
+msgid "New Machine"
+msgstr "Nueva máquina"
+
+#: app/views/main.html
+msgid "Servers CPUs"
+msgstr "CPU de los servidores"
+
+#: app/views/main.html
+msgid "Cloud View"
+msgstr "Vision nube"
+
+#: app/views/main.html
+msgid "Messages"
+msgstr "Mensajes"
+
+#: app/views/main.html
+msgid "Category"
+msgstr "categoria"
+
+#: app/views/main.html
+msgid "Element"
+msgstr "Elemento"
+
+#: app/views/main.html
+msgid "Message"
+msgstr "Mensaje"
+
+#: app/views/main.html
+msgid "The Cloud looks fine"
+msgstr "La nube se ve bien"
+
+#: app/views/main.html
+msgid "Memory"
+msgstr "Memoria"
+
+#: app/views/main.html
+msgid "Disk usage"
+msgstr "Uso de disco"
+
+#: app/views/main.html app/views/partials/header.html
+msgid "Machines"
+msgstr "Máquinas"
+
+#: app/views/main.html app/views/partials/header.html
+msgid "Users"
+msgstr "Usuarios"
+
+#: app/views/main.html app/views/partials/header.html
+msgid "Servers"
+msgstr "Servidores"
+
+#: app/views/partials/breadcrumb.html
+msgid "Help"
+msgstr "Ayuda"
+
+#: app/views/partials/breadcrumb.html
+msgid "Loading"
+msgstr "Cargando"
+
+#: app/views/partials/header.html
+msgid "Datasets"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "Configuration"
+msgstr "Confguración"
+
+#: app/views/partials/header.html
+msgid "Packages"
+msgstr "Paquetes"
+
+#: app/views/partials/header.html
+msgid "Groups"
+msgstr "Grupos"
+
+#: app/views/partials/header.html
+msgid "IP Ranges"
+msgstr "Rangos de IP"
+
+#: app/views/partials/header.html
+msgid "Permitions"
+msgstr "Permisos"
+
+#: app/views/partials/header.html
+msgid "Organizations"
+msgstr "Organizaciones"
+
+#: app/views/partials/header.html
+msgid "Scripts"
+msgstr ""
+
+#: app/views/partials/header.html
+msgid "DTrace"
+msgstr ""
