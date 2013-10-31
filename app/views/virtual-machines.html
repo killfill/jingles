@@ -45,7 +45,7 @@
             </td>
             <td ng-show="columns[4].visible">
               <span ng-repeat="net in vm.config.networks">
-                <a target="_new" href="http://{{net.ip}}">{{net.ip}}</a>
+                <a target="_new" href="ssh://{{net.ip}}">{{net.ip}}</a>
                 {{($last && ' ') || ', '}}</span></td>
             <td ng-show="columns[5].visible">{{vm._package.name}}</td>
             <td ng-show="columns[6].visible" class="memory">{{vm.config.ram | Mbytes}}</td>
