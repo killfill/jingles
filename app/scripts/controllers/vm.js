@@ -507,13 +507,13 @@ fifoApp.controller('VmCtrl', function($scope, $routeParams, $location, wiggle, v
         });
 
         $scope.networks = {};
-        wiggle.ipranges.list(function(res) {
+        wiggle.networks.list(function(res) {
             res.forEach(function(pid) {
                 $scope.networks[pid] = {
                     name: pid,
                     id: pid
                 };
-                wiggle.ipranges.get({id: pid}, function(pkg) {
+                wiggle.networks.get({id: pid}, function(pkg) {
                     $scope.networks[pid] = pkg;
 
                     /* Additional fields GET does not provide */
