@@ -173,7 +173,7 @@ angular.module('fifoApp')
     }
     services.orgs.get = function(obj, success, error) {
         return $http.get(endpoint + 'orgs/' + obj.id, {cache: true})
-            .success(success)
+            .success(success || function(){})
             .error(function(data) {
                 error && error(data)
             })

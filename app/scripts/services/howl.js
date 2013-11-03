@@ -12,17 +12,18 @@ angular.module('fifoApp')
     }
 
     /* Put the connection info on the rootScope, so use can see it... */
-    setInterval(function () {
-        if ($rootScope.howlConnected === howl._connected) return;
-        $rootScope.howlConnected = howl._connected;
-        $rootScope.$digest();
-    }, 1000);
+    // setInterval(function () {
+    //     if ($rootScope.howlConnected === howl._connected) return;
+    //     $rootScope.howlConnected = howl._connected;
+    //     $rootScope.$digest();
+    // }, 1000);
 
     return {
         connect: howl.connect,
         join: howl.join,
         send: howl.send,
-        disconnect: howl.disconnect
+        disconnect: howl.disconnect,
+        connected: function() {return howl._connected}
     }
 
   });
@@ -52,7 +53,9 @@ var howl = {
         }, 1000);
 
     },
-
+    _wsError: function(e) {
+        console.log('WS ERROR:', arguments)
+    },
     _wsClose: function(e) {
         howl._connected = false
         if (!howl._token)
@@ -73,7 +76,7 @@ var howl = {
     connect: function(token) {
 
         if (howl.ws)
-            howl.disconnect();
+            howl.disconnect()
 
         if (token)
             howl._token = token
@@ -83,6 +86,7 @@ var howl = {
         howl.ws.onopen = howl._wsOpen
         howl.ws.onclose = howl._wsClose
         howl.ws.onmessage = howl._wsMessage
+        howl.ws.onerror = howl._wsError
     },
 
     send: function(data) {

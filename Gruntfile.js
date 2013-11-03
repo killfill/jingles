@@ -1,5 +1,9 @@
 // Generated on 2013-09-05 using generator-webapp 0.4.1
 'use strict';
+
+//https://github.com/mikeal/request/issues/418
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
 var mountFolder = function (connect, dir) {
@@ -7,7 +11,7 @@ var mountFolder = function (connect, dir) {
 };
 
 //Proxy requests middleware
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var proxyRequest = require('grunt-connect-proxy/lib/utils').proxyRequest;
 
 module.exports = function (grunt) {
     // show elapsed time at the end
@@ -130,10 +134,12 @@ module.exports = function (grunt) {
                 {
                     context: '/api',
                     host: grunt.option('proxy'), //i.e. grunt server --proxy=YOUR_WIGGLE   
-                    port: 443,
-                    https: true,
-                    changeOrigin: false,
-                    xforward: false
+                    // port: 443,
+                    // https: true,
+                },
+                {
+                    context: '/howl',
+                    host: grunt.option('proxy'),
                 }
             ],
 
@@ -149,15 +155,7 @@ module.exports = function (grunt) {
 
                         //Proxy requests to a wiggle backend.
                         if (grunt.option('proxy')) {
-                        
-                            middlewares.push(function(req, res, next) {
-                                console.log('->>> look:', req.url)
-                                var server = req.connection.server;
-                                next();
-                            })
-                            middlewares.push(proxySnippet)
-                            
-
+                            middlewares.push(proxyRequest)
                         }
                         //If not, mock it up.
                         else {

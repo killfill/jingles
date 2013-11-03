@@ -1,10 +1,7 @@
 {
-  "name": "yeoman-bootrap-less",
-  "version": "0.0.0",
+  "name": "jingles",
+  "version": "0.1.0",
   "dependencies": {
-    "grunt-recess": "~0.4.0",
-    "grunt-angular-gettext": "0.0.6",
-    "grunt-connect-proxy": "~0.1.6"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -31,8 +28,11 @@
     "connect-livereload": "~0.2.0",
     "time-grunt": "~0.1.1",
     "grunt-recess": "~0.4.0",
-    "grunt-faker": "~0.1.0",
-    "grunt-ngmin": "0.0.3"
+    "grunt-faker": "git://github.com/chrisocast/grunt-faker.git#1544e883016b62258f7f3ecf35cefdd920e52bc7",
+    "grunt-ngmin": "0.0.3",
+    "grunt-recess": "~0.4.0",
+    "grunt-angular-gettext": "0.0.6",
+    "grunt-connect-proxy": "git://github.com/killfill/grunt-connect-proxy.git#8be7454fcfe5a28c732c170e6d4d9ecccf5b81e5"
   },
   "engines": {
     "node": ">=0.8.0"

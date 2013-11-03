@@ -9,7 +9,7 @@
 
 <span class='pull-right well-sm text-muted visible-lg visible-md'>
 	<span ng-show='searchQuery' translate>Showing</span>
-	<span ng-show='searchQuery'>{{ (vms| filter:searchQuery).length}}</span>
+	<span ng-show='searchQuery'>{{ (vmsFiltered).length}}</span>
 	<span  ng-show='searchQuery'translate>of</span>
 	<span>{{vmsIds.length}}</span>
 	<span translate>Machines</span>
@@ -31,7 +31,7 @@
 			</td>
 			<!-- <td data-title='Owner' sortable='_owner.name' class='text-muted'>{{vm._owner.name}}</td> -->
 			<td data-title="Ip" sortable='config.network_mappings[0].ip' class='mono'>
-				<small>{{vm.config.networks[0].ip}}</small>
+				<small><a class='nocolor' target='_new' href='ssh://{{vm.config.networks[0].ip}}'>{{vm.config.networks[0].ip}}</a></small>
 			</td>
 			<td data-title="'Package'|translate" sortable='_package.name' class='visible-lg visible-md visible-sm'>
 				{{vm._package.name}}

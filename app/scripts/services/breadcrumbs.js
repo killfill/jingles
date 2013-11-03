@@ -25,7 +25,7 @@ angular.module('services.breadcrumbs').factory('breadcrumbs', ['$rootScope', '$l
 
     pathElements.shift();
     for (i=0; i<pathElements.length; i++) {
-      if (breadcrumbPath(i) == '/') return;
+      if (breadcrumbPath(i) == '/') return breadcrumbs = [];
 
       //Take the name of the last route element, from the app.js config... :P
       if (i == pathElements.length - 1)

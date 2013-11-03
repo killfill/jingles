@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('HeaderCtrl', function ($scope, breadcrumbs, $location, $route, $rootScope, $http, gettextCatalog, auth) {
+  .controller('HeaderCtrl', function ($scope, breadcrumbs, $location, $route, $rootScope, $http, gettextCatalog, auth, howl) {
 
   	$scope.breadcrumbs = breadcrumbs;
 
@@ -10,9 +10,14 @@ angular.module('fifoApp')
   		return $location.path().match(str) !== null;
   	}
 
-    //Login stuff: pass the auth object to the view, kinda handy...
-    //Logout click
+    //Login stuff: pass the auth object to the view, kinda handy i.e. for Logout click
     $scope.auth = auth
+
+    //Show if we are connected to howl
+    $scope.$watch(
+      function()     { return howl.connected() },
+      function(bool) { $scope.howlConnected = bool }
+    )
 
     //Help url
   	$rootScope.$on('$routeChangeSuccess', function(event, current){

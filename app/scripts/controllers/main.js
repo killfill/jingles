@@ -2,8 +2,6 @@
 
 angular.module('fifoApp')
   .controller('MainCtrl', function ($scope, wiggle, auth) {
-  
-  	$scope.user = auth.currentUser();
 
     $scope.msgTrClass = function(type) {
         return type == 'critical' ? 'error': type;
@@ -24,6 +22,18 @@ angular.module('fifoApp')
 
             $scope.cloud_status = $scope.cloud_ok ? 'images/healthy-cluster.png' : 'images/unhealthy-cluster.png'
             $scope.cloud_resume = $scope.cloud_ok ? 'Your cloud is fine!'        : 'Your cloud needs some attention!'
+
+            $scope.user = auth.currentUser()
+            $scope.keys = Object.keys($scope.user.keys).length
+            $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
+            
+            $scope.groups = []
+            $scope.user.groups.forEach(function(gid) {
+                wiggle.groups.get({id: gid}, 
+                    function(res) {
+                        $scope.groups.push(res.name)
+                })
+            })
         })
 
     }

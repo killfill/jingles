@@ -77,6 +77,7 @@ angular.module('fifoApp')
                 break;
             case 'stopped':
                 vm.state_description = "The VM is stopped."
+                vm._state_label = 'default'
                 break;
             case 'creating':
                 vm.state_description = "The VM is currently bing provisioned on the hypervisor."

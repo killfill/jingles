@@ -3,10 +3,11 @@
 
 		<div class="welcome">
 			<h4 translate>Welcome {{user.name}}</h4>
-			<p translate>You are part of the <u>Acme</u> organization, and of the <u>Powers</u> and <u>Fats</u> role group.</p>
-			<p>Missing: status (userinfo) + cloudview + create new things + howl</p>
-			<p>VM stopped no tiene el label.. :S</p>
-<!-- 
+			<p translate>You are part of <u>{{activeOrg.data.name}}</u>, and of the groups {{groups.join(' and ')}}.</p>
+			<p ng-show='keys > 0' translate>SSH keys configured: {{keys}}</p>
+			<p ng-show='keys < 1' translate>No ssh keys found on your account. Dont forget to <a href='#/configuration/users/{{user.uuid}}'>add one</a>! </p>
+			<p class='text-danger'>Missing stuff: howl + cloudview + create new things</p>
+<!--
 		<p>http://stackoverflow.com/questions/18756981/twitter-bootstrap-3-tab-view-fade-does-not-work-properly</p>
 			<ul>
 				<li>Other Clouds</li>
@@ -24,7 +25,7 @@
 					<li>http://www.ng-newsletter.com/posts/d3-on-angular.html</li>
 				</ul>
 			</ul> -->
-			<p class='text-primary text-right'>An upgrade is available. See more details <a href='#/about'>here</a></p>
+			<!-- <p class='text-primary text-right'>An upgrade is available. See more details <a href='#/about'>here</a></p> -->
 		</div>
 
 		<div class="link-boxes">

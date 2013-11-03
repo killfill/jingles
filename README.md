@@ -10,6 +10,7 @@ Jingles is a 'one page web site', wich interacts with wiggle and howl backends.
 You can run jingles on your notebook for development. To do this, please install the deps first:
 
     npm install
+    bower install
 
 Then, you can run this 2 ways:
 
