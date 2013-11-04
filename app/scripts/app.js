@@ -138,6 +138,10 @@ angular.module('fifoApp',
   if (lang.indexOf('-') > -1)
     lang = lang.split('-')[0];
 
+  //default gb flag
+  if (Object.keys(gettextCatalog.strings).indexOf(lang) < 0)
+    lang = 'gb'
+
   gettextCatalog.currentLanguage = lang;
   // gettextCatalog.debug = true;
 
