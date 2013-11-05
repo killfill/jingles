@@ -9,6 +9,10 @@ angular.module('fifoApp')
       $scope.tableParams.count += 5;
     }
 
+    $scope.start = function(vm) {
+      vmService.executeAction('start', vm.uuid, vm.config &&  vm.config.alias)
+    }
+
     $scope.connect = function(vm) {
       if (vm.config.type == 'kvm')
         window.open('vnc.html?uuid=' + vm.uuid);
@@ -26,7 +30,6 @@ angular.module('fifoApp')
 
       $scope.vmsFiltered = data.slice((p.page - 1) * p.count, p.page * p.count);
     }
-
 
     var init = function() {
 

@@ -54,8 +54,8 @@
 
 			<!-- Actions: -->
 			<td class='hidden-xs'>
-				<i ng-show="vm.state == 'running'" class='glyphicon glyphicon-share-alt clickable' title='Connect' ng-click='connect(vm)'></i>
-				<i ng-hide="vm.state == 'running'" class='glyphicon glyphicon-play clickable' title='Connect'></i>
+				<i ng-show="vm.state == 'running'" jq-run='tooltip' class='glyphicon glyphicon-share-alt clickable' title='Connect' ng-click='connect(vm)'></i>
+				<i ng-hide="vm.state!='stopped'" ng-click="start(this.vm)" jq-run='tooltip' class='glyphicon glyphicon-play clickable' title='Start'></i>
 			</td>
 		</tr>
 	</table>
