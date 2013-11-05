@@ -1,12 +1,13 @@
-<div class="row">
+<div class="row" ng-show='user'>
 	<div class="col-md-6">
 
 		<div class="welcome">
-			<h4 translate>Welcome {{user.name}}</h4>
-			<p translate>You are part of <u>{{activeOrg.data.name}}</u>, and of the groups {{groups.join(' and ')}}.</p>
+			<h4 translate>Welcome {{user.name}}!</h4>
+			<p ng-show='activeOrg'><span translate>You are part of</span> <u>{{activeOrg.data.name}}</u>.</p>
+			<p ng-show='groups.length>0'><span translate>You groups are</span> {{groups.join(' ' + 'and' + ' ')}}.</p>
 			<p ng-show='keys > 0' translate>SSH keys configured: {{keys}}</p>
 			<p ng-show='keys < 1' translate>No ssh keys found on your account. Dont forget to <a href='#/configuration/users/{{user.uuid}}'>add one</a>! </p>
-			<p class='text-danger'>Missing stuff: howl + cloudview + create new things</p>
+			<p class='text-danger'>Missing stuff: cloudview + create new things</p>
 <!--
 		<p>http://stackoverflow.com/questions/18756981/twitter-bootstrap-3-tab-view-fade-does-not-work-properly</p>
 			<ul>
