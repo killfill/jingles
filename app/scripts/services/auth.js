@@ -28,7 +28,6 @@ angular.module('fifoApp')
             $cookies["x-snarl-token"] = res.session
             //Wiggle see to read the cookie, now so setting the header is not neccesary anymore.
             //$http.defaults.headers.common['x-snarl-token'] = res.session || 'test_Session';
-
             $rootScope.$broadcast('auth:login_ok', user, res.session)
             $location.path('/')
           },
@@ -78,7 +77,9 @@ angular.module('fifoApp')
     }
 
     $rootScope.$on('$routeChangeStart', function(ev, next, current) {
-      // console.log(current.$$route.controller, '->', next.$$route.controller, ev)
+      //On first load, current will be undefined, run chekIfLogged() anyway.. :)
+
+      // console.log(current && current.$$route.controller, '->', next.$$route.controller, ev)
       checkIfLogged()
     })
     
@@ -97,9 +98,6 @@ angular.module('fifoApp')
         howl.connect($cookies["x-snarl-token"])
       }
     })
-
-    /* First load */
-    checkIfLogged();
 
     return auth;
   });

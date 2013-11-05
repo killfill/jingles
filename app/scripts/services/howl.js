@@ -12,11 +12,11 @@ angular.module('fifoApp')
     }
 
     /* Put the connection info on the rootScope, so use can see it... */
-    // setInterval(function () {
-    //     if ($rootScope.howlConnected === howl._connected) return;
-    //     $rootScope.howlConnected = howl._connected;
-    //     $rootScope.$digest();
-    // }, 1000);
+    setInterval(function () {
+        if ($rootScope.howlConnected === howl._connected) return;
+        $rootScope.howlConnected = howl._connected;
+        $rootScope.$digest();
+    }, 1000);
 
     return {
         connect: howl.connect,
@@ -27,7 +27,6 @@ angular.module('fifoApp')
     }
 
   });
-
 
 var howl = {
     _connected: false,
@@ -54,10 +53,11 @@ var howl = {
 
     },
     _wsError: function(e) {
+        howl._connected = false;
         console.log('WS ERROR:', arguments)
     },
     _wsClose: function(e) {
-        howl._connected = false
+        howl._connected = false;
         if (!howl._token)
             return;
         console.log('[howl] connection closed, reconnecting in 5[s]...')

@@ -13,12 +13,6 @@ angular.module('fifoApp')
     //Login stuff: pass the auth object to the view, kinda handy i.e. for Logout click
     $scope.auth = auth
 
-    //Show if we are connected to howl
-    $scope.$watch(
-      function()     { return howl.connected() },
-      function(bool) { $scope.howlConnected = bool }
-    )
-
     //Help url
   	$rootScope.$on('$routeChangeSuccess', function(event, current){
   		$scope.helpUrl = current.helpUrl || '';
