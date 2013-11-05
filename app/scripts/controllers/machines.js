@@ -65,10 +65,12 @@ angular.module('fifoApp')
           wiggle.vms.get({id: id}, function success(res) {
             $scope.vms[id] =  vmService.updateCustomFields(res)
 
-            count += 1;
+            count += 1
             //Fire up showing the VM's when all data is loaded or the first bulk is¡ ready!
-            if ($scope.vms.length == $scope.vmsIds.length || count  == $scope.tableParams.count - 1)
-              filterData();
+            if ($scope.vms.length == $scope.vmsIds.length || count  == $scope.tableParams.count - 1) {
+              filterData()
+              $scope.infinitScroll()
+            }
           })
           
 
