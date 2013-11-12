@@ -26,7 +26,7 @@
 
                     <td><a href='#/datasets/{{data.dataset}}' title='{{data.dataset}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
-                    <td>{{data.description}}</td>
+                    <td class='describe'>{{data.description}}</td>
                     <td ng-show='!data.imported && data.imported !=0'>
                       <button class='btn btn-sm btn-default'
                               ng-hide="data.imported == 1"
@@ -67,7 +67,7 @@
                 <tr ng-repeat="data in datasetsat | hash2array | orderBy: ['-published_at', '-os', 'name','-version']">
                   <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
                   <td><span title='{{data.uuid}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</span></td>
-                  <td>{{data.description}}</td>
+                  <td class='describe'>{{data.description}}</td>
                   <td>
                     <i ng-show="data.imported" class="glyphicon glyphicon-ok"></i>
                     <button class='btn btn-default btn-sm'

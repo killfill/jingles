@@ -47,14 +47,6 @@ a:active {
 }
 
 
-.table th {
-	// text-decoration: underline;
-	text-transform: uppercase;
-    background-color: lighten(@custom-primary-color, 50%);
-    color: #666;
-}
-
-
 //flag of the header
 .flag-icon {
 	margin-top: 5px;
@@ -67,8 +59,11 @@ hr {
 	border-bottom: 1px dashed #dcdcdc;
 }
 
+
+
 .mono {
-    font-family: Consolas, "Andale Mono", monospace, "Courier New";
+	font-family: @font-family-monospace;
+    // font-family: 
     text-decoration: none;
 }
 
@@ -90,7 +85,6 @@ canvas.gauge {
 
 @nav-tabs-active-link-hover-color: black;
 @nav-tabs-active-link-hover-bg: white;
-
 @logo-size: 20px;
 img.oslogo {
 
@@ -112,17 +106,16 @@ img.oslogo {
 @brand-danger:          #d9534f;
 @brand-info:            #5bc0de;
 
-
-
 //Menu stuff: default 768;
 // @grid-float-breakpoint: 995px;
 
 //Line between tr's
 @table-border-color: transparent;
 
-
 // @navbar-inverse-bg:	fade(#0f3c64, 85%);
-@navbar-inverse-bg:	@custom-primary-color;
+@navbar-inverse-bg:	darken(@custom-primary-color, 20%);
+@navbar-inverse-link-active-bg: lighten(@navbar-inverse-bg, 3%);
+//@navbar-inverse-bg:	@custom-primary-color;
 @navbar-height: 	40px;
 
 @navbar-inverse-color:       red;
@@ -138,15 +131,16 @@ body {
 	padding-top: @navbar-height;
 }
 
-@body-bg: #DFC184;
+// @body-bg: #DFC184;
+@body-bg: white;
 // @text-color: black;
 
 @border-radius-base:    2px;
 
-
-@font-size-base:          14px;
-@font-size-large:         ceil(@font-size-base * 1.25); // ~18px
-@font-size-small:         ceil(@font-size-base * 0.85); // ~12px
+@font-size-base:          13px;
+@font-size-large:         14px;
+// @font-size-large:         ceil(@font-size-base * 1.25);
+@font-size-small:         ceil(@font-size-base * 0.85);
 
 // @table-bg-hover:        @color-4;
 @link-color:            @custom-primary-color;
@@ -154,4 +148,33 @@ body {
 
 @table-condensed-cell-padding: 3px;
 
-// @input-border-focus: @color-4;
+@headings-font-family: @font-family-sans-serif;
+
+//Logo.
+@navbar-padding-vertical: 1px;
+@navbar-padding-horizontal: 15px;
+
+// .navbar-header > a > img {
+// 	max-height: 38px;
+// }
+
+.table th {
+	// text-decoration: underline;
+	text-transform: uppercase;
+    background-color: lighten(@custom-primary-color, 50%);
+    color: #666;
+    font-family: @headings-font-family;
+  	font-weight: 400;
+    text-align: left;
+}
+
+.table .describe{
+  color: #888;
+  font-size: 80%;
+}
+
+.navbar-nav li a {
+	font-size: @font-size-large;
+	font-family: @font-family-sans-serif;
+	line-height: 1.5;
+}
