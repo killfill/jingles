@@ -4,7 +4,7 @@ angular.module('fifoApp')
   .controller('MainCtrl', function ($scope, wiggle, auth) {
 
     $scope.msgTrClass = function(type) {
-        return type == 'critical' ? 'error': type;
+        return type == 'critical' ? 'danger': type;
     }
 
     $scope.show = function() {
