@@ -67,7 +67,7 @@ angular.module('fifoApp')
 
             count += 1
             //Fire up showing the VM's when all data is loaded or the first bulk is¡ ready!
-            if ($scope.vms.length == $scope.vmsIds.length || count  == $scope.tableParams.count - 1) {
+            if (Object.keys($scope.vms).length == $scope.vmsIds.length || count  == $scope.tableParams.count - 1) {
               filterData()
               $scope.infinitScroll()
             }
