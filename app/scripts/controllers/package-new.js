@@ -103,6 +103,9 @@ angular.module('fifoApp')
             })
         })
 
+        var io = parseInt($scope.io, 10);
+        if (io) pkg.zfs_io_priority = io;
+
         pkg.$create({}, function success(data, headers) {
             $location.path('/configuration/packages');
         }, function error(data) {

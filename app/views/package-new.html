@@ -9,18 +9,22 @@
       <span class="badge badge-info">Resources</span>
     </div>
     <form name='form form-inline' novalidate>
-      <div class="input-append">
-        <input class='input col-md-10' style='width: 85%;' placeholder="CPU" type="number" min="1" ng-model='cpu_cap' required>
-        <span class="add-on">%</span>
+      <div class="input-group">
+        <input class='form-control' placeholder="CPU" type="number" min="1" ng-model='cpu_cap' required>
+        <span class="input-group-addon" style='max-width: 40px'>&nbsp;%</span>
       </div>
 
-      <div class="input-append">
-        <input class='input-small col-md-10' style='width: 85%;' placeholder="RAM" type="number" min="1" ng-model='ram' required>
-        <span class="add-on">MB</span>
+      <div class="input-group ">
+        <input class='form-control' placeholder="RAM" type="number" min="1" ng-model='ram' required>
+        <span class="input-group-addon" style='max-width: 40px'>MB</span>
       </div>
-      <div class="input-append">
-        <input class='input-small col-md-10' style='width: 85%;' placeholder="Disk" type="number" min="0" ng-model='quota' required>
-        <span class="add-on">GB</span>
+      <div class="input-group">
+        <input class='form-control' placeholder="Disk" type="number" min="0" ng-model='quota' required>
+        <span class="input-group-addon" style='max-width: 40px'>GB</span>
+      </div>
+      <div class="input-group">
+        <input class='form-control' placeholder="IO Priority" type="number" min="0" ng-model='io' required>
+        <span class="input-group-addon" style='max-width: 40px'>IO</span>
       </div>
     </form>
   </div>
@@ -74,4 +78,6 @@
 
   <div class='container row'>
     The rules are optional, they help FiFo decide wich hypervisor to use. <a href="http://project-fifo.net/display/PF/Hypervisor+Requirements" target=_blank>More info</a>
+    <br/>
+    IO Priority is optional
   </div>
