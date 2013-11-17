@@ -39,7 +39,8 @@ angular.module('fifoApp',
       })
       .when('/configuration/networks/new', {
         templateUrl: 'views/network-new.html',
-        controller: 'NetworkNewCtrl'
+        controller: 'NetworkNewCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Networks'
       })
       .when('/configuration/networks', {
         templateUrl: 'views/networks.html',
@@ -50,7 +51,7 @@ angular.module('fifoApp',
       .when('/configuration/ip-ranges', {
         templateUrl: 'views/ip-ranges.html',
         controller: 'IpRangesCtrl',
-        // helpUrl: 'http://project-fifo.net/display/PF/Ipranges',
+        helpUrl: 'http://project-fifo.net/display/PF/Ipranges',
         name: 'IP Ranges'
       })
       .when('/configuration/users', {
@@ -74,41 +75,47 @@ angular.module('fifoApp',
       .when('/configuration/dtraces', {
         templateUrl: 'views/dtraces.html',
         controller: 'DtracesCtrl',
-        name: 'Tracing'
-        // helpUrl: 'http://project-fifo.net/display/PF/DTrace'
+        name: 'Tracing',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace'
       })
       .when('/machines/new', {
         templateUrl: 'views/machine-new.html',
-        controller: 'MachineNewCtrl'
+        controller: 'MachineNewCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Machine+Details',
       })
       .when('/machines/:uuid', {
         templateUrl: 'views/machine.html',
         controller: 'MachineCtrl',
         helpUrl: 'http://project-fifo.net/display/PF/Machine+Details',
       })
-
       .when('/datasets/:uuid', {
         templateUrl: 'views/dataset.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Datasets',
         controller: 'DatasetCtrl',
       })
       .when('/servers/:uuid', {
         templateUrl: 'views/server.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Hypervisors',
         controller: 'ServerCtrl'
       })
       .when('/packages/new', {
         templateUrl: 'views/package-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Packages',
         controller: 'PackageNewCtrl'
       })
       .when('/packages/:uuid', {
         templateUrl: 'views/package.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Packages',
         controller: 'PackageCtrl'
       })
       .when('/configuration/networks/:uuid', {
         templateUrl: 'views/network.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Networks',
         controller: 'NetworkCtrl'
       })
       .when('/configuration/users/new', {
         templateUrl: 'views/user-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Users',
         controller: 'UserNewCtrl'
       })
       .when('/configuration/users/:uuid', {
@@ -122,10 +129,12 @@ angular.module('fifoApp',
       })
       .when('/configuration/groups/new', {
         templateUrl: 'views/group-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Groups',
         controller: 'GroupNewCtrl'
       })
       .when('/configuration/groups/:uuid', {
         templateUrl: 'views/group.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Groups',
         controller: 'GroupCtrl'
       })
       .when('/configuration/organizations/new', {
@@ -138,10 +147,12 @@ angular.module('fifoApp',
       })
       .when('/configuration/dtraces/new', {
         templateUrl: 'views/dtrace-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace',
         controller: 'DtraceNewCtrl'
       })
       .when('/configuration/dtraces/:uuid', {
         templateUrl: 'views/dtrace.html',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace',
         controller: 'DtraceCtrl'
       })
       .when('/login', {
