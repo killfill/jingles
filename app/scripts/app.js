@@ -128,6 +128,10 @@ angular.module('fifoApp',
         templateUrl: 'views/group.html',
         controller: 'GroupCtrl'
       })
+      .when('/configuration/organizations/new', {
+        templateUrl: 'views/organization-new.html',
+        controller: 'OrganizationNewCtrl'
+      })
       .when('/configuration/organizations/:uuid', {
         templateUrl: 'views/organization.html',
         controller: 'OrganizationCtrl'
