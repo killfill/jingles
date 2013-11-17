@@ -132,6 +132,10 @@ angular.module('fifoApp',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
       })
+      .when('/configuration/ip-range/new', {
+        templateUrl: 'views/ip-range-new.html',
+        controller: 'IpRangeNewCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
