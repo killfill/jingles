@@ -107,6 +107,10 @@ angular.module('fifoApp',
         templateUrl: 'views/network.html',
         controller: 'NetworkCtrl'
       })
+      .when('/configuration/users/new', {
+        templateUrl: 'views/user-new.html',
+        controller: 'UserNewCtrl'
+      })
       .when('/configuration/users/:uuid', {
         templateUrl: 'views/user.html',
         controller: 'UserCtrl',
@@ -132,7 +136,7 @@ angular.module('fifoApp',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
       })
-      .when('/configuration/ip-range/new', {
+      .when('/configuration/ip-ranges/new', {
         templateUrl: 'views/ip-range-new.html',
         controller: 'IpRangeNewCtrl'
       })
