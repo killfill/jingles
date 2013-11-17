@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService) {
+.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService, $q) {
 
     $scope.infinitScroll = function() {
       if ($scope.tableParams.count >= $scope.vmsIds.length)
@@ -31,7 +31,57 @@ angular.module('fifoApp')
       $scope.vmsFiltered = data.slice((p.page - 1) * p.count, p.page * p.count);
     }
 
-    var init = function() {
+    var listenEvents = function() {
+
+      $scope.$on('state', function(e, msg) {
+          var vm = $scope.vms[msg.channel];
+          if (!vm) return;
+          var failed = function(reason) {
+              status.error("The creation of the VM " + vm.config.alias +
+                           "(" + vm.uuid + ") failed. <br/>" + reason);
+          }
+          vm.state = msg.message.data;
+          vmService.updateCustomFields(vm);
+          if (vm.state == 'failed') {
+              failed(vm.state_description);
+          };
+          $scope.$apply()
+      })
+
+      $scope.$on('update', function(e, msg) {
+          var vm = $scope.vms[msg.channel];
+
+          vm.config = msg.message.data.config;
+          vmService.updateCustomFields(vm);
+
+          /* Get the extra data */
+          wiggle.datasets.get({id: vm.config.dataset}, function(ds) {
+              vm.config._dataset = ds;
+          })
+          wiggle.packages.get({id: vm.config.package}, function(pack) {
+              vm._package = pack
+          })
+          if (vm.owner)
+              wiggle.orgs.get({id: vm.config.package}, function(org) {
+                  vm._owner = org
+              })
+
+          $scope.$apply()
+      })
+
+      $scope.$on('delete', function(e, msg) {
+
+        //Wait for the list to exists, before deleting an element of it.. :P
+        requestsPromise.then(function() {
+          delete $scope.vms[msg.channel]
+          filterData()
+        })
+      })
+    }
+
+    var startRequests = function() {
+
+      var defered = $q.defer();
 
       $scope.tableParams = {
         page: 1,
@@ -55,6 +105,7 @@ angular.module('fifoApp')
 
       wiggle.vms.list(function (ids) {
 
+        defered.notify('VM ids loaded.')
         $scope.vmsIds = ids;
 
         //Count the responses, to we can show the first vm's: probably not workth, becouse datasets and packages request are enqueued at the last... and we need them...
@@ -68,63 +119,24 @@ angular.module('fifoApp')
             count += 1
             //Fire up showing the VM's when all data is loaded or the first bulk is¡ ready!
             if (Object.keys($scope.vms).length == $scope.vmsIds.length || count  == $scope.tableParams.count - 1) {
-              filterData()
-              $scope.infinitScroll()
+              defered.resolve()
             }
           })
-          
 
         })
 
       })
 
-      $scope.$on('state', function(e, msg) {
-          var vm = $scope.vms[msg.channel];
-          if (!vm) return;
-          var failed = function(reason) {
-              status.error("The creation of the VM " + vm.config.alias +
-                           "(" + vm.uuid + ") failed. <br/>" + reason);
-          }
-          vm.state = msg.message.data;
-          vmService.updateCustomFields(vm);
-          if (vm.state == 'failed') {
-              failed(vm.state_description);
-          };
-          $scope.$apply()
-      })
-
-      $scope.$on('update', function(e, msg) {
-          var vm = $scope.vms[msg.channel];
-
-          console.log('onUpdate:', msg.message)
-          vm.config = msg.message.data.config;
-          vmService.updateCustomFields(vm);
-
-          /* Get the extra data */
-          wiggle.datasets.get({id: vm.config.dataset}, function(ds) {
-              vm.config._dataset = ds;
-          })
-          wiggle.packages.get({id: vm.config.package}, function(pack) {
-              vm._package = pack
-          })
-          if (vm.owner)
-              wiggle.orgs.get({id: vm.config.package}, function(org) {
-                  vm._owner = org
-              })
-
-          $scope.$apply()
-      })
-
-      $scope.$on('delete', function(e, msg) {
-          console.log('echandome', msg.channel, $scope.vms[msg.channel], e, msg)
-          delete $scope.vms[msg.channel]
-          filterData()
-          $scope.$apply()
-      })
-
+      listenEvents();
+      return defered.promise
 
   }
-    init();
 
+  var requestsPromise = startRequests()
+  
+  requestsPromise.then(function() {
+      filterData()
+      $scope.infinitScroll()
+    });
 
   });
