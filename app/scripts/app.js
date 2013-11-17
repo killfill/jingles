@@ -152,6 +152,10 @@ angular.module('fifoApp',
         templateUrl: 'views/ip-range-new.html',
         controller: 'IpRangeNewCtrl'
       })
+      .when('/visualizations/graph', {
+        templateUrl: 'views/vis-graph.html',
+        controller: 'VisGraphCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

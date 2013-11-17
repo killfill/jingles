@@ -20,13 +20,13 @@
 
     <div ng-repeat='variable in variables' ng-class="rule.error && 'error'" class='thumbnail2'>
       <input
-         class="col-md-6"
+         class="col-md-5"
          placeholder="Variable"
          type="text"
          title='Attribute' jq-run='tooltip'
          ng-model="variable.name"
          />
-      <input class="col-md-6" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
+      <input class="col-md-5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
       <button class="btn btn-small btn-danger pull-right" title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_var($index)">-</button>
     </div>
 

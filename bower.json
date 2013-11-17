@@ -16,7 +16,8 @@
     "angular-moment": "~0.2.2",
     "msgpack-javascript": "*",
     "angular-sanitize": "1.2.0-rc.2",
-    "angular-cookies": "v1.2.0-rc.2"
+    "angular-cookies": "v1.2.0-rc.2",
+    "d3": "~3.3.9"
   },
   "resolutions": {
     "angular": "1.2.0-rc.2"
