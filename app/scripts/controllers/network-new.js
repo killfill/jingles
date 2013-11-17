@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('NetworkNewCtrl', function ($scope, wiggle, $location) {
+  .controller('NetworkNewCtrl', function ($scope, wiggle, $location, status) {
 
     $scope.create_network = function() {
         var network = new wiggle.networks({

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('UserNewCtrl', function ($scope, wiggle, $location) {
+  .controller('UserNewCtrl', function ($scope, wiggle, $location, status) {
 
     $scope.create_user = function() {
         var user = new wiggle.users({user: $scope.name,
@@ -15,5 +15,4 @@ angular.module('fifoApp')
                         status.error('There was an error creating your package. See the javascript console.');
                     });
     };
-
   });

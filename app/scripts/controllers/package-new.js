@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('PackageNewCtrl', function ($scope, wiggle, $location) {
+  .controller('PackageNewCtrl', function ($scope, wiggle, $location, status) {
 
     $scope.add_rule = function() {
         $scope.rules.push({})
