@@ -136,6 +136,10 @@ angular.module('fifoApp',
         templateUrl: 'views/organization.html',
         controller: 'OrganizationCtrl'
       })
+      .when('/configuration/dtraces/new', {
+        templateUrl: 'views/dtrace-new.html',
+        controller: 'DtraceNewCtrl'
+      })
       .when('/configuration/dtraces/:uuid', {
         templateUrl: 'views/dtrace.html',
         controller: 'DtraceCtrl'
