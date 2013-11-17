@@ -49,6 +49,8 @@ angular.module('fifoApp')
       })
 
       $scope.$on('update', function(e, msg) {
+
+        requestsPromise.then(function() {
           var vm = $scope.vms[msg.channel];
 
           vm.config = msg.message.data.config;
@@ -66,7 +68,8 @@ angular.module('fifoApp')
                   vm._owner = org
               })
 
-          $scope.$apply()
+          // $scope.$apply()
+        })
       })
 
       $scope.$on('delete', function(e, msg) {

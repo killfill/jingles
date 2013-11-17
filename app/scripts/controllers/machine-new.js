@@ -2,8 +2,6 @@
 
 angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle, $location, status) {
    
-
-
     $scope.create_machine = function() {
 
         if ($scope.selectedNetworks.length != $scope.selectedDataset.networks.length) {
@@ -62,8 +60,6 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         $scope.alias = dataset.name
 
       $scope.selectedDataset = dataset
-      $scope.selectedNetworks.length = 0
-
     }
 
     $scope.click_network = function(network) {
@@ -128,7 +124,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
 
             if (ids.length<1) {
                 status.error('Create a package first');
-                return $location.path('/packages/new')
+                return $location.path('/configuration/packages/new')
             }
 
             ids.forEach(function(id) {
@@ -146,7 +142,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
 
             if (ids.length<1) {
                 status.error('Please create a new network');
-                return $location.path('/networks/new')
+                return $location.path('/configuration/networks/new')
             }
 
             ids.forEach(function(name) {
