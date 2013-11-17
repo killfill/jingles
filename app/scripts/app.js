@@ -92,6 +92,10 @@ angular.module('fifoApp',
         templateUrl: 'views/server.html',
         controller: 'ServerCtrl'
       })
+      .when('/packages/new', {
+        templateUrl: 'views/package-new.html',
+        controller: 'PackageNewCtrl'
+      })
       .when('/packages/:uuid', {
         templateUrl: 'views/package.html',
         controller: 'PackageCtrl'
