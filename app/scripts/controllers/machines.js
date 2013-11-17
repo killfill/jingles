@@ -78,7 +78,6 @@ angular.module('fifoApp')
 
       })
 
-
       $scope.$on('state', function(e, msg) {
           var vm = $scope.vms[msg.channel];
           if (!vm) return;
@@ -97,6 +96,7 @@ angular.module('fifoApp')
       $scope.$on('update', function(e, msg) {
           var vm = $scope.vms[msg.channel];
 
+          console.log('onUpdate:', msg.message)
           vm.config = msg.message.data.config;
           vmService.updateCustomFields(vm);
 
@@ -116,9 +116,10 @@ angular.module('fifoApp')
       })
 
       $scope.$on('delete', function(e, msg) {
-          deleted.push(msg.channel);
-          delete $scope.vms[msg.channel];
-          $scope.$apply();
+          console.log('echandome', msg.channel, $scope.vms[msg.channel], e, msg)
+          delete $scope.vms[msg.channel]
+          filterData()
+          $scope.$apply()
       })
 
 

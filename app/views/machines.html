@@ -3,7 +3,7 @@
 		<input type="text" class="form-control" placeholder="{{'Filter'|translate}}" ng-model='searchQuery'>
 	</li>
 	<li class='col-md-4 col-sm-3 col-xs-5'>
-		<button class="btn btn-primary form-control" type='submit' translate>New Machine</button>
+		<a class="btn btn-primary form-control" type='submit' href='#/machines/new' translate>New Machine</a>
 	</li>
 </ul>
 
@@ -36,7 +36,7 @@
 			<td data-title="'Package'|translate" sortable='_package.name' class='visible-lg visible-md visible-sm'>
 				{{vm._package.name}}
 			</td>
-			<td data-title="'Dataset'|translate" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm'>
+			<td data-title="'Dataset'|translate" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm'>
 				<img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
 				{{vm.config._dataset.name}}
 			</td>
@@ -49,7 +49,7 @@
 			<td data-title="'Created' | translate" class='text-muted visible-lg' sortable='config.created_at' am-time-ago='vm.config.created_at' title="{{vm.config.created_at | date:'mediumDate'}}"></td>
 			
 			<td>
-				<span class='label label-{{vm._state_label}} capitalize' title='{{vm.state_description}}'>{{vm.state}}</span>
+				<span class='label label-{{vm._state_label}} capitalize' jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.state_description}}'>{{vm.state}}</span>
 			</td>
 
 			<!-- Actions: -->

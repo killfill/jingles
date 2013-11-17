@@ -74,7 +74,10 @@ angular.module('fifoApp',
         name: 'Tracing'
         // helpUrl: 'http://project-fifo.net/display/PF/DTrace'
       })
-
+      .when('/machines/new', {
+        templateUrl: 'views/machine-new.html',
+        controller: 'MachineNewCtrl'
+      })
       .when('/machines/:uuid', {
         templateUrl: 'views/machine.html',
         controller: 'MachineCtrl',
