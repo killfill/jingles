@@ -37,7 +37,10 @@ angular.module('fifoApp',
         helpUrl: 'http://project-fifo.net/display/PF/Packages',
         name: 'Packages'
       })
-      
+      .when('/configuration/networks/new', {
+        templateUrl: 'views/network-new.html',
+        controller: 'NetworkNewCtrl'
+      })
       .when('/configuration/networks', {
         templateUrl: 'views/networks.html',
         controller: 'NetworksCtrl',
