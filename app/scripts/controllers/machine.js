@@ -308,6 +308,7 @@ angular.module('fifoApp')
         wiggle.vms.put({id: vm.uuid, controller: 'nics', controller_id: mac}, {primary: true},
                        function sucess () {
                            status.success('Primary NIC changed.')
+                           updateVm()
                        },
                        function error (data) {
                            status.error('Error when changing the primary nic. See the history')
@@ -319,6 +320,7 @@ angular.module('fifoApp')
         wiggle.vms.delete(
             {id: vm.uuid, controller: 'nics', controller_id: mac},
             function success() {
+                updateVm()
                 status.success('NIC ' + mac + ' deleted');
             },
             function error(data) {
@@ -332,6 +334,7 @@ angular.module('fifoApp')
                         {network: network},
                         function success(data, h) {
                             status.success('NIC added.');
+                            updateVm()
                             $('#VMTab a[href="#details"]').tab('show');
                         },
                         function error(data) {

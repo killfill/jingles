@@ -54,7 +54,7 @@ var howl = {
     },
     _wsError: function(e) {
         howl._connected = false;
-        console.log('WS ERROR:', arguments)
+        console.log('WS ERROR:', e)
     },
     _wsClose: function(e) {
         howl._connected = false;

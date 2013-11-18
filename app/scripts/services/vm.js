@@ -126,7 +126,7 @@ angular.module('fifoApp')
                 .filter(function(i) {return i;});
 
             //If there is nothing to show, just show the one of the first network
-            vm._ips = ips.length > 0 ? ips.join(", ") : vm.config.networks[0].ip;
+            vm._ips = ips.length > 0 ? ips.join(", ") : vm.config.networks && vm.config.networks[0].ip;
 
             vm._cpu = vm.config.vcpu || vm.config.cpu_shares;
             vm._cpu_tooltip = vm.config.vcpu
@@ -138,7 +138,7 @@ angular.module('fifoApp')
                 ips.map(function(e) {
                     return e && e.split('.').map(function(i) {return padLeft(i, 3)}).join('.');
                 }).join(", ")
-            : vm.config.networks[0].ip;
+            : vm.config.networks && vm.config.networks[0].ip;
 
             return vm;
         }

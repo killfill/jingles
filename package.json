@@ -1,6 +1,10 @@
 {
   "name": "jingles",
   "version": "0.1.0",
+  "repository": { 
+    "type" : "git",
+    "url" : "http://github.com/project-fifo/jingles"
+  },
   "dependencies": {
   },
   "devDependencies": {
