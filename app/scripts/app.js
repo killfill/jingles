@@ -98,12 +98,12 @@ angular.module('fifoApp',
         helpUrl: 'http://project-fifo.net/display/PF/Hypervisors',
         controller: 'ServerCtrl'
       })
-      .when('/packages/new', {
+      .when('/configuration/packages/new', {
         templateUrl: 'views/package-new.html',
         helpUrl: 'http://project-fifo.net/display/PF/Packages',
         controller: 'PackageNewCtrl'
       })
-      .when('/packages/:uuid', {
+      .when('/configuration/packages/:uuid', {
         templateUrl: 'views/package.html',
         helpUrl: 'http://project-fifo.net/display/PF/Packages',
         controller: 'PackageCtrl'

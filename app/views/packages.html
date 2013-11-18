@@ -1,6 +1,6 @@
 <div class="tab-pane" id="packages">
   <div class="pane-nav">
-    <a href="#/packages/new" class="btn btn-primary">
+    <a href="#/configuration/packages/new" class="btn btn-primary">
        New Package
     </a>
   </div>
@@ -18,7 +18,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="pack in packages | hash2array| orderBy: ['ram', 'name']">
-            <td><a href="#/packages/{{pack.uuid}}">{{pack.name}}</a></td>
+            <td><a href="#/configuration/packages/{{pack.uuid}}">{{pack.name}}</a></td>
             <td>{{pack.ram | Mbytes}}</td>
             <td>{{pack.quota | Gbytes}}</td>
             <td>{{pack.cpu_cap}}</td>

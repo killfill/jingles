@@ -58,8 +58,8 @@ angular.module('fifoApp')
             "<dt>Disk</dt>" +
             "<dd class='memory' ng-hide='vmconfig.disks'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
             "<dd class='memory' ng-repeat='disk in vmconfig.disks'><span title='{{disk.model}} {{disk.bool && \"(booteable)\" || \"\"}}' jq-run='tooltip'>{{disk.size | Mbytes}}</span></dd>" +
-            "<dt ng-show='vmconfig.zfs_io_priority'>IO Prio</dt>" +
-            "<dd class='memory' ng-show='vmconfig.zfs_io_priority'>{{vmconfig.zfs_io_priority}}</dd>" +
+            "<dt ng-show='(vmconfig || pkg).zfs_io_priority'>IO Prio</dt>" +
+            "<dd class='memory' ng-show='(vmconfig || pkg).zfs_io_priority'>{{(vmconfig || pkg).zfs_io_priority}}</dd>" +
             "</dl>"
     }
 	})
