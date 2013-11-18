@@ -1,17 +1,16 @@
 <div class="tab-pane" ng-show="true">
 
-  <div class="box box-small span4">
+  <div class="box box-small col-md-4">
     <div class="header">
       Package <span class='badge badge-info'>{{package.name}}</span>
     </div>
     <package pkg='package'></package>
   </div>
 
-  <div class="box span6" ng-show='package.requirements.length > 0'>
+  <div class="box col-md-8" ng-show='package.requirements.length > 0'>
     <div class="header">Rules</div>
 
-
-    <div class="container span6" ng-repeat='rule in package.requirements'>
+    <div class="container col-md-8" ng-repeat='rule in package.requirements'>
         <span><strong>{{rule.weight}}</strong></span>
         <dl class='dl-horizontal' ng-repeat='(k,v) in rule'>
         <dt ng-hide='k=="weight"'>{{k}}</dt>

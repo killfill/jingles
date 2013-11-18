@@ -17,7 +17,8 @@
     "msgpack-javascript": "*",
     "angular-sanitize": "1.2.0-rc.2",
     "angular-cookies": "v1.2.0-rc.2",
-    "d3": "~3.3.9"
+    "d3": "~3.3.9",
+    "typeahead.js": "~0.9.3"
   },
   "resolutions": {
     "angular": "1.2.0-rc.2"
