@@ -30,7 +30,7 @@
 				{{vm.config.ram | Mbytes}}
 			</td>
 			<!-- <td data-title='Owner' sortable='_owner.name' class='text-muted'>{{vm._owner.name}}</td> -->
-			<td data-title="Ip" sortable='config.network_mappings[0].ip'>
+			<td data-title="Ip" sortable='_ips_normalized'>
 				<small><a class='nocolor' target='_new' href='ssh://{{vm.config.networks[0].ip}}'>{{vm.config.networks[0].ip}}</a></small>
 			</td>
 			<td data-title="'Package'|translate" sortable='_package.name' class='visible-lg visible-md visible-sm'>
