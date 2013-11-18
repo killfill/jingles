@@ -7,6 +7,7 @@ angular.module('fifoApp')
     $scope.force = false;
     var uuid = $routeParams.uuid;
     var inc_version = function inc_version(v) {
+        if (!v) return v;
         var a = v.split('.').map(function(e) {return parseInt(e)});
         a[a.length - 1] = a[a.length - 1] + 1;
         return a.join(".");
@@ -211,7 +212,7 @@ angular.module('fifoApp')
             $scope.snapshots = $scope.vm.snapshots
             cb && cb($scope.vm);
             $scope.img_name = $scope.vm.config.alias;
-            $scope.img_version = inc_version($scope.vm.config._dataset.version);
+            $scope.img_version = inc_version($scope.vm.config._dataset && $scope.vm.config._dataset.version);
             $scope.img_os = $scope.vm.config._dataset.os;
             $scope.img_desc = $scope.vm.config._dataset.description;
         }, function error() {
