@@ -56,6 +56,7 @@ angular.module('fifoApp')
 
     /* Watch for url changes and check if is logged */
     function checkIfLogged() {
+
       if (!auth.isLogged()) {
 
         var token = $cookies["x-snarl-token"]
@@ -77,7 +78,7 @@ angular.module('fifoApp')
     }
 
     $rootScope.$on('$routeChangeStart', function(ev, next, current) {
-      //On first load, current will be undefined, run chekIfLogged() anyway.. :)
+      //On first load, current will be undefined.
 
       // console.log(current && current.$$route.controller, '->', next.$$route.controller, ev)
       checkIfLogged()
@@ -99,5 +100,6 @@ angular.module('fifoApp')
       }
     })
 
+    checkIfLogged()
     return auth;
   });

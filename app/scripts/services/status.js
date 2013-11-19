@@ -4,11 +4,11 @@ angular.module('fifoApp')
   .factory('status', function () {
 
     return {
-      success: Alertify.log.success, 
-      info: Alertify.log.info,
-      error: Alertify.log.error,
+      success: alertify.log.success, 
+      info: alertify.log.info,
+      error: alertify.log.error,
       prompt: function(text, cb, errCb) {
-        Alertify.dialog.prompt(text, function(userInput) {
+        alertify.dialog.prompt(text, function(userInput) {
             if (userInput == '') return;
             cb(userInput);
         }, errCb)

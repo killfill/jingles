@@ -24,6 +24,7 @@ angular.module('fifoApp')
             $scope.cloud_resume = $scope.cloud_ok ? 'Your cloud is fine!'        : 'Your cloud needs some attention!'
 
             $scope.user = auth.currentUser()
+
             $scope.keys = Object.keys($scope.user.keys).length
             $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
             

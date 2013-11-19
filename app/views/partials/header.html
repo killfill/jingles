@@ -1,5 +1,4 @@
-
-<header ng-if='auth.isLogged()' class="navbar navbar-inverse navbar-fixed-top" role="banner">
+<header ng-show='auth.isLogged()' mira=' ip {{isLogged}}' class="navbar navbar-inverse navbar-fixed-top" role="banner">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".menu-one">
@@ -55,7 +54,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class='dropdown container'>
+                <li class='dropdown'>
                     <a class="dropdown-toggle" data-toggle='dropdown'>
                         <i class='flag-icon {{lang}}'></i>
                     </a>
