@@ -100,6 +100,6 @@ angular.module('fifoApp')
       }
     })
 
-    checkIfLogged()
+    // checkIfLogged()
     return auth;
   });

@@ -3,7 +3,6 @@
 angular.module('fifoApp')
   .factory('vmService', function (status, wiggle) {
     
-
     var padLeft = function(nr, n, str){
         return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
@@ -43,7 +42,6 @@ angular.module('fifoApp')
                     cb && cb(action, uuid)
                 }
             )
-
         },
 
         updateCustomFields: function(vm) {
