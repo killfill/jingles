@@ -1,5 +1,6 @@
-// Generated on 2013-09-05 using generator-webapp 0.4.1
 'use strict';
+
+
 
 //https://github.com/mikeal/request/issues/418
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
@@ -518,3 +519,13 @@ module.exports = function (grunt) {
         'build'
     ]);
 };
+
+//Copy config.js if it does not exists
+var fs = require('fs'),
+    config = './app/scripts/config.js';
+
+if (fs.existsSync(config)) return;
+
+console.log('--> Coping config file...')
+fs.createReadStream(config+'.example')
+    .pipe(fs.createWriteStream(config))
