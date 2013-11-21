@@ -1,0 +1,6 @@
+{
+    "metadata": [],
+    "name": "{{Name.findName}}}",
+    "permissions": [],
+    "uuid": "{{random.number(5)}}"
+}

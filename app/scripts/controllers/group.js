@@ -1,7 +1,7 @@
 'use strict';
 
-fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle, vmService, modal, status) {
-    $scope.setTitle('Group details')
+angular.module('fifoApp')
+  .controller('GroupCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
 
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
@@ -111,21 +111,24 @@ fifoApp.controller('GroupCtrl', function($scope, $routeParams, $location, wiggle
     $scope.delete = function() {
         var name = $scope.group.name;
         var uuid = $scope.group.uuid;
-        modal.confirm({
+        $scope.modal = {
             btnClass: 'btn-danger',
-            btnText: 'Delete',
-            header: 'Confirm VM Deletion',
-            body: '<p><font color="red">Warning!</font> you are about to delete the Group <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Group is gone forever!</p>"
-        }, function() {
-            wiggle.groups.delete({id: uuid},
+            confirm: 'Delete',
+            title: 'Confirm VM Deletion',
+            body: '<p><font color="red">Warning!</font> you are about to delete the Group <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Group is gone forever!</p>", 
+            ok: function() {
+            	wiggle.groups.delete({id: uuid},
                                  function success(data, h) {
                                      status.success(name + ' deleted');
-                                     $location.path('/groups')
+                                     $location.path('/configuration/groups')
                                  },
                                  function error(data) {
                                      console.error('Delete Group error:', data);
                                      status.error('There was an error deleting your group. See the javascript console.');
                                  });
-        })
+            }
+        }
     };
-});
+
+    preventHrefTab();
+  });

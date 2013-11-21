@@ -1,478 +1,193 @@
 'use strict';
 
-var fifoApp = angular.module('fifoApp', ['ngResource', 'ngCookies', 'fifoHooks'])
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('fifoApp', 
+  ['ngRoute', 'ngAnimate', 'ngResource','services.breadcrumbs', 
+  'gettext', 'infinite-scroll', 'ngTable', 'angularMoment', 'ngSanitize', 'ngCookies'])
+  .config(function ($routeProvider) {
     $routeProvider
-    .when('/main', {
+      .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-    })
-    .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
-    })
-    .when('/status', {
-        templateUrl: 'views/status.html',
-        controller: 'StatusCtrl'
-    })
-    .when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
-    })
-    .when('/dtrace/new', {
-        templateUrl: 'views/new_dtrace.html',
-        controller: 'NewDtraceCtrl'
-    })
-    .when('/dtrace/:uuid', {
-        templateUrl: 'views/dtrace.html',
-        controller: 'DTraceCtrl'
-    })
-    .when('/dtrace', {
-        templateUrl: 'views/dtraces.html',
-        controller: 'DTracesCtrl'
-    })
-    .when('/virtual-machines', {
-        templateUrl: 'views/virtual-machines.html',
-        controller: 'Virtual-MachinesCtrl'
-    })
-    .when('/virtual-machines/new', {
-        templateUrl: 'views/new_vm.html',
-        controller: 'NewVmCtrl'
-    })
-    .when('/virtual-machines/:uuid', {
-        templateUrl: 'views/vm.html',
-        controller: 'VmCtrl'
-    })
-    .when('/hypervisors/:uuid', {
-        templateUrl: 'views/hypervisor.html',
-        controller: 'HypervisorCtrl'
-    })
-    .when('/hypervisors', {
-        templateUrl: 'views/hypervisors.html',
-        controller: 'HypervisorsCtrl'
-    })
-    .when('/ipranges', {
-        templateUrl: 'views/ipranges.html',
-        controller: 'IprangesCtrl'
-    })
-    .when('/ipranges/new', {
-        templateUrl: 'views/new_iprange.html',
-        controller: 'NewIprangeCtrl'
-    })
-    .when('/networks', {
-        templateUrl: 'views/networks.html',
-        controller: 'NetworksCtrl'
-    })
-    .when('/networks/new', {
-        templateUrl: 'views/new_network.html',
-        controller: 'NewNetworkCtrl'
-    })
-    .when('/networks/:uuid', {
-        templateUrl: 'views/network.html',
-        controller: 'NetworkCtrl'
-    })
-    .when('/datasets', {
+        controller: 'MainCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Dashboard',
+      })
+      .when('/machines', {
+        templateUrl: 'views/machines.html',
+        controller: 'MachinesCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Machines+list',
+        name: 'Machines'
+      })
+      .when('/datasets', {
         templateUrl: 'views/datasets.html',
-        controller: 'DatasetsCtrl'
-    })
-    .when('/datasets/:uuid', {
-        templateUrl: 'views/dataset.html',
-        controller: 'DatasetCtrl'
-    })
-    .when('/packages', {
+        controller: 'DatasetsCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Datasets',
+        name: 'Datasets'
+      })
+      .when('/servers', {
+        templateUrl: 'views/servers.html',
+        controller: 'ServersCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Hypervisors',
+        name: 'Servers'
+      })
+      .when('/configuration', {
+        redirectTo: '/configuration/packages'
+      })
+      .when('/configuration/packages', {
         templateUrl: 'views/packages.html',
-        controller: 'PackagesCtrl'
-    })
-    .when('/package/:uuid', {
-        templateUrl: 'views/package.html',
-        controller: 'PackageCtrl'
-    })
-    .when('/packages/new', {
-        templateUrl: 'views/new_package.html',
-        controller: 'NewPackageCtrl'
-    })
-    .when('/groups', {
-        templateUrl: 'views/groups.html',
-        controller: 'GroupsCtrl'
-    })
-    .when('/groups/new', {
-        templateUrl: 'views/new_group.html',
-        controller: 'NewGroupCtrl'
-    })
-    .when('/groups/:uuid', {
-        templateUrl: 'views/group.html',
-        controller: 'GroupCtrl'
-    })
-    .when('/orgs', {
-        templateUrl: 'views/orgs.html',
-        controller: 'OrgsCtrl'
-    })
-    .when('/orgs/new', {
-        templateUrl: 'views/new_org.html',
-        controller: 'NewOrgCtrl'
-    })
-    .when('/orgs/:uuid', {
-        templateUrl: 'views/org.html',
-        controller: 'OrgCtrl'
-    })
-    .when('/users', {
+        controller: 'PackagesCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Packages',
+        name: 'Packages'
+      })
+      .when('/configuration/networks/new', {
+        templateUrl: 'views/network-new.html',
+        controller: 'NetworkNewCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Networks'
+      })
+      .when('/configuration/networks', {
+        templateUrl: 'views/networks.html',
+        controller: 'NetworksCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Networks',
+        name: 'Networks'
+      })
+      .when('/configuration/ip-ranges', {
+        templateUrl: 'views/ip-ranges.html',
+        controller: 'IpRangesCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Ipranges',
+        name: 'IP Ranges'
+      })
+      .when('/configuration/users', {
         templateUrl: 'views/users.html',
-        controller: 'UsersCtrl'
-    })
-    .when('/users/new', {
-        templateUrl: 'views/new_user.html',
-        controller: 'NewUserCtrl'
-    })
-    .when('/users/:uuid', {
+        controller: 'UsersCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Users',
+        name: 'Users'
+      })
+      .when('/configuration/groups', {
+        templateUrl: 'views/groups.html',
+        controller: 'GroupsCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Groups',
+        name: 'Groups'
+      })
+      .when('/configuration/organizations', {
+        templateUrl: 'views/organizations.html',
+        controller: 'OrganizationsCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Orgs',
+        name: 'Organizations'
+      })
+      .when('/configuration/dtraces', {
+        templateUrl: 'views/dtraces.html',
+        controller: 'DtracesCtrl',
+        name: 'Tracing',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace'
+      })
+      .when('/machines/new', {
+        templateUrl: 'views/machine-new.html',
+        controller: 'MachineNewCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Machine+Details',
+      })
+      .when('/machines/:uuid', {
+        templateUrl: 'views/machine.html',
+        controller: 'MachineCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Machine+Details',
+      })
+      .when('/datasets/:uuid', {
+        templateUrl: 'views/dataset.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Datasets',
+        controller: 'DatasetCtrl',
+      })
+      .when('/servers/:uuid', {
+        templateUrl: 'views/server.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Hypervisors',
+        controller: 'ServerCtrl'
+      })
+      .when('/configuration/packages/new', {
+        templateUrl: 'views/package-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Packages',
+        controller: 'PackageNewCtrl'
+      })
+      .when('/configuration/packages/:uuid', {
+        templateUrl: 'views/package.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Packages',
+        controller: 'PackageCtrl'
+      })
+      .when('/configuration/networks/:uuid', {
+        templateUrl: 'views/network.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Networks',
+        controller: 'NetworkCtrl'
+      })
+      .when('/configuration/users/new', {
+        templateUrl: 'views/user-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Users',
+        controller: 'UserNewCtrl'
+      })
+      .when('/configuration/users/:uuid', {
         templateUrl: 'views/user.html',
-        controller: 'UserCtrl'
-    })
-    .when('/about', {
+        controller: 'UserCtrl',
+        helpUrl: 'http://project-fifo.net/display/PF/Users'
+      })
+      .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
-    })
-    .when('/graph', {
-        templateUrl: 'views/graph.html',
-        controller: 'GraphCtrl'
-    })
+      })
+      .when('/configuration/groups/new', {
+        templateUrl: 'views/group-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Groups',
+        controller: 'GroupNewCtrl'
+      })
+      .when('/configuration/groups/:uuid', {
+        templateUrl: 'views/group.html',
+        helpUrl: 'http://project-fifo.net/display/PF/Groups',
+        controller: 'GroupCtrl'
+      })
+      .when('/configuration/organizations/new', {
+        templateUrl: 'views/organization-new.html',
+        controller: 'OrganizationNewCtrl'
+      })
+      .when('/configuration/organizations/:uuid', {
+        templateUrl: 'views/organization.html',
+        controller: 'OrganizationCtrl'
+      })
+      .when('/configuration/dtraces/new', {
+        templateUrl: 'views/dtrace-new.html',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace',
+        controller: 'DtraceNewCtrl'
+      })
+      .when('/configuration/dtraces/:uuid', {
+        templateUrl: 'views/dtrace.html',
+        helpUrl: 'http://project-fifo.net/display/PF/DTrace',
+        controller: 'DtraceCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl',
+      })
+      .when('/configuration/ip-ranges/new', {
+        templateUrl: 'views/ip-range-new.html',
+        controller: 'IpRangeNewCtrl'
+      })
+      .when('/visualizations/graph', {
+        templateUrl: 'views/vis-graph.html',
+        controller: 'VisGraphCtrl'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
 
-    .otherwise({
-        redirectTo: '/status'
-    });
+    //$locationProvider.html5Mode(true);
+    //$locationProvider.hashPrefix('!');
+  })
 
-    //Replace # with pushstates:
-    //$locationProvider.html5Mode(false); //.hashPrefix('!');
-}])
-.run(function ($http, $cookies, user, wiggle, hookListener) {
+.run(function(gettextCatalog, gettext, $window) {
 
-    /* This is an accepted bug in angularjs.. 1.1.1 has this 'fixed' */
-    delete $http.defaults.headers.common['X-Requested-With']
+  var lang = window.navigator.userLanguage || window.navigator.language;
 
-    var token = $cookies["x-snarl-token"];
+  //Some browsers puts 'es-ES' on that vars, so just get the country...
+  if (lang.indexOf('-') > -1)
+    lang = lang.split('-')[0];
 
-    if (token)
-        wiggle.sessions.get({id: token},
-            function success(data) {
-                user.login(data)
-            },
-            function error() {
-                user.logout();
-            })
-    else
-        //logout() checks for the connection status ;)
-        user.logout();
+  //default gb flag
+  if (Object.keys(gettextCatalog.strings).indexOf(lang) < 0)
+    lang = 'gb'
 
-    })
+  gettextCatalog.currentLanguage = lang;
+  // gettextCatalog.debug = true;
 
-function mk_permission_fn(wiggle, $scope) {
-    return function(level) {
-        delete $scope.permission;
-        switch(level) {
-
-        case 3:
-            if ($scope.perm3 == "ssh") {
-                $scope.show_text = true;
-            } else {
-                $scope.show_text = false;
-            }
-            $scope.permission =
-                {controller_id: $scope.perm1,
-                 controller_id1: $scope.perm2,
-                 controller_id2: $scope.perm3};
-
-
-            break;
-        case 1:
-            $scope.show_text = false;
-            $scope.p2 = false;
-            $scope.p3 = false;
-            $scope.perm2 = "";
-            $scope.perm3 = "";
-            switch($scope.perm1) {
-            case "...":
-                $scope.permission = {controller_id: "..."};
-                break;
-            case "cloud":
-                $scope.p2 = {
-                    "cloud": {id: "cloud", name: "Cloud"},
-                    "users": {id: "users", name: "Users"},
-                    "groups": {id: "groups", name: "Groups"},
-                    "orgs": {id: "orgs", name: "Organisations"},
-                    "hypervisors": {id: "hypervisors", name: "Hypervisors"},
-                    "vms": {id: "vms", name: "Virtual Machines"},
-                    "networks": {id: "networks", name: "Networks"},
-                    "ipranges": {id: "ipranges", name: "IP Ranges"},
-                    "datasets": {id: "datasets", name: "Datasets"},
-                    "packages": {id: "packages", name: "Packages"},
-                    "dtraces": {id: "dtraces", name: "DTrace"},
-                };
-                break;
-            case "dtraces":
-                wiggle.dtrace.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Users"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.dtrace.get({id: id}, function(dtrace) {
-                            $scope.p2[id].name = dtrace.name;
-                        })
-                    })
-                });
-                break;
-            case "users":
-                wiggle.users.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Users"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.users.get({id: id}, function(user) {
-                            $scope.p2[id].name = user.name;
-                        })
-                    })
-                });
-                break;
-            case "groups":
-                wiggle.groups.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Groups"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.groups.get({id: id}, function(group) {
-                            $scope.p2[id].name = group.name;
-                        })
-                    })
-                });
-                break;
-            case "orgs":
-                wiggle.orgs.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Organisations"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.orgs.get({id: id}, function(org) {
-                            $scope.p2[id].name = org.name;
-                        })
-                    })
-                });
-                break;
-            case "hypervisors":
-                wiggle.hypervisors.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Hypervisors"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                    })
-                });
-                break;
-            case "vms":
-                wiggle.vms.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Virtual Machines"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.vms.get({id: id}, function(vm) {
-                            var name = id;
-                            if (vm.config && vm.config.alias)
-                                name = name + " (" + vm.config.alias + ")";
-                            $scope.p2[id].name = name;
-                        })
-                    })
-                });
-                break;
-            case "datasets":
-                wiggle.datasets.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Datasets"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.datasets.get({id: id}, function(ds) {
-                            $scope.p2[id].name = ds.name + " " + ds.version;
-                        })
-                    })
-                });
-                break;
-            case "packages":
-                wiggle.packages.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Packages"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.packages.get({id: id}, function(ipr) {
-                            $scope.p2[id].name = ipr.name + " (" + id + ")";
-                        });
-
-                    })
-                });
-                break;
-            case "ipranges":
-                wiggle.ipranges.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Networks"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.ipranges.get({id: id}, function(ipr) {
-                            $scope.p2[id].name = ipr.name + " (" + id + ")";
-                        });
-                    })
-                });
-                break;
-            case "networks":
-                wiggle.networks.list(function(ids) {
-                    if (ids.length > 0)
-                        $scope.p2 = {
-                            "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Networks"},
-                        };
-                    ids.forEach(function(id){
-                        $scope.p2[id] = {id: id, name: id};
-                        wiggle.networks.get({id: id}, function(ipr) {
-                            $scope.p2[id].name = ipr.name + " (" + id + ")";
-                        });
-                    })
-                });
-                break;
-
-            }
-            break;
-        case 2:
-            $scope.show_text = false;
-            $scope.p3 = false;
-            $scope.perm3 = "";
-            if ($scope.perm2 == "...") {
-                $scope.permission = {controller_id: $scope.perm1,
-                                     controller_id1: "..."};
-            } else {
-                switch($scope.perm1) {
-                case "cloud":
-                    switch($scope.perm2) {
-                    case "cloud":
-                        $scope.p3 = [
-                            {id: "status", name: "Status"}
-                        ]
-                        break;
-                    case "users":
-                    case "groups":
-                    case "orgs":
-                    case "vms":
-                    case "packages":
-                    case "dtraces":
-                    case "ipranges":
-                    case "networks":
-                        $scope.p3 = [
-                            {id: "list", name: "List"},
-                            {id: "create", name: "Create"}
-                        ];
-                        break;
-                    case "datasets":
-                    case "hypervisors":
-                        $scope.p3 = [
-                            {id: "list", name: "List"}
-                        ]
-                        break;
-                    }
-                    break;
-                case "users":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"passwd", name: "Change Password"},
-                        {id:"delete", name: "Delete"},
-                        {id:"grant", name: "Grant a Permission"},
-                        {id:"revoke", name: "Revoke a Permission"},
-                        {id:"join", name: "Join a group"},
-                        {id:"leave", name: "Leave a group"}
-                    ];
-                    break;
-                case "groups":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"delete", name: "Delete"},
-                        {id:"grant", name: "Grant a Permission"},
-                        {id:"revoke", name: "Revoke a Permission"},
-                        {id:"join", name: "Join this group"},
-                        {id:"leave", name: "Leave this group"}
-                    ];
-                    break;
-                case "orgs":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"delete", name: "Delete"},
-                        {id:"edit", name: "Edit"},
-                        {id:"join", name: "Join this group"},
-                        {id:"leave", name: "Leave this group"}
-                    ];
-                    break;
-                case "vms":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"start", name: "Start"},
-                        {id:"stop", name: "Stop"},
-                        {id:"reboot", name: "Reboot"},
-                        {id:"delete", name: "Delete"},
-                        {id:"console", name: "Console/VNC"},
-                        {id:"snapshot", name: "Create a Snapshot"},
-                        {id:"rollback", name: "Rollback a Snapshot"},
-                        {id:"edit", name: "Edit"},
-                        {id:"delete_snapshot", name: "Delete a Snapshot"},
-                        {id:"ssh", name:"SSH Login"}
-                    ];
-                    break;
-                case "dtraces":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"create", name: "Create VM's here"},
-                        {id:"edit", name: "Edit"},
-                        {id:"stream", name: "Stream"},
-                        {id:"delete", name: "Delete"}
-                    ];
-                    break;
-                case "hypervisors":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"create", name: "Create VM's here"},
-                        {id:"edit", name: "Edit Metadata"}
-                    ];
-                    break;
-                case "networks":
-                case "ipranges":
-                case "packages":
-                case "datasets":
-                    $scope.p3 = [
-                        {id:"get", name: "See"},
-                        {id:"delete", name: "Delete"}
-                    ];
-                    break;
-                }
-                if ($scope.p3) {
-                    $scope.p3.unshift({'id': '...', name:'Everything'});
-                }
-            }
-        };
-    };
-};
+})

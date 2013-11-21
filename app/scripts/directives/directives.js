@@ -1,4 +1,8 @@
-fifoApp.directive('jqRun', function () {
+'use strict';
+
+/* TODO: This directive sucks! */
+angular.module('fifoApp')
+  .directive('jqRun', function () {
     return {
         restrict: 'A',
         compile: function () {
@@ -16,7 +20,6 @@ fifoApp.directive('jqRun', function () {
 
                 var options = attrs
 
-
                 //FIXME: if not inside a timeout, the tooltip gets processed before the templace, so title='{{data}}' will show as {{data}}.. :P
                 setTimeout(function() {
 
@@ -29,10 +32,12 @@ fifoApp.directive('jqRun', function () {
             };
         }
     };
-});
+  });
 
-fifoApp.directive('package', function() {
-    return {
+
+angular.module('fifoApp')
+	.directive('package', function() {
+		return {
         restrict: 'E',
         transclude: true,
         replace: true,
@@ -53,13 +58,13 @@ fifoApp.directive('package', function() {
             "<dt>Disk</dt>" +
             "<dd class='memory' ng-hide='vmconfig.disks'>{{(pkg.quota || vmconfig.quota) | Gbytes}}</dd>" +
             "<dd class='memory' ng-repeat='disk in vmconfig.disks'><span title='{{disk.model}} {{disk.bool && \"(booteable)\" || \"\"}}' jq-run='tooltip'>{{disk.size | Mbytes}}</span></dd>" +
-            "<dt ng-show='vmconfig.zfs_io_priority'>IO Prio</dt>" +
-            "<dd class='memory' ng-show='vmconfig.zfs_io_priority'>{{vmconfig.zfs_io_priority}}</dd>" +
+            "<dt ng-show='(vmconfig || pkg).zfs_io_priority'>IO Prio</dt>" +
+            "<dd class='memory' ng-show='(vmconfig || pkg).zfs_io_priority'>{{(vmconfig || pkg).zfs_io_priority}}</dd>" +
             "</dl>"
     }
-})
+	})
 
-fifoApp.directive('typeahead', function($parse) {
+angular.module('fifoApp').directive('typeahead', function($parse) {
     return {
         restrict: 'E',
         replace: true,
@@ -79,85 +84,53 @@ fifoApp.directive('typeahead', function($parse) {
 
             /* When value changes */
             scope.$watch(attrs.ngModel, setScopeValue);
-
             /* When autocomplete */
             $(element).typeahead({
-               source: scope.source,
-               items: attrs.items,
-               updater: setScopeValue
+                local: scope.source(),
+               // source: scope.source,
+               // items: attrs.items,
+            }).on('typeahead:selected', function(e, data) {
+                setScopeValue(data.value)
             })
         }
     }
 })
 
-fifoApp.directive('help', function() {
-    return {
-        restrict: 'E',
-        transclude: true,
-        replace: true,
-        scope: {
-            link: '@link'
-        },
-        template:
-        '<div class="pull-right">' +
-            '  <a target="_new" href="{{link}}"><i class="icon-question-sign"></i></a>' +
-            '</div>'
-    }
-})
-
-fifoApp.directive('columnSelector', function($compile) {
-    return {
-        restrict: 'E',
-        scope: true,
-        template: "<div ng-repeat='col in columns'><label class='checkbox'><input type='checkbox' ng-model='col.visible' ng-click='showHideColumn()'> {{col.name}}</div></label>"
-    }
-})
-
-/**
- * bootstrap directives from datasets.at
- */
-fifoApp
-    .directive('navTabs', function() {
+angular.module('fifoApp')
+    .directive('gauge', function() {
         return {
             restrict: 'E',
-            transclude: true,
-            template:
-            '<ul class="nav nav-tabs" data-spy="affix" ng-transclude>' +
-                '</ul>',
-            replace: true
-        };
-    })
-    .directive('navTab', ['$location', function($location) {
-        var match = function(href, url) {
-            var href_a = href.split('/');
-            var url_a = url.split('/');
-            var i;
+            replace: true,
+            template: "<canvas class='gauge'></canvas>",
+            link: function(scope, el, attrs) {
 
-            for (i in href_a) {
-                if (href_a[i] !== url_a[i]) {
-                    return false;
-                }
+                // console.log('monitoring', attrs.ngModel, scope.$eval(attrs.ngModel));
+                var g = new Gauge(el[0]).setOptions({
+                    pointer: {
+                        length: 0.8, // The radius of the inner circle
+                    },
+                    limitMax: true,
+                    colorStop: 'blue',    // just experiment with them
+                    strokeColor: '#E0E0E0',   // to see which ones work best for you
+                    percentColors : [
+                        [ 0.0, "#45d70b" ],
+                        [ 0.90, "#dede0b" ],
+                        [ 1.0, "#ff0000" ]
+                    ]
+                })
+
+                g.maxValue = 100;
+                g.animationSpeed = 10;
+
+                scope.$watch(attrs.ngModel, function(v) {
+                    g.set(v * 1 || 0)
+                })
+
+                // GC
+                // el.on('$destroy', function() {
+                //     console.log('ybebye!!!!!')
+                // })
+
             }
-
-            return true;
         }
-
-        return {
-            restrict: 'E',
-            transclude: true,
-            scope: {
-                'href': '@',
-                'icon': '@'
-            },
-            link: function (scope) {
-                scope.location = function (href) {
-                    return match(href.substr(1), $location.url());
-                };
-            },
-            template:
-            '<li ng-class="{active: location(href)}">' +
-                '<a href="{{href}}" class="glyphicons {{icon}}" ng-transclude><i></i></a>' +
-                '</li>',
-            replace: true
-        };
-    }]);
+    })

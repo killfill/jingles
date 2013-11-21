@@ -1,7 +1,7 @@
 'use strict';
 
-fifoApp.controller('DatasetCtrl', function($scope, $routeParams, wiggle, status) {
-    $scope.setTitle('Dataset details')
+angular.module('fifoApp')
+  .controller('DatasetCtrl', function ($scope, $routeParams, wiggle, status) {
 
     var uuid = $routeParams.uuid
     wiggle.datasets.get({id: uuid}, function(data) {
@@ -17,4 +17,4 @@ fifoApp.controller('DatasetCtrl', function($scope, $routeParams, wiggle, status)
                                 wiggle.datasets.clearCache(uuid)
                             })
     }
-})
+  });

@@ -28,9 +28,9 @@
       <dd><input ng-model='net.description'></dd>
     </dl>
     <div class="btn-group">
-      <button class="btn btn-small pull-left" title='Add network' jq-run='tooltip' ng-click="networks.push({name: 'net' + networks.length, description: 'new network'})">+</button>
-      <button class='btn btn-small pull-left' ng-show='networks.length > 1' title='Remove network' jq-run='tooltip' ng-click='networks.pop()'>-</button>
+      <button class="btn btn-sm btn-default pull-left" title='Add network' jq-run='tooltip' ng-click="networks.push({name: 'net' + networks.length, description: 'new network'})">+</button>
+      <button class='btn btn-sm btn-default pull-left' ng-show='networks.length > 1' title='Remove network' jq-run='tooltip' ng-click='networks.pop()'>-</button>
     </div>
-    <button class="btn btn-small pull-right btn-info" ng-click='save(networks)'>Save</button>
+    <button class="btn btn-sm pull-right btn-primary" ng-click='save(networks)'>Save</button>
   </div>
 </div>

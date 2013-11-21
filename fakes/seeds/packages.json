@@ -1,0 +1,9 @@
+{
+    "cpu_cap": "{{random.number(800)}}",
+    "name": "{{random.bs_noun}}",
+    "quota": "{{random.number(100)}}",
+    "ram": "{{random.number(6000)}}",
+    "requirements": [],
+    "uuid": "{{random.number(7)}}",
+    "version": "0.1.0"
+}

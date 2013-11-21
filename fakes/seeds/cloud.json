@@ -1,0 +1,25 @@
+{
+    "metrics": {
+        "free-memory": "{{random.number(182524)}}",
+        "hypervisors": "{{Lorem.words}}",
+        "l1hits": "{{random.number(1728160836)}}",
+        "l1miss": "{{random.number(30762668)}}",
+        "l1size": "{{random.number(50509)}}",
+        "l2hits": "{{random.number(1728160836)}}",
+        "l2miss": "{{random.number(30762668)}}",
+        "l2size": "{{random.number(50509)}}",
+        "provisioned-memory": "{{random.number(182524)}}",
+        "size": "{{random.number(285081600)}}",
+        "total-memory": "{{random.number(362524)}}",
+        "used": "{{random.number(2850600)}}",
+        "users": "{{random.number(10)}}",
+        "vms": "{{random.number(100)}}"
+    },
+    "versions": {
+        "howl": "dev-056dc35, Wed Jul 31 15:40:34 2013 +0200",
+        "snarl": "dev-c9358f7, Wed Jul 31 15:32:25 2013 +0200",
+        "sniffle": "dev-a7549a6, Wed Jul 31 15:24:37 2013 +0200",
+        "wiggle": "dev-28b38dd, Tue Jul 23 18:50:55 2013 +0200"
+    },
+    "warnings": []
+}

@@ -1,7 +1,8 @@
 'use strict';
 
-fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggle, modal, status) {
-    var uuid = $routeParams.uuid;
+angular.module('fifoApp')
+  .controller('DtraceCtrl', function ($scope, $routeParams, $location, wiggle, status) {
+  	var uuid = $routeParams.uuid;
     var socket = false;
 
     var renderer;
@@ -58,17 +59,17 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
         $scope.script = res;
 
         //It seems we neet to so this at the end of the work queue. not sure how to do that, but this works:
-        setTimeout(function() {
-            CodeMirror.fromTextArea(document.getElementById("code"), {
-                lineNumbers: true,
-                theme: 'solarized light',
-                lineWrapping: true,
-                onKeyEvent: function(cm) {
-                    $scope.script.script = cm.getValue()
-                    $scope.$apply()
-                }
-            });
-        });
+        // setTimeout(function() {
+        //     CodeMirror.fromTextArea(document.getElementById("code"), {
+        //         lineNumbers: true,
+        //         theme: 'solarized light',
+        //         lineWrapping: true,
+        //         onKeyEvent: function(cm) {
+        //             $scope.script.script = cm.getValue()
+        //             $scope.$apply()
+        //         }
+        //     });
+        // });
 
     });
 
@@ -162,4 +163,6 @@ fifoApp.controller('DTraceCtrl', function($scope, $routeParams, $location, wiggl
             socket = false;
         }
     }
-});
+
+    preventHrefTab();
+  });
