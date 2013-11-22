@@ -416,7 +416,8 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         'images/{,*/}*.{webp,gif}',
                         'styles/*.png', //bloody famfam, includes the png in the same dir as the style. :P
-                        'fonts/{,*/}*.*'
+                        'fonts/{,*/}*.*',
+                        'scripts/config.js.example'
                     ]
                 }]
             },

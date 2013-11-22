@@ -71,9 +71,9 @@ emailAddress=blah@blah.com
 
         ;;
     POST-INSTALL)
-        if [ ! -f /opt/local/fifo-jingles/app/scripts/config.js ]
+        if [ ! -f /opt/local/fifo-jingles/dist/scripts/config.js ]
         then
-            cp /opt/local/fifo-jingles/app/scripts/config.js.example /opt/local/fifo-jingles/app/scripts/config.js
+            cp /opt/local/fifo-jingles/dist/scripts/config.js.example /opt/local/fifo-jingles/dist/scripts/config.js
         fi
         #sed --in-place=.bak -e "s/127.0.0.1/${IP}/g" /opt/local/wiggle-ui/htdocs/js/config.js
         ;;
