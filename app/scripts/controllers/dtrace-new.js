@@ -131,17 +131,17 @@ angular.module('fifoApp')
         $scope.variables = [];
 
         //It seems we neet to so this at the end of the work queue. not sure how to do that, but this works:
-        setTimeout(function() {
-            CodeMirror.fromTextArea(document.getElementById("code"), {
-                lineNumbers: true,
-                theme: 'solarized light',
-                lineWrapping: true,
-                onKeyEvent: function(cm) {
-                    $scope.script = cm.getValue()
-                    $scope.$apply()
-                }
-            });
-        });
+        // setTimeout(function() {
+        //     CodeMirror.fromTextArea(document.getElementById("code"), {
+        //         lineNumbers: true,
+        //         theme: 'solarized light',
+        //         lineWrapping: true,
+        //         onKeyEvent: function(cm) {
+        //             $scope.script = cm.getValue()
+        //             $scope.$apply()
+        //         }
+        //     });
+        // });
 
     }
 

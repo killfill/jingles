@@ -49,8 +49,8 @@
       <!-- show this div to tab the low&high when scale is selected -->
       <div ng-show="rule.weight.value == 'scale'" class="span3"></div>
 
-      <input ng-show="rule.weight.group==\"Special\"" class="span4" type="number" min="0" title="Low" jq-run="tooltip" placeholder="Low" type="text" ng-model="rule.low">
-      <input ng-show="rule.weight.group==\"Special\"" class="span4" type="number" min="1" title="High" jq-run="tooltip" placeholder="High" type="text" ng-model="rule.high">
+      <input ng-show="rule.weight.group == 'Special'" class="span4" type="number" min="0" title="Low" jq-run="tooltip" placeholder="Low" type="text" ng-model="rule.low">
+      <input ng-show="rule.weight.group == 'Special'" class="span4" type="number" min="1" title="High" jq-run="tooltip" placeholder="High" type="text" ng-model="rule.high">
       
       <button class="btn btn-small btn-danger pull-right" title="Remove rule {{$index+1}}" jq-run="tooltip" ng-click="rm_rule($index)">-</button>
 
