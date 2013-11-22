@@ -1,0 +1,172 @@
+<div class="tab-pane" ng-show="user.uuid">
+
+  <div class="row-fluid">
+    <div class="col-md-8">
+      <h3>{{user.name}}</h3>
+    </div>
+    <div class="col-md-4 pull-right">
+      <div class="btn-toolbar btn-group pull-right">
+
+        <div ng-show="user.uuid != loggedUser.uuid" class="btn-group">
+          <button ng-click="delete()" class="btn btn-default" title="Delete" jq-run="tooltip" bs-modal="'views/partials/modal-confirm.html'">
+            <i class="glyphicon glyphicon-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <hr>
+
+  <div class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
+      <li><a href="#groups" data-toggle="tab">Groups</a></li>
+      <li><a href="#orgs" data-toggle="tab">Organization</a></li>
+      <li><a href="#ssh_keys" data-toggle="tab">SSH Keys</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+
+        <div class="userbox">
+
+          <div class="header">
+            <i class="glyphicon glyphicon-user"></i>
+            <span class="badge badge-info">{{user.name}}</span>
+          </div>
+
+          <dl class="dl-horizontal">
+            <dt>User UUID</dt>
+            <dd>{{user.uuid}}</dd>
+            <dt>Active Organisation</dt>
+            <dd>
+              <select ng-model="user.org" ng-change="org_select()" ng-options="org as orgs[org].name for org in user.orgs">
+              </select>
+            </dd>
+
+          </dl>
+          <small>Change Password :</small>
+          	<div class="input-group">
+          		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+	            <input ng-model="pass1" class="form-control" type="password" placeholder="New password" class="form-control"><br>
+          	</div>
+          	<div class="input-group">
+          		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+	            <input ng-model="pass2" class="form-control" type="password" placeholder="Confirm Password">
+          	</div>
+          	
+            <button class="btn btn-primary pull-right" ng-click="passwd()" style="margin-bottom: 10px; margin-top: 10px">Change</button>
+         
+        </div>
+
+      </div>
+      <div class="tab-pane" id="permisisons">
+        <select ng-model="perm1" ng-change="perm_change(1)">
+          <option value="...">Everything</option>
+          <option value="cloud">Cloud</option>
+          <option value="datasets">Datasets</option>
+          <option value="dtraces">DTrace</option>
+          <option value="groups">Groups</option>
+          <option value="hypervisors">Hypervisors</option>
+          <option value="networks">Networks</option>
+          <option value="ipranges">IP Ranges</option>
+          <option value="packages">Packages</option>
+          <option value="users">Users</option>
+          <option value="vms">Virtual Machines</option>
+        </select>
+        <select ng-model="perm2" ng-show="p2 != false" ng-change="perm_change(2)">
+          <option ng-repeat="p in p2 | hash2array" value="{{p.id}}">{{p.name}}</option>
+        </select>
+        <select ng-model="perm3" ng-show="p3 != false" ng-change="perm_change(3)">
+          <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
+        </select>
+        <input name="plast" ng-show="show_text" ng-model="perm_text">
+        <button ng-click="grant()" ng-show="permission" class="btn btn-default">Grant</button>
+
+        <table class="table table-condensed table-bordered">
+          <tr>
+            <th>Permission</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="permission in permissions">
+            <td>{{permission.text}}</td>
+            <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="groups">
+        <select id="join_group" ng-model="group">
+          <option ng-repeat="group in groups | hash2array | orderBy: name" value="{{group.uuid}}">{{group.name}}</option>
+        </select>
+        <button ng-click="group_join()" class="btn btn-default">Join</button>
+        <table class="table table-condensed table-bordered">
+          <tr>
+            <th>Name</th>
+            <th>UUID</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="group in user._groups">
+            <td>{{group.name}}</td>
+            <td>{{group.uuid}}</td>
+            <td><a ng-click="leave_group(group.uuid)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="orgs">
+        <select id="join_org" ng-model="org_to_join">
+          <option ng-repeat="org in orgs | hash2array | orderBy: name" value="{{org.uuid}}">{{org.name}}</option>
+        </select>
+        <button ng-click="org_join()" class="btn btn-default">Join</button>
+        <table class="table table-condensed table-bordered">
+          <tr>
+            <th>Name</th>
+            <th>UUID</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="org in user.orgs">
+            <td>{{orgs[org].name}}</td>
+            <td>{{orgs[org].uuid}}</td>
+            <td><a ng-click="org_leave(orgs[org].uuid)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+
+
+      <div class="tab-pane" id="ssh_keys">
+        <div class="fluid-row">
+          <div class="span12">
+            <table class="table table-condensed table-bordered">
+              <tbody>
+                <tr>
+                  <th>Key ID</th>
+                  <th>Key</th>
+                  <th>Delete</th>
+                </tr>
+                <tr ng-repeat="(key_id, key) in user.keys">
+                  <td>{{key_id}}</td>
+                  <td style="word-wrap: break-word; max-width: 64em">{{key}}</td>
+                  <td><a ng-click="delete_sshkey(key_id)">delete</a></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="fluid-row">
+          <div class="span12">
+
+            <p>SSH Keys will be used when creating new KVM machines. They also will dynamically grant access
+              to SmartOS zones. Based on the console access to the zone.</p>
+            <textarea rows="6" class="form-control uuid" style="font-size: 0.9em" ng-model="ssh_keys"></textarea>
+            <p class="btn-toolbar pull-right"><button class="btn btn-info" ng-click="save_sshkeys()">Add</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,331 @@
+<div ng-show="vm.uuid" style="display: table" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <span class="pull-left">
+      <h3 style="display: inline-block; margin-top: 0px">{{vm._name}}</h3>
+      <span style="margin: 0px 5px 5px 5px; vertical-align: top" title="{{vm.state_description}}" jq-run="tooltip" jq-options="{placement: 'bottom'}" class="label label-{{vm._state_label}}">{{vm.state}}</span>
+      <span class="light">{{vm.mdata('description')}}</span>
+    </span>
+    <div class="pull-right">
+      <div class="btn-toolbar pull-right">
+        <div class="btn-group btn-group-sm" style="margin-right: 20px">
+          <button ng-click="confirm_delete(vm)" ng-disabled="vm.mdata('locked') ||
+                               !(vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down')" class="btn btn-default" bs-modal="'views/partials/modal-confirm.html'" title="Delete" jq-run="tooltip" jq-options="{placement: 'bottom'}">
+            <i class="glyphicon glyphglyphicon glyphicon-trash"></i>
+          </button>
+          <button ng-click="console(vm)" ng-enabled="vm.state=='running' && vm.config" title="Console" jq-run="tooltip" jq-options="{placement: 'bottom'}" class="btn btn-default">
+            <i class="glyphicon glyphicon-share-alt"></i>
+          </button>
+          <button ng-click="lock()" ng-class="vm.mdata('locked') && 'btn btn-info' || 'btn btn-default'" title="Lock vm to prevent changes" jq-run="tooltip" jq-options="{placement: 'bottom', container: 'body'}">
+            <i class="glyphicon glyphicon-lock"></i>
+          </button>
+        </div>
+        <div class="btn-group btn-group-sm" style="">
+          <button ng-click="action('start', vm)" ng-disabled="vm.state!='stopped' || vm.mdata('locked')" title="Start" jq-run="tooltip" jq-options="{placement: 'bottom'}" class="btn btn-default">
+            <i class="glyphicon glyphicon-play"></i>
+          </button>
+          <button ng-click="action('reboot', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')" title="Reboot" jq-run="tooltip" jq-options="{placement: 'bottom'}" class="btn btn-default">
+            <i class="glyphicon glyphicon-refresh"></i>
+          </button>
+          <button ng-click="action('stop', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')" title="{{force && 'Force ' || ''}}Stop" jq-run="tooltip" jq-options="{placement: 'bottom', container: 'body'}" class="btn {{force && 'btn-warning' || 'btn-default'}}">
+            <i class="glyphicon glyphicon-stop"></i>
+             <span ng-show="force">Force</span>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<hr ng-show="vm.uuid">
+
+<div>
+  <span ng-show="something_wrong">
+    <p><font color="red">Something is wrong with this machine.</font></p>
+    <p>UUID: {{vm.uuid}}</p>
+    <p>
+      <strong>History</strong>
+      <table class="table">
+        <tr ng-repeat="log in vm.log | orderBy: '-date' ">
+          <td>{{log.log}}</td>
+          <td class="nowrap light" title="{{log.date/1000 | date:'medium'}}" jq-run="tooltip" am-time-ago="log.date/1000"></td>
+        </tr>
+      </table>
+    </p>
+  </span>
+
+  <div ng-show="vm.config" id="VMTab" class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#performance" data-toggle="tab">Performance</a></li>
+      <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
+      <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
+      <li><a href="#resize" data-toggle="tab">Change</a></li>
+      <li><a href="#history" data-toggle="tab">History</a></li>
+      <li><a href="#notes" data-toggle="tab">Notes</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <div class="row-fluid">
+
+          <div class="box box-small pull-left">
+
+            <div class="header">
+              Machine <span class="badge badge-info">{{vm._name}}</span>
+            </div>
+
+            <dl class="dl-horizontal">
+              <dt>Created</dt>
+              <dd jq-run="tooltip" title="{{vm.config.created_at | date:'medium'}}" am-time-ago="vm.config.created_at"></dd>
+              <dt>Type</dt>
+              <dd>{{vm.config.type}}</dd>
+              <dt>Server</dt>
+              <dd><a href="#/servers/{{vm.hypervisor}}">{{vm._hypervisor.alias}}</a></dd>
+              <dt>List Color</dt>
+              <dd>
+                <select name="colorpicker" ng-model="color" simplecolorpicker="">
+                  <option value="#ffffff">Clear</option>
+                  <option value="#7bd148">Green</option>
+                  <option value="#5484ed">Bold blue</option>
+                  <option value="#a4bdfc">Blue</option>
+                  <option value="#46d6db">Turquoise</option>
+                  <option value="#7ae7bf">Light green</option>
+                  <option value="#51b749">Bold green</option>
+                  <option value="#fbd75b">Yellow</option>
+                  <option value="#ffb878">Orange</option>
+                  <option value="#ff887c">Red</option>
+                  <option value="#dc2127">Bold red</option>
+                  <option value="#dbadff">Purple</option>
+                </select>
+              </dd>
+
+              <a class="accordion-toggle" jq-run="tooltip" title="Edit configuration" data-toggle="collapse" href="#editform"><i class="glyphicon glyphicon-edit"></i></a>
+              <form class="collapse" id="editform" ng-submit="save_vm_info(configHash)" novalidate="">
+                <dl class="dl-horizontal">
+                  <dt>Describe</dt>
+                  <dd>
+                    <input type="text" maxlength="25" ng-model="description">
+                  </dd>
+                  <dt>Alias</dt>
+                  <dd>
+                    <input type="text" maxlength="25" ng-model="configHash.alias">
+                  </dd>
+                  <dt>Hostname</dt>
+                  <dd>
+                    <input type="text" maxlength="25" ng-disabled="vm.config.type != 'kvm'" ng-model="configHash.hostname">
+                  </dd>
+                  <dt>Resolvers</dt>
+                  <dd>
+                    <input type="text" ng-model="configHash.resolvers">
+                  </dd>
+                </dl>
+                <button class="btn btn-sm pull-right">Save</button>
+              </form>
+            </dl>
+          </div>
+
+          <div class="box box-small pull-left">
+            <div class="header">
+              Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+            </div>
+            <package pkg="vm._package" vmconfig="vm.config"></package>
+          </div>
+
+
+          <div class="box box-small pull-left" ng-show="vm.config.dataset">
+            <div class="header">
+              Dataset
+              <span ng-show="vm.config._dataset" class="badge badge-info">
+                {{vm.config._dataset.name}} {{vm.config._dataset.version}}
+              </span>
+              <img jq-run="tooltip" title="{{vm.config._dataset.os || 'unknown'}}" ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class="oslogo">
+            </div>
+
+            <dl class="dl-horizontal">
+              <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
+              <dt>Info</dt>
+              <dd ng-show="vm.config._dataset">{{vm.config._dataset.description}}</dd>
+              <dd ng-hide="vm.config._dataset"><button ng-click="import_dataset()" class="btn btn-sm" title="Import dataset for more info" jq-run="tooltip"><i class="glyphicon glyphicon-download-alt"></i> Import</button></dd>
+            </dl>
+          </div>
+
+          <div class="box box-small pull-left" ng-repeat="net in vm.config.networks">
+            <div class="header">
+              Network <span class="badge badge-info">{{net.nic_tag}}</span>
+              <div class="btn-group pull-right">
+                <button ng-click="remove_nic(vm, net.mac)" ng-disabled="vm.mdata('locked') || vm.state!='stopped'" class="btn btn-xs" title="Delete" jq-run="tooltip">
+                  <i class="glyphicon glyphicon-trash"></i>
+                </button>
+                <button ng-click="primary_nic(vm, net.mac)" ng-disabled="vm.mdata('locked') || vm.state!='stopped'" ng-show="!net.primary" class="btn btn-xs" title="Make primary" jq-run="tooltip">
+                  <i class="glyphicon glyphicon-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <dl class="dl-horizontal">
+              <dt>NIC</dt>
+              <dd>{{net.interface | orDefault:'-'}} {{net.primary && '(primary)'}}</dd>
+              <dt>IP</dt>
+              <dd>{{net.ip | orDefault:'-'}}</dd>
+              <dt>Netmask</dt>
+              <dd>{{net.netmask | orDefault:'-'}}</dd>
+              <dt>Gateway</dt>
+              <dd>{{net.gateway | orDefault:'-'}}</dd>
+              <dt>Mac</dt>
+              <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
+              <dt ng-show="net.model">Model</dt>
+              <dd ng-show="net.model">{{net.model | orDefault:'-'}}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="performance">
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Disk IOPS</span>
+          </div>
+          <div id="ops" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Disk Throughput</span>
+          </div>
+          <div id="throughput" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Memory Usage</span>
+          </div>
+          <div id="memory" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
+          <div class="header">
+            <span class="badge badge-info">Swap Usage</span>
+          </div>
+          <div id="swap" class="metric"></div>
+        </div>
+        <div class="perfbox pull-left">
+          <div class="header">
+            <span class="badge badge-info">CPU Usage</span>
+          </div>
+          <div id="cpu" class="metric"></div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane" id="history">
+        <table class="table table-condensed table-hover">
+          <tr ng-repeat="log in vm.log | orderBy: '-date' ">
+            <td><small>{{log.log}}</small></td>
+            <td class="nowrap light" title="{{log.date/1000 | date:'medium'}}" jq-run="tooltip"><small am-time-ago="log.date/1000"></small></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="snapshots">
+        <p class="pull-right">
+          <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class="light" style="padding: 5px">To rollback, please stop the machine</span>
+          <button style="margin-bottom: 10px" ng-click="snapshot('create')" class="btn btn-default" jq-run="tooltip" title="Take a new snapshot"><i class="glyphicon glyphicon-camera"></i> <span>Snapshot</span></button>
+        </p>
+        <table class="table table-condensed table-hover pull-left">
+          <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
+            <td><strong title="{{snap.uuid}}" jq-run="tooltip">{{snap.comment}}</strong></td>
+            <td class="nowrap light">{{snap.size | bytes}}</td>
+            <td class="nowrap light">{{snap.timestamp/1000 | date:'medium'}}</td>
+            <td class="nowrap light" am-time-ago="snap.timestamp/1000"></td>
+            <td class="nowrap">
+              <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback" ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'" class="glyphicon glyphicon-backward clickable"></i>
+              <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete" ng-hide="vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'" class="glyphicon glyphicon-trash clickable"></i>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="imaging">
+        <div>
+          <p>
+            <span>
+              To create a new image follow this steps:
+              <ol>
+                <li>Make sure everything is working fine on the vm</li>
+                <li>Execute <code>sm-prepare-image</code> to make the vm image-ready</li>
+                <li ng-show="(snapshots|hash2array).length>0">Create a snapshot of the vm</li>
+                <li ng-hide="(snapshots|hash2array).length>0"><strong>Create a snapshot of the vm</strong></li>
+                <li>Set the data of the image, filling the form</li>
+                <li>Choose the snapshot you want to base the image on</li>
+              </ol>
+              Then, wait until the image is ready, the <a href="#/datasets">datasets</a> page will reflect that state. After that, a new vm could be created with the new image.
+              More info <a href="http://wiki.smartos.org/display/DOC/Managing+Images">here</a>.
+            </span>
+            <br>
+          </p>
+          <div ng-show="(snapshots|hash2array).length>0">
+            <h3>Form</h3>
+            <dl class="dl-horizontal">
+              <dt>Name</dt>
+              <dd>
+                <input type="text" class="col-md-5" maxlength="25" ng-model="img_name">
+                <input type="text" class="col-md-1" maxlength="10" ng-model="img_version" placeholder="version">
+                <input type="text" class="col-md-2" ng-model="img_os" placeholder="os">
+              </dd>
+
+              <dt>Description</dt>
+              <dd>
+                <input type="text" ng-model="img_desc" class="col-md-8">
+              </dd>
+            </dl>
+          </div>
+          <div ng-show="(snapshots|hash2array).length>0">
+            <h3>Snapshots</h3>
+            <table class="table table-condensed table-hover pull-left">
+              <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
+                <td style="width: 40%"><strong>{{snap.comment}}</strong></td>
+                <td class="nowrap light">{{snap.timestamp/1000 | date:'medium'}}</td>
+                <td class="nowrap light" am-time-ago="snap.timestamp/1000"></td>
+                <td class="nowrap">
+                  <i ng-click="mk_image(vm.uuid, snap.uuid)" jq-run="tooltip" title="create image" class="glyphicon glyphicon-hdd clickable"></i>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane" id="resize">
+        <div class="box col-md-4">
+          <div class="header">
+            Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+          </div>
+          <package pkg="vm._package" vmconfig="vm.config"></package>
+        </div>
+        <div class="box col-md-4">
+          <div class="header">
+            Change to
+            <select class="input-small" style="margin: 0px; height: 20px" ng-model="new_pkg" ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
+            </select>
+            <button style="margin-bottom: 10px" class="btn btn-success btn-xs pull-right" ng-disabled="vm.mdata('locked')" ng-show="packages[new_pkg].id != vm['package']" ng-click="update()">change</button>
+          </div>
+          <package pkg="packages[new_pkg]"></package>
+        </div>
+        <div class="box col-md-4">
+          <div class="header">
+            Add Network Interface
+          </div>
+          <select ng-model="new_net" class="form-control" ng-options="net.id as net.name for net in networks | hash2array | orderBy: ['name']">
+          </select>
+
+          <button style="margin-bottom: 10px" class="btn btn-success" ng-disabled="vm.mdata('locked')" ng-show="networks[new_net]" ng-click="add_nic(vm, new_net)">add</button>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="notes">
+        <button class="btn btn-success pull-right" ng-click="note('create')">+</button>
+        <div class="postit pull-left" ng-repeat="n in notes" jq-run="tooltip" title="{{n.created_at | date:'medium'}}">
+          <button class="btn btn-xs pull-right" style="margin-left: 10px" ng-click="note('delete', $index)">x</button>
+          {{n.text}}
+          <br><small style="color: black" class="nowrap uuid" am-time-ago="n.created_at"></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

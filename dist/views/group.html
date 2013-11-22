@@ -1,0 +1,69 @@
+<div class="tab-pane" ng-show="group.uuid">
+  <div class="row-fluid">
+    <div class="col-md-8">
+      <h3>{{group.name}}</h3>
+    </div>
+    <div class="col-md-4">
+      <div class="btn-toolbar btn-group pull-right">
+
+        <div class="btn-group">
+          <button ng-click="delete()" class="btn btn-default" title="Delete" jq-run="tooltip" bs-modal="'views/partials/modal-confirm.html'">
+            <i class="glyphicon glyphicon-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <hr>
+
+  <div class="tabbable tabs-top">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+      <li><a href="#permisisons" data-toggle="tab">Permissions</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <table class="table table-bordered">
+          <tr><th>Name</th><td><b>{{group.name}}</b></td></tr>
+          <tr><th>UUID</th><td><b>{{group.uuid}}</b></td></tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="permisisons">
+        <select ng-model="perm1" ng-change="perm_change(1)">
+          <option value="...">Everything</option>
+          <option value="cloud">Cloud</option>
+          <option value="datasets">Datasets</option>
+          <option value="dtraces">DTrace</option>
+          <option value="groups">Groups</option>
+          <option value="hypervisors">Hypervisors</option>
+          <option value="networks">Networks</option>
+          <option value="ipranges">IP Ranges</option>
+          <option value="packages">Packages</option>
+          <option value="users">Users</option>
+          <option value="vms">Virtual Machines</option>
+        </select>
+        <select ng-model="perm2" ng-show="p2 != false" ng-change="perm_change(2)">
+          <option ng-repeat="p in p2 | hash2array" value="{{p.id}}">{{p.name}}</option>
+        </select>
+        <select ng-model="perm3" ng-show="p3 != false" ng-change="perm_change(3)">
+          <option ng-repeat="p in p3 | hash2array" value="{{p.id}}">{{p.name}}</option>
+        </select>
+        <input name="plast" ng-show="show_text" ng-model="perm_text">
+        <button ng-click="grant()" ng-show="permission" class="btn btn-default">Grant</button>
+        <table class="table table-bordered">
+          <tr>
+            <th>Permission</th>
+            <th>Actions</th>
+          </tr>
+          <tr ng-repeat="permission in permissions">
+            <td>{{permission.text}}</td>
+            <td><a ng-click="delete_permission(permission.obj)">delete</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

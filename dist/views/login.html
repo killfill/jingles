@@ -1,0 +1,44 @@
+<div id="login-modal" class="modal">
+	<form ng-submit="submit()" method="GET">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">
+						<i class="glyphicon glyphicon-cloud"></i>
+						<span translate="">Web Panel</span>
+						<span class="pull-right">
+							<span ng-show="connectionStatus.ok" class="status-true"></span>
+							<span ng-hide="connectionStatus.ok">
+								<small class="text-danger">{{connectionStatus.msg}}</small>
+							</span>
+						</span>
+					</h3>
+				</div>
+				<div class="modal-body">
+					<p>Please identify yourself</p>
+					<form name="loginForm" ng-submit="submit" ng-disabled="!connectionStatus.ok" novalidate="">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-user"></i>
+							</span>
+							<input type="text" class="form-control input-lg" placeholder="Username" ng-model="user" ng-disabled="!connectionStatus.ok" required="require">
+						</div>
+
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-lock"></i>
+							</span>
+							<input type="password" class="form-control input-lg" placeholder="Password" ng-model="password" ng-disabled="!connectionStatus.ok" required="require">
+						</div>
+					</form></div>
+
+					<div class="modal-footer">
+						<div style="padding-top: 10px" ng-if="loginError" class="container text-danger pull-left">{{loginError}}</div>
+						<button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-lg btn-primary" ng-disabled="!connectionStatus.ok">Login</button>
+
+					</div>
+				</div></div></form>
+			</div><!-- /.modal-content -->
+		<!-- /.modal-dialog -->
+	
+<!-- /.modal -->

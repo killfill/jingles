@@ -1,0 +1,32 @@
+<div class="tab-pane" id="hypervisors">
+  <div class="row-fluid">
+    <div class="span12">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>IPv4</th>
+            <th class="">Booted</th>
+            <th class="nowrap">Agent ver</th>
+            <th class="">Ram</th>
+            <th class="">Free</th>
+            <th>Networks</th>
+            <th>Capabilities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="hyper in hypervisors">
+            <td class="nowrap"><a href="#/servers/{{hyper.uuid}}">{{hyper.alias}}</a></td>
+            <td class="nowrap">{{hyper.host}}</td>
+            <td class="mono nowrap"><span jq-run="tooltip" title="{{hyper.sysinfo['Boot Time'] *1000 | date:'medium'}}" am-time-ago="hyper.sysinfo['Boot Time'] *1000"></span></td>
+            <td class="nowrap"><small>{{hyper['version'].split(',')[0]}}</small></td>
+            <td class="mono">{{hyper.resources['total-memory']}} MB</td>
+            <td class="mono">{{hyper.resources['free-memory']}} MB</td>
+            <td>{{hyper.networks.sort().join(', ')}}</td>
+            <td>{{hyper.virtualisation.join(', ')}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
