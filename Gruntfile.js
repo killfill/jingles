@@ -328,7 +328,7 @@ module.exports = function (grunt) {
                     src: [
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                        // '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
                         '<%= yeoman.dist %>/styles/fonts/{,*/}*.*'
                     ]
                 }
@@ -399,7 +399,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>',
-                    src: ['*.html', 'views/*.html'],
+                    src: ['*.html', 'views/*.html', 'views/partials/*.html'],
                     dest: '<%= yeoman.dist %>'
                 }]
             }
@@ -414,10 +414,9 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,png,txt}',
-                        '.htaccess',
-                        //'bower_components/**/*',
                         'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/{,*/}*.*'
+                        'styles/*.png', //bloody famfam, includes the png in the same dir as the style. :P
+                        'fonts/{,*/}*.*'
                     ]
                 }]
             },
@@ -426,7 +425,7 @@ module.exports = function (grunt) {
                 dot: true,
                 cwd: '<%= yeoman.app %>/styles',
                 dest: '.tmp/styles/',
-                src: ['{,*/}*.css', 'styles/fonts/*']
+                src: ['{,*/}*.css', 'fonts/*']
             }
         },
         concurrent: {
@@ -514,8 +513,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
-        'jshint',
-        'test',
+        //'jshint',
+        //'test',
         'build'
     ]);
 };

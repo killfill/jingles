@@ -6,11 +6,12 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.tmp) styles/main.css -->
+    <!-- build:css styles/app.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/famfamfam-flags-sprite/src/flags-sprite.min.css">
     <link rel="stylesheet" type="text/css" href="bower_components/alertify.js/themes/alertify.core.css">
     <link rel="stylesheet" type="text/css" href="bower_components/alertify.js/themes/alertify.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="vendor/jquery.simplecolorpicker.css">
     <!-- endbuild -->
 </head>
 <body ng-app='fifoApp'>
@@ -20,7 +21,7 @@
     </div>
     <div class="ng-view-include container" ng-view></div>
 
-    <!-- build:js scripts/vendor.js -->
+    <!-- build:js scripts/bower_components.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/moment/moment.js"></script>
@@ -93,9 +94,10 @@
     <!-- endbuild -->
 
 
-    
+    <!-- build:js scripts/vendor.js -->
     <!-- Manually added -->
     <!-- Override ng-table while the patch get merged.. :P to ng-table: https://github.com/esvit/ng-table/pull/77 -->
+    
     <script src="vendor/ng-table.src.js"></script>
     <script src="vendor/flotr2.min.js"></script>
     <script src="vendor/gauge.min.js"></script>
@@ -103,10 +105,9 @@
     <script src="bower_components/alertify.js/lib/alertify.min.js"></script>
     <script src="bower_components/msgpack-javascript/msgpack.js"></script>
     <script src="vendor/jquery.simplecolorpicker.js"></script>
-    <link rel="stylesheet" type="text/css" href="vendor/jquery.simplecolorpicker.css">
-
     <!-- Taken from https://raw.github.com/mgcrea/angular-strap/master/src/directives/modal.js (Im just using that part of angular-strap.. deleted dependency and changes 'modal hide' => 'modal hidenono + addClass('fade') => addClass('fadenono') -->
     <script type="text/javascript" src="vendor/modal.js"></script>
+    <!-- endbuild -->
 
 </body>
 </html>
