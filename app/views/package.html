@@ -13,8 +13,8 @@
     <div class="container col-md-8" ng-repeat='rule in package.requirements'>
         <span><strong>{{rule.weight}}</strong></span>
         <dl class='dl-horizontal' ng-repeat='(k,v) in rule'>
-        <dt ng-hide='k=="weight"'>{{k}}</dt>
-        <dd ng-hide='k=="weight"'>{{v}}</dd>
+        <dt ng-hide="k == 'weight'">{{k}}</dt>
+        <dd ng-hide="k == 'weight'">{{v}}</dd>
         </dl>
         <br/>
     </div>
