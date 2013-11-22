@@ -59,6 +59,9 @@ angular.module('fifoApp')
 
       if (!auth.isLogged()) {
 
+        //Chances are that session.get takes more time that the first change of route, so set a temporary user object
+        user = new wiggle.users({status: 'waiting for login validation'})
+
         var token = $cookies["x-snarl-token"]
         if (!token)
           return $rootScope.$broadcast('auth:login_needed')
