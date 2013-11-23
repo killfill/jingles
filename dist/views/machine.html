@@ -69,17 +69,20 @@
           <div class="box box-small pull-left">
 
             <div class="header">
-              Machine <span class="badge badge-info">{{vm._name}}</span>
+              <span translate="">Machine</span>
+              <span class="badge badge-info">{{vm._name}}</span>
             </div>
 
             <dl class="dl-horizontal">
-              <dt>Created</dt>
+              <dt translate="">Created</dt>
               <dd jq-run="tooltip" title="{{vm.config.created_at | date:'medium'}}" am-time-ago="vm.config.created_at"></dd>
-              <dt>Type</dt>
+              <dt translate="">Type</dt>
               <dd>{{vm.config.type}}</dd>
-              <dt>Server</dt>
+              <dt translate="">Server</dt>
               <dd><a href="#/servers/{{vm.hypervisor}}">{{vm._hypervisor.alias}}</a></dd>
-              <dt>List Color</dt>
+              <dt translate="">Owner</dt>
+              <dd>{{vm._owner.name}}</dd>
+              <dt translate="">List Color</dt>
               <dd>
                 <select name="colorpicker" ng-model="color" simplecolorpicker="">
                   <option value="#ffffff">Clear</option>
@@ -100,31 +103,37 @@
               <a class="accordion-toggle" jq-run="tooltip" title="Edit configuration" data-toggle="collapse" href="#editform"><i class="glyphicon glyphicon-edit"></i></a>
               <form class="collapse" id="editform" ng-submit="save_vm_info(configHash)" novalidate="">
                 <dl class="dl-horizontal">
-                  <dt>Describe</dt>
+                  <dt translate="">Describe</dt>
                   <dd>
                     <input type="text" maxlength="25" ng-model="description">
                   </dd>
-                  <dt>Alias</dt>
+                  <dt translate="">Alias</dt>
                   <dd>
                     <input type="text" maxlength="25" ng-model="configHash.alias">
                   </dd>
-                  <dt>Hostname</dt>
+                  <dt translate="">Hostname</dt>
                   <dd>
                     <input type="text" maxlength="25" ng-disabled="vm.config.type != 'kvm'" ng-model="configHash.hostname">
                   </dd>
-                  <dt>Resolvers</dt>
+                  <dt translate="">Resolvers</dt>
                   <dd>
                     <input type="text" ng-model="configHash.resolvers">
                   </dd>
+                  <dt translte="">Owner</dt>
+                  <dd>
+                      <select class="input-small" ng-model="new_owner" ng-options="org.name for org in orgs | hash2array | orderBy: 'name'">
+                      </select>
+                  </dd>
                 </dl>
-                <button class="btn btn-sm pull-right">Save</button>
+                <button class="btn btn-sm pull-right" translate="">Save</button>
               </form>
             </dl>
           </div>
 
           <div class="box box-small pull-left">
             <div class="header">
-              Package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+              <span translate="">Package</span>
+              <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
             </div>
             <package pkg="vm._package" vmconfig="vm.config"></package>
           </div>
@@ -132,7 +141,7 @@
 
           <div class="box box-small pull-left" ng-show="vm.config.dataset">
             <div class="header">
-              Dataset
+              <span translate="">Dataset</span>
               <span ng-show="vm.config._dataset" class="badge badge-info">
                 {{vm.config._dataset.name}} {{vm.config._dataset.version}}
               </span>
@@ -141,15 +150,16 @@
 
             <dl class="dl-horizontal">
               <dt>UUID</dt><dd><small>{{vm.config.dataset}}</small></dd>
-              <dt>Info</dt>
+              <dt translate="">Info</dt>
               <dd ng-show="vm.config._dataset">{{vm.config._dataset.description}}</dd>
-              <dd ng-hide="vm.config._dataset"><button ng-click="import_dataset()" class="btn btn-sm" title="Import dataset for more info" jq-run="tooltip"><i class="glyphicon glyphicon-download-alt"></i> Import</button></dd>
+              <dd ng-hide="vm.config._dataset"><button ng-click="import_dataset()" class="btn btn-sm btn-default" title="Import dataset for more info" jq-run="tooltip"><i class="glyphicon glyphicon-download-alt"></i> Import</button></dd>
             </dl>
           </div>
 
           <div class="box box-small pull-left" ng-repeat="net in vm.config.networks">
             <div class="header">
-              Network <span class="badge badge-info">{{net.nic_tag}}</span>
+              <span translate="">Network</span>
+              <span class="badge badge-info">{{net.nic_tag}}</span>
               <div class="btn-group pull-right">
                 <button ng-click="remove_nic(vm, net.mac)" ng-disabled="vm.mdata('locked') || vm.state!='stopped'" class="btn btn-xs" title="Delete" jq-run="tooltip">
                   <i class="glyphicon glyphicon-trash"></i>
@@ -161,17 +171,17 @@
             </div>
 
             <dl class="dl-horizontal">
-              <dt>NIC</dt>
+              <dt translate="">NIC</dt>
               <dd>{{net.interface | orDefault:'-'}} {{net.primary && '(primary)'}}</dd>
-              <dt>IP</dt>
+              <dt translate="">IP</dt>
               <dd>{{net.ip | orDefault:'-'}}</dd>
-              <dt>Netmask</dt>
+              <dt translate="">Netmask</dt>
               <dd>{{net.netmask | orDefault:'-'}}</dd>
-              <dt>Gateway</dt>
+              <dt translate="">Gateway</dt>
               <dd>{{net.gateway | orDefault:'-'}}</dd>
-              <dt>Mac</dt>
+              <dt translate="">Mac</dt>
               <dd><small>{{net.mac | orDefault:'-'}}</small></dd>
-              <dt ng-show="net.model">Model</dt>
+              <dt ng-show="net.model" translate="">Model</dt>
               <dd ng-show="net.model">{{net.model | orDefault:'-'}}</dd>
             </dl>
           </div>
@@ -181,31 +191,31 @@
       <div class="tab-pane" id="performance">
         <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
           <div class="header">
-            <span class="badge badge-info">Disk IOPS</span>
+            <span class="badge badge-info" translate="">Disk IOPS</span>
           </div>
           <div id="ops" class="metric"></div>
         </div>
         <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
           <div class="header">
-            <span class="badge badge-info">Disk Throughput</span>
+            <span class="badge badge-info" translate="">Disk Throughput</span>
           </div>
           <div id="throughput" class="metric"></div>
         </div>
         <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
           <div class="header">
-            <span class="badge badge-info">Memory Usage</span>
+            <span class="badge badge-info" translate="">Memory Usage</span>
           </div>
           <div id="memory" class="metric"></div>
         </div>
         <div class="perfbox pull-left" ng-show="vm.config.type != 'kvm'">
           <div class="header">
-            <span class="badge badge-info">Swap Usage</span>
+            <span class="badge badge-info" translate="">Swap Usage</span>
           </div>
           <div id="swap" class="metric"></div>
         </div>
         <div class="perfbox pull-left">
           <div class="header">
-            <span class="badge badge-info">CPU Usage</span>
+            <span class="badge badge-info" translate="">CPU Usage</span>
           </div>
           <div id="cpu" class="metric"></div>
         </div>
@@ -258,23 +268,23 @@
             <br>
           </p>
           <div ng-show="(snapshots|hash2array).length>0">
-            <h3>Form</h3>
+            <h3 translate="">Form</h3>
             <dl class="dl-horizontal">
-              <dt>Name</dt>
+              <dt translate="">Name</dt>
               <dd>
                 <input type="text" class="col-md-5" maxlength="25" ng-model="img_name">
                 <input type="text" class="col-md-1" maxlength="10" ng-model="img_version" placeholder="version">
                 <input type="text" class="col-md-2" ng-model="img_os" placeholder="os">
               </dd>
 
-              <dt>Description</dt>
+              <dt translate="">Description</dt>
               <dd>
                 <input type="text" ng-model="img_desc" class="col-md-8">
               </dd>
             </dl>
           </div>
           <div ng-show="(snapshots|hash2array).length>0">
-            <h3>Snapshots</h3>
+            <h3 translate="">Snapshots</h3>
             <table class="table table-condensed table-hover pull-left">
               <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
                 <td style="width: 40%"><strong>{{snap.comment}}</strong></td>
@@ -293,13 +303,14 @@
       <div class="tab-pane" id="resize">
         <div class="box col-md-4">
           <div class="header">
-            Current package <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
+            <span translate="">Current package</span>
+            <span class="badge badge-info">{{vm._package.name || 'custom'}}</span>
           </div>
           <package pkg="vm._package" vmconfig="vm.config"></package>
         </div>
         <div class="box col-md-4">
           <div class="header">
-            Change to
+            <span translate="">Change to</span>
             <select class="input-small" style="margin: 0px; height: 20px" ng-model="new_pkg" ng-options="pkg.id as pkg.name for pkg in packages | hash2array | orderBy: ['ram', 'name']">
             </select>
             <button style="margin-bottom: 10px" class="btn btn-success btn-xs pull-right" ng-disabled="vm.mdata('locked')" ng-show="packages[new_pkg].id != vm['package']" ng-click="update()">change</button>
@@ -308,12 +319,12 @@
         </div>
         <div class="box col-md-4">
           <div class="header">
-            Add Network Interface
+            <span translate="">Add Network Interface</span>
           </div>
           <select ng-model="new_net" class="form-control" ng-options="net.id as net.name for net in networks | hash2array | orderBy: ['name']">
           </select>
 
-          <button style="margin-bottom: 10px" class="btn btn-success" ng-disabled="vm.mdata('locked')" ng-show="networks[new_net]" ng-click="add_nic(vm, new_net)">add</button>
+          <button style="margin-bottom: 10px" class="btn btn-success" ng-disabled="vm.mdata('locked')" ng-show="networks[new_net]" ng-click="add_nic(vm, new_net)" translate="">add</button>
         </div>
       </div>
 
