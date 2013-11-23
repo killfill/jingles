@@ -213,8 +213,8 @@ angular.module('fifoApp')
             cb && cb($scope.vm);
             $scope.img_name = $scope.vm.config.alias;
             $scope.img_version = inc_version($scope.vm.config._dataset && $scope.vm.config._dataset.version);
-            $scope.img_os = $scope.vm.config._dataset.os;
-            $scope.img_desc = $scope.vm.config._dataset.description;
+            $scope.img_os = $scope.vm.config._dataset && $scope.vm.config._dataset.os;
+            $scope.img_desc = $scope.vm.config._dataset && $scope.vm.config._dataset.description;
         }, function error() {
             $scope.something_wrong = true;
         }
@@ -297,10 +297,10 @@ angular.module('fifoApp')
 
         //Check if we need to change the owner.
         // if ($scope.new_owner && $scope.new_owner.uuid != $scope.vm.owner)
-            wiggle.vms.put({id: $scope.vm.uuid, controller: 'owner'}, {org: $scope.new_owner.uuid}, 
+            wiggle.vms.put({id: $scope.vm.uuid, controller: 'owner'}, {org: $scope.new_owner && $scope.new_owner.uuid}, 
                 function success() {
                     status.info('Owner changed')
-                    $scope.vm.owner = $scope.new_owner.uuid
+                    $scope.vm._owner = $scope.new_owner
                 },
                 function err(err) {
                     status.error('Could not change owner')
