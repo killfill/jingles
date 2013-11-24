@@ -192,7 +192,7 @@ function getKeysym(evt) {
     if ((keysym > 255) && (keysym < 0xFF00)) {
         msg = "Mapping character code " + keysym;
         // Map Unicode outside Latin 1 to X11 keysyms
-        keysym = unicodeTable[keysym];
+        keysym = window.unicodeTable[keysym];
         if (typeof(keysym) === 'undefined') {
            keysym = 0; 
         }
@@ -657,7 +657,7 @@ return that;  // Return the public API interface
 /*
  * Browser keypress to X11 keysym for Unicode characters > U+00FF
  */
-unicodeTable = {
+window.unicodeTable = {
     0x0104 : 0x01a1,
     0x02D8 : 0x01a2,
     0x0141 : 0x01a3,

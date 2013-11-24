@@ -19,7 +19,7 @@ function updateState(rfb, state, oldstate, msg) {
     else                    { if (cad) cad.disabled = true; }
 
     if (typeof(msg) !== 'undefined' && sb && s) {
-        s.setAttribute("class", "span9 alert alert-" + level);
+        s.setAttribute("class", "col-md-9 alert alert-" + level);
         s.innerHTML = msg;
     }
 }

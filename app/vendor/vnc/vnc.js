@@ -38,6 +38,7 @@ function get_INCLUDE_URI() {
     extra += start + "rfb.js" + end;
     extra += start + "jsunzip.js" + end;
 
-    document.write(extra);
+    // Will add this explicitly in the main html.
+    // document.write(extra);
 }());
 

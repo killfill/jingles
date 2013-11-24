@@ -120,7 +120,7 @@ var that           = {},  // Public API methods
 
     test_mode        = false,
 
-    def_con_timeout  = Websock_native ? 2 : 5,
+    def_con_timeout  = window.Websock_native ? 2 : 5,
 
     /* Mouse state */
     mouse_buttonMask = 0,
@@ -265,7 +265,7 @@ function constructor() {
     init_vars();
 
     /* Check web-socket-js if no builtin WebSocket support */
-    if (Websock_native) {
+    if (window.Websock_native) {
         Util.Info("Using native WebSockets");
         updateState('loaded', 'noVNC ready: native WebSockets, ' + rmode);
     } else {
