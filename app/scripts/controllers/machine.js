@@ -302,7 +302,7 @@ angular.module('fifoApp')
                     status.info('Owner changed')
                     $scope.vm._owner = $scope.new_owner
                 },
-                function err(err) {
+                function error(err) {
                     status.error('Could not change owner')
                     console.error(err)
                 }

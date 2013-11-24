@@ -111,7 +111,7 @@
               <dt translate>Server</dt>
               <dd><a href="#/servers/{{vm.hypervisor}}">{{vm._hypervisor.alias}}</a></dd>
               <dt translate>Owner</dt>
-              <dd>{{vm._owner.name}}</dd>
+              <dd>{{vm._owner.name || 'Undefined'}}</dd>
               <dt translate>List Color</dt>
               <dd>
                 <select name="colorpicker" ng-model='color' simplecolorpicker>
