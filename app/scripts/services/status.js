@@ -13,7 +13,7 @@ angular.module('fifoApp')
         alertify.error(s)
       },
       prompt: function(text, cb, errCb) {
-        alertify.prompt(text, function(userInput) {
+        alertify.prompt(text, function(ok, serInput) {
             if (userInput == '') return;
             cb(userInput);
         }, errCb)
