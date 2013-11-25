@@ -24,10 +24,18 @@
             </div>
 
             <dl class="dl-horizontal">
-              <dt>SmartOS ver</dt>
-              <dd>{{hyper.sysinfo["Live Image"]}}</dd>
               <dt>Node name</dt>
-              <dd>{{hyper.alias}}</dd>
+              <dd> 
+
+                <div class="input-group input-group-sm">
+                  <input class="form-control" ng-model="new_alias">
+                  <span class="input-group-btn" ng-if="new_alias != hyper.alias">
+                    <button class="btn btn-default" ng-click="saveAlias(new_alias)">Save</button>
+                  </span>
+                </div>
+                <!-- <input type='text' class='form-control' style='width: 70%; height: inherit; padding: inherit;' ng-model='new_alias'></dd> -->
+              <dt>SmartOS ver</dt>
+              </dd><dd>{{hyper.sysinfo["Live Image"]}}</dd>
               <dt>Agent version</dt>
               <dd title="{{hyper.version.split(',')[1]}}" jq-run="tooltip">{{hyper.version.split(',')[0]}}</dd>
               <dt>Booted</dt>

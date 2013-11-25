@@ -105,9 +105,22 @@ angular.module('fifoApp')
         })
     }
 
+    $scope.saveAlias = function(alias) {
+        wiggle.hypervisors.put({id: $scope.hyper.uuid, controller: 'config'}, {alias: alias}, 
+            function success() {
+                status.info('Server name changed.')
+                $scope.hyper.alias = alias
+            }, 
+            function error() {
+                status.error('Could not change server name')
+            }
+        )
+    }
+
     var init = function() {
         wiggle.hypervisors.get({id: uuid}, function(res) {
             $scope.hyper = res;
+            $scope.new_alias = res.alias;
             if (res.characteristics) {
                 Object.keys(res.characteristics).forEach(function(k) {
                     $scope.characteristics.push({name: k, value: res.characteristics[k]})
