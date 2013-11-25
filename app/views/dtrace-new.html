@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-12 alert alert-info">
     Create a script called: <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
-    <button class='btn btn-success' ng-disabled='form.$invalid || !name' ng-click='create_dtrace()'>Create</button>
+    <button class='btn btn-success' ng-disabled='form.$invalid || !name' ng-click='create_dtrace()' translate>Create</button>
   </div>
 
   <div class="col-md-8 box">
     <div class="header">
       <i class="icon-tasks"></i>
-      <span class="badge badge-info">Script</span>
+      <span class="badge badge-info" translate>Script</span>
     </div>
     <textarea id='code' ng-model="script" class="input-block-level form-control" rows="20"></textarea>
   </div>
@@ -15,7 +15,7 @@
   <div class="col-md-3 box">
     <div class="header">
       <i class="icon-tasks"></i>
-      <span class="badge badge-info">Variables</span>
+      <span class="badge badge-info" translate>Variables</span>
     </div>
 
     <div ng-repeat='variable in variables' ng-class="rule.error && 'error'" class='thumbnail2'>

@@ -22,7 +22,7 @@
 			<td data-title="'Name'|translate" sortable="config.alias" class="nowrap" style="background-image: linear-gradient(to right, {{vm.mdata('color')}} 10%, transparent 40%)">
 				<a href="#/machines/{{vm.uuid}}">{{vm.config.alias}}</a>
 			</td>
-			<td data-title="Memory" sortable="config.ram">
+			<td data-title="'Memory' | translate" sortable="config.ram">
 				{{vm.config.ram | Mbytes}}
 			</td>
 			<!-- <td data-title='Owner' sortable='_owner.name' class='text-muted'>{{vm._owner.name}}</td> -->
@@ -39,7 +39,7 @@
 			<td data-title="'Server'|translate" sortable="hypervisor" class="visible-lg visible-md">
 				<a class="nocolor" href="#/servers/{{vm.hypervisor}}">{{vm._hypervisor.alias}}</a>
 			</td>
-			<td class="text-muted visible-lg visible-md" data-title="Owner" sortable="_owner.name">	
+			<td class="text-muted visible-lg visible-md" data-title="'Owner'|translate" sortable="_owner.name">	
 				<a class="nocolor" href="#/configuration/organizations/{{vm.owner}}">{{vm._owner.name}}</a>
 			</td>
 			<td data-title="'Created' | translate" class="text-muted visible-lg" sortable="config.created_at" am-time-ago="vm.config.created_at" title="{{vm.config.created_at | date:'mediumDate'}}"></td>

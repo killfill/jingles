@@ -27,7 +27,7 @@
           </button>
           <button ng-click="action('stop', vm)" ng-disabled="vm.state!='running' || vm.mdata('locked')" title="{{force && 'Force ' || ''}}Stop" jq-run="tooltip" jq-options="{placement: 'bottom', container: 'body'}" class="btn {{force && 'btn-warning' || 'btn-default'}}">
             <i class="glyphicon glyphicon-stop"></i>
-             <span ng-show="force">Force</span>
+             <span ng-show="force" translate="">Force</span>
           </button>
         </div>
       </div>
@@ -39,10 +39,10 @@
 
 <div>
   <span ng-show="something_wrong">
-    <p><font color="red">Something is wrong with this machine.</font></p>
+    <p><font color="red" translate="">Something is wrong with this machine.</font></p>
     <p>UUID: {{vm.uuid}}</p>
     <p>
-      <strong>History</strong>
+      <strong translate="">History</strong>
       <table class="table">
         <tr ng-repeat="log in vm.log | orderBy: '-date' ">
           <td>{{log.log}}</td>
@@ -54,13 +54,13 @@
 
   <div ng-show="vm.config" id="VMTab" class="tabbable tabs-top">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-      <li><a href="#performance" data-toggle="tab">Performance</a></li>
-      <li><a href="#snapshots" data-toggle="tab">Snapshots</a></li>
-      <li><a href="#imaging" data-toggle="tab">Imaging</a></li>
-      <li><a href="#resize" data-toggle="tab">Change</a></li>
-      <li><a href="#history" data-toggle="tab">History</a></li>
-      <li><a href="#notes" data-toggle="tab">Notes</a></li>
+      <li class="active"><a href="#details" data-toggle="tab" translate="">Details</a></li>
+      <li><a href="#performance" data-toggle="tab" translate="">Performance</a></li>
+      <li><a href="#snapshots" data-toggle="tab" translate="">Snapshots</a></li>
+      <li><a href="#imaging" data-toggle="tab" translate="">Imaging</a></li>
+      <li><a href="#resize" data-toggle="tab" translate="">Change</a></li>
+      <li><a href="#history" data-toggle="tab" translate="">History</a></li>
+      <li><a href="#notes" data-toggle="tab" translate="">Notes</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="details">
@@ -233,8 +233,8 @@
 
       <div class="tab-pane" id="snapshots">
         <p class="pull-right">
-          <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class="light" style="padding: 5px">To rollback, please stop the machine</span>
-          <button style="margin-bottom: 10px" ng-click="snapshot('create')" class="btn btn-default" jq-run="tooltip" title="Take a new snapshot"><i class="glyphicon glyphicon-camera"></i> <span>Snapshot</span></button>
+          <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class="light" style="padding: 5px" translate="">To rollback, please stop the machine</span>
+          <button style="margin-bottom: 10px" ng-click="snapshot('create')" class="btn btn-default" jq-run="tooltip" title="Take a new snapshot"><i class="glyphicon glyphicon-camera"></i> <span translate="">Snapshot</span></button>
         </p>
         <table class="table table-condensed table-hover pull-left">
           <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">

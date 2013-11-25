@@ -9,8 +9,8 @@
 
   <div class="tabbable tabs-top" ng-show="script.config">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#edit" data-toggle="tab">Edit</a></li>
-      <li><a href="#run" data-toggle="tab">Run</a></li>
+      <li class="active"><a href="#edit" data-toggle="tab" translate="">Edit</a></li>
+      <li><a href="#run" data-toggle="tab" translate="">Run</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="edit">
@@ -18,7 +18,7 @@
           <div class="col-md-8 box">
             <div class="header">
               <i class="glyphicon glyphicon-tasks"></i>
-              <span class="badge badge-info">Script</span>
+              <span class="badge badge-info" translate="">Script</span>
             </div>
             <textarea id="code" ng-model="script.script" class="input-block-level form-control" rows="20"></textarea>
           </div>
@@ -26,7 +26,7 @@
           <div class="col-md-3 box">
             <div class="header">
               <i class="glyphicon glyphicon-tasks"></i>
-              <span class="badge badge-info">Variables</span>
+              <span class="badge badge-info" translate="">Variables</span>
             </div>
 
             <div ng-repeat="variable in script.vars" class="thumbnail2">
@@ -43,7 +43,7 @@
             <div class="accordion-group">
               <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#dtrace-targets" href="#dtrace-target-hypervisors" ng-click="sel_vms = []">
-                  <span class="badge badge-info">Hypervisors</span>
+                  <span class="badge badge-info" translate="">Servers</span>
                 </a>
               </div>
               <div id="dtrace-target-hypervisors" class="accordion-body collapse in">
@@ -73,7 +73,7 @@
           <div class="col-md-5 box">
             <div class="header">
               <i class="glyphicon glyphicon-tasks"></i>
-              <span class="badge badge-info">Script</span>
+              <span class="badge badge-info" translate="">Script</span>
               <div class="btn-group" style="margin-right: 20px">
                 <button title="Play" jq-run="tooltip" class="btn btn-sm btn-default" ng-disabled="running" ng-click="start()">
                   <i class="glyphicon glyphicon-play"></i>
@@ -93,7 +93,7 @@
           <div class="col-md-3 box">
             <div class="header">
               <i class="glyphicon glyphicon-tasks"></i>
-              <span class="badge badge-info">Variables</span>
+              <span class="badge badge-info" translate="">Variables</span>
             </div>
 
             <div ng-repeat="variable in script.cur_vars" class="thumbnail2">

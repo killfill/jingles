@@ -18,17 +18,17 @@
   <select id="add_iprange" ng-model="iprange">
     <option ng-repeat="iprange in ipranges | hash2array | orderBy: name" value="{{iprange.uuid}}">{{iprange.name}}</option>
   </select>
-  <button ng-click="add_iprange()">Add</button>
+  <button ng-click="add_iprange()" translate="">Add</button>
   <table class="table table-condensed table-bordered">
     <tr>
-      <th>Name</th>
-      <th>UUID</th>
-      <th>Actions</th>
+      <th translate="">Name</th>
+      <th translate="">UUID</th>
+      <th translate="">Actions</th>
     </tr>
     <tr ng-repeat="iprange in network._ipranges">
       <td>{{iprange.name}}</td>
       <td>{{iprange.uuid}}</td>
-      <td><a ng-click="remove_iprange(iprange.uuid)">delete</a></td>
+      <td><a ng-click="remove_iprange(iprange.uuid)" translate="">delete</a></td>
     </tr>
   </table>
 </div>

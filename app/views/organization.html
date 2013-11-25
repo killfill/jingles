@@ -17,32 +17,32 @@
   <hr/>
 
   <table class='table table-bordered'>
-    <tr><th>Name</th><td><b>{{org.name}}</b></td></tr>
-    <tr><th>UUID</th><td><b>{{org.uuid}}</b></td></tr>
+    <tr><th translate>Name</th><td><b>{{org.name}}</b></td></tr>
+    <tr><th translate>UUID</th><td><b>{{org.uuid}}</b></td></tr>
   </table>
   <div class="box">
-    <div class="header">Automatic grants on VM creation</div>
+    <div class="header" translate>Automatic grants on VM creation</div>
     <select ng-model="grant_group">
       <option ng-repeat="grp in groups | hash2array" value="{{grp.uuid}}">{{grp.name}}</option>
     </select>
     <select ng-model="permission">
-      <option value="get">See</option>
-      <option value="start">Start</option>
-      <option value="stop">Stop</option>
-      <option value="reboot">Reboot</option>
-      <option value="delete">Delete</option>
-      <option value="console">Console/VNC</option>
-      <option value="snapshot">Create a Snapshot</option>
-      <option value="rollback">Rollback a Snapshot</option>
-      <option value="delete_snapshot">Delete a Snapshot</option>
+      <option value="get" translate>See</option>
+      <option value="start" translate>Start</option>
+      <option value="stop" translate>Stop</option>
+      <option value="reboot" translate>Reboot</option>
+      <option value="delete" translate>Delete</option>
+      <option value="console" translate>Console/VNC</option>
+      <option value="snapshot" translate>Create a Snapshot</option>
+      <option value="rollback" translate>Rollback a Snapshot</option>
+      <option value="delete_snapshot" translate>Delete a Snapshot</option>
     </select>
-    <button ng-click="add_grant_trigger()" class='btn btn-default'>Add trigger</button>
+    <button ng-click="add_grant_trigger()" class='btn btn-default' translate>Add trigger</button>
 
     <table class='table table-bordered'>
       <tr>
-        <th>Group</th>
-        <th>Template</th>
-        <th>Actions</th>
+        <th translate>Group</th>
+        <th translate>Template</th>
+        <th translate>Actions</th>
       </tr>
       <tr ng-repeat="trigger in grant_triggers">
         <td>{{(groups[trigger.target] ||
@@ -54,7 +54,7 @@
     </table>
   </div>
   <div class="box">
-    <div class="header">Automatic joins on user creation</div>
+    <div class="header" translate>Automatic joins on user creation</div>
     Group: <select ng-model="join_group">
       <option ng-repeat="grp in groups | hash2array" value="{{grp.uuid}}">{{grp.name}}</option>
     </select>
@@ -65,8 +65,8 @@
     <button ng-click="add_org_join_trigger()" class='btn btn-default'>Add trigger</button></br>
     <table class='table table-bordered'>
       <tr>
-        <th>Org/Group</th>
-        <th>Actions</th>
+        <th translate>Org/Group</th>
+        <th translate>Actions</th>
       </tr>
       <tr ng-repeat="trigger in join_triggers">
         <td>{{(orgs[trigger.target] ||

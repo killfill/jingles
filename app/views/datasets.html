@@ -3,7 +3,7 @@
     <div class="span12">
       <div class="tabbable tabs-top">
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#installed" data-toggle="tab">Installed</a></li>
+          <li class="active"><a href="#installed" data-toggle="tab" translate>Installed</a></li>
           <li><a href="#datasetsat" data-toggle="tab">Remote datasets</a></li>
         </ul>
         <div class="tab-content">
@@ -13,10 +13,10 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th style='min-width: 80px'>Ready</th>
-                    <th>Type</th>
+                    <th translate>Name</th>
+                    <th translate>Description</th>
+                    <th style='min-width: 80px' translate>Ready</th>
+                    <th translate>Type</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -55,12 +55,12 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Imported</th>
-                  <th>Published</th>
-                  <th>Size</th>
-                  <th>Creator</th>
+                  <th translate>Name</th>
+                  <th translate>Description</th>
+                  <th translate>Imported</th>
+                  <th translate>Published</th>
+                  <th translate>Size</th>
+                  <th translate>Creator</th>
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +74,7 @@
                             ng-hide="data.imported == 1"
                             ng-click='import(data.uuid)'>
                             <i class='glyphicon glyphicon-download-alt'></i>
-                            Import
+                            <span translate>Import</span>
                     </button>
                   </td>
                   <td><span title="{{data.published_at | date:'medium'}}" jq-run='tooltip' am-time-ago='data.published_at' class='nowrap'></span></td>

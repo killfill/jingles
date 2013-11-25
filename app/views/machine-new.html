@@ -1,9 +1,12 @@
   <div class="col-md-12">
     <div class="alert alert-info">
-      Create a <strong>{{selectedPackage.name}}</strong>
-      machine <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
-      called: <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
-        <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()'>Create</button>
+      <span translate>Create a</span>
+      <strong>{{selectedPackage.name}}</strong>
+      <span>machine</span> 
+      <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
+      <span>called</span>: 
+      <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
+        <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()' translate>Create</button>
     </div>
   </div>
 
@@ -15,8 +18,8 @@
       <table class="table table-hover small">
         <tr class='small'>
           <th></th>
-          <th>Dataset</th>
-          <th>Version</th>
+          <th translate>Dataset</th>
+          <th translate>Version</th>
         </tr>
         <tr class='clickable'
             ng-repeat="d in datasets | filter:{imported: 1} | orderBy: ['-os', 'name', '-version']"
@@ -30,7 +33,7 @@
       </table>
 
       <label class="checkbox pull-right light">
-        <input type='checkbox' ng-model='showAllVersions'>
+        <input type='checkbox' ng-model='showAllVersions' translate>
         Show old versions
       </label>
       <br/>
@@ -41,9 +44,9 @@
       <table class="table table-hover small">
         <tr class='small'>
           <th></th>
-          <th>CPU</th>
-          <th>Memory</th>
-          <th>Disk</th>
+          <th translate>CPU</th>
+          <th translate>Memory</th>
+          <th translate>Disk</th>
         </tr>
         <tr class='clickable' ng-repeat="p in packages | hash2array | orderBy: ['ram', 'name']" ng-click='click_package(p)' ng-class="selectedPackage.name==p.name && 'success'">
           <td><strong>{{p.name}}</strong></td>
@@ -59,7 +62,7 @@
     <div class="thumbnail">
       <table class="table table-hover small">
         <tr class='small'>
-          <th>Network</th>
+          <th translate>Network</th>
           <th></th>
         </tr>
         <tr class='clickable' ng-repeat="n in networks | hash2array | orderBy: 'name'"
@@ -78,38 +81,38 @@
     <div class="thumbnail">
       <div class="accordion" id="optional">
         <div class="accordion-groupp">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions" translate>
             Advanced Parameters
           </a>
           <div id="toggleOptions" class="collapse">
             <div class="accordion-inner">
               <table class="table table-hover small">
                 <tr class='small' ng-show="selectedDataset.type == 'kvm'">
-                  <th class='nowrap'>SSH Keys</th>
+                  <th class='nowrap' translate>SSH Keys</th>
                   <td><textarea class='form-control' type=text ng-model='ssh_keys'></textarea></td>
                 </tr>
                 <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                  <th class='nowrap'>Root password</th>
+                  <th class='nowrap' translate>Root password</th>
                   <td><input class='form-control' type='password' ng-model='root_pw'/></td>
                 </tr>
                 <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                  <th class='nowrap'>Admin password</th>
+                  <th class='nowrap' translate>Admin password</th>
                   <td><input class='form-control' type='password' ng-model='admin_pw'/></td>
                 </tr>
                 <tr class='small'>
-                  <th class='nowrap'>Hostname</th>
+                  <th class='nowrap' translate>Hostname</th>
                   <td><input class='form-control' type=text ng-model='hostname'/></td>
                 </tr>
                 <tr class='small'>
-                  <th class='nowrap'>Resolver 1</th>
+                  <th class='nowrap' translate>Resolver 1</th>
                   <td><input class='form-control' type=text ng-model='resolver1'/></td>
                 </tr>
                 <tr class='small'>
-                  <th class='nowrap'>Resolver 2</th>
+                  <th class='nowrap' translate>Resolver 2</th>
                   <td><input class='form-control' type=text ng-model='resolver2'/></td>
                 </tr>
                 <tr class="small">
-                  <th class="nowrap">User script</th>
+                  <th class="nowrap" translate>User script</th>
                   <td><input class='form-control' type='text' ng-model='userScript'/></td>
                 </tr>
 

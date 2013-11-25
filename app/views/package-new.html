@@ -1,12 +1,13 @@
   <div class="col-md-12 alert alert-info">
-    Create a package called: <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
-    <button class='btn btn-success pull-right' ng-disabled='form.$invalid || !name' ng-click='create_package()'>Create</button>
+    <span translate>Create a package called</span>: 
+    <input class='span6' style='margin-left: 8px;' type=text ng-model='name' autofocus>
+    <button class='btn btn-success pull-right' ng-disabled='form.$invalid || !name' ng-click='create_package()' translate>Create</button>
   </div>
 
   <div class="col-md-3 box">
     <div class="header">
       <i class="icon-tasks"></i>
-      <span class="badge badge-info">Resources</span>
+      <span class="badge badge-info" translate>Resources</span>
     </div>
     <form name='form form-inline' novalidate>
       <div class="input-group">
