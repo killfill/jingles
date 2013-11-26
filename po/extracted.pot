@@ -313,6 +313,14 @@ msgid "Create a"
 msgstr ""
 
 #: app/views/machine-new.html
+msgid "machine"
+msgstr ""
+
+#: app/views/machine-new.html
+msgid "called"
+msgstr ""
+
+#: app/views/machine-new.html
 msgid "Version"
 msgstr ""
 
@@ -348,6 +356,7 @@ msgid ""
 msgstr ""
 
 #: app/views/machine-new.html
+#: app/views/user.html
 msgid "SSH Keys"
 msgstr ""
 

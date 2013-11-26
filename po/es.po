@@ -265,6 +265,15 @@ msgid "Create a"
 msgstr "Crear una"
 
 #: app/views/machine-new.html
+#, fuzzy
+msgid "machine"
+msgstr "Máquina"
+
+#: app/views/machine-new.html
+msgid "called"
+msgstr "llamada"
+
+#: app/views/machine-new.html
 msgid "Version"
 msgstr "Versión"
 
@@ -288,7 +297,7 @@ msgstr "Red"
 msgid "            Advanced Parameters          "
 msgstr "Parámetros avanzados"
 
-#: app/views/machine-new.html
+#: app/views/machine-new.html app/views/user.html
 msgid "SSH Keys"
 msgstr "Llaves SSH"
 
@@ -742,7 +751,7 @@ msgstr "Capacidades"
 
 #: app/views/user.html
 msgid "Organization"
-msgstr "Organizacione"
+msgstr "Organización"
 
 #: app/views/user.html
 msgid "User UUID"
@@ -839,7 +848,7 @@ msgstr "Acerca de"
 
 #: app/views/partials/header.html
 msgid "Logout"
-msgstr "SAlir"
+msgstr "Salir"
 
 #~ msgid ""
 #~ "You are part of the <u>Acme</u> organization, and of the <u>Powers</u> "

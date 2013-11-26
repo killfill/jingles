@@ -28,8 +28,9 @@ angular.module('fifoApp')
             if (!$scope.user) return;
 
             $scope.keys = Object.keys($scope.user.keys).length
-            $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
-            
+            wiggle.orgs.get({id: $scope.user.org}, function(res) {
+                $scope.activeOrg = res
+            })
             
             $scope.user.groups.forEach(function(gid) {
                 wiggle.groups.get({id: gid}, 

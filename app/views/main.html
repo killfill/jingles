@@ -3,7 +3,7 @@
 
 		<div class="welcome">
 			<h4 translate>Welcome {{user.name}}!</h4>
-			<p ng-show='activeOrg'><span translate>You are part of</span> <u>{{activeOrg.data.name}}</u>.</p>
+			<p ng-show='activeOrg'><span translate>You are part of</span> <u>{{activeOrg.name}}</u>.</p>
 			<p ng-show='groups.length>0'><span translate>You groups are</span> {{groups.join(' ' + 'and' + ' ')}}.</p>
 			<p ng-show='keys > 0' translate>SSH keys configured: {{keys}}</p>
 			<p ng-show='keys < 1' translate>No ssh keys found on your account. Dont forget to <a href='#/configuration/users/{{user.uuid}}'>add one</a>! </p>

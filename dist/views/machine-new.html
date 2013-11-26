@@ -2,9 +2,9 @@
     <div class="alert alert-info">
       <span translate="">Create a</span>
       <strong>{{selectedPackage.name}}</strong>
-      <span>machine</span> 
+      <span translate="">machine</span> 
       <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
-      <span>called</span>: 
+      <span translate="">called</span>: 
       <input class="input-large" style="margin-left: 8px" type="text" ng-model="alias" autofocus="">
         <button class="btn btn-success pull-right" ng-disabled="!(alias && selectedDataset && selectedPackage)" ng-click="create_machine()" translate="">Create</button>
     </div>

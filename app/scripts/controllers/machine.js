@@ -428,7 +428,7 @@ angular.module('fifoApp')
             status.prompt('Write a comment for the new snapshot:', function(comment) {
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                                 function success(data, h) {
-                                    status.success('Snapshot created');
+                                    status.success('Snapshot created')
                                     updateVm()
                                 },
                                 function error(data) {

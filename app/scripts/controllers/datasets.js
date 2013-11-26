@@ -14,12 +14,15 @@ angular.module('fifoApp')
 
         wiggle.datasets.import({},
                                {url: url},
-                               function(r) {
+                               function success(r) {
                                     howl.join(uuid);
                                     $scope.datasets[uuid] = r;
                                     status.info('Importing ' + r.name + ' ' + r.version)
                                     if ($scope.datasetsat[uuid])
                                         $scope.datasetsat[uuid].imported = true;
+                               },
+                               function error(e) {
+                                    status.error('Could not import dataset')
                                });
     };
 
@@ -32,15 +35,20 @@ angular.module('fifoApp')
             body: '<p><font color="red">Warning!</font> you are about to delete dataset <b>' +
                 dataset.name + " v" + dataset.version + " (" + dataset.dataset + ")</b> Are you 100% sure you really want to do this?</p>",
                 ok: function() {
-                    wiggle.datasets.delete({id: dataset.dataset}, function() {
-                        delete $scope.datasets[dataset.dataset]
-                        status.success('Dataset deleted.')
+                    wiggle.datasets.delete({id: dataset.dataset}, 
+                        function success() {
+                            delete $scope.datasets[dataset.dataset]
+                            status.success('Dataset deleted.')
 
-                        /* Search the remote dataset element, and set it as not imported. */
-                        var remoteDs = $scope.datasetsat[dataset.dataset]
-                        if (remoteDs)
-                            remoteDs.imported = false;
-                    })  
+                            /* Search the remote dataset element, and set it as not imported. */
+                            var remoteDs = $scope.datasetsat[dataset.dataset]
+                            if (remoteDs)
+                                remoteDs.imported = false;
+                        },
+                        function error(e) {
+                            status.error('Could not delete Dataset')
+                        }
+                    )  
                 }
         }
     }

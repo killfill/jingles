@@ -8049,15 +8049,6 @@ input[type='text'].alertify-text {
   height: 30px;
 }
 
-.pane-nav {
-  float: right;
-  margin-bottom: 15px;
-}
-
-.pane-nav > * {
-  margin-right: 10px;
-}
-
 ul.nav > h3 {
   padding-left: 65px;
   font-size: 1.5em;
@@ -8236,12 +8227,6 @@ a {
           transition: all 200ms;
 }
 
-a:active {
-  border-color: black;
-  border-style: dashed;
-  border-width: 1px;
-}
-
 .flag-icon {
   margin-top: 5px;
 }
@@ -8323,6 +8308,15 @@ body {
 .dropdown-header {
   font-size: 10px;
   font-style: italic;
+}
+
+.pane-nav {
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.pane-nav > * {
+  margin-right: 10px;
 }
 
 @font-face {
