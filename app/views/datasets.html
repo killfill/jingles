@@ -4,7 +4,7 @@
       <div class="tabbable tabs-top">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#installed" data-toggle="tab" translate>Installed</a></li>
-          <li><a href="#datasetsat" data-toggle="tab">Remote datasets</a></li>
+          <li><a href="#datasetsat" data-toggle="tab" translate>Remote datasets</a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="installed">
@@ -32,7 +32,7 @@
                               ng-hide="data.imported == 1"
                               title='You need to download this dataset with FiFo'
                               jq-run='tooltip'
-                              ng-click='import(data.dataset)'><i class='glyphicon glyphicon-download-alt'></i> Import</button>
+                              ng-click='import(data.dataset)'><i class='glyphicon glyphicon-download-alt'></i> <span translate>Import</span></button>
                     </td>
                     <td ng-show='data.imported > -1'>
                       <i ng-hide="data.imported < 1" class="glyphicon glyphicon-ok" style=""></i>

@@ -43,7 +43,7 @@
 			</a>
 			<a href='http://project-fifo.net/' target='_new'>
 				<i class="glyphicon glyphicon-info-sign"></i>
-				<span>FiFo Home Page</span>
+				<span translate>FiFo Home Page</span>
 			</a>
 		</div>
 
@@ -72,7 +72,10 @@
 <div class="col-md-6">
 	<div class="panel {{cloud_ok? 'panel-success': 'panel-danger'}}">
 		<div class="panel-heading">
-			<span class="panel-title"><i class="glyphicon glyphicon-cloud"></i> <span translate>{{cloud_resume}}</span></span>
+			<span class="panel-title"><i class="glyphicon glyphicon-cloud"></i> 
+				<span ng-show='cloud_ok' translate>Your cloud is fine!</span>
+				<span ng-hide='cloud_ok' translate>Your cloud needs some attention!</span>
+			</span>
 		</div>
 		<div class="panel-body">
 

@@ -51,6 +51,10 @@ msgstr "Guardar"
 msgid "Installed"
 msgstr "Instalado"
 
+#: app/views/datasets.html
+msgid "Remote datasets"
+msgstr "Datasets remotos"
+
 #: app/views/datasets.html app/views/dtraces.html app/views/group.html
 #: app/views/groups.html app/views/ip-ranges.html app/views/machine.html
 #: app/views/network.html app/views/networks.html app/views/organization.html
@@ -68,6 +72,10 @@ msgid "Ready"
 msgstr "Listo"
 
 #: app/views/datasets.html
+msgid "Import"
+msgstr "Importar"
+
+#: app/views/datasets.html
 msgid "Imported"
 msgstr "Importado"
 
@@ -82,10 +90,6 @@ msgstr "Tamaño"
 #: app/views/datasets.html
 msgid "Creator"
 msgstr "Creador"
-
-#: app/views/datasets.html
-msgid "Import"
-msgstr "Importar"
 
 #: app/views/dtrace-new.html app/views/ip-range-new.html
 #: app/views/machine-new.html app/views/network-new.html
@@ -153,7 +157,7 @@ msgstr "Nube"
 
 #: app/views/group.html app/views/user.html app/views/partials/header.html
 msgid "Datasets"
-msgstr ""
+msgstr "Datasets"
 
 #: app/views/group.html app/views/user.html app/views/partials/header.html
 msgid "DTrace"
@@ -266,7 +270,7 @@ msgstr "Versión"
 
 #: app/views/machine-new.html
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: app/views/machine-new.html app/views/main.html app/views/server.html
 msgid "Memory"
@@ -422,7 +426,7 @@ msgstr "Uso de CPU"
 
 #: app/views/machine.html
 msgid "Snapshot"
-msgstr ""
+msgstr "Snapshot"
 
 #: app/views/machine.html
 msgid "Form"
@@ -465,9 +469,8 @@ msgid "Filter"
 msgstr "Filtro"
 
 #: app/views/main.html
-#, fuzzy
 msgid "Welcome {{user.name}}!"
-msgstr "Bienvenido {{name}}!"
+msgstr "Bienvenido {{user.name}}!"
 
 #: app/views/main.html
 msgid "You are part of"
@@ -482,6 +485,10 @@ msgid "Cloud View"
 msgstr "Vision nube"
 
 #: app/views/main.html
+msgid "FiFo Home Page"
+msgstr "FiFo Home Page"
+
+#: app/views/main.html
 msgid "Category"
 msgstr "categoria"
 
@@ -494,8 +501,12 @@ msgid "Message"
 msgstr "Mensaje"
 
 #: app/views/main.html
-msgid "{{cloud_resume}}"
-msgstr ""
+msgid "Your cloud is fine!"
+msgstr "Tu nube se ve bien!"
+
+#: app/views/main.html
+msgid "Your cloud needs some attention!"
+msgstr "Tu nube necesita ayuda!"
 
 #: app/views/main.html
 msgid "Disk usage"
@@ -543,7 +554,7 @@ msgstr "Crear un Snapshot"
 
 #: app/views/organization.html
 msgid "Rollback a Snapshot"
-msgstr ""
+msgstr "Devolverse al snapshot"
 
 #: app/views/organization.html
 msgid "Delete a Snapshot"
@@ -595,7 +606,7 @@ msgstr ""
 
 #: app/views/packages.html
 msgid "CPU Cap"
-msgstr ""
+msgstr "CPU Cap"
 
 #: app/views/server.html
 msgid "Characteristics"
@@ -710,9 +721,8 @@ msgid "Main IP"
 msgstr "IP principal"
 
 #: app/views/server.html
-#, fuzzy
 msgid "Network tags"
-msgstr "Nueva red"
+msgstr "Tags de red"
 
 #: app/views/server.html
 msgid "CPU Load"
@@ -840,6 +850,3 @@ msgstr "SAlir"
 
 #~ msgid "Servers CPUs"
 #~ msgstr "CPU de los servidores"
-
-#~ msgid "The Cloud looks fine"
-#~ msgstr "La nube se ve bien"

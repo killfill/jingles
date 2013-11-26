@@ -21,14 +21,16 @@ angular.module('fifoApp')
             }).length < 1
 
             $scope.cloud_status = $scope.cloud_ok ? 'images/healthy-cluster.png' : 'images/unhealthy-cluster.png'
-            $scope.cloud_resume = $scope.cloud_ok ? 'Your cloud is fine!'        : 'Your cloud needs some attention!'
 
             $scope.user = auth.currentUser()
+            $scope.groups = []
+            
+            if (!$scope.user) return;
 
             $scope.keys = Object.keys($scope.user.keys).length
             $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
             
-            $scope.groups = []
+            
             $scope.user.groups.forEach(function(gid) {
                 wiggle.groups.get({id: gid}, 
                     function(res) {
@@ -43,7 +45,6 @@ angular.module('fifoApp')
 
     /* Update data on memory change */
     $scope.$on('memorychange', $scope.show);
-
     $scope.show();
 
   });

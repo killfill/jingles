@@ -200,9 +200,11 @@ angular.module('fifoApp',
       $('[data-toggle=tab]').on('click', prevent);
       $('[data-toggle=collapse]').on('click', prevent);
   }
+
   $rootScope.$on('$routeChangeSuccess', function(ev, curr, prev) {
-    console.log('uups')
-        preventHrefs();
+    //Adding preventHrefs at the end of the processing queue, so the translate directive has time to replace the element before this.
+    //There should be a more elegant way to fix this. Ref: https://github.com/rubenv/angular-gettext/issues/24
+    setTimeout(preventHrefs, 0)
   })
 
 })

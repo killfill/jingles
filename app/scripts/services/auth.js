@@ -24,6 +24,8 @@ angular.module('fifoApp')
 
             /* Create a user object based on the sessionData, so later we can use loggedUser.mdata_set */
             user = new wiggle.users(res)
+            user.keys = user.keys || []
+            user.groups = user.groups || []
 
             $cookies["x-snarl-token"] = res.session
             //Wiggle see to read the cookie, now so setting the header is not neccesary anymore.

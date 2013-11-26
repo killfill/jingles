@@ -49,6 +49,10 @@ msgid "Installed"
 msgstr ""
 
 #: app/views/datasets.html
+msgid "Remote datasets"
+msgstr ""
+
+#: app/views/datasets.html
 #: app/views/dtraces.html
 #: app/views/group.html
 #: app/views/groups.html
@@ -75,6 +79,10 @@ msgid "Ready"
 msgstr ""
 
 #: app/views/datasets.html
+msgid "Import"
+msgstr ""
+
+#: app/views/datasets.html
 msgid "Imported"
 msgstr ""
 
@@ -88,10 +96,6 @@ msgstr ""
 
 #: app/views/datasets.html
 msgid "Creator"
-msgstr ""
-
-#: app/views/datasets.html
-msgid "Import"
 msgstr ""
 
 #: app/views/dtrace-new.html
@@ -547,6 +551,10 @@ msgid "Cloud View"
 msgstr ""
 
 #: app/views/main.html
+msgid "FiFo Home Page"
+msgstr ""
+
+#: app/views/main.html
 msgid "Category"
 msgstr ""
 
@@ -559,7 +567,11 @@ msgid "Message"
 msgstr ""
 
 #: app/views/main.html
-msgid "{{cloud_resume}}"
+msgid "Your cloud is fine!"
+msgstr ""
+
+#: app/views/main.html
+msgid "Your cloud needs some attention!"
 msgstr ""
 
 #: app/views/main.html

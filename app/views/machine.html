@@ -196,14 +196,14 @@
               <div class="btn-group pull-right">
                 <button ng-click="remove_nic(vm, net.mac)"
                         ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
-                        class="btn btn-xs"
+                        class="btn btn-xs btn-default"
                         title='Delete' jq-run='tooltip'>
                   <i class='glyphicon glyphicon-trash'></i>
                 </button>
                 <button ng-click="primary_nic(vm, net.mac)"
                         ng-disabled="vm.mdata('locked') || vm.state!='stopped'"
                         ng-show="!net.primary"
-                        class="btn btn-xs"
+                        class="btn btn-xs btn-default"
                         title="Make primary" jq-run="tooltip">
                   <i class="glyphicon glyphicon-check"></i>
                 </button>
@@ -384,7 +384,7 @@
       <div class="tab-pane" id="notes">
         <button class="btn btn-success pull-right" ng-click="note('create')">+</button>
         <div class='postit pull-left' ng-repeat='n in notes' jq-run='tooltip' title="{{n.created_at | date:'medium'}}">
-          <button class="btn btn-xs pull-right" style='margin-left: 10px' ng-click="note('delete', $index)">x</button>
+          <button class="btn btn-xs btn-default pull-right" style='margin-left: 10px' ng-click="note('delete', $index)">x</button>
           {{n.text}}
           <br/><small style='color: black' class='nowrap uuid' am-time-ago='n.created_at'></small>
         </div>
