@@ -49,7 +49,7 @@ Tips
 
 * How to **customize the colors** or the look
   - Change app/styles/styles.less
-  - grunt server will generate main.css file automatically
+  - grunt server will generate main.css file automatically.
 
 ## Add or complete a language translation
   - Extract the text from html to the catalog template (po/extracted.pot): grunt nggettext_extract
