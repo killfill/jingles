@@ -130,5 +130,4 @@ angular.module('fifoApp')
         }
     };
 
-    preventHrefTab();
   });

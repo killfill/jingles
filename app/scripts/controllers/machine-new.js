@@ -162,6 +162,5 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
     }
 
     $scope.init()
-    preventHrefTab()
 
 });

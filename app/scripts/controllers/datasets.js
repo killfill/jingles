@@ -84,7 +84,6 @@ angular.module('fifoApp')
             });
 
         })
-        preventHrefTab();
     }
 
     $scope.show()

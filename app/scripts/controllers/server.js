@@ -133,5 +133,4 @@ angular.module('fifoApp')
     // $scope.$on('user_login', init)
     // if (user.logged()) init()
     init();
-    preventHrefTab();
   });

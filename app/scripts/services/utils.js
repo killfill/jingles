@@ -21,12 +21,3 @@ angular.module('fifoApp')
         }
     }
   });
-
-function preventHrefTab() {
-    //No idea why doesnt .preventDefault work on the functoin that has bootstrap.js.
-    //Had to put it in here, to prevent the anchor to follow its href, on tabs and collapse's
-    //Worked without this on jingles v1
-    function prevent(e) {e.preventDefault()}
-    $('[data-toggle=tab]').on('click', prevent);
-    $('[data-toggle=collapse]').on('click', prevent);
-}

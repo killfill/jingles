@@ -7268,8 +7268,7 @@ td.visible-print {
   top: inherit;
 }
 
-.ng-view-include.ng-enter,
-.ng-view-include.ng-leave {
+.ng-view-include.ng-enter {
   -webkit-transition: all ease-out 0.25s;
           transition: all ease-out 0.25s;
 }

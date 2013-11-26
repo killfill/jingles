@@ -568,8 +568,6 @@ angular.module('fifoApp')
         howl.join(uuid + '-metrics');
         updateVm()
 
-
-
     }
 
     // TODO:
@@ -577,6 +575,5 @@ angular.module('fifoApp')
     // if (user.logged()) init()
 
     init();
-    preventHrefTab();
 
 });

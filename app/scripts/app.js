@@ -175,7 +175,7 @@ angular.module('fifoApp',
     //$locationProvider.hashPrefix('!');
   })
 
-.run(function(gettextCatalog, gettext, $window) {
+.run(function($rootScope, gettextCatalog, gettext, $window) {
 
   var lang = window.navigator.userLanguage || window.navigator.language;
 
@@ -189,5 +189,20 @@ angular.module('fifoApp',
 
   gettextCatalog.currentLanguage = lang;
   // gettextCatalog.debug = true;
+
+
+  //Let bootstrap markup do its job.
+  var preventHrefs = function() {
+      //No idea why doesnt .preventDefault work on the functoin that has bootstrap.js.
+      //Had to put it in here, to prevent the anchor to follow its href, on tabs and collapse's
+      //Worked without this on jingles v1
+      function prevent(e) {e.preventDefault()}
+      $('[data-toggle=tab]').on('click', prevent);
+      $('[data-toggle=collapse]').on('click', prevent);
+  }
+  $rootScope.$on('$routeChangeSuccess', function(ev, curr, prev) {
+    console.log('uups')
+        preventHrefs();
+  })
 
 })

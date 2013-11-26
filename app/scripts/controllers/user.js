@@ -271,6 +271,5 @@ angular.module('fifoApp')
         })
     };
     $scope.init();
-    preventHrefTab();
     
   });

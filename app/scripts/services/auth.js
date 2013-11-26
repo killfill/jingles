@@ -80,10 +80,10 @@ angular.module('fifoApp')
       }
     }
 
-    $rootScope.$on('$routeChangeStart', function(ev, next, current) {
-      //On first load, current will be undefined.
+    $rootScope.$on('$routeChangeSuccess', function(ev, curr, prev) {
+      //On first load, prev will be undefined.
 
-      // console.log(current && current.$$route.controller, '->', next.$$route.controller, ev)
+      // console.log(prev && prev.$$route.controller, '->', curr.$$route.controller, ev)
       checkIfLogged()
     })
     
