@@ -55,6 +55,8 @@ var howl = {
     _wsError: function(e) {
         howl._connected = false;
         console.log('WS ERROR:', e)
+        console.log('[howl] connection error, reconnecting in 5[s]...')
+        setTimeout(howl.connect, 5000)
     },
     _wsClose: function(e) {
         howl._connected = false;
@@ -92,7 +94,7 @@ var howl = {
     send: function(data) {
         if (Config.mode=='dev' && !data.ping)
             console.debug('[howl] send:   ', data)
-        howl.ws && howl.ws.send(howl.encode(data))
+        howl._connected && howl.ws && howl.ws.send(howl.encode(data))
     },
 
     join: function(channel) {
