@@ -1,12 +1,12 @@
-<div class="row" ng-show="user">
+<div class="row" ng-show='user'>
 	<div class="col-md-6">
 
 		<div class="welcome">
-			<h4 translate="">Welcome {{user.name}}!</h4>
-			<p ng-show="activeOrg"><span translate="">You are part of</span> <u>{{activeOrg.name}}</u>.</p>
-			<p ng-show="groups.length>0"><span translate="">You groups are</span> {{groups.join(' ' + 'and' + ' ')}}.</p>
-			<p ng-show="keys > 0" translate="">SSH keys configured: {{keys}}</p>
-			<p ng-show="keys < 1" translate="">No ssh keys found on your account. Dont forget to <a href="#/configuration/users/{{user.uuid}}">add one</a>! </p>
+			<h4 translate>Welcome {{user.name}}!</h4>
+			<p ng-show='activeOrg'><span translate>You are part of</span> <u>{{activeOrg.name}}</u>.</p>
+			<p ng-show='groups.length>0'><span translate>You groups are</span> {{groups.join(' ' + 'and' + ' ')}}.</p>
+			<p ng-show='keys > 0' translate>SSH keys configured: {{keys}}</p>
+			<p ng-show='keys < 1' translate>No ssh keys found on your account. Dont forget to <a href='#/configuration/users/{{user.uuid}}'>add one</a>! </p>
 <!--
 		<p>http://stackoverflow.com/questions/18756981/twitter-bootstrap-3-tab-view-fade-does-not-work-properly</p>
 			<ul>
@@ -29,35 +29,35 @@
 		</div>
 
 		<div class="link-boxes">
-			<a href="#/machines/new">
+			<a href='#/machines/new'>
 				<i class="glyphicon glyphicon-plus"></i>
-				<span translate="">New Machine</span>
+				<span translate>New Machine</span>
 			</a>
-			<a href="#/servers">
+			<a href='#/servers'>
 				<i class="glyphicon glyphicon-dashboard"></i>
-				<span translate="">Servers</span>
+				<span translate>Servers</span>
 			</a>
-			<a href="#/visualizations/graph">
+			<a href='#/visualizations/graph'>
 				<i class="glyphicon glyphicon-cloud"></i>
-				<span translate="">Cloud View</span>
+				<span translate>Cloud View</span>
 			</a>
-			<a href="http://project-fifo.net/" target="_new">
+			<a href='http://project-fifo.net/' target='_new'>
 				<i class="glyphicon glyphicon-info-sign"></i>
-				<span translate="">FiFo Home Page</span>
+				<span translate>FiFo Home Page</span>
 			</a>
 		</div>
 
 
-		<div class="panel panel-primary" ng-show="!cloud_ok">
+		<div class="panel panel-primary" ng-show='!cloud_ok'>
 			<div class="panel-heading">
-				<span class="panel-title" translate="">Messages</span>
+				<span class="panel-title" translate>Messages</span>
 			</div>
 			<table class="table table-condensed">
-				<th translate="">Category</th>
-				<th translate="">Element</th>
-				<th translate="">Message</th>
-			
-			<tr class="{{msgTrClass(msg.type)}}" ng-repeat="msg in messages | filter:{ok: !true}">
+				<th translate>Category</th>
+				<th translate>Element</th>
+				<th translate>Message</th>
+			</tr>
+			<tr class='{{msgTrClass(msg.type)}}' ng-repeat='msg in messages | filter:{ok: !true}'>
 				<td>{{msg.category}}</td>
 				<td>{{msg.element}}</td>
 				<td>{{msg.message}}</td>
@@ -73,39 +73,39 @@
 	<div class="panel {{cloud_ok? 'panel-success': 'panel-danger'}}">
 		<div class="panel-heading">
 			<span class="panel-title"><i class="glyphicon glyphicon-cloud"></i> 
-				<span ng-show="cloud_ok" translate="">Your cloud is fine!</span>
-				<span ng-hide="cloud_ok" translate="">Your cloud needs some attention!</span>
+				<span ng-show='cloud_ok' translate>Your cloud is fine!</span>
+				<span ng-hide='cloud_ok' translate>Your cloud needs some attention!</span>
 			</span>
 		</div>
 		<div class="panel-body">
 
 			<div class="row">
 				<div class="widget big">
-					<h3 translate="">Memory</h3> 
+					<h3 translate>Memory</h3> 
 					<span>{{messages[0].percent  || '0'}}%</span>
-					<gauge ng-model="messages[0].percent"></gauge>
+					<gauge ng-model='messages[0].percent'></gauge>
 					<div>{{metrics['provisioned-memory'] | Mbytes}} of {{metrics['total-memory'] | Mbytes}}</div>
 				</div>
 				<div class="widget big">
-					<h3 translate="">Disk usage</h3> 
+					<h3 translate>Disk usage</h3> 
 					<span>{{messages[1].percent || '0'}}%</span>
-					<gauge ng-model="messages[1].percent"></gauge>
+					<gauge ng-model='messages[1].percent'></gauge>
 					<div>{{metrics.used | Mbytes}} of {{metrics.size | Mbytes}}</div>
 				</div>
 			</div>
-			<hr>
+			<hr/>
 			<div class="widget">
-				<h4 translate="">Machines</h4>
+				<h4 translate>Machines</h4>
 				<div>{{metrics.vms}}</div>
 			</div>
 
 			<div class="widget">
-				<h4 translate="">Users</h4>
+				<h4 translate>Users</h4>
 				<div>{{metrics.users}}</div>
 			</div>
 
 			<div class="widget">
-				<h4 translate="">Servers</h4>
+				<h4 translate>Servers</h4>
 				<div>{{metrics.hypervisors.length}}</div>
 			</div>
 

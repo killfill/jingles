@@ -1,6 +1,6 @@
 <div class="tab-pane" id="packages">
   <div class="pane-nav">
-    <a href="#/configuration/packages/new" class="btn btn-primary" translate="">
+    <a href="#/configuration/packages/new" class="btn btn-primary" translate>
        New Package
     </a>
   </div>
@@ -9,11 +9,11 @@
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
-            <th translate="">Name</th>
-            <th translate="">Ram</th>
-            <th translate="">Disk</th>
-            <th translate="">CPU Cap</th>
-            <th class="span1" translate="">Actions</th>
+            <th translate>Name</th>
+            <th translate>Ram</th>
+            <th translate>Disk</th>
+            <th translate>CPU Cap</th>
+            <th class="span1" translate>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
             <td>{{pack.quota | Gbytes}}</td>
             <td>{{pack.cpu_cap}}</td>
             <td>
-              <i ng-click="delete(this)" jq-run="tooltip" title="Delete" class="glyphicon glyphicon-remove clickable" bs-modal="'views/partials/modal-confirm.html'"></i>
+              <i ng-click="delete(this)" jq-run='tooltip' title="Delete" class="glyphicon glyphicon-remove clickable" bs-modal="'views/partials/modal-confirm.html'"></i>
             </td>
           </tr>
         </tbody>

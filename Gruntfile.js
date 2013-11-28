@@ -399,7 +399,9 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>',
-                    src: ['*.html', 'views/*.html', 'views/partials/*.html'],
+                    //html min is breaking the view for angular. i.e. machine.html:L284 lets just copy the files over. its something with the ' and " ...
+                    // src: ['*.html', 'views/*.html', 'views/partials/*.html'],
+                    src: [],
                     dest: '<%= yeoman.dist %>'
                 }]
             }
@@ -417,7 +419,8 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         'styles/*.png', //bloody famfam, includes the png in the same dir as the style. :P
                         'fonts/{,*/}*.*',
-                        'scripts/config.js.example'
+                        'scripts/config.js.example',
+                        '*.html', 'views/*.html', 'views/*/*.html' //copy the files while htmlmin is not in use.
                     ]
                 }]
             },

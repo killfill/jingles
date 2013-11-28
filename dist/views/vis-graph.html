@@ -1,68 +1,79 @@
+
 <div id="container">
-  <div style="position: absolute; right: 40px">
-    <button class="btn btn-default btn-sm pull-right" ng-click="reset()" translate="">Reset</button>
-    <button class="btn btn-default btn-sm pull-right" id="fullscreen" translate="">Full Screen</button>
-    <br>
+  <div style='position: absolute; right: 40px'>
+    <button class="btn btn-default btn-sm pull-right" ng-click='reset()' translate>Reset</button>
+    <button class="btn btn-default btn-sm pull-right" id='fullscreen'  translate>Full Screen</button>
+    <br/>
     <table>
       <tr>
-        <td translate="">Zoom</td>
-        <td><input type="range" id="zoomBar" ng-model="zoomValue" max="1.5" min="0.1" step="0.01"></td>
+        <td translate>Zoom</td>
+        <td><input type='range' id='zoomBar' 
+          ng-model='zoomValue' 
+          max='1.5' min='0.1' step='0.01'></td>
       </tr>
       <tr>
-        <td translate="">Distance</td>
-        <td><input type="range" ng-model="distanceValue" max="300" min="30"></td>
+        <td translate>Distance</td>
+        <td><input type='range'
+          ng-model='distanceValue' 
+          max='300' min='30'></td>
       </tr>
       <tr>
-        <td translate="">Charge</td>
-        <td><input type="range" ng-model="chargeValue" max="1" min="0.05" step="0.01"></td>
+        <td translate>Charge</td>
+        <td><input type='range'
+          ng-model='chargeValue' 
+          max='1' min='0.05' step='0.01'></td>
       </tr>
       <tr>
         <td>Elasticity</td>
-        <td><input type="range" ng-model="elasticityValue" max="1" min="0" step="0.1"></td>
+        <td><input type='range'
+          ng-model='elasticityValue' 
+          max='1' min='0' step='0.1'></td>
       </tr>
     </table>
   </div>
   
 </div>
 
-<div class="popover right" style="display: {{vm && 'block' || 'none'}}; position: absolute; top: {{vm.y}}px; left: {{vm.x+210}}px">
+<div class="popover right" 
+  style="display: {{vm && 'block' || 'none'}}; position: absolute; top: {{vm.y}}px; left: {{vm.x+210}}px;">
   <div class="arrow"></div>
   <div class="popover-inner">
     <h3 class="popover-title">
       <center><span class="strong">{{vm.config.alias}}</span></center>
     </h3>
     <div class="popover-content">
-      <dl class="dl-horizontal small">
-        <dt ng-show="vm.config._dataset">Dataset</dt><dd ng-show="vm.config._dataset">{{vm.config._dataset.name}} {{vm.config._dataset.version}}</dd>
+      <dl class='dl-horizontal small'>
+        <dt ng-show='vm.config._dataset'>Dataset</dt><dd ng-show='vm.config._dataset'>{{vm.config._dataset.name}} {{vm.config._dataset.version}}</dd>
         <dt>Package</dt><dd>{{vm._package.name | orDefault:'custom'}}</dd>
-        <dt>Ram</dt><dd class="memory">{{vm.config.ram | Mbytes}}</dd>
-        <div ng-repeat="net in vm.config.networks | orderBy:-interface">
-          <dt>{{net.interface}}</dt><dd class="memory">{{net.ip}}</dd>
+        <dt>Ram</dt><dd class='memory'>{{vm.config.ram | Mbytes}}</dd>
+        <div ng-repeat='net in vm.config.networks | orderBy:-interface'>
+          <dt>{{net.interface}}</dt><dd class='memory'>{{net.ip}}</dd>
         </div>
       </dl>
     </div>
   </div>
 </div>
 
-<div class="popover right" style="display: {{hyper && 'block' || 'none'}}; position: absolute; top: {{hyper.y-10}}px; left: {{hyper.x+210}}px">
+<div class="popover right" 
+  style="display: {{hyper && 'block' || 'none'}}; position: absolute; top: {{hyper.y-10}}px; left: {{hyper.x+210}}px;">
   <div class="arrow"></div>
   <div class="popover-inner">
     <h3 class="popover-title">
       <center><span class="strong">{{hyper.name}}</span></center>
     </h3>
     <div class="popover-content">
-      <dl class="dl-horizontal">
+      <dl class='dl-horizontal'>
         <dt>Mainboard</dt><dd>{{hyper.sysinfo["Product"]}}</dd>
         <dt>Cores</dt><dd>{{hyper.sysinfo["CPU Total Cores"]}} ({{hyper.sysinfo["CPU Physical Cores"]}} cpus)</dd>
         <dt>Memory</dt><dd>{{hyper.resources['free-memory'] | Mbytes }} free of {{hyper.resources['total-memory'] | Mbytes }}</dd>
         <dt>L1 Arc</dt><dd>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</dd>
-        <dt ng-show="hyper.resources[\"l2hits\"]">L2 Arc</dt><dd ng-show="hyper.resources[\"l2hits\"]">{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
+        <dt ng-show='hyper.resources["l2hits"]'>L2 Arc</dt><dd ng-show='hyper.resources["l2hits"]'>{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
         
-        <div ng-repeat="(name, data) in hyper.pools">
+        <div ng-repeat='(name, data) in hyper.pools'>
           <dt>{{name}} pool</dt><dd>{{data.free | Mbytes}} free of {{data.size | Mbytes}}</dd>
         </div>
 
       <dl>
-    </dl></dl></div>
+    </div>
   </div>
 </div>
