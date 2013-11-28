@@ -40,7 +40,13 @@ var howl = {
         return (new Uint8Array(msgpack.pack(d))).buffer;
     },
     _wsOpen: function(e) {
-        howl.send({token: howl._token});
+
+        var data = {token: howl._token}
+        if (Config.mode=='dev' && !data.ping)
+            console.debug('[howl] auth:   ', data)
+
+        howl.ws.send(howl.encode(data))
+
         Config.mode == 'dev' && console.log('[howl] connection open')
         howl._connected = true
 

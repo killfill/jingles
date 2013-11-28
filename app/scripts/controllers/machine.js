@@ -267,6 +267,37 @@ angular.module('fifoApp')
         $scope.$apply()
     })
 
+    $scope.$on('log', function(e, msg) {
+        //data: {date: timestamp, log: text}.
+        // console.log('[log evt]', msg.message.data)
+        $scope.vm.log.push(msg.message.data)
+        $scope.$apply()
+    })
+
+    $scope.$on('snapshot', function(e, msg) {
+        var d = msg.message.data;
+
+        switch (d.action) {
+
+            case 'deleted':
+                delete $scope.snapshots[d.uuid]
+                status.success('Snapshot deleted')
+                break;
+
+            case 'rollback':
+                updateVm()
+                status.success("Rolled back successfully")
+                break;
+
+            default:
+                var snap = $scope.snapshots[d.uuid]
+                snap.state = d.action
+                snap.message = d.message
+        }
+
+        $scope.$apply()
+    })
+
     $scope.$watch('color', function(val) {
         if (typeof val === 'undefined' || !$scope.vm || val == $scope.vm.mdata('color')) return;
         $scope.vm.mdata_set({color: val})
@@ -428,7 +459,8 @@ angular.module('fifoApp')
             status.prompt('Write a comment for the new snapshot:', function(comment) {
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                                 function success(data, h) {
-                                    status.success('Snapshot created')
+                                    // $scope.snapshots[data.uuid] = data
+                                    //While wiggle not responds the uuid of the new snapshot, have to load the whole vm agai
                                     updateVm()
                                 },
                                 function error(data) {
@@ -447,10 +479,7 @@ angular.module('fifoApp')
                 ok: function() {
                      wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap.uuid},
                       function success() {
-                          status.success('Snapshot ' + snap.comment + ' deleted');
-                          $scope.modal.feedback = 'Error deleting the snapshot. See your console';
-                          delete $scope.snapshots[snap.uuid]
-                          updateVm();
+                          $scope.snapshots[snap.uuid].state='deleting'
                       },
                       function error(data) {
                           $scope.modal.feedback = 'Error deleting the snapshot. See your console';
@@ -472,11 +501,10 @@ angular.module('fifoApp')
                 ok: function() {
                     status.info('Will rollback to snapshot ' + snap.comment);
                     wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap.uuid}, {action: 'rollback'},
-                       function sucess () {
-                           updateVm()
-                           status.success('Rollback done')
+                       function success(data) {
+                            $scope.snapshots[snap.uuid].state='rolling...'
                        },
-                       function error (data) {
+                       function error(data) {
                            status.error('Error when rolling back. See the history')
                            console.log(data)
                        })

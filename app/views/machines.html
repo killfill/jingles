@@ -36,7 +36,7 @@
 			<td data-title="'Package'|translate" sortable='_package.name' class='visible-lg visible-md visible-sm'>
 				{{vm._package.name}}
 			</td>
-			<td data-title="Dataset" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm'>
+			<td data-title="Dataset" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm nowrap'>
 				<img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
 				{{vm.config._dataset.name || ('Unknown' | translate)}}
 			</td>
