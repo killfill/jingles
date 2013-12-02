@@ -4369,8 +4369,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-collapse {
   max-height: 340px;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 0;
+  padding-left: 0;
   overflow-x: visible;
   border-top: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -4417,10 +4417,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
     overflow-y: auto;
   }
   .navbar-collapse .navbar-nav.navbar-left:first-child {
-    margin-left: -15px;
+    margin-left: 0;
   }
   .navbar-collapse .navbar-nav.navbar-right:last-child {
-    margin-right: -15px;
+    margin-right: 0;
   }
   .navbar-collapse .navbar-text:last-child {
     margin-right: 0;
@@ -4429,8 +4429,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .container > .navbar-header,
 .container > .navbar-collapse {
-  margin-right: -15px;
-  margin-left: -15px;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 @media (min-width: 768px) {
@@ -4480,7 +4480,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-brand {
   float: left;
-  padding: 1px 15px;
+  padding: 0 0px;
   font-size: 14px;
   line-height: 18px;
 }
@@ -4492,7 +4492,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (min-width: 768px) {
   .navbar > .container .navbar-brand {
-    margin-left: -15px;
+    margin-left: 0;
   }
 }
 
@@ -4501,7 +4501,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   float: right;
   padding: 9px 10px;
   margin-top: 3px;
-  margin-right: 15px;
+  margin-right: 0;
   margin-bottom: 3px;
   background-color: transparent;
   border: 1px solid transparent;
@@ -4526,7 +4526,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-nav {
-  margin: 0.5px -15px;
+  margin: 0 0px;
 }
 
 .navbar-nav > li > a {
@@ -4582,11 +4582,11 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-form {
-  padding: 10px 15px;
+  padding: 10px 0;
   margin-top: 4px;
-  margin-right: -15px;
+  margin-right: 0;
   margin-bottom: 4px;
-  margin-left: -15px;
+  margin-left: 0;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -4665,8 +4665,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (min-width: 768px) {
   .navbar-text {
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 

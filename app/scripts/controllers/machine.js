@@ -459,9 +459,7 @@ angular.module('fifoApp')
             status.prompt('Write a comment for the new snapshot:', function(comment) {
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                                 function success(data, h) {
-                                    // $scope.snapshots[data.uuid] = data
-                                    //While wiggle not responds the uuid of the new snapshot, have to load the whole vm agai
-                                    updateVm()
+                                    $scope.snapshots[data.uuid] = data
                                 },
                                 function error(data) {
                                     status.error('Error saving the snapshot. See your console')

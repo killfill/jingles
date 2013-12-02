@@ -88,7 +88,7 @@ angular.module('fifoApp')
                 .on('click', function(d) {
                   window.open('#/machines/' + d.uuid, '_blank')
                 })
-                
+
         var logoSize = 30;
 
         newVmsNodes.append('circle')
@@ -648,35 +648,43 @@ angular.module('fifoApp')
     });
     */
 
-    document.getElementById('fullscreen').onclick = function() {
 
-      /* Bloody prefixes.. */
-      var goFull = function(el) {
-        if(el.requestFullScreen) {
-          el.requestFullScreen();
-        } else if(el.mozRequestFullScreen) {
-          el.mozRequestFullScreen();
-        } else if(el.webkitRequestFullScreen) {
-          el.webkitRequestFullScreen();
+
+    var fullScreenBehaviour = function() {
+
+
+        document.getElementById('fullscreen').onclick = function() {
+
+          /* Bloody prefixes.. */
+          var goFull = function(el) {
+            if(el.requestFullScreen) {
+              el.requestFullScreen();
+            } else if(el.mozRequestFullScreen) {
+              el.mozRequestFullScreen();
+            } else if(el.webkitRequestFullScreen) {
+              el.webkitRequestFullScreen();
+            }
+          }
+
+          var cancelFull = function() {
+            if(document.cancelFullScreen) {
+              document.cancelFullScreen();
+            } else if(document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if(document.webkitCancelFullScreen) {
+              document.webkitCancelFullScreen();
+            }
+          }
+
+          var inFullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+          
+          if (inFullScreen)
+            cancelFull()
+          else
+            goFull(document.getElementById('container'))
         }
-      }
-
-      var cancelFull = function() {
-        if(document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if(document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if(document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-      }
-
-      var inFullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
-      
-      if (inFullScreen)
-        cancelFull()
-      else
-        goFull(document.getElementById('container'))
     }
+
+    setTimeout(fullScreenBehaviour, 0)
 
   });
