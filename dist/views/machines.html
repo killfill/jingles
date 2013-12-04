@@ -37,7 +37,7 @@
 				{{vm._package.name}}
 			</td>
 			<td data-title="Dataset" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm nowrap'>
-				<img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.png" class='oslogo'>
+				<img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.svg" class='oslogo'>
 				{{vm.config._dataset.name || ('Unknown' | translate)}}
 			</td>
 			<td data-title="'Server'|translate" sortable='hypervisor' class='visible-lg visible-md'>
