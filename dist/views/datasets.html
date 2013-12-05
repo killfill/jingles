@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                   <tr ng-repeat="data in datasets | hash2array | orderBy: ['-os', 'name','-version']">
-                    <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
+                    <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.svg" onerror='this.src="images/logos/unknown.svg"'></td>
 
                     <td><a href='#/datasets/{{data.dataset}}' title='{{data.dataset}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
@@ -65,7 +65,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="data in datasetsat | hash2array | orderBy: ['-published_at', '-os', 'name','-version']">
-                  <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.png" onerror='this.src="images/logos/unknown.png"'></td>
+                  <td><img title='{{data.os}}' jq-run='tooltip' class='oslogo' ng-src="images/logos/{{data.os || 'unknown'}}.svg" onerror='this.src="images/logos/unknown.svg"'></td>
                   <td><span title='{{data.uuid}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</span></td>
                   <td class='describe'>{{data.description}}</td>
                   <td>

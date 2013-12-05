@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService, $q) {
+.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService, $q, auth) {
 
     $scope.infinitScroll = function() {
       if ($scope.tableParams.count >= $scope.vmsIds.length)
@@ -74,7 +74,7 @@ angular.module('fifoApp')
 
       $scope.$on('delete', function(e, msg) {
 
-        //Wait for the list to exists, before deleting an element of it.. :P
+        //Wait for the list to exists, before deleting an element of it.
         requestsPromise.then(function() {
           delete $scope.vms[msg.channel]
           filterData()
@@ -100,6 +100,9 @@ angular.module('fifoApp')
 
       $scope.$watch('searchQuery', function(val) {
         filterData();
+
+        if (typeof val != 'undefined')
+          auth.currentUser().mdata_set({vm_searchQuery: val})
       })
 
       $scope.vmsIds = []
@@ -138,8 +141,9 @@ angular.module('fifoApp')
   var requestsPromise = startRequests()
   
   requestsPromise.then(function() {
-      filterData()
-      $scope.infinitScroll()
-    });
+    $scope.searchQuery = auth.currentUser().mdata('vm_searchQuery');
+    filterData()
+    $scope.infinitScroll()
+  });
 
   });
