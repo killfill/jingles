@@ -15,9 +15,9 @@
         <tbody>
           <tr ng-repeat='u in users'>
             <td><a href="#/configuration/users/{{u.uuid}}">{{u.name}}</a></td>
-            <td><span ng-repeat='g in u._groups'>{{g.name}}</span></td>
+            <td><span style='margin-right: 5px' ng-repeat='g in u._groups'><a class='nocolor' href="#/configuration/groups/{{g.uuid}}">{{g.name}}</a></span></td>
             <td>
-              <a ng-repeat='o in u._orgs' href="#/configuration/organizations/{{o.uuid}}">
+              <a class='nocolor' ng-repeat='o in u._orgs' href="#/configuration/organizations/{{o.uuid}}">
                 <span style='margin-right: 5px' ng-class="{'strong': o.uuid == u.org}">{{o.name}}</span>
             </a></td>
           </tr>
