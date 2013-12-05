@@ -2,7 +2,7 @@
 
 angular.module('fifoApp')
 
-  .factory('wiggle', function ($resource, $http, $cacheFactory) {
+  .factory('wiggle', function ($resource, $http, $cacheFactory, $q) {
 
     var is_empty = function is_empty(obj) {
 
@@ -27,6 +27,13 @@ angular.module('fifoApp')
     if (endpoint.split(':').length>2)
         endpoint = endpoint.replace(/:([^:]*)$/,'\\:'+'$1');
 
+
+      //About interceptor's:
+      //Using interceptor to *full* the object with aditional data comming from a different request.
+      //When you return a promise (to wait until the additional request finishes), the $resource callback
+      //will return that promise instead of the original $resource. Ref: https://github.com/angular/angular.js/blob/master/src/ngResource/resource.js#L501
+      //To make this explicit, and to make it not a surprise for dev's, will define getFull instead of overriding the default 'get' 
+
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
                             {id: '@id'},
@@ -41,6 +48,43 @@ angular.module('fifoApp')
                           controller_id3: '@controller_id3'},
                          {put: {method: 'PUT'},
                           grant: {method: 'PUT'},
+                          getFull: {method: 'GET', cache: true, 
+                            interceptor: { 
+                              response: function(res) {
+
+                                var user = res.resource
+
+                                //Additional calls
+                                var groupCalls = user.groups.map(function(id) {
+                                  return services.groups.get({id: id}).$promise
+                                })
+                                
+                                var orgCalls = user.orgs.map(function(id) {
+                                  return services.orgs.get({id: id}).$promise
+                                })
+
+                                //Responses
+                                var groups = $q.all(groupCalls).then(function(res) {
+                                  //Put it in a hash, its more handy for using it later.
+                                  user._groups = {}
+                                  res.forEach(function(r) {user._groups[r.uuid] = r})
+                                  return user
+                                })
+
+                                var orgs = $q.all(orgCalls).then(function(res) {
+                                  //Put it in a hash, its more handy for using it later.
+                                  user._orgs = {}
+                                  res.forEach(function(r) {user._orgs[r.uuid] = r})
+                                  return user
+                                })
+
+                                //Return a promise with user as the result.
+                                return $q.all([groups, orgs]).then(function() {
+                                  return user;
+                                })
+                              }
+                            }
+                          },
                           revoke: {method: 'DELETE'},
                           create: {method: 'POST'},
                           delete: {method: 'DELETE'}}),
@@ -52,6 +96,7 @@ angular.module('fifoApp')
                            controller_id2: '@controller_id2',
                            controller_id3: '@controller_id3'},
                           {put: {method: 'PUT'},
+                           get: {method: 'GET', cache: true},
                            grant: {method: 'PUT'},
                            revoke: {method: 'DELETE'},
                            create: {method: 'POST'},
@@ -64,6 +109,7 @@ angular.module('fifoApp')
                            controller_id2: '@controller_id2',
                            controller_id3: '@controller_id3'},
                           {put: {method: 'PUT'},
+                           get: {method: 'GET', cache: true},
                            grant: {method: 'PUT'},
                            revoke: {method: 'DELETE'},
                            create: {method: 'POST'},
@@ -81,6 +127,7 @@ angular.module('fifoApp')
         ipranges: $resource(endpoint + 'ipranges/:id',
                             {id: '@id'},
                             {create: {method: 'POST'},
+                             get: {method: 'GET', cache: true},
                              delete: {method: 'DELETE'}}
                            ),
         networks: $resource(endpoint + 'networks/:id/:controller/:controller_id/:controller_id1/:controller_id2',
@@ -91,6 +138,7 @@ angular.module('fifoApp')
                              controller_id2: '@controller_id2'},
                             {put: {method: 'PUT'},
                              create: {method: 'POST'},
+                             get: {method: 'GET', cache: true},
                              delete: {method: 'DELETE'}}
                            ),
         datasets: $resource(endpoint + 'datasets/:id',
@@ -100,6 +148,7 @@ angular.module('fifoApp')
         packages: $resource(endpoint + 'packages/:id',
                             {id: '@id'},
                             {create: {method: 'POST'},
+                             get: {method: 'GET', cache: true},
                              delete: {method: 'DELETE'}}
                            ),
         dtrace: $resource(endpoint + 'dtrace/:id',
@@ -164,22 +213,8 @@ angular.module('fifoApp')
                 error && error(data)
             })
     }
-    services.packages.get = function(obj, success, error) {
-        return $http.get(endpoint + 'packages/' + obj.id, {cache: true})
-            .success(success)
-            .error(function(data) {
-                error && error(data)
-            })
-    }
-    services.orgs.get = function(obj, success, error) {
-        return $http.get(endpoint + 'orgs/' + obj.id, {cache: true})
-            .success(success || function(){})
-            .error(function(data) {
-                error && error(data)
-            })
-    }
 
-    /* VM GET: include the asociated data. WARNING: its getting ugly.... */
+    /* VM GET: include the asociated data. TODO: Use promises in here.. */
     services.vms._get = services.vms.get;
     services.vms.get = function(obj, returnCb, errorCb) {
 
