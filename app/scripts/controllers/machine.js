@@ -202,14 +202,7 @@ angular.module('fifoApp')
             var _notes = $scope.vm.mdata('notes') && $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; })
             $scope.notes = _notes? _notes.reverse() : []
 
-            /* Build the snapshots array */
-            $scope.snapshots = []
-            Object.keys($scope.vm.snapshots|| []).forEach(function(k) {
-                var val = $scope.vm.snapshots[k]
-                val.uuid = k
-                $scope.snapshots.push(val)
-            })
-            $scope.snapshots = $scope.vm.snapshots
+            $scope.snapshots = $scope.vm.snapshots || {}
             cb && cb($scope.vm);
             $scope.img_name = $scope.vm.config.alias;
             $scope.img_version = inc_version($scope.vm.config._dataset && $scope.vm.config._dataset.version);
@@ -477,11 +470,11 @@ angular.module('fifoApp')
                 ok: function() {
                      wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap.uuid},
                       function success() {
-                          $scope.snapshots[snap.uuid].state='deleting'
+                        $scope.snapshots[snap.uuid].state='deleting'
                       },
                       function error(data) {
-                          $scope.modal.feedback = 'Error deleting the snapshot. See your console';
-                          console.log(data)
+                        status.error('Error deleting the snapshot. See your console')
+                        console.log(data)
                     })
                 }
             }
