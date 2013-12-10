@@ -34,11 +34,31 @@ angular.module('fifoApp')
       //will return that promise instead of the original $resource. Ref: https://github.com/angular/angular.js/blob/master/src/ngResource/resource.js#L501
       //To make this explicit, and to make it not a surprise for dev's, will define getFull instead of overriding the default 'get' 
 
+
+    //Add _group object to the user...
+    var userInterceptor = function(res) {
+
+      var user = res.resource
+      user._groups = {}
+      // return user;
+      if (!user.groups) return user;
+
+      var groupCalls = user.groups.map(function(id) {
+        return services.groups.get({id: id}).$promise
+      })
+
+      return $q.all(groupCalls).then(function(res) {
+        res.forEach(function(r) {user._groups[r.uuid] = r})
+        return user;
+      })
+    }
+
     var services = {
         sessions: $resource(endpoint + 'sessions/:id',
                             {id: '@id'},
-                            {login: {method: 'POST'}}
-                           ),
+                            {get: {method: 'GET', interceptor: {response: userInterceptor}},
+                             login: {method: 'POST', interceptor: {response: userInterceptor}}
+                          }),
         users: $resource(endpoint + 'users/:id/:controller/:controller_id/:controller_id1/:controller_id2/:controller_id3',
                          {id: '@id',
                           controller: '@controller',

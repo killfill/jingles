@@ -27,8 +27,16 @@ angular.module('fifoApp')
     var auth = {
 
       canAccess: function(elementPerm) {
-        for (var i=0; i<user.permissions.length; i++) {
-          if (_canAcess(elementPerm, user.permissions[i])) 
+        
+        var perms = user.permissions
+
+        //Add the groups permissions
+        user.groups.forEach(function(k) {
+          perms = perms.concat(user._groups[k].permissions)
+        })
+
+        for (var i=0; i<perms.length; i++) {
+          if (_canAcess(elementPerm, perms[i])) 
             return true
         }
         return false
@@ -48,7 +56,7 @@ angular.module('fifoApp')
 
       login: function (_user, _pass) {
 
-        wiggle.sessions.login(null, {user: _user, password: _pass},
+        wiggle.sessions.login(null, {user: _user, password: _pass}).$promise.then(
 
           function success(res) {
 
@@ -100,15 +108,13 @@ angular.module('fifoApp')
           return $rootScope.$broadcast('auth:login_needed')
 
         //Check if the current token is valid.
-        wiggle.sessions.get({id: token},
+        wiggle.sessions.get({id: token}).$promise.then(
           function ok(res) {
             user = new wiggle.users(res)
             $rootScope.$broadcast('auth:login_ok', user, res.data)
-          },
-          function error() {
+        }, function error(res) {
             $rootScope.$broadcast('auth:login_needed')
-          }
-        )
+        })
       }
     }
 

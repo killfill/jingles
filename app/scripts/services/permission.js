@@ -46,7 +46,7 @@ function mk_permission_fn(wiggle, $scope) {
                     if (ids.length > 0)
                         $scope.p2 = {
                             "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Users"},
+                            "_": {id: "_", name: "All Dtraces"},
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
@@ -76,7 +76,7 @@ function mk_permission_fn(wiggle, $scope) {
                     if (ids.length > 0)
                         $scope.p2 = {
                             "...": {id: "...", name: "Everything"},
-                            "_": {id: "_", name: "All Users"},
+                            "_": {id: "_", name: "All Groups"},
                         };
                     ids.forEach(function(id){
                         $scope.p2[id] = {id: id, name: id};
