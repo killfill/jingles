@@ -1,12 +1,40 @@
 'use strict';
 
 angular.module('fifoApp')
-.factory('auth', function ($rootScope, wiggle, $location, $route, $http, $cookies, howl) {
+.factory('auth', function ($rootScope, wiggle, $location, $route, $http, $cookies, howl, $q) {
 
-    //the logged user!
-    var user;
+    var user
+    var userLoggedDefer = $q.defer()
+
+    function _canAcess(elementPerm, userPerm) {
+      var ret = true;
+
+      for (var i=0; i<elementPerm.length; i++) {
+        var usPerm = userPerm[i],
+          elPerm = elementPerm[i]
+
+        if (usPerm == '...' || usPerm == '_') {
+          return true; //everything or all
+        }
+
+        if (usPerm != elPerm) {
+          ret = false;
+          break;
+        }
+        
+      }
+      return ret;
+    }
 
     var auth = {
+
+      canAccess: function(elementPerm) {
+        for (var i=0; i<user.permissions.length; i++) {
+          if (_canAcess(elementPerm, user.permissions[i])) 
+            return true
+        }
+        return false
+      },
 
       currentUser: function() {
         return user
@@ -14,6 +42,10 @@ angular.module('fifoApp')
 
       isLogged: function() {
         return !!user
+      },
+
+      userPromise: function() {
+        return userLoggedDefer.promise
       },
 
       login: function (_user, _pass) {
@@ -37,7 +69,7 @@ angular.module('fifoApp')
           function error(res) {
             $rootScope.$broadcast('auth:login_error', res)
           }
-          )
+        )
       },
 
       logout: function() {
@@ -77,8 +109,7 @@ angular.module('fifoApp')
           function error() {
             $rootScope.$broadcast('auth:login_needed')
           }
-          )
-        
+        )
       }
     }
 
@@ -97,6 +128,9 @@ angular.module('fifoApp')
 
     //Connect to howl, when use logs in.
     $rootScope.$on('auth:login_ok', function() {
+
+      userLoggedDefer.resolve(user)
+
       /* Pass the token to autenticate, and a list of vms to monitor */
       if ('WebSocket' in window) {
         wiggle.vms.list(howl.join)
@@ -105,6 +139,7 @@ angular.module('fifoApp')
       }
     })
 
-    // checkIfLogged()
+    //When loading /#/ changeRoute does not trigger so trigger it anyway.
+    checkIfLogged()
     return auth;
   });

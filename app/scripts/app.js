@@ -1,6 +1,12 @@
 'use strict';
 
-angular.module('fifoApp', 
+var wait = {
+  forUserLogin: function(auth) {
+    return auth.userPromise()
+  }
+}
+
+angular.module('fifoApp',
   ['ngRoute', 'ngAnimate', 'ngResource','services.breadcrumbs', 
   'gettext', 'infinite-scroll', 'ngTable', 'angularMoment', 'ngSanitize', 'ngCookies'])
   .config(function ($routeProvider) {
@@ -9,12 +15,13 @@ angular.module('fifoApp',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         helpUrl: 'http://project-fifo.net/display/PF/Dashboard',
+        resolve: wait
       })
       .when('/machines', {
         templateUrl: 'views/machines.html',
         controller: 'MachinesCtrl',
         helpUrl: 'http://project-fifo.net/display/PF/Machines+list',
-        name: 'Machines'
+        name: 'Machines',
       })
       .when('/datasets', {
         templateUrl: 'views/datasets.html',
@@ -189,7 +196,6 @@ angular.module('fifoApp',
 
   gettextCatalog.currentLanguage = lang;
   // gettextCatalog.debug = true;
-
 
   //Let bootstrap markup do its job.
   var preventHrefs = function() {

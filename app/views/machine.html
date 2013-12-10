@@ -16,7 +16,8 @@
                   ng-disabled="vm.mdata('locked') ||
                                !(vm.state!='running'&&vm.state!='booting'&&vm.state!='shutting_down')"
                   class="btn btn-default" bs-modal="'views/partials/modal-confirm.html'"
-                  title='Delete' jq-run='tooltip' jq-options="{placement: 'bottom'}">
+                  title='Delete' jq-run='tooltip' jq-options="{placement: 'bottom'}"
+                  permission=['vms','{{vm.uuid}}','delete']>
             <i class='glyphicon glyphglyphicon glyphicon-trash'></i>
           </button>
           <button ng-click='console(vm)'
@@ -24,7 +25,8 @@
                   title='Console'
                   jq-run='tooltip'
                   jq-options="{placement: 'bottom'}"
-                  class="btn btn-default">
+                  class="btn btn-default"
+                  permission=['vms','{{vm.uuid}}','console']>
             <i class='glyphicon glyphicon-share-alt'></i>
           </button>
           <button ng-click="lock()"
@@ -39,7 +41,8 @@
                   title='Start'
                   jq-run='tooltip'
                   jq-options="{placement: 'bottom'}"
-                  class="btn btn-default">
+                  class="btn btn-default"
+                  permission=['vms','{{vm.uuid}}','start']>
             <i class='glyphicon glyphicon-play'></i>
           </button>
           <button ng-click="action('reboot', vm)"
@@ -47,7 +50,8 @@
                   title='Reboot'
                   jq-run='tooltip'
                   jq-options="{placement: 'bottom'}"
-                  class="btn btn-default">
+                  class="btn btn-default"
+                  permission=['vms','{{vm.uuid}}','reboot']>
             <i class='glyphicon glyphicon-refresh'></i>
           </button>
           <button ng-click="action('stop', vm)"
@@ -55,7 +59,8 @@
                   title="{{force && 'Force ' || ''}}Stop"
                   jq-run='tooltip'
                   jq-options="{placement: 'bottom', container: 'body'}"
-                  class="btn {{force && 'btn-warning' || 'btn-default'}}">
+                  class="btn {{force && 'btn-warning' || 'btn-default'}}"
+                  permission=['vms','{{vm.uuid}}','stop']>
             <i class='glyphicon glyphicon-stop'></i>
              <span ng-show='force' translate>Force</span>
           </button>
@@ -157,7 +162,7 @@
                       </select>
                   </dd>
                 </dl>
-                <button class="btn btn-sm btn-default pull-right" translate>Save</button>
+                <button class="btn btn-sm btn-default pull-right" translate permission=['vms','{{vm.uuid}}','edit']>Save</button>
               </form>
             </dl>
           </div>
@@ -274,7 +279,9 @@
       <div class="tab-pane" id="snapshots">
         <p class='pull-right'>
           <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;' translate>To rollback, please stop the machine</span>
-          <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn btn-default" jq-run='tooltip' title='Take a new snapshot'><i class='glyphicon glyphicon-camera'></i> <span translate>Snapshot</span></button>
+          <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn btn-default" jq-run='tooltip' title='Take a new snapshot' permission=['vms','{{vm.uuid}}','snapshot']>
+            <i class='glyphicon glyphicon-camera'></i> <span translate>Snapshot</span>
+          </button>
         </p>
         <table class="table table-condensed table-hover pull-left">
           <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
@@ -286,10 +293,10 @@
             <td class='nowrap'>
               <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
                  ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-backward clickable"></i>
+                 class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i>
               <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
                  ng-hide="vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-trash clickable"></i>
+                 class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','delete_snapshot']></i>
             </td>
           </tr>
         </table>

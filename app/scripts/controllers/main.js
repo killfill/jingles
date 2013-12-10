@@ -7,7 +7,21 @@ angular.module('fifoApp')
         return type == 'critical' ? 'danger': type;
     }
 
+    $scope.messages = false
     $scope.show = function() {
+
+        $scope.user = auth.currentUser()
+        $scope.groups = []
+        if (!$scope.user) return;
+
+        $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
+        $scope.keys = Object.keys($scope.user.keys).length
+        $scope.user.groups.forEach(function(gid) {
+            wiggle.groups.get({id: gid}, 
+                function(res) {
+                    $scope.groups.push(res.name)
+            })
+        })
 
         wiggle.cloud.get(function res (data) {
             $scope.metrics = data.metrics
@@ -21,22 +35,6 @@ angular.module('fifoApp')
             }).length < 1
 
             $scope.cloud_status = $scope.cloud_ok ? 'images/healthy-cluster.png' : 'images/unhealthy-cluster.png'
-
-            $scope.user = auth.currentUser()
-            $scope.groups = []
-            
-            if (!$scope.user) return;
-
-            $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
-
-            $scope.keys = Object.keys($scope.user.keys).length
-            
-            $scope.user.groups.forEach(function(gid) {
-                wiggle.groups.get({id: gid}, 
-                    function(res) {
-                        $scope.groups.push(res.name)
-                })
-            })
         })
 
     }

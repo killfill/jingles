@@ -48,7 +48,7 @@
 		</div>
 
 
-		<div class="panel panel-primary" ng-show='!cloud_ok'>
+		<div class="panel panel-primary" ng-show='messages && !cloud_ok'>
 			<div class="panel-heading">
 				<span class="panel-title" translate>Messages</span>
 			</div>
@@ -64,12 +64,9 @@
 			</tr>
 		</table>
 	</div>
-
 </div>
 
-
-
-<div class="col-md-6">
+<div class="col-md-6" ng-show='metrics'>
 	<div class="panel {{cloud_ok? 'panel-success': 'panel-danger'}}">
 		<div class="panel-heading">
 			<span class="panel-title"><i class="glyphicon glyphicon-cloud"></i> 
