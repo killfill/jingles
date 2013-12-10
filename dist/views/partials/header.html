@@ -12,25 +12,25 @@
 
         <nav class="collapse navbar-collapse menu-one" role='navigation'>
             <ul class="nav navbar-nav">
-                <li ng-class="{active: isActive('machines')}"><a href="#/machines" translate>Machines</a></li>
-                <li ng-class="{active: isActive('datasets')}"><a href="#/datasets" translate>Datasets</a></li>
-                <li ng-class="{active: isActive('servers')}"><a href="#/servers" translate>Servers</a></li>
+                <li ng-class="{active: isActive('machines')}"><a href="#/machines" translate permission="['cloud','vms','list']">Machines</a></li>
+                <li ng-class="{active: isActive('datasets')}"><a href="#/datasets" translate permission=['cloud','datasets','list']>Datasets</a></li>
+                <li ng-class="{active: isActive('servers')}"><a href="#/servers" translate permission=['cloud','hypervisors','list']>Servers</a></li>
                 <li ng-class="{active: isActive('configuration')}" class='dropdown'>
                     <a class='dropdown-toggle' data-toggle='dropdown'><span translate>Configuration</span> <b class='caret'></b></a>
                     <ul class='dropdown-menu'>
-                        <li ng-class="{active: isActive('packages')}"><a href="#/configuration/packages" translate>Packages</a></li>
+                        <li ng-class="{active: isActive('packages')}"><a href="#/configuration/packages" translate permission=['cloud','packages','list']>Packages</a></li>
                         <li class='divider'></li>
                         <li class='dropdown-header' translate>Networking</li>
-                        <li ng-class="{active: isActive('networks')}"><a href="#/configuration/networks" translate>Networks</a></li>
-                        <li ng-class="{active: isActive('ip-ranges')}"><a href="#/configuration/ip-ranges" translate>IP Ranges</a></li>
+                        <li ng-class="{active: isActive('networks')}"><a href="#/configuration/networks" translate permission=['cloud','networks','list']>Networks</a></li>
+                        <li ng-class="{active: isActive('ip-ranges')}"><a href="#/configuration/ip-ranges" translate permission=['cloud','ipranges','list']>IP Ranges</a></li>
                         <li class='divider'></li>
                         <li class='dropdown-header' translate>Permissions</li>
-                        <li ng-class="{active: isActive('users')}"><a href="#/configuration/users" translate>Users</a></li>
-                        <li ng-class="{active: isActive('groups')}"><a href="#/configuration/groups" translate>Groups</a></li>
-                        <li ng-class="{active: isActive('organizations')}"><a href="#/configuration/organizations" translate>Organizations</a></li>
+                        <li ng-class="{active: isActive('users')}"><a href="#/configuration/users" translate permission=['cloud','users','list']>Users</a></li>
+                        <li ng-class="{active: isActive('groups')}"><a href="#/configuration/groups" translate permission=['cloud','groups','list']>Groups</a></li>
+                        <li ng-class="{active: isActive('organizations')}"><a href="#/configuration/organizations" translate permission=['cloud','orgs','list']>Organizations</a></li>
                         <li class='divider'></li>
                         <li class='dropdown-header' translate>Scripts</li>
-                        <li ng-class="{active: isActive('dtraces')}"><a href='#/configuration/dtraces' translate>DTrace</a></li>
+                        <li ng-class="{active: isActive('dtraces')}"><a href='#/configuration/dtraces' translate permission=['cloud','dtraces','list']>DTrace</a></li>
                     </ul>
                 </li>
 

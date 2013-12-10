@@ -27,7 +27,7 @@
                     <td><a href='#/datasets/{{data.dataset}}' title='{{data.dataset}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
                     <td class='describe'>{{data.description}}</td>
-                    <td ng-show='!data.imported && data.imported !=0'>
+                    <td ng-show='!data.imported && data.imported !=0' permission=['cloud','datasets','import']>
                       <button class='btn btn-sm btn-default'
                               ng-hide="data.imported == 1"
                               title='You need to download this dataset with FiFo'
@@ -72,7 +72,8 @@
                     <i ng-show="data.imported" class="glyphicon glyphicon-ok"></i>
                     <button class='btn btn-default btn-sm'
                             ng-hide="data.imported == 1"
-                            ng-click='import(data.uuid)'>
+                            ng-click='import(data.uuid)'
+                            permission=['cloud','datasets','import']>
                             <i class='glyphicon glyphicon-download-alt'></i>
                             <span translate>Import</span>
                     </button>

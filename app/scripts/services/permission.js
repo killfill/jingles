@@ -209,6 +209,11 @@ function mk_permission_fn(wiggle, $scope) {
                         ];
                         break;
                     case "datasets":
+                        $scope.p3 = [
+                            {id: "list", name: "List"},
+                            {id: "import", name: "Import"}
+                        ]
+                        break;
                     case "hypervisors":
                         $scope.p3 = [
                             {id: "list", name: "List"}
@@ -272,7 +277,9 @@ function mk_permission_fn(wiggle, $scope) {
                 case "datasets":
                     $scope.p3 = [
                         {id:"get", name: "See"},
-                        {id:"delete", name: "Delete"}
+                        {id:"delete", name: "Delete"},
+                        {id:"edit", name: "Edit"},
+                        {id:"create", name: "Create"},
                     ];
                     break;
                 }
