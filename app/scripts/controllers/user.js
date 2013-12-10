@@ -7,7 +7,6 @@ angular.module('fifoApp')
     $scope.p2 = false;
     $scope.p3 = false;
 
-
     var cache=(function(){
         var c = {};
         return function(entity, e, callback) {

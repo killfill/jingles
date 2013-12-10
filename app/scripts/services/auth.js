@@ -13,15 +13,13 @@ angular.module('fifoApp')
         var usPerm = userPerm[i],
           elPerm = elementPerm[i]
 
-        if (usPerm == '...' || usPerm == '_') {
-          return true; //everything or all
-        }
-
+        if (usPerm == '...') return true //admin
+        if (usPerm == '_') continue; //everything
         if (usPerm != elPerm) {
           ret = false;
           break;
         }
-        
+
       }
       return ret;
     }
@@ -69,6 +67,7 @@ angular.module('fifoApp')
           function error(res) {
             $rootScope.$broadcast('auth:login_error', res)
           }
+
         )
       },
 

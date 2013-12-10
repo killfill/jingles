@@ -22,6 +22,7 @@ angular.module('fifoApp',
         controller: 'MachinesCtrl',
         helpUrl: 'http://project-fifo.net/display/PF/Machines+list',
         name: 'Machines',
+        resolve: wait
       })
       .when('/datasets', {
         templateUrl: 'views/datasets.html',

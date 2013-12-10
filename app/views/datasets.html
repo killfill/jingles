@@ -41,7 +41,7 @@
                       </div>
                     </td>
                     <td class='light'>{{data.type}}</td>
-                    <td><i ng-click="delete(data)" jq-run="tooltip" class="glyphicon glyphicon-remove-sign clickable" title="Delete" bs-modal="'views/partials/modal-confirm.html'"></i></td>
+                    <td permission=['datasets','{{data.dataset}}','delete']><i ng-click="delete(data)" jq-run="tooltip" class="glyphicon glyphicon-remove-sign clickable" title="Delete" bs-modal="'views/partials/modal-confirm.html'"></i></td>
                   </tr>
                 </tbody>
               </table>

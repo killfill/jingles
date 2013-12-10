@@ -8195,7 +8195,7 @@ input[type='range'] {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 /* HERLPES */

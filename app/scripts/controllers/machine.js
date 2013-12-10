@@ -430,16 +430,21 @@ angular.module('fifoApp')
 
         case 'create':
             status.prompt('Enter your note:', function(txt) {
-                $scope.notes.splice(0, 0, {text: txt, created_at: new Date()})
-                $scope.vm.mdata_set({notes: $scope.notes})
-                status.success('Note created')
+                
+                $scope.vm.mdata_set({notes: $scope.notes}, function() {
+                    status.success('Note created')
+                    $scope.notes.splice(0, 0, {text: txt, created_at: new Date()})
+                })
+                
             })
             break;
 
         case 'delete':
             $scope.notes.splice(idx, 1)
-            $scope.vm.mdata_set({notes: $scope.notes})
-            status.success('Note deleted')
+            $scope.vm.mdata_set({notes: $scope.notes}, function() {
+                status.success('Note deleted')
+            })
+            
             break;
         }
 

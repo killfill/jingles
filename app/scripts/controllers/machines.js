@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('fifoApp')
-.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService, $q, auth) {
+.controller('MachinesCtrl', function ($scope, $http, $filter, wiggle, status, vmService, $q, auth, ngTableParams) {
+
+    //To hide colums based on permission on the view
+    $scope.auth = auth;
 
     $scope.infinitScroll = function() {
-      if ($scope.tableParams.count >= $scope.vmsIds.length)
+      if ($scope.tableParams.count() >= $scope.vmsIds.length)
         return;
-      $scope.tableParams.count += 5;
+      $scope.tableParams.count($scope.tableParams.count + 5);
     }
 
     $scope.start = function(vm) {
@@ -26,9 +29,10 @@ angular.module('fifoApp')
       var dataArray = Object.keys($scope.vms).map(function(k) { return $scope.vms[k] })
 
       var data = $scope.searchQuery ? $filter('filter')(dataArray, $scope.searchQuery) : dataArray;
+
       data = p.sorting ? $filter('orderBy')(data, p.orderBy()) : $filter('orderBy')(data, 'config.alias');
 
-      $scope.vmsFiltered = data.slice((p.page - 1) * p.count, p.page * p.count);
+      $scope.vmsFiltered = data.slice((p.page() - 1) * p.count(), p.page() * p.count());
     }
 
     var listenEvents = function() {
@@ -86,12 +90,15 @@ angular.module('fifoApp')
 
       var defered = $q.defer();
 
-      $scope.tableParams = {
+      $scope.tableParams = new ngTableParams({
         page: 1,
         count: 25,
         total: 0, //0=disable
-        counts: [] ,//[] = disable
-      }
+        sorting: {
+          'config.alias': 'desc' //Could save this in the user metadata.. :P
+        },
+        counts: [] ,//[] = disable ngTable pagination buttons
+      })
 
       //When something on the table changes, i.e. infinit scroll detected.
       $scope.$watch('tableParams', function() {

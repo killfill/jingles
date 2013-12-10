@@ -20,32 +20,32 @@
 		class='table table-condensed table-hover' 
 		infinite-scroll='infinitScroll()'
 		infinite-scroll-distance="1"
-		ng-table='tableParams'>
+		ng-table='tableParams' template-pagination='hide'>
 
 		<tr ng-repeat='vm in vmsFiltered'>
-			<td data-title="'Name'|translate" sortable='config.alias' class='nowrap' style="background-image: linear-gradient(to right, {{vm.mdata('color')}} 10%, transparent 40%);">
+			<td data-title="'Name' | translate" sortable="'config.alias'" class='nowrap' style="background-image: linear-gradient(to right, {{vm.mdata('color')}} 10%, transparent 40%);">
 				<a href="#/machines/{{vm.uuid}}">{{vm.config.alias}}</a>
 			</td>
-			<td data-title="Ip" sortable='_ips_normalized'>
+			<td data-title="'Ip'" sortable="'_ips_normalized'">
 				<small><a class='nocolor' target='_new' href='ssh://{{vm.config.networks[0].ip}}'>{{vm.config.networks[0].ip}}</a></small>
 			</td>
-			<td data-title="'Memory' | translate" sortable='config.ram'>
+			<td data-title="'Memory' | translate" sortable="'config.ram'">
 				{{vm.config.ram | Mbytes}}
 			</td>
-			<td data-title="'Package'|translate" sortable='_package.name' class='visible-lg visible-md visible-sm'>
+			<td ng-show="auth.canAccess(['cloud', 'packages', 'list'])" data-title="'Package'|translate" sortable="'_package.name'" class='fifo-visible-lg fifo-visible-md fifo-visible-sm'>
 				{{vm._package.name}}
 			</td>
-			<td data-title="Dataset" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable='config._dataset.name' class='visible-lg visible-md visible-sm nowrap'>
+			<td ng-show="auth.canAccess(['cloud','datasets','list'])" data-title="'Dataset'" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable="'config._dataset.name'" class='fifo-hidden-xs nowrap'>
 				<img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.svg" class='oslogo'>
 				{{vm.config._dataset.name || ('Unknown' | translate)}}
 			</td>
-			<td data-title="'Server'|translate" sortable='hypervisor' class='visible-lg visible-md'>
+			<td ng-show="auth.canAccess(['cloud','hypervisors','list'])" data-title="'Server'|translate" sortable="'hypervisor'" class='fifo-visible-lg fifo-visible-md'>
 				<a class='nocolor' href="#/servers/{{vm.hypervisor}}">{{vm._hypervisor.alias}}</a>
 			</td>
-			<td class='text-muted visible-lg visible-md' data-title="'Owner'|translate" sortable='_owner.name'>	
+			<td ng-show="auth.canAccess(['cloud','groups','list'])" class='text-muted fifo-visible-lg fifo-visible-md' data-title="'Owner'|translate" sortable="'_owner.name'">	
 				<a class="nocolor" href="#/configuration/organizations/{{vm.owner}}">{{vm._owner.name}}</a>
 			</td>
-			<td data-title="'Created' | translate" class='text-muted visible-lg' sortable='config.created_at' am-time-ago='vm.config.created_at' title="{{vm.config.created_at | date:'mediumDate'}}"></td>
+			<td data-title="'Created' | translate" class='text-muted visible-lg' sortable="'config.created_at'" am-time-ago='vm.config.created_at' title="{{vm.config.created_at | date:'mediumDate'}}"></td>
 			
 			<td>
 				<span class='label label-{{vm._state_label}} capitalize' jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.state_description}}'>{{vm.state}}</span>
@@ -54,7 +54,7 @@
 			<!-- Actions: -->
 			<td class='hidden-xs'>
 				<i ng-show="vm.state == 'running'" jq-run='tooltip' class='glyphicon glyphicon-share-alt clickable' title='Connect' ng-click='connect(vm)' permission=['vms','{{vm.uuid}}','console']></i>
-				<i ng-hide="vm.state!='stopped'" ng-click="start(this.vm)" jq-run='tooltip' class='glyphicon glyphicon-play clickable' title='Start' permission=['vms','{{vm.uuid}}','start']></i>
+				<i ng-hide="vm.state!='stopped'" ng-click="start(this.vm)" jq-run='tooltip' class='glyphicon glyphicon-play clickable' title='Start' permission=['vms','{{vm.uuid}}','state']></i>
 			</td>
 		</tr>
 	</table>

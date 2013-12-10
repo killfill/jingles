@@ -20,10 +20,17 @@ angular.module('fifoApp')
         function checkPermission() {
 
           //If user not logged, do nothing..
-          if (!auth.currentUser().name) return;
+          if (!auth.currentUser() || !auth.currentUser().name) return;
 
           var hasPermission = auth.canAccess(elementPerm)
-          element.css('display', hasPermission? origCss: 'none')
+
+          // console.log('Got this permission:', elementPerm, hasPermission, origCss)
+
+          if (!hasPermission)
+            element.css('display', 'none')
+          else
+            if (origCss)
+              element.attr('style', 'display: ' + origCss)
         }
 
         //Watch for the current user to be available.
