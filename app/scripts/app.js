@@ -1,9 +1,9 @@
 'use strict';
 
 var wait = {
-  forUserLogin: function(auth) {
+  forUserLogin: ['auth', function(auth) {
     return auth.userPromise()
-  }
+  }]
 }
 
 angular.module('fifoApp',
