@@ -10,6 +10,11 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
             return;
         };
 
+
+        //Add selected server to the rules array
+        if ($scope.server)
+            $scope.rules.push({weight: 'must', attribute: 'name', condition: '=:=', value: $scope.server.uuid})
+
         var vm = new wiggle.vms({
             package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
@@ -20,7 +25,8 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                 root_pw: $scope.root_pw,
                 admin_pw: $scope.admin_pw,
                 hostname: $scope.hostname,
-                ssh_keys: $scope.ssh_keys
+                ssh_keys: $scope.ssh_keys,
+                requirements: $scope.rules
             }
         })
 
@@ -97,6 +103,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         $scope.datasets = []
         $scope.packages = []
         $scope.networks = []
+        $scope.rules = [{}]
 
         /* Get the latest version of a dataset */
         $scope.latestDatasets = {}
@@ -151,6 +158,12 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                     if (!$scope.selectedNetworks)
                         $scope.selectedNetworks = [res]
                 })
+            })
+        })
+
+        wiggle.hypervisors.list(function(ids) {
+            $scope.servers = ids.map(function(id) {
+                return wiggle.hypervisors.get({id: id})
             })
         })
 

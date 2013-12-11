@@ -196,9 +196,15 @@ function mk_permission_fn(wiggle, $scope) {
                             {id: "status", name: "Status"}
                         ]
                         break;
+                    case "vms":
+                        $scope.p3 = [
+                            {id: "list", name: "List"},
+                            {id: "create", name: "Create"},
+                            {id: "advanced_create", name: "Advanced Create"}
+                        ];
+                        break;
                     case "users":
                     case "groups":
-                    case "vms":
                     case "packages":
                     case "dtraces":
                     case "ipranges":

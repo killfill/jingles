@@ -31,52 +31,8 @@
   </div>
 
   <div class="col-md-8">
-
-    <div ng-repeat='rule in rules' ng-class="rule.error && 'rule-error'" class='thumbnail'>
-      <div class="span11">
-        Rule {{$index+1}}
-      </div>
-
-      <select class='span3' title='Weight' jq-run='tooltip' ng-model='rule.weight' 
-        ng-options='d.value group by d.group for d in weightOptions'>
-      </select>
-
-      <typeahead 
-        class="span8"
-        placeholder='Key' 
-        title='Attribute' jq-run='tooltip'
-        ng-model="rule.attribute"
-        data-items='10'
-        data-source='attributeOptions'
-        show="rule.weight.value != 'random'"
-      ></typeahead>
-
-      <select ng-hide="rule.weight.group == 'Special'"
-        class='span3' title='Condition' jq-run='tooltip' ng-model='rule.condition' 
-        ng-options='d for d in conditionOptions'>
-      </select>
-
-      <input ng-hide="rule.weight.group == 'Special'"
-        class="span8" title='Value' jq-run='tooltip' placeholder="Value" type="text"  ng-model="rule.value"/>
-
-      <!-- show this div to tab the low&high when scale is selected -->
-      <div ng-show="rule.weight.value == 'scale'" class='span3'></div>
-
-      <input ng-show="rule.weight.group == 'Special'" 
-        class="span4" type='number' min='0' title='Low' jq-run='tooltip' placeholder="Low" type="text" ng-model="rule.low"/>
-      <input ng-show="rule.weight.group == 'Special'" 
-        class="span4" type='number' min='1' title='High' jq-run='tooltip' placeholder="High" type="text" ng-model="rule.high"/>
-      
-      <button class="btn btn-small btn-danger pull-right" 
-        title='Remove rule {{$index+1}}' jq-run='tooltip' ng-click="rm_rule($index)">-</button>
-
-    </div>
-
-    <br/>
-
-    <button class="btn btn-small btn-success pull-right" ng-click="add_rule()">+</button>
+    <rule ng-model='rules'/>
   </div>
-
   <div class='container row'>
     The rules are optional, they help FiFo decide wich hypervisor to use. <a href="http://project-fifo.net/display/PF/Hypervisor+Requirements" target=_blank>More info</a>
     <br/>

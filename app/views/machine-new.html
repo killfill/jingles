@@ -6,7 +6,7 @@
       <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
       <span translate>called</span>: 
       <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
-        <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage)' ng-click='create_machine()' translate>Create</button>
+        <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage && rules !== false)' ng-click='create_machine()' translate>Create</button>
     </div>
   </div>
 
@@ -80,9 +80,9 @@
   <div class="col-md-6">
     <div class="thumbnail">
       <div class="accordion" id="optional">
-        <div class="accordion-groupp">
+        <div class="accordion-group">
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#optional" href="#toggleOptions" translate>
-            Advanced Parameters
+            Parameters
           </a>
           <div id="toggleOptions" class="collapse">
             <div class="accordion-inner">
@@ -115,6 +115,12 @@
                   <th class="nowrap" translate>User script</th>
                   <td><input class='form-control' type='text' ng-model='userScript'/></td>
                 </tr>
+                <tr class="small" permission=['cloud','vms','advanced_create']>
+                  <th class='nowrap' translate>Server</th>
+                  <td>
+                    <select ng-model='server' ng-options='s.alias for s in servers'></select>
+                  </td>
+                </tr>
 
                 <tr class='small' ng-repeat='meta in metadata'>
                   <th class="nowrap">{{meta.key}}</th>
@@ -132,7 +138,23 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="col-md-11 accordion" permission=['cloud','vms','advanced_create']>
+    <div class="thumbnail">
+    <div class="accordion-group">
+
+      <a class="accordion-toggle" data-toggle="collapse" href="#toggleRules" translate>
+        Advanced rules
+      </a>
+
+      <div id="toggleRules" class='collapse'>
+        <rule class='container' ng-model='rules' />
+      </div>
 
     </div>
+    
+  </div>
   </div>
 
