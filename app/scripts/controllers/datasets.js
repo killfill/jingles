@@ -55,7 +55,15 @@ angular.module('fifoApp')
 
     $scope.$on('progress', function(e, msg) {
         $scope.$apply(function() {
-            $scope.datasets[msg.channel].imported = msg.message.data.imported;
+            var imp = msg.message.data.imported
+            $scope.datasets[msg.channel].imported = imp
+
+            //Howl currently does not send the status, so set it here.
+            if (imp === 1)
+                $scope.datasets[msg.channel].status = 'imported'
+            else
+                $scope.datasets[msg.channel].status = 'importing'
+
         });
     })
 
@@ -69,6 +77,14 @@ angular.module('fifoApp')
                 $scope.datasets[id] = {}
                 wiggle.datasets.get({id: id},
                                     function success(res) {
+                                        //Datasets imported with previouse fifo (i.e. prev than 20131212T153143Z) does not has the status field, artificially add one.
+                                        if (!res.status) {
+                                            if (res.imported === 1) 
+                                                res.status = 'imported'
+                                            else
+                                                res.status = 'pending'
+                                        }
+
                                         if (res) $scope.datasets[id] = res
                                     },
                                     function error (res) {

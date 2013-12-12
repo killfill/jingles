@@ -152,7 +152,6 @@ angular.module('fifoApp')
         }
 
         wiggle.users.grant($scope.permission, function () {
-            console.log("Granted");
             var p = [$scope.permission.controller_id];
             if ($scope.permission.controller_id1)
                 p.push($scope.permission.controller_id1);

@@ -15,7 +15,7 @@
                     <th></th>
                     <th translate>Name</th>
                     <th translate>Description</th>
-                    <th style='min-width: 80px' translate>Ready</th>
+                    <th translate>Status</th>
                     <th translate>Type</th>
                     <th></th>
                   </tr>
@@ -27,21 +27,15 @@
                     <td><a href='#/datasets/{{data.dataset}}' title='{{data.dataset}}' jq-run='tooltip'>{{data.name}} {{data.version && '(' + data.version + ')'}}</a></td>
 
                     <td class='describe'>{{data.description}}</td>
-                    <td ng-show='!data.imported && data.imported !=0' permission=['cloud','datasets','import']>
-                      <button class='btn btn-sm btn-default'
-                              ng-hide="data.imported == 1"
-                              title='You need to download this dataset with FiFo'
-                              jq-run='tooltip'
-                              ng-click='import(data.dataset)'><i class='glyphicon glyphicon-download-alt'></i> <span translate>Import</span></button>
-                    </td>
-                    <td ng-show='data.imported > -1'>
-                      <i ng-hide="data.imported < 1" class="glyphicon glyphicon-ok" style=""></i>
-                      <div ng-show="data.imported < 1" class="progress progress-striped active">
-                        <div class="progress-bar" style="color: black; width: {{(data.imported * 100).toFixed(2)}}%;">{{(data.imported * 100).toFixed(0)}}%</div>
-                      </div>
+
+                    <td class='nowrap'>
+                      <span class='label' ng-class="{'label-warning': data.status=='importing' || data.status=='pending', 'label-danger': data.status=='failed', 'label-success': data.status=='imported'}">{{data.status}}</span> 
+                      <small class='text-muted' ng-show="data.imported < 1"> {{(data.imported * 100).toFixed(1)}}%</small>
                     </td>
                     <td class='light'>{{data.type}}</td>
-                    <td permission=['datasets','{{data.dataset}}','delete']><i ng-click="delete(data)" jq-run="tooltip" class="glyphicon glyphicon-remove-sign clickable" title="Delete" bs-modal="'views/partials/modal-confirm.html'"></i></td>
+                    <td >
+                      <i permission=['datasets','{{data.dataset}}','delete'] ng-show="data.status=='imported'" ng-click="delete(data)" jq-run="tooltip" class="glyphicon glyphicon-remove-sign clickable" title="Delete" bs-modal="'views/partials/modal-confirm.html'"></i>
+                    </td>
                   </tr>
                 </tbody>
               </table>

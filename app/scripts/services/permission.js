@@ -41,6 +41,23 @@ function mk_permission_fn(wiggle, $scope) {
                     "dtraces": {id: "dtraces", name: "DTrace"},
                 };
                 break;
+            case "channels":
+                $scope.p2 = {}
+                wiggle.hypervisors.list(function(ids) {
+                    ids.forEach(function(id) {
+                        wiggle.hypervisors.get({id: id}, function(res) {
+                            $scope.p2[res.uuid] = {id: res.uuid, name: 'Server ' + res.alias}
+                        })      
+                    })
+                })
+                wiggle.vms.list(function(ids) {
+                    ids.forEach(function(id) {
+                        wiggle.vms.get({id: id}, function(res) {
+                            $scope.p2[res.uuid] = {id: res.uuid, name: 'Machine ' + res.config.alias}
+                        })
+                    })
+                })
+                break;
             case "dtraces":
                 wiggle.dtrace.list(function(ids) {
                     if (ids.length > 0)
@@ -247,6 +264,12 @@ function mk_permission_fn(wiggle, $scope) {
                         {id:"join", name: "Join this group"},
                         {id:"leave", name: "Leave this group"}
                     ];
+                    break;
+                case "channels":
+                    $scope.p3 = [
+                        {id: 'join', name: 'Join'},
+                        {id: 'leave', name: 'Leave'},
+                    ]
                     break;
                 case "vms":
                     $scope.p3 = [

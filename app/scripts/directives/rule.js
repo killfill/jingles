@@ -15,10 +15,10 @@ angular.module('fifoApp')
 
       controller: function($scope, utils) {
 
-        $scope.attributeOptions = [ 
+        $scope.attributeOptions = [
             'resources.free-memory', 'resources.total-memory', 'resources.provisioned-memory',
             'resources.free', 'resources.size', 'resources.used',
-            'pools.zones.free', 'health', 'networks', 'name', 'uuid', 'virtualisation',
+            'pools.zones.free', 'health', 'networks', 'alias', 'uuid', 'virtualisation',
             'resources.l1hits', 'resources.l1miss', 'resources.l1size']
 
         $scope.weightOptions = [
