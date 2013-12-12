@@ -13,7 +13,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
 
         //Add selected server to the rules array
         if ($scope.server)
-            $scope.rules.push({weight: 'must', attribute: 'name', condition: '=:=', value: $scope.server.uuid})
+            $scope.rules.push({weight: 'must', attribute: 'uuid', condition: '=:=', value: $scope.server.uuid})
 
         var vm = new wiggle.vms({
             package: $scope.selectedPackage.uuid,
