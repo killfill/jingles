@@ -18,7 +18,7 @@ angular.module('fifoApp')
         $scope.attributeOptions = [ 
             'resources.free-memory', 'resources.total-memory', 'resources.provisioned-memory',
             'resources.free', 'resources.size', 'resources.used',
-            'pools.zones.free', 'health', 'networks', 'name', 'virtualisation',
+            'pools.zones.free', 'health', 'networks', 'name', 'uuid', 'virtualisation',
             'resources.l1hits', 'resources.l1miss', 'resources.l1size']
 
         $scope.weightOptions = [

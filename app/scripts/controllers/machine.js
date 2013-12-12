@@ -77,7 +77,6 @@ angular.module('fifoApp')
         unit:"%",
         size: 60,
         min: 0,
-        max: 150,
         series: [
             {options: {
                 color: "#FFA455",
