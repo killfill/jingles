@@ -3,7 +3,7 @@
       <span translate>Create a</span>
       <strong>{{selectedPackage.name}}</strong>
       <span translate>machine</span> 
-      <strong>{{selectedDataset.name && 'with ' + selectedDataset.name}}</strong>
+      <strong>{{selectedDataset.name && ('with ' | translate) + selectedDataset.name}}</strong>
       <span translate>called</span>: 
       <input class='input-large' style='margin-left: 8px;' type=text ng-model='alias' autofocus>
         <button class='btn btn-success pull-right' ng-disabled='!(alias && selectedDataset && selectedPackage && rules !== false)' ng-click='create_machine()' translate>Create</button>
@@ -83,7 +83,7 @@
 
         <a class="accordion-toggle" data-toggle='collapse' href='#togglePasswords' translate>Passwords</a>
         
-        <div id="togglePasswords" class='collapse'>
+        <div id="togglePasswords">
           <div class="accordion-inner">
           
             <span ng-hide='user.keys'>You dont have any SSH keys. <a href='#/configuration/users/{{user.uuid}}'>Add one</a> or specify the passwords below</span>

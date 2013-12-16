@@ -75,11 +75,7 @@ msgid "Description"
 msgstr ""
 
 #: app/views/datasets.html
-msgid "Ready"
-msgstr ""
-
-#: app/views/datasets.html
-msgid "Import"
+msgid "Status"
 msgstr ""
 
 #: app/views/datasets.html
@@ -96,6 +92,10 @@ msgstr ""
 
 #: app/views/datasets.html
 msgid "Creator"
+msgstr ""
+
+#: app/views/datasets.html
+msgid "Import"
 msgstr ""
 
 #: app/views/dtrace-new.html
@@ -179,6 +179,11 @@ msgstr ""
 #: app/views/group.html
 #: app/views/user.html
 msgid "Cloud"
+msgstr ""
+
+#: app/views/group.html
+#: app/views/user.html
+msgid "Channels"
 msgstr ""
 
 #: app/views/group.html
@@ -349,23 +354,19 @@ msgid "Network"
 msgstr ""
 
 #: app/views/machine-new.html
+msgid "Passwords"
+msgstr ""
+
+#: app/views/machine-new.html
 msgid ""
 ""
-"            Advanced Parameters"
+"            Parameters"
 "          "
 msgstr ""
 
 #: app/views/machine-new.html
 #: app/views/user.html
 msgid "SSH Keys"
-msgstr ""
-
-#: app/views/machine-new.html
-msgid "Root password"
-msgstr ""
-
-#: app/views/machine-new.html
-msgid "Admin password"
 msgstr ""
 
 #: app/views/machine-new.html
@@ -382,7 +383,23 @@ msgid "Resolver 2"
 msgstr ""
 
 #: app/views/machine-new.html
+msgid "Autoboot"
+msgstr ""
+
+#: app/views/machine-new.html
 msgid "User script"
+msgstr ""
+
+#: app/views/machine-new.html
+#: app/views/machine.html
+msgid "Server"
+msgstr ""
+
+#: app/views/machine-new.html
+msgid ""
+""
+"        Advanced rules"
+"      "
 msgstr ""
 
 #: app/views/machine.html
@@ -425,10 +442,6 @@ msgstr ""
 
 #: app/views/machine.html
 msgid "Created"
-msgstr ""
-
-#: app/views/machine.html
-msgid "Server"
 msgstr ""
 
 #: app/views/machine.html
@@ -526,11 +539,11 @@ msgid "New Machine"
 msgstr ""
 
 #: app/views/machines.html
-msgid "Showing"
+msgid "Showing "
 msgstr ""
 
 #: app/views/machines.html
-msgid "of"
+msgid "of "
 msgstr ""
 
 #: app/views/machines.html
@@ -588,6 +601,7 @@ msgid "Disk usage"
 msgstr ""
 
 #: app/views/network.html
+#: app/views/user.html
 msgid "Add"
 msgstr ""
 
@@ -870,10 +884,12 @@ msgid ""
 msgstr ""
 
 #: app/views/users.html
-msgid ""
-""
-"       New User"
-"    "
+msgid "New User"
+msgstr ""
+
+#: app/views/users.html
+#: app/views/partials/header.html
+msgid "Organizations"
 msgstr ""
 
 #: app/views/vis-graph.html
@@ -910,10 +926,6 @@ msgstr ""
 
 #: app/views/partials/header.html
 msgid "Networking"
-msgstr ""
-
-#: app/views/partials/header.html
-msgid "Organizations"
 msgstr ""
 
 #: app/views/partials/header.html

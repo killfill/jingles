@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: FiFo\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Phillip <pneumann@gmail.com>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.2\n"
 
 #: app/views/about.html
 msgid "Project FiFo"
@@ -68,12 +68,8 @@ msgid "Description"
 msgstr "Descripción"
 
 #: app/views/datasets.html
-msgid "Ready"
-msgstr "Listo"
-
-#: app/views/datasets.html
-msgid "Import"
-msgstr "Importar"
+msgid "Status"
+msgstr ""
 
 #: app/views/datasets.html
 msgid "Imported"
@@ -90,6 +86,10 @@ msgstr "Tamaño"
 #: app/views/datasets.html
 msgid "Creator"
 msgstr "Creador"
+
+#: app/views/datasets.html
+msgid "Import"
+msgstr "Importar"
 
 #: app/views/dtrace-new.html app/views/ip-range-new.html
 #: app/views/machine-new.html app/views/network-new.html
@@ -154,6 +154,10 @@ msgstr "Todo"
 #: app/views/group.html app/views/user.html
 msgid "Cloud"
 msgstr "Nube"
+
+#: app/views/group.html app/views/user.html
+msgid "Channels"
+msgstr "Canales"
 
 #: app/views/group.html app/views/user.html app/views/partials/header.html
 msgid "Datasets"
@@ -294,20 +298,16 @@ msgid "Network"
 msgstr "Red"
 
 #: app/views/machine-new.html
-msgid "            Advanced Parameters          "
-msgstr "Parámetros avanzados"
+msgid "Passwords"
+msgstr "Claves"
+
+#: app/views/machine-new.html
+msgid "            Parameters          "
+msgstr "Parámetros"
 
 #: app/views/machine-new.html app/views/user.html
 msgid "SSH Keys"
 msgstr "Llaves SSH"
-
-#: app/views/machine-new.html
-msgid "Root password"
-msgstr "Clave Root"
-
-#: app/views/machine-new.html
-msgid "Admin password"
-msgstr "Clave admin"
 
 #: app/views/machine-new.html app/views/machine.html
 msgid "Hostname"
@@ -322,8 +322,20 @@ msgid "Resolver 2"
 msgstr ""
 
 #: app/views/machine-new.html
+msgid "Autoboot"
+msgstr ""
+
+#: app/views/machine-new.html
 msgid "User script"
 msgstr "Script usuario"
+
+#: app/views/machine-new.html app/views/machine.html
+msgid "Server"
+msgstr "Servidor"
+
+#: app/views/machine-new.html
+msgid "        Advanced rules      "
+msgstr "Reglas avanzadas"
 
 #: app/views/machine.html
 msgid "Force"
@@ -364,10 +376,6 @@ msgstr "Máquina"
 #: app/views/machine.html
 msgid "Created"
 msgstr "Creado"
-
-#: app/views/machine.html
-msgid "Server"
-msgstr "Servidor"
 
 #: app/views/machine.html
 msgid "Owner"
@@ -462,11 +470,13 @@ msgid "New Machine"
 msgstr "Nueva máquina"
 
 #: app/views/machines.html
-msgid "Showing"
+#, fuzzy
+msgid "Showing "
 msgstr "Mostrando"
 
 #: app/views/machines.html
-msgid "of"
+#, fuzzy
+msgid "of "
 msgstr "de"
 
 #: app/views/machines.html app/views/main.html app/views/partials/header.html
@@ -521,7 +531,7 @@ msgstr "Tu nube necesita ayuda!"
 msgid "Disk usage"
 msgstr "Uso de disco"
 
-#: app/views/network.html
+#: app/views/network.html app/views/user.html
 msgid "Add"
 msgstr "Agregar"
 
@@ -791,8 +801,12 @@ msgstr ""
 "autorizar dinámicamente a las zonas."
 
 #: app/views/users.html
-msgid "       New User    "
+msgid "New User"
 msgstr "Nuevo usuario"
+
+#: app/views/users.html app/views/partials/header.html
+msgid "Organizations"
+msgstr "Organizaciones"
 
 #: app/views/vis-graph.html
 msgid "Reset"
@@ -831,10 +845,6 @@ msgid "Networking"
 msgstr "Red"
 
 #: app/views/partials/header.html
-msgid "Organizations"
-msgstr "Organizaciones"
-
-#: app/views/partials/header.html
 msgid "Scripts"
 msgstr ""
 
@@ -849,6 +859,18 @@ msgstr "Acerca de"
 #: app/views/partials/header.html
 msgid "Logout"
 msgstr "Salir"
+
+#~ msgid "Ready"
+#~ msgstr "Listo"
+
+#~ msgid "Root password"
+#~ msgstr "Clave Root"
+
+#~ msgid "Admin password"
+#~ msgstr "Clave admin"
+
+#~ msgid "       New User    "
+#~ msgstr "Nuevo usuario"
 
 #~ msgid ""
 #~ "You are part of the <u>Acme</u> organization, and of the <u>Powers</u> "
