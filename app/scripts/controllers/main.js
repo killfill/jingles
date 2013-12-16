@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('MainCtrl', function ($scope, wiggle, auth) {
+  .controller('MainCtrl', function ($scope, wiggle, auth, $interval) {
 
     $scope.msgTrClass = function(type) {
         return type == 'critical' ? 'danger': type;
@@ -36,6 +36,7 @@ angular.module('fifoApp')
 
     /* Update data on memory change */
     $scope.$on('memorychange', $scope.show);
+    $interval($scope.show, 1000 * (Config.statusPolling || 10))
     $scope.show();
 
   });

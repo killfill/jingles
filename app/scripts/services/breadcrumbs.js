@@ -6,7 +6,7 @@ angular.module('services.breadcrumbs').factory('breadcrumbs', ['$rootScope', '$l
   var breadcrumbs = [];
   var breadcrumbsService = {};
 
-  //Maybe this could be moved to a filter, in case we need something similar!
+  //There is a filter for this. TODO: put the breadscrum 'humanize' thing in the view.. and make it better by alowing to specifi the text to be displayed, i.e. vm.config.alias...
   function humanize(str) {
     var txt = str.split("-").map(function(t) {
         return t.charAt(0).toUpperCase() + t.slice(1);

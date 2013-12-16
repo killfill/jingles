@@ -34,7 +34,11 @@ angular.module('fifoApp')
         wiggle.cloud.get({controller: 'connection'}, 
             function(res) {
                 $scope.connectionStatus.ok = (res.howl > 0 && res.snarl > 0 && res.sniffle > 0)
-                $scope.connectionStatus.msg = 'Not connected: ' + JSON.stringify(res)
+                $scope.connectionStatus.msg = 'Not connected to: '
+                Object.keys(res).forEach(function(k) {
+                    if (res[k] === 0)
+                        $scope.connectionStatus.msg += k + ' '
+                })
                 statusWrapper()
             }, 
             function err() {

@@ -22,12 +22,17 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                 networks: {},
                 metadata: {},
                 alias: $scope.alias,
-                root_pw: $scope.root_pw,
-                admin_pw: $scope.admin_pw,
                 hostname: $scope.hostname,
                 ssh_keys: $scope.ssh_keys,
-                requirements: $scope.rules
+                requirements: $scope.rules,
+                autoboot: $scope.autoboot
             }
+        })
+
+        //Passwords
+        $scope.passwords.forEach(function(user) {
+            if (user.pass)
+                vm.config[ user.name + '_pw'] = user.pass
         })
 
         for (var i=0; i<$scope.selectedNetworks.length; i++) {
@@ -66,6 +71,9 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         $scope.alias = dataset.name
 
       $scope.selectedDataset = dataset
+
+      $scope.passwords = dataset.users || [{name: 'root'}, {name: 'admin'}]
+
     }
 
     $scope.click_network = function(network) {
@@ -104,6 +112,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         $scope.packages = []
         $scope.networks = []
         $scope.rules = [{}]
+        $scope.autoboot = true
 
         /* Get the latest version of a dataset */
         $scope.latestDatasets = {}

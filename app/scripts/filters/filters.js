@@ -70,3 +70,13 @@ fifoApp.filter('Mbytes', function() {
 fifoApp.filter('Gbytes', function() {
     return formatBytes(3)
 });
+
+fifoApp.filter('humanize', function() {
+    return function(str) {
+        var txt = str.split("-").map(function(t) {
+            return t.charAt(0).toUpperCase() + t.slice(1);
+        })
+        return txt.join(' ');
+    }
+})
+    

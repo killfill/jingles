@@ -143,6 +143,8 @@ angular.module('fifoApp')
         wiggle.hypervisors.list(howl.join)
         howl.connect($cookies["x-snarl-token"])
       }
+
+      $rootScope.user = user
     })
 
     //When loading /#/ changeRoute does not trigger so trigger it anyway.

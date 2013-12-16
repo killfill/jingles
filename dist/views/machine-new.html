@@ -77,6 +77,30 @@
     </div>
   </div>
 
+  <div class="col-md-6 accordion" ng-show='passwords'>
+  <div class="thumbnail">
+      <div class="accordion-group">
+
+        <a class="accordion-toggle" data-toggle='collapse' href='#togglePasswords' translate>Passwords</a>
+        
+        <div id="togglePasswords" class='collapse'>
+          <div class="accordion-inner">
+          
+            <span ng-hide='user.keys'>You dont have any SSH keys. <a href='#/configuration/users/{{user.uuid}}'>Add one</a> or specify the passwords below</span>
+
+            <table class="table table-hover small">
+              <tr class='small' ng-repeat='p in passwords'>
+                <th class='nowrap'>{{p.name | humanize}}</th>
+                <td><input class='form-control' type='password' ng-model='p.pass' /></td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
+
   <div class="col-md-6">
     <div class="thumbnail">
       <div class="accordion" id="optional">
@@ -91,14 +115,6 @@
                   <th class='nowrap' translate>SSH Keys</th>
                   <td><textarea class='form-control' type=text ng-model='ssh_keys'></textarea></td>
                 </tr>
-                <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                  <th class='nowrap' translate>Root password</th>
-                  <td><input class='form-control' type='password' ng-model='root_pw'/></td>
-                </tr>
-                <tr class='small' ng-hide="selectedDataset.type == 'kvm'">
-                  <th class='nowrap' translate>Admin password</th>
-                  <td><input class='form-control' type='password' ng-model='admin_pw'/></td>
-                </tr>
                 <tr class='small'>
                   <th class='nowrap' translate>Hostname</th>
                   <td><input class='form-control' type=text ng-model='hostname'/></td>
@@ -110,6 +126,10 @@
                 <tr class='small'>
                   <th class='nowrap' translate>Resolver 2</th>
                   <td><input class='form-control' type=text ng-model='resolver2'/></td>
+                </tr>
+                <tr class='small'>
+                  <th class='nowrap' translate>Autoboot</th>
+                  <td><input class="form-control" type='checkbox' ng-model='autoboot' /></td>
                 </tr>
                 <tr class="small">
                   <th class="nowrap" translate>User script</th>
