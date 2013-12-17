@@ -8,8 +8,10 @@ fifoApp.filter('hash2array', function() {
     return function(objs) {
         var values = []
         for (var k in objs)
-            if (objs.hasOwnProperty(k))
+            if (objs.hasOwnProperty(k)) {
+                objs[k]._key = k //Save the key so we dont loose it.
                 values.push(objs[k])
+            }
             return values
         }
 

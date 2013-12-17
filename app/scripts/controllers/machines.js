@@ -27,10 +27,9 @@ angular.module('fifoApp')
       var p = $scope.tableParams;
 
       var dataArray = Object.keys($scope.vms).map(function(k) { return $scope.vms[k] })
-
       var data = $scope.searchQuery ? $filter('filter')(dataArray, $scope.searchQuery) : dataArray;
 
-      data = p.sorting ? $filter('orderBy')(data, p.orderBy()) : $filter('orderBy')(data, 'config.alias');
+      data = p.sorting()? $filter('orderBy')(data, p.orderBy()) : data
 
       $scope.vmsFiltered = data.slice((p.page() - 1) * p.count(), p.page() * p.count());
     }
@@ -98,6 +97,11 @@ angular.module('fifoApp')
           'config.alias': 'desc' //Could save this in the user metadata.. :P
         },
         counts: [] ,//[] = disable ngTable pagination buttons
+      }, {
+        getData: function($defer, params) {
+          filterData()
+          $defer.resolve($scope.vmsFiltered)
+        }
       })
 
       //When something on the table changes, i.e. infinit scroll detected.

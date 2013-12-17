@@ -472,9 +472,9 @@ angular.module('fifoApp')
                 title: 'Confirm Snapshot Deletion',
                 body: '<p>Are you sure you want to delete snapshot <strong>' + snap.comment + '</strong> dated ' + new Date(snap.timestamp/1000) + '</p>',
                 ok: function() {
-                     wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap.uuid},
+                     wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap._key},
                       function success() {
-                        $scope.snapshots[snap.uuid].state='deleting'
+                        $scope.snapshots[snap._key].state='deleting'
                       },
                       function error(data) {
                         status.error('Error deleting the snapshot. See your console')

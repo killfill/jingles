@@ -29,7 +29,7 @@ angular.module('fifoApp')
       canAccess: function(elementPerm) {
         
         if (!user) return false
-        var perms = user.permissions
+        var perms = user.permissions || []
 
         //Add the groups permissions
         user.groups.forEach(function(k) {
