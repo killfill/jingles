@@ -33,7 +33,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<div style='padding-top: 10px;' ng-if='loginError' class='container text-danger pull-left'>{{loginError}}</div>
+						<div style='padding-top: 10px; width: 350px;' ng-if='loginError' class='container text-danger pull-left text-left'>{{loginError}}</div>
 						<button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-lg btn-primary" ng-disabled='!connectionStatus.ok translate'>Login</button>
 
 					</div>

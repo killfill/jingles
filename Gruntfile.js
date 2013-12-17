@@ -64,7 +64,7 @@ module.exports = function (grunt) {
                 },
                 hypervisors: {
                     type: 'list',
-                    n: 5
+                    n: 10
                 },
                 packages: {
                     type: 'list',
@@ -165,10 +165,18 @@ module.exports = function (grunt) {
 
                             // Catch PUT, DELETE, and POSTS and respond a 200.. :P
                             middlewares.push(function (req, res, next) {
+
                                 var m = req.method;
-                                if (m=='POST' || m=='PUT' || m=='DELETE')
-                                    return res.end()
-                                next()
+
+                                if (m == 'GET') return next();
+
+                                if (req.url == '/api/0.1.0/sessions') {
+                                    res.writeHead(303, {
+                                        'Location': '/api/0.1.0/users/0'
+                                    })
+                                    return res.end();
+                                }
+                                return res.end();
                             })
 
                             // Request /api/0.1.0/cloud/connection.

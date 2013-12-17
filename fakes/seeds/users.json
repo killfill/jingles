@@ -4,13 +4,10 @@
     "metadata": [],
     "name": "{{Name.findName}}",
     "org": "{{random.number(4)}}",
-    "orgs": [],
+    "orgs": ["{{random.number(4)}}"],
     "permissions": [
-        [
-            "users",
-            "{{random.number(4)}}",
-            "..."
-        ]
+        [ "users", "{{random.number(4)}}",  "..." ],
+        [ "..." ]
     ],
     "uuid": "{{random.number(4)}}"
 }

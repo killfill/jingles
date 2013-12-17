@@ -2,7 +2,8 @@
     "characteristics": [],
     "etherstubs": [],
     "host": "{{Internet.ip}}",
-    "name": "{{random.number(5)}}",
+    "alias": "{{random.bs_noun}}",
+    "uuid": "{{random.number(4)}}",
     "networks": "{{Lorem.words}}",
     "pools": {
         "zones": {

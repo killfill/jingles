@@ -9,7 +9,6 @@ angular.module('fifoApp')
 
     $scope.messages = false
     $scope.show = function() {
-
         $scope.user = auth.currentUser()
         if (!$scope.user) return;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle, $location, status) {
+angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle, $location, status, auth) {
    
     $scope.create_machine = function() {
 
@@ -9,7 +9,6 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                          'You have either too many or too fiew networks selected.');
             return;
         };
-
 
         //Add selected server to the rules array
         if ($scope.server)
@@ -113,6 +112,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         $scope.networks = []
         $scope.rules = [{}]
         $scope.autoboot = true
+        $scope.user = auth.currentUser()
 
         /* Get the latest version of a dataset */
         $scope.latestDatasets = {}

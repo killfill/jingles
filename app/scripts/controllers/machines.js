@@ -9,7 +9,7 @@ angular.module('fifoApp')
     $scope.infinitScroll = function() {
       if ($scope.tableParams.count() >= $scope.vmsIds.length)
         return;
-      $scope.tableParams.count($scope.tableParams.count + 5);
+      $scope.tableParams.count($scope.tableParams.count() + 5);
     }
 
     $scope.start = function(vm) {

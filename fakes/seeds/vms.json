@@ -31,7 +31,7 @@
         "zonepath": "/zones/7401a61a-f9b0-44bd-8db8-87a42d6f0ab7"
     },
     "dataset": "{{random.number(10)}}",
-    "hypervisor": "node01",
+    "hypervisor": "{{random.number(10)}}",
     "info": [],
     "log": [
         {
@@ -99,23 +99,33 @@
     "snapshots": {
         "362927c7-a81d-45b3-85f6-5cbf76ad0d84": {
             "comment": "Dos",
-            "timestamp": 1380983904630670
+            "timestamp": 1380983904630670,
+            "size": 62432,
+            "state": "completed"
         },
         "41ec9af4-e622-4c87-98b2-5f43310cacce": {
             "comment": "Cinco",
-            "timestamp": 1380983917788443
+            "timestamp": 1380983917788443,
+            "size": 62432,
+            "state": "completed"
         },
         "43e1e4bd-edb4-4994-b006-4b26422ace3f": {
             "comment": "Tres",
-            "timestamp": 1380983908536169
+            "timestamp": 1380983908536169,
+            "size": 62432,
+            "state": "completed"
         },
         "877fb0e7-2b7a-4400-af5c-7fe23a7aa4d7": {
             "comment": "Cuatro",
-            "timestamp": 1380983911932921
+            "timestamp": 1380983911932921,
+            "size": 62432,
+            "state": "completed"
         },
         "a2cca192-41d8-4b8f-bc7e-d84e0a8b9964": {
             "comment": "Uno",
-            "timestamp": 1380983900505070
+            "timestamp": 1380983900505070,
+            "size": 62432,
+            "state": "pending"
         }
     },
     "state": "running",
