@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle, $location, status, auth) {
+angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle, $location, status, auth, $q) {
    
     $scope.create_machine = function() {
 
@@ -14,7 +14,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
         if ($scope.server)
             $scope.rules.push({weight: 'must', attribute: 'uuid', condition: '=:=', value: $scope.server.uuid})
 
-        var vm = new wiggle.vms({
+        var vm = {
             package: $scope.selectedPackage.uuid,
             dataset: $scope.selectedDataset.dataset,
             config: {
@@ -26,7 +26,7 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                 requirements: $scope.rules,
                 autoboot: $scope.autoboot
             }
-        })
+        }
 
         //Passwords
         $scope.passwords.forEach(function(user) {
@@ -50,13 +50,45 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
             vm.config.metadata[h.key] = h.value;
         })
 
-        vm.$save({}, function success(data, headers) {
-            howl.join(data.uuid);
-            $location.path('/machines')
-        }, function error(data) {
-            console.error('Create VM error:', data, data.headers(), vm);
-            status.error('There was an error creating your vm. See the the VMs logs or js console for details.');
-        })
+        //Check if use wants more than 1 vm:
+        var match = $scope.alias.match(/\{(\d+)-(\d+)\}/)
+        if (match) {
+            var from = match[1],
+                to = match[2]
+
+            var calls = []
+            for (var i=from; i<=to; i++) {
+                var vmResource = new wiggle.vms(vm)
+                vmResource.config.alias = vmResource.config.alias.replace(match[0], i)
+                vmResource.config.hostname = vmResource.config.alias
+                console.log('saving --> ', vmResource.config.alias)
+                calls.push(vmResource.$save())
+            }
+
+            $q.all(calls).then(
+                function ok(res) {
+                    res.forEach(function(item) {
+                        howl.join(item.uuid)
+                    })
+                    $location.path('/machines')
+                },
+                function error(res) {
+                    console.error('Create VM error:', res)
+                    status.error('There was an error creating your vms. See their logs or js console for details.')
+                })
+        }
+        else
+            //Just 1 VM
+            new wiggle.vms(vm).$save().then(
+                function ok(res){
+                    howl.join(res.uuid)
+                    $location.path('/machines')
+                },
+                function err(){
+                    console.error('Create VM error:', res)
+                    status.error('There was an error creating your VM. See its logs or js console for details.')
+                }
+            )
     }
 
     $scope.click_package = function(pkg) {
