@@ -91,7 +91,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab" translate>Details</a></li>
       <li><a href="#performance" data-toggle="tab" translate>Performance</a></li>
-      <li><a href="#snapshots" data-toggle="tab" translate>Snapshots</a></li>
+      <li><a href="#snapshots" data-toggle="tab" translate>Timeline</a></li>
       <li><a href="#imaging" data-toggle="tab" translate>Imaging</a></li>
       <li><a href="#resize" data-toggle="tab" translate>Change</a></li>
       <li><a href="#history" data-toggle="tab" translate>History</a></li>
@@ -281,22 +281,28 @@
       <div class="tab-pane" id="snapshots">
         <p class='pull-right'>
           <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;' translate>To rollback, please stop the machine</span>
-          <button style='margin-bottom: 10px' ng-click="snapshot('create')" class="btn btn-default" jq-run='tooltip' title='Take a new snapshot' permission=['vms','{{vm.uuid}}','snapshot']>
+          <button style='margin-bottom: 10px' ng-click="timelineAction('create', {type: 'snapshot'})" class="btn btn-default" jq-run='tooltip' title='Take a new snapshot' permission=['vms','{{vm.uuid}}','snapshot']>
             <i class='glyphicon glyphicon-camera'></i> <span translate>Snapshot</span>
           </button>
+          <button style='margin-bottom: 10px' ng-click="timelineAction('create', {type: 'backup'})" class="btn btn-default" jq-run='tooltip' title='Take a new backup' permission=['vms','{{vm.uuid}}','backup']>
+            <i class='glyphicon glyphicon-hdd'></i> <span translate>Backup</span>
+          </button>
         </p>
+
         <table class="table table-condensed table-hover pull-left">
-          <tr ng-repeat="snap in snapshots | hash2array | orderBy: '-timestamp' ">
-            <td class='nowrap' style="width: 50%"><strong title='{{snap.uuid}}' jq-run='tooltip'>{{snap.comment}}</strong></td>
-            <td class='nowrap light'><span ng-show='snap.size'>{{snap.size | bytes}}</span></td>
-            <td class='nowrap light'>{{snap.message}}</td>
-            <td><span class='label label-default' ng-class='{ "label-success" : snap.state == "completed" , "label-warning" : snap.state == "deleting", "label-danger" : snap.state == "error" }'>{{snap.state}}</span></td>
-            <td class='nowrap light'><span title="{{snap.timestamp/1000 | date:'medium'}}" jq-run='tooltip' jq-option="{placement: 'bottom'}" am-time-ago='snap.timestamp/1000'></span> </td>
+          <tr ng-repeat="t in timeline | hash2array | orderBy: '-timestamp' ">
+            <td class='nowrap'> <i class='glyphicon' ng-class='{"glyphicon-hdd": t.type=="backup", "glyphicon-camera": t.type=="snapshot"}'></i> <span>{{t.type | humanize}}</span></td>
+            <td class='nowrap' style="width: 35%"><strong title='{{t.uuid}}' jq-run='tooltip'>{{t.comment}}</strong></td>
+            <td class='nowrap light'><span ng-show='t.size'>{{t.size | bytes}}</span></td>
+            <td class='nowrap light'>{{t.message}}</td>
+            <td class='nowrap'><span ng-show='t.local' translate>local</span></td>
+            <td><span class='label label-default' ng-class='{ "label-success" : t.state == "completed" , "label-warning" : t.state == "deleting" || t.state=="uploading" || t.state=="pending", "label-danger" : t.state == "error" }'>{{t.state}}</span></td>
+            <td class='nowrap light'><span title="{{t.timestamp/1000 | date:'medium'}}" jq-run='tooltip' jq-option="{placement: 'bottom'}" am-time-ago='t.timestamp/1000'></span> </td>
             <td class='nowrap'>
-              <i ng-click="snapshot('rollback', snap)" jq-run="tooltip" title="rollback"
+              <i ng-click="timelineAction('rollback', t)" jq-run="tooltip" title="rollback"
                  ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
                  class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i>
-              <i ng-click="snapshot('delete', snap)" jq-run="tooltip" title="delete"
+              <i ng-click="timelineAction('delete', t)" jq-run="tooltip" title="delete"
                  ng-hide="vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
                  class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','snapshot_delete']></i>
             </td>

@@ -35,7 +35,13 @@ angular.module('fifoApp')
 
     /* Update data on memory change */
     $scope.$on('memorychange', $scope.show);
-    $interval($scope.show, 1000 * (Config.statusPolling || 10))
+    
+    //Poll the status.
+    var polling = $interval($scope.show, 1000 * (Config.statusPolling || 10))
+    $scope.$on('$destroy', function() {
+        $interval.cancel(polling)
+    })
+
     $scope.show();
 
   });

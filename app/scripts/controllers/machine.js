@@ -93,7 +93,7 @@ angular.module('fifoApp')
     var netdata_chart = {};
 
 
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function(e, msg) {
         howl.leave(uuid + '-metrics');
     });
 
@@ -108,9 +108,11 @@ angular.module('fifoApp')
         $("#performance").append(html);
     }
     $scope.$on('net', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         "Throughput";
         "Packages";
         var data = msg.message.data;
+
         var ifname = data.ifname;
         if (!netdata_chart[ifname]) {
             var id = "netdata_" + ifname;
@@ -155,12 +157,14 @@ angular.module('fifoApp')
     });
 
     $scope.$on('vfs', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         var data = msg.message.data;
         ops_chart.add([data.reads, data.writes]);
         throughtput_chart.add([data.nread, data.nwritten]);
     });
 
     $scope.$on('memstat', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         var data = msg.message.data;
         mem_chart.add([data.physcap, data.rss]);
         swap_chart.add([data.swapcap, data.swap]);
@@ -168,6 +172,7 @@ angular.module('fifoApp')
     });
 
     $scope.$on('cpu', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         var data = msg.message.data;
         cpu_chart.add([data.usage, data.value]);
     });
@@ -201,7 +206,20 @@ angular.module('fifoApp')
             var _notes = $scope.vm.mdata('notes') && $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; })
             $scope.notes = _notes? _notes.reverse() : []
 
-            $scope.snapshots = $scope.vm.snapshots || {}
+            //Merge snapshots + backups  in 1 object. TODO: replace these loops with something more elegant...
+            $scope.timeline = {}
+            var source
+            for (var k in source = $scope.vm.backups || {}) {
+                if (!source.hasOwnProperty(k)) return;
+                source[k].type = 'backup'
+                $scope.timeline[k] = source[k]
+            }
+            for (var k in source = $scope.vm.snapshots || {}) {
+                if (!source.hasOwnProperty(k)) return;
+                source[k].type = 'snapshot'
+                $scope.timeline[k] = source[k]
+            }
+
             cb && cb($scope.vm);
             $scope.img_name = $scope.vm.config.alias;
             $scope.img_version = inc_version($scope.vm.config._dataset && $scope.vm.config._dataset.version);
@@ -233,9 +251,11 @@ angular.module('fifoApp')
 
 
     $scope.$on('state', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         $scope.vm.state = msg.message.data
+
         vmService.updateCustomFields($scope.vm)
-        updateVm()
+        // updateVm()
 
         /* In case the vm was forced to stop, restore the force value */
         if ($scope.vm.state === 'stopped')
@@ -245,11 +265,15 @@ angular.module('fifoApp')
     })
 
     $scope.$on('delete', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
+
         $location.path('/machines')
         $scope.$apply()
     })
 
     $scope.$on('update', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
+
         var vm = msg.message.data.config
 
         Object.keys(vm).forEach(function(k) {
@@ -260,19 +284,42 @@ angular.module('fifoApp')
     })
 
     $scope.$on('log', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         //data: {date: timestamp, log: text}.
         // console.log('[log evt]', msg.message.data)
         $scope.vm.log.push(msg.message.data)
         $scope.$apply()
     })
 
+    $scope.$on('backup', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
+        var d = msg.message.data
+
+        switch (d.action) {
+
+            case 'update':
+                var b = $scope.timeline[d.uuid]
+                if (d.data.size) b.size = d.data.size
+                if (d.data.state) b.state = d.data.state
+                if (typeof d.data.local != 'undefined') b.local = d.data.local
+                break;
+
+            default:
+                console.log('Unknown backup event:', d)
+
+        }
+
+        $scope.$apply()
+
+    })
     $scope.$on('snapshot', function(e, msg) {
+        if (msg.channel != uuid) return; //not for us..
         var d = msg.message.data;
 
         switch (d.action) {
 
             case 'deleted':
-                delete $scope.snapshots[d.uuid]
+                delete $scope.timeline[d.uuid]
                 status.success('Snapshot deleted')
                 break;
 
@@ -282,7 +329,7 @@ angular.module('fifoApp')
                 break;
 
             default:
-                var snap = $scope.snapshots[d.uuid]
+                var snap = $scope.timeline[d.uuid]
                 snap.state = d.action
                 snap.message = d.message
         }
@@ -449,18 +496,96 @@ angular.module('fifoApp')
 
     }
 
-    $scope.snapshot = function(action, snap) {
+    $scope.timelineAction = function(action, obj) {
+
+        switch (obj.type) {
+            case 'snapshot':
+                snapshotAction(action, obj)
+                break
+
+            case 'backup':
+                backupAction(action, obj)
+                break
+        }
+    }
+
+    //Actions for backups
+    var backupAction = function(action, obj) {
+        switch (action) {
+
+            case 'create':
+                status.prompt('Write a comment for the new backup:', function(comment) {
+                    wiggle.vms.save({id: uuid, controller: 'backups'}, {comment: comment},
+                        function success(data, h) {
+                            data.type = 'backup'
+                            $scope.timeline[data.uuid] = data
+                        },
+                        function error(data, h) {
+                            status.error('Could not create. See your console')
+                            console.error(data)
+                        }
+                    )
+                })
+                break;
+
+            case 'delete':
+                $scope.modal = {
+                    confirm: 'Delete',
+                    title: 'Confirm Backup Deletion',
+                    body: '<p>Are you sure you want to delete backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '</p>',
+                    ok: function() {
+                        wiggle.vms.delete({id: uuid, controller: 'backups', controller_id: obj._key}, 
+                            function success(){
+                                $scope.timeline[obj._key].state = 'deleting'
+                            },
+                            function error(data){
+                                status.error('Could not delete. See your console')
+                                console.error(data)
+                            }
+                        )
+                    }
+                }
+                break;
+
+            case 'rollback':
+
+                $scope.modal = {
+                    confirm: 'Rollback',
+                    btnClass: 'btn-danger',
+                    title: 'Confirm Rollback',
+                    body: '<p><font color="red">Warning!</font> You are about to rollback to backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '?</p>' +
+                        '<p>Please note: Any backups that have been taken after this rollback date will be deleted if you proceed.</p>' +
+                        "</b>Are you 100% sure you really want to do this?</p>",
+                    ok: function() {
+                        status.info('Will rollback to backup ' + obj.comment);
+                        wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj.uuid}, {action: 'rollback'},
+                           function success(data) {
+                                $scope.timeline[obj.uuid].state='rolling...'
+                           },
+                           function error(data) {
+                               status.error('Error when rolling back. See the history')
+                               console.log(data)
+                           })
+                    }
+                }
+                break;
+        }
+    }
+
+    //Actions for snapshots
+    var snapshotAction = function(action, snap) {
         switch (action) {
 
         case 'create':
             status.prompt('Write a comment for the new snapshot:', function(comment) {
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                                 function success(data, h) {
-                                    $scope.snapshots[data.uuid] = data
+                                    data.type = 'snapshot'
+                                        $scope.timeline[data.uuid] = data
                                 },
                                 function error(data) {
-                                    status.error('Error saving the snapshot. See your console')
-                                    console.log(data)
+                                    status.error('Could not save. See your console')
+                                    console.error(data)
                                 });
             });
             break;
@@ -474,11 +599,11 @@ angular.module('fifoApp')
                 ok: function() {
                      wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap._key},
                       function success() {
-                        $scope.snapshots[snap._key].state='deleting'
+                        $scope.timeline[snap._key].state = 'deleting'
                       },
                       function error(data) {
-                        status.error('Error deleting the snapshot. See your console')
-                        console.log(data)
+                        status.error('Could not delete. See your console')
+                        console.error(data)
                     })
                 }
             }
@@ -497,7 +622,7 @@ angular.module('fifoApp')
                     status.info('Will rollback to snapshot ' + snap.comment);
                     wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap.uuid}, {action: 'rollback'},
                        function success(data) {
-                            $scope.snapshots[snap.uuid].state='rolling...'
+                            $scope.timeline[snap.uuid].state='rolling...'
                        },
                        function error(data) {
                            status.error('Error when rolling back. See the history')
