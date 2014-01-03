@@ -515,7 +515,12 @@ angular.module('fifoApp')
 
             case 'create':
                 status.prompt('Write a comment for the new backup:', function(comment) {
-                    wiggle.vms.save({id: uuid, controller: 'backups'}, {comment: comment},
+                    body = {comment: comment};
+                    if (obj.parent) {
+                        body.parrent = obj.parent
+                        body['delete'] = true
+                    }
+                    wiggle.vms.save({id: uuid, controller: 'backups'}, body,
                         function success(data, h) {
                             data.type = 'backup'
                             $scope.timeline[data.uuid] = data
