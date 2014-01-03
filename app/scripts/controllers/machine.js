@@ -309,6 +309,12 @@ angular.module('fifoApp')
                 status.success('Backup deleted')
                 break;
 
+            // case 'rollback':
+            case 'restored':
+                updateVm()
+                status.success("Rolled back successfully")
+                break;
+
             default:
                 console.log('Unknown backup event:', d)
 
@@ -531,7 +537,6 @@ angular.module('fifoApp')
                         body.parent = obj.parent
                         body['delete'] = true
                     }
-                    console.log(body);
                     wiggle.vms.save({id: uuid, controller: 'backups'}, body,
                         function success(data, h) {
                             data.type = 'backup'
@@ -571,13 +576,12 @@ angular.module('fifoApp')
                     btnClass: 'btn-danger',
                     title: 'Confirm Rollback',
                     body: '<p><font color="red">Warning!</font> You are about to rollback to backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '?</p>' +
-                        '<p>Please note: Any backups that have been taken after this rollback date will be deleted if you proceed.</p>' +
                         "</b>Are you 100% sure you really want to do this?</p>",
                     ok: function() {
                         status.info('Will rollback to backup ' + obj.comment);
                         wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key}, {action: 'rollback'},
                            function success(data) {
-                                $scope.timeline[obj.uuid].state='rolling...'
+                                $scope.timeline[obj._key].state='rolling...'
                            },
                            function error(data) {
                                status.error('Error when rolling back. See the history')
@@ -639,7 +643,7 @@ angular.module('fifoApp')
                     status.info('Will rollback to snapshot ' + snap.comment);
                     wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap._key}, {action: 'rollback'},
                        function success(data) {
-                            $scope.timeline[snap.uuid].state='rolling...'
+                            $scope.timeline[snap._key].state='rolling...'
                        },
                        function error(data) {
                            status.error('Error when rolling back. See the history')

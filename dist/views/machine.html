@@ -285,13 +285,13 @@
             <i class='glyphicon glyphicon-camera'></i> <span translate>Snapshot</span>
           </button>
           <button style='margin-bottom: 10px' ng-click="timelineAction('create', {type: 'backup'})" class="btn btn-default" jq-run='tooltip' title='Take a new backup' permission=['vms','{{vm.uuid}}','backup']>
-            <i class='glyphicon glyphicon-hdd'></i> <span translate>Backup</span>
+            <i class='glyphicon glyphicon-cloud-upload'></i> <span translate>Backup</span>
           </button>
         </p>
 
         <table class="table table-condensed table-hover pull-left">
           <tr ng-repeat="t in timeline | hash2array | orderBy: '-timestamp' ">
-            <td class='nowrap'> <i class='glyphicon' ng-class='{"glyphicon-hdd": t.type=="backup", "glyphicon-camera": t.type=="snapshot"}'></i> <span>{{t.type | humanize}}</span></td>
+            <td class='nowrap'> <i class='glyphicon' ng-class='{"glyphicon-cloud": t.type=="backup", "glyphicon-camera": t.type=="snapshot"}'></i> <span>{{t.type | humanize}}</span></td>
             <td class='nowrap' style="width: 35%"><strong title='{{t.uuid}}' jq-run='tooltip'>{{t.comment}}</strong></td>
             <td class='nowrap light'><span ng-show='t.size'>{{t.size | bytes}}</span></td>
             <td class='nowrap light'>{{t.message}}</td>
@@ -299,15 +299,18 @@
             <td><span class='label label-default' ng-class='{ "label-success" : t.state == "completed" , "label-warning" : t.state == "deleting" || t.state=="uploading" || t.state=="pending", "label-danger" : t.state == "error" }'>{{t.state}}</span></td>
             <td class='nowrap light'><span title="{{t.timestamp/1000 | date:'medium'}}" jq-run='tooltip' jq-option="{placement: 'bottom'}" am-time-ago='t.timestamp/1000'></span> </td>
             <td class='nowrap'>
-              <i ng-click="timelineAction('create', {type: 'backup', parent: t._key})" jq-run="tooltip" title="incremental"
-                 ng-show="vm.state=='stopped' && !vm.mdata('locked') && t.local"
-                 class="glyphicon glyphicon-camera clickable" permission=['vms','{{vm.uuid}}','backup']></i>
-              <i ng-click="timelineAction('rollback', t)" jq-run="tooltip" title="rollback"
-                 ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i>
-              <i ng-click="timelineAction('delete', t)" jq-run="tooltip" title="delete"
+              
+              <i ng-click="timelineAction('delete', t)" jq-run="tooltip" title="Delete"
                  ng-hide="vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','snapshot_delete']></i>
+                 class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','snapshot_delete']></i> 
+
+              <i ng-click="timelineAction('rollback', t)" jq-run="tooltip" title="Rollback"
+                 ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
+                 class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i> 
+
+              <i ng-click="timelineAction('create', {type: 'backup', parent: t._key})" jq-run="tooltip" title="Incremental backup"
+                 ng-show="!vm.mdata('locked') && t.local"
+                 class="glyphicon glyphicon-cloud-upload clickable" permission=['vms','{{vm.uuid}}','backup']></i>
             </td>
           </tr>
         </table>
