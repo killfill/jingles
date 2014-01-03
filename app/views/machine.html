@@ -300,7 +300,7 @@
             <td class='nowrap light'><span title="{{t.timestamp/1000 | date:'medium'}}" jq-run='tooltip' jq-option="{placement: 'bottom'}" am-time-ago='t.timestamp/1000'></span> </td>
             <td class='nowrap'>
               <i ng-click="timelineAction('create', {type: 'backup', parent: t._key})" jq-run="tooltip" title="incremental"
-                 ng-show="vm.state=='stopped' && !vm.mdata('locked') && t.size"
+                 ng-show="vm.state=='stopped' && !vm.mdata('locked') && t.local"
                  class="glyphicon glyphicon-camera clickable" permission=['vms','{{vm.uuid}}','backup']></i>
               <i ng-click="timelineAction('rollback', t)" jq-run="tooltip" title="rollback"
                  ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
