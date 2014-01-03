@@ -304,6 +304,11 @@ angular.module('fifoApp')
                 if (typeof d.data.local != 'undefined') b.local = d.data.local
                 break;
 
+            case 'deleted':
+                delete $scope.timeline[d.uuid]
+                status.success('Backup deleted')
+                break;
+
             default:
                 console.log('Unknown backup event:', d)
 
