@@ -515,11 +515,12 @@ angular.module('fifoApp')
 
             case 'create':
                 status.prompt('Write a comment for the new backup:', function(comment) {
-                    body = {comment: comment};
+                    var body = {comment: comment};
                     if (obj.parent) {
-                        body.parrent = obj.parent
+                        body.parent = obj.parent
                         body['delete'] = true
                     }
+                    console.log(body);
                     wiggle.vms.save({id: uuid, controller: 'backups'}, body,
                         function success(data, h) {
                             data.type = 'backup'
