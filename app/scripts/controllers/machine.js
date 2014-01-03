@@ -476,12 +476,12 @@ angular.module('fifoApp')
 
         case 'create':
             status.prompt('Enter your note:', function(txt) {
-                
+
                 $scope.vm.mdata_set({notes: $scope.notes}, function() {
                     status.success('Note created')
                     $scope.notes.splice(0, 0, {text: txt, created_at: new Date()})
                 })
-                
+
             })
             break;
 
@@ -490,7 +490,7 @@ angular.module('fifoApp')
             $scope.vm.mdata_set({notes: $scope.notes}, function() {
                 status.success('Note deleted')
             })
-            
+
             break;
         }
 
@@ -534,7 +534,7 @@ angular.module('fifoApp')
                     title: 'Confirm Backup Deletion',
                     body: '<p>Are you sure you want to delete backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '</p>',
                     ok: function() {
-                        wiggle.vms.delete({id: uuid, controller: 'backups', controller_id: obj._key}, 
+                        wiggle.vms.delete({id: uuid, controller: 'backups', controller_id: obj._key},
                             function success(){
                                 $scope.timeline[obj._key].state = 'deleting'
                             },
@@ -558,7 +558,7 @@ angular.module('fifoApp')
                         "</b>Are you 100% sure you really want to do this?</p>",
                     ok: function() {
                         status.info('Will rollback to backup ' + obj.comment);
-                        wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj.uuid}, {action: 'rollback'},
+                        wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key}, {action: 'rollback'},
                            function success(data) {
                                 $scope.timeline[obj.uuid].state='rolling...'
                            },
@@ -620,7 +620,7 @@ angular.module('fifoApp')
                     "</b>Are you 100% sure you really want to do this?</p>",
                 ok: function() {
                     status.info('Will rollback to snapshot ' + snap.comment);
-                    wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap.uuid}, {action: 'rollback'},
+                    wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap._key}, {action: 'rollback'},
                        function success(data) {
                             $scope.timeline[snap.uuid].state='rolling...'
                        },
