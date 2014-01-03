@@ -324,11 +324,13 @@ angular.module('fifoApp')
         switch (d.action) {
 
             case 'deleted':
-                if ($scope.timeline[d.uuid].local) {
-                    $scope.timeline[d.uuid].local = false
-                } else {
-                    delete $scope.timeline[d.uuid]
-                    status.success('Snapshot deleted')
+                if ($scope.timeline[d.uuid]) {
+                    if ($scope.timeline[d.uuid].local) {
+                        $scope.timeline[d.uuid].local = false
+                    } else {
+                        delete $scope.timeline[d.uuid]
+                        status.success('Snapshot deleted')
+                    }
                 }
                 break;
 
