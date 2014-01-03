@@ -108,7 +108,7 @@ angular.module('fifoApp')
         $("#performance").append(html);
     }
     $scope.$on('net', function(e, msg) {
-        if (msg.channel != uuid) return; //not for us..
+        if (msg.channel.indexOf(uuid) < 0) return; //not for us..
         "Throughput";
         "Packages";
         var data = msg.message.data;
@@ -157,14 +157,14 @@ angular.module('fifoApp')
     });
 
     $scope.$on('vfs', function(e, msg) {
-        if (msg.channel != uuid) return; //not for us..
+        if (msg.channel.indexOf(uuid) < 0)  return; //not for us..
         var data = msg.message.data;
         ops_chart.add([data.reads, data.writes]);
         throughtput_chart.add([data.nread, data.nwritten]);
     });
 
     $scope.$on('memstat', function(e, msg) {
-        if (msg.channel != uuid) return; //not for us..
+        if (msg.channel.indexOf(uuid) < 0)  return; //not for us..
         var data = msg.message.data;
         mem_chart.add([data.physcap, data.rss]);
         swap_chart.add([data.swapcap, data.swap]);
@@ -172,7 +172,7 @@ angular.module('fifoApp')
     });
 
     $scope.$on('cpu', function(e, msg) {
-        if (msg.channel != uuid) return; //not for us..
+        if (msg.channel.indexOf(uuid) < 0)  return; //not for us..
         var data = msg.message.data;
         cpu_chart.add([data.usage, data.value]);
     });
