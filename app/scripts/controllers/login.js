@@ -4,7 +4,7 @@ angular.module('fifoApp')
   .controller('LoginCtrl', function ($scope, auth, $timeout, wiggle, $location) {
 
     $scope.submit = function() {
-    	auth.login($scope.user, $scope.password)
+    	auth.login($scope.user, $scope.password, $scope.otp)
     }
 
     $scope.$on('auth:login_ok', function() {
@@ -31,7 +31,7 @@ angular.module('fifoApp')
     }
     /* Check the backend status */
     var checkBackendStatus = function() {
-        wiggle.cloud.get({controller: 'connection'}, 
+        wiggle.cloud.get({controller: 'connection'},
             function(res) {
                 $scope.connectionStatus.ok = (res.howl > 0 && res.snarl > 0 && res.sniffle > 0)
                 $scope.connectionStatus.msg = 'Not connected to: '
@@ -40,7 +40,7 @@ angular.module('fifoApp')
                         $scope.connectionStatus.msg += k + ' '
                 })
                 statusWrapper()
-            }, 
+            },
             function err() {
                 $scope.connectionStatus.ok = false
                 $scope.connectionStatus.msg = 'No connection'

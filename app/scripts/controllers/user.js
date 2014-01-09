@@ -2,7 +2,6 @@
 
 angular.module('fifoApp')
   .controller('UserCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
-    
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
     $scope.p3 = false;
@@ -110,12 +109,16 @@ angular.module('fifoApp')
     wiggle.users.get({id: uuid}, function(res) {
         res.groups = res.groups || [];
         $scope.user = res;
+        console.log(res);
         $scope.ssh_keys = $scope.user.mdata('ssh_keys')
         $scope.permissions = [];
         $scope.user._groups = {};
         if ($scope.user.keys.length == 0) {
             $scope.user.keys = {};
         };
+        if (! $scope.user.yubikeys) {
+            $scope.user.yubikeys = []
+        }
 
         $scope.user.groups.map(function (gid){
             if ($scope.groups[gid]) {
@@ -190,6 +193,40 @@ angular.module('fifoApp')
             }
         }
     };
+
+    $scope.add_otp = function () {
+        console.log($scope.otp);
+    };
+
+    $scope.add_otp = function() {
+        console.log($scope.user);
+        var otp = $scope.otp;
+        var keyid = otp.slice(0, -32);
+        var keys = $scope.user.yubikeys || [];
+        if (keys.indexOf(keyid) == -1) {
+            wiggle.users.put({id: $scope.user.uuid,
+                              controller: 'yubikeys'},
+                             {"otp": otp},
+                             function() {
+                                 keys[keys.length] = keyid;
+                                 $scope.user.yubikeys = keys;
+                             });
+        }
+        //$scope.user.mdata_set({ssh_keys: $scope.ssh_keys})
+        //status.info('SSH key saved')
+    }
+
+    $scope.delete_yubikey = function(key) {
+        wiggle.users.delete({id: $scope.user.uuid,
+                             controller: 'yubikeys',
+                             controller_id: key},
+                            function(){
+                                var idx = $scope.user.yubikeys.indexOf(key);
+                                if (idx > -1) {
+                                    $scope.user.yubikeys.splice(idx, 1);
+                                }
+                            });
+    }
 
     $scope.passwd = function () {
         if ($scope.pass1 == $scope.pass2) {
@@ -269,5 +306,5 @@ angular.module('fifoApp')
         })
     };
     $scope.init();
-    
+
   });

@@ -27,7 +27,7 @@ angular.module('fifoApp')
     var auth = {
 
       canAccess: function(elementPerm) {
-        
+
         if (!user) return false
         var perms = user.permissions || []
 
@@ -37,7 +37,7 @@ angular.module('fifoApp')
         })
 
         for (var i=0; i<perms.length; i++) {
-          if (_canAcess(elementPerm, perms[i])) 
+          if (_canAcess(elementPerm, perms[i]))
             return true
         }
         return false
@@ -55,9 +55,12 @@ angular.module('fifoApp')
         return userLoggedDefer.promise
       },
 
-      login: function (_user, _pass) {
-
-        wiggle.sessions.login(null, {user: _user, password: _pass}).$promise.then(
+      login: function (_user, _pass, _otp) {
+        var o = {user: _user, password: _pass};
+        if (_otp) {
+            o.otp = _otp
+        }
+        wiggle.sessions.login(null, o).$promise.then(
 
           function success(res) {
 

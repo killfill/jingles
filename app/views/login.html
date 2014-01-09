@@ -30,9 +30,14 @@
 							</span>
 							<input type="password" class="form-control input-lg" placeholder="Password" ng-model='password' ng-disabled='!connectionStatus.ok' required="require">
 						</div>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-lock"></i>
+							</span>
+							<input class="form-control input-lg" placeholder="Password" ng-model='otp' ng-disabled='!connectionStatus.ok'>
+						</div>
 					</div>
-
-					<div class="modal-footer">
+				<div class="modal-footer">
 						<div style='padding-top: 10px; width: 350px;' ng-if='loginError' class='container text-danger pull-left text-left'>{{loginError}}</div>
 						<button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-lg btn-primary" ng-disabled='!connectionStatus.ok translate'>Login</button>
 
