@@ -1,11 +1,11 @@
 'use strict';
-
 function init_scope($scope, org) {
     $scope.org = org;
     $scope.grant_triggers = [];
     $scope.join_triggers = [];
     org.triggers.forEach(function (t) {
         var a = t.action;
+        console.log(a);
         if (a == "group_grant" || a == "user_grant") {
             $scope.grant_triggers.push(t)
         } else if (a == "join_org" || a == "join_group") {
@@ -64,10 +64,8 @@ angular.module('fifoApp')
             base: "vms",
             permission: [$scope.permission],
             target: $scope.grant_group
-        }, function success() {
-            wiggle.orgs.get({id: uuid}, function(res) {
-                init_scope($scope, res)
-            });
+        }, function success(res) {
+            init_scope($scope, res)
         });
     };
 
@@ -102,10 +100,8 @@ angular.module('fifoApp')
         }, {
             action: "join_group",
             target: $scope.join_group
-        }, function success() {
-            wiggle.orgs.get({id: uuid}, function(res) {
-                init_scope($scope, res)
-            });
+        }, function success(res) {
+            init_scope($scope, res);
         });
 
     };
@@ -118,10 +114,8 @@ angular.module('fifoApp')
         }, {
             action: "join_org",
             target: $scope.join_org
-        }, function success() {
-            wiggle.orgs.get({id: uuid}, function(res) {
-                init_scope($scope, res)
-            });
+        }, function success(res) {
+            init_scope($scope, res);
         });
     };
 
@@ -149,7 +143,7 @@ angular.module('fifoApp')
             btnClass: 'btn-danger',
             confirm: 'Delete',
             title: 'Confirm VM Deletion',
-            body: '<p><font color="red">Warning!</font> you are about to delete the Org <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Org is gone forever!</p>", 
+            body: '<p><font color="red">Warning!</font> you are about to delete the Org <b id="delete-uuid">' + name + " (" + uuid + ") </b> Are you 100% sure you really want to do this?</p><p>Clicking on Delete here will mean this Org is gone forever!</p>",
             ok: function() {
             	wiggle.orgs.delete({id: uuid},
                                function success(data, h) {
