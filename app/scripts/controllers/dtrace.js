@@ -1,11 +1,11 @@
 'use strict';
-
+var renderer;
 angular.module('fifoApp')
   .controller('DtraceCtrl', function ($scope, $routeParams, $location, wiggle, status) {
   	var uuid = $routeParams.uuid;
     var socket = false;
 
-    var renderer;
+
     $scope.running = false;
 
     var finalize_vars = function(vars) {
@@ -90,7 +90,7 @@ angular.module('fifoApp')
         // if we already created a renderer we just need to enable it again.
         if (renderer) {
             $scope.running = true;
-            renderer.play();
+            renderer.start();
             return
         }
 
@@ -103,7 +103,7 @@ angular.module('fifoApp')
             WebSocket = MozWebSocket;
         }
 
-        var wsurl = window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host +'/api/0.1.0/dtrace/' + uuid + '/stream';
+        var wsurl = Config.wiggle.replace(/^http/, "ws")+'dtrace/' + uuid + '/stream';
         socket = new WebSocket(wsurl, 'msgpack');
         socket.binaryType = "arraybuffer";
 
@@ -111,6 +111,7 @@ angular.module('fifoApp')
            on connection. */
         socket.onmessage = function(message){
             var message = msgpack.unpack(new Uint8Array(message.data));
+            console.log(message)
             if (message.config) {
                 switch (message.config.type) {
                 case "heatmap":
