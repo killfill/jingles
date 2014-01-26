@@ -299,14 +299,14 @@
             <td><span class='label label-default' ng-class='{ "label-success" : t.state == "completed" , "label-warning" : t.state == "deleting" || t.state=="uploading" || t.state=="pending", "label-danger" : t.state == "error" }'>{{t.state}}</span></td>
             <td class='nowrap light'><span title="{{t.timestamp/1000 | date:'medium'}}" jq-run='tooltip' jq-option="{placement: 'bottom'}" am-time-ago='t.timestamp/1000'></span> </td>
             <td class='nowrap'>
-              
+
               <i ng-click="timelineAction('delete', t)" jq-run="tooltip" title="Delete"
                  ng-hide="vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','snapshot_delete']></i> 
+                 class="glyphicon glyphicon-trash clickable" permission=['vms','{{vm.uuid}}','snapshot_delete']></i>
 
               <i ng-click="timelineAction('rollback', t)" jq-run="tooltip" title="Rollback"
                  ng-show="vm.state=='stopped' && !vm.mdata('locked')" bs-modal="'views/partials/modal-confirm.html'"
-                 class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i> 
+                 class="glyphicon glyphicon-backward clickable" permission=['vms','{{vm.uuid}}','rollback']></i>
 
               <i ng-click="timelineAction('create', {type: 'backup', parent: t._key})" jq-run="tooltip" title="Incremental backup"
                  ng-show="!vm.mdata('locked') && t.local"

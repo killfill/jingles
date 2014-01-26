@@ -214,10 +214,12 @@ angular.module('fifoApp')
                 source[k].type = 'backup'
                 $scope.timeline[k] = source[k]
             }
+            $scope.snapshots = {}
             for (var k in source = $scope.vm.snapshots || {}) {
                 if (!source.hasOwnProperty(k)) return;
-                source[k].type = 'snapshot'
-                $scope.timeline[k] = source[k]
+                source[k].type = 'snapshot';
+                $scope.timeline[k] = source[k];
+                $scope.snapshots[k] = source[k];
             }
 
             cb && cb($scope.vm);

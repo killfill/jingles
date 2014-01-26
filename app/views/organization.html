@@ -21,11 +21,17 @@
     <tr><th translate>UUID</th><td><b>{{org.uuid}}</b></td></tr>
   </table>
   <div class="box">
-    <div class="header" translate>Automatic grants on VM creation</div>
+    <div class="header" translate>Automatic grants on creation</div>
+    <select ng-model="created_object">
+      <option value="vm_create" translate>VM</option>
+      <option value="dataset_create" translate>Dataset</option>
+    </select>
+      
     <select ng-model="grant_group">
       <option ng-repeat="grp in groups | hash2array" value="{{grp.uuid}}">{{grp.name}}</option>
     </select>
     <select ng-model="permission">
+      <option value="_" translate>Everything</option>
       <option value="get" translate>See</option>
       <option value="start" translate>Start</option>
       <option value="stop" translate>Stop</option>
@@ -44,7 +50,7 @@
         <th translate>Template</th>
         <th translate>Actions</th>
       </tr>
-      <tr ng-repeat="trigger in grant_triggers">
+      <tr ng-repeat="trigger in grant_triggers | hash2array">
         <td>{{(groups[trigger.target] ||
           {name: "DELETED"}).name}}({{trigger.target}})</td>
         <td>{{trigger.permission.join("->")}}</td>
@@ -68,7 +74,7 @@
         <th translate>Org/Group</th>
         <th translate>Actions</th>
       </tr>
-      <tr ng-repeat="trigger in join_triggers">
+      <tr ng-repeat="trigger in join_triggers | hash2array">
         <td>{{(orgs[trigger.target] ||
           groups[trigger.target] ||
           {name: "DELETED"}).name}}({{trigger.target}})</td>
