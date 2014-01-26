@@ -32,7 +32,7 @@ angular.module('fifoApp')
       //Using interceptor to *full* the object with aditional data comming from a different request.
       //When you return a promise (to wait until the additional request finishes), the $resource callback
       //will return that promise instead of the original $resource. Ref: https://github.com/angular/angular.js/blob/master/src/ngResource/resource.js#L501
-      //To make this explicit, and to make it not a surprise for dev's, will define getFull instead of overriding the default 'get' 
+      //To make this explicit, and to make it not a surprise for dev's, will define getFull instead of overriding the default 'get'
 
 
     //Add _group object to the user...
@@ -68,8 +68,8 @@ angular.module('fifoApp')
                           controller_id3: '@controller_id3'},
                          {put: {method: 'PUT'},
                           grant: {method: 'PUT'},
-                          getFull: {method: 'GET', cache: true, 
-                            interceptor: { 
+                          getFull: {method: 'GET', cache: true,
+                            interceptor: {
                               response: function(res) {
 
                                 var user = res.resource
@@ -78,7 +78,7 @@ angular.module('fifoApp')
                                 var groupCalls = user.groups.map(function(id) {
                                   return services.groups.get({id: id}).$promise
                                 })
-                                
+
                                 var orgCalls = user.orgs.map(function(id) {
                                   return services.orgs.get({id: id}).$promise
                                 })
