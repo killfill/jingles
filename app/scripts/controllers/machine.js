@@ -207,18 +207,17 @@ angular.module('fifoApp')
             $scope.notes = _notes? _notes.reverse() : []
 
             //Merge snapshots + backups  in 1 object. TODO: replace these loops with something more elegant...
-            $scope.timeline = {}
-            var source
+            $scope.snapshots = {}
+            $scope.backups = {}
+            var source;
             for (var k in source = $scope.vm.backups || {}) {
                 if (!source.hasOwnProperty(k)) return;
                 source[k].type = 'backup'
-                $scope.timeline[k] = source[k]
+                $scope.backups[k] = source[k]
             }
-            $scope.snapshots = {}
             for (var k in source = $scope.vm.snapshots || {}) {
                 if (!source.hasOwnProperty(k)) return;
                 source[k].type = 'snapshot';
-                $scope.timeline[k] = source[k];
                 $scope.snapshots[k] = source[k];
             }
 
