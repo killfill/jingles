@@ -734,6 +734,11 @@ angular.module('fifoApp')
             });
         });
 
+        //Check if S3 endpoint is configured, to enable the backup funcionality.
+        wiggle.cloud.get(function(res) {
+            $scope.has_s3 = res.metrics.storage == 's3'
+        })
+
 
         howl.join(uuid + '-metrics');
         updateVm()

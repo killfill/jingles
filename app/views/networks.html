@@ -15,7 +15,10 @@
         </thead>
         <tbody>
           <tr ng-repeat="net in networks | hash2array | orderBy: 'name'">
-            <td><strong><a href="#/configuration/networks/{{net.uuid}}">{{net.name}}</a></strong></td>
+            <td>
+              <strong><a href="#/configuration/networks/{{net.uuid}}">{{net.name}}</a></strong>
+              <i class="glyphicon glyphicon-exclamation-sign" ng-if='!net.ipranges' title='No IP Range assigned' jq-run='tooltip'></i>
+            </td>
             <td>
               <i ng-click="delete(net)" jq-run='tooltip' title="Delete" class="glyphicon glyphicon-remove clickable" bs-modal="'views/partials/modal-confirm.html'"></i>
             </td>

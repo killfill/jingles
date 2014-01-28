@@ -135,6 +135,7 @@ module.exports = function (grunt) {
                 {
                     context: '/api',
                     host: grunt.option('proxy'), //i.e. grunt server --proxy=YOUR_WIGGLE   
+		            port: grunt.option('port') || 80,
                     // port: 443,
                     // https: true,
                     // ws: true
@@ -142,6 +143,7 @@ module.exports = function (grunt) {
                 {
                     context: '/howl',
                     host: grunt.option('proxy'),
+                    port: grunt.option('port') || 80,
                     ws: true
                 }
             ],
