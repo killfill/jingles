@@ -177,9 +177,24 @@ angular.module('fifoApp')
         cpu_chart.add([data.usage, data.value]);
     });
 
+    $scope.update_show_disabled = function() {
+        $scope.vm.mdata_set({show_disabled: !$scope.show_disabled});
+    }
+
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function success(res) {
             $scope.vm = vmService.updateCustomFields(res);
+            $scope.show_disabled = $scope.vm.mdata('show_disabled') || false;
+            $scope.vm["services"] = $scope.vm["services"] || [];
+            var service_state_map = {
+                online: 'success',
+                legacy_run: 'success',
+                maintainance: 'danger',
+                degraded: 'danger'
+            }
+            $scope.vm["services"].map(function(s) {
+                s._label = service_state_map[s.state] || 'default';
+            })
             var pkg =  "custom"
             if ($scope.vm["package"]) {
                 pkg = $scope.vm["package"] + "";
@@ -205,7 +220,7 @@ angular.module('fifoApp')
             $scope.color = $scope.vm.mdata('color')
             var _notes = $scope.vm.mdata('notes') && $scope.vm.mdata('notes').sort(function(a,b) { return a.created_at >= b.created_at; })
             $scope.notes = _notes? _notes.reverse() : []
-
+            
             //Merge snapshots + backups  in 1 object. TODO: replace these loops with something more elegant...
             $scope.snapshots = {}
             $scope.backups = {}
@@ -385,7 +400,7 @@ angular.module('fifoApp')
 
         //Check if we need to change the owner.
         // if ($scope.new_owner && $scope.new_owner.uuid != $scope.vm.owner)
-            wiggle.vms.put({id: $scope.vm.uuid, controller: 'owner'}, {org: $scope.new_owner && $scope.new_owner.uuid}, 
+            wiggle.vms.put({id: $scope.vm.uuid, controller: 'owner'}, {org: $scope.new_owner && $scope.new_owner.uuid},
                 function success() {
                     status.info('Owner changed')
                     $scope.vm._owner = $scope.new_owner
