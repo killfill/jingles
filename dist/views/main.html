@@ -3,12 +3,21 @@
 
 		<div class="welcome">
 			<h4 translate>Welcome {{user.name}}!</h4>
+
+			<p class='text-danger' ng-show='no_servers === true'>
+				No servers detected.<br/>
+				Please check if chunter is running ok.<br/>
+				Check out the <a href='http://project-fifo.net/display/PF/Problem+Checklist'>problem's checklist</a>.
+			</p>
+
 			<p ng-show='activeOrg'><span translate>You are part of</span> <u>{{activeOrg.name}}</u>.</p>
 			<p ng-show='user.groups.length>0'><span translate>You groups are</span>: 
 				<span ng-repeat='g in user._groups'>{{g.name}}</span>
 			</p>
 			<p ng-show='keys > 0' translate>SSH keys configured: {{keys}}</p>
 			<p ng-show='keys < 1' translate>No ssh keys found on your account. Dont forget to <a href='#/configuration/users/{{user.uuid}}'>add one</a>! </p>
+
+			<p translate ng-show="cloud_status && metrics.storage != 's3'">Tip: You can <a href='http://project-fifo.net/display/PF/LeoFS'>configure</a> Fifo to backup machine's into an S3 compatible service. Then, you will see a 'Versioning' tab on each machine page that lets you work with the backups.</p>
 <!--
 		<p>http://stackoverflow.com/questions/18756981/twitter-bootstrap-3-tab-view-fade-does-not-work-properly</p>
 			<ul>
@@ -50,7 +59,7 @@
 		</div>
 
 
-		<div class="panel panel-primary" ng-show='messages && !cloud_ok'>
+		<div class="panel panel-primary" ng-show='(messages | filter:{ok: !true}).length > 0'>
 			<div class="panel-heading">
 				<span class="panel-title" translate>Messages</span>
 			</div>
@@ -94,18 +103,24 @@
 			</div>
 			<hr/>
 			<div class="widget">
-				<h4 translate>Machines</h4>
-				<div>{{metrics.vms}}</div>
+				<a href="#/machines" class='nocolor'>
+					<h4 translate>Machines</h4>
+					<div>{{metrics.vms}}</div>
+				</a>
 			</div>
 
 			<div class="widget">
-				<h4 translate>Users</h4>
-				<div>{{metrics.users}}</div>
+				<a href="#/configuration/users" class='nocolor'>
+					<h4 translate>Users</h4>
+					<div>{{metrics.users}}</div>
+				</a>
 			</div>
 
 			<div class="widget">
-				<h4 translate>Servers</h4>
-				<div>{{metrics.hypervisors.length}}</div>
+				<a href="#/servers" class='nocolor'>
+					<h4 translate>Servers</h4>
+					<div>{{metrics.hypervisors.length}}</div>
+				</a>
 			</div>
 
 		</div>

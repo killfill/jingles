@@ -93,7 +93,7 @@
       <li><a href="#performance" data-toggle="tab" translate>Performance</a></li>
       <li><a href="#services" data-toggle="tab" translate>Services</a></li>
       <li><a href="#snapshots" data-toggle="tab" translate>Snapshots</a></li>
-      <li><a href="#versioning" data-toggle="tab" translate>Versioning</a></li>
+      <li ng-show='has_s3'><a href="#versioning" data-toggle="tab" translate>Versioning</a></li>
       <li><a href="#imaging" data-toggle="tab" translate>Imaging</a></li>
       <li><a href="#resize" data-toggle="tab" translate>Change</a></li>
       <li><a href="#history" data-toggle="tab" translate>History</a></li>
@@ -316,6 +316,7 @@
         </table>
       </div>
       <div class="tab-pane" id="versioning">
+
         <p class='pull-right'>
           <span ng-show="vm.state!='stopped' && (snapshots|hash2array).length>0" class='light' style='padding: 5px;' translate>To rollback, please stop the machine</span>
           <button style='margin-bottom: 10px' ng-click="timelineAction('create', {type: 'backup'})" class="btn btn-default" jq-run='tooltip' title='Take a new backup' permission=['vms','{{vm.uuid}}','backup']>

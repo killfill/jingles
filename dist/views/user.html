@@ -27,6 +27,7 @@
       <li><a href="#groups" data-toggle="tab" translate>Groups</a></li>
       <li><a href="#orgs" data-toggle="tab" translate>Organization</a></li>
       <li><a href="#ssh_keys" data-toggle="tab"translate>SSH Keys</a></li>
+      <li><a href="#yubikeys" data-toggle="tab"translate>Yubikeys</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="details">
@@ -49,7 +50,7 @@
             </dd>
 
           </dl>
-          <small translate>Change Password</small>: 
+          <small translate>Change Password</small>:
           	<div class="input-group">
           		<span class="input-group-addon"><i class='glyphicon glyphicon-lock'></i></span>
 	            <input ng-model="pass1" class="form-control" type="password" placeholder="New password" class='form-control'></input><br/>
@@ -58,9 +59,7 @@
           		<span class="input-group-addon"><i class='glyphicon glyphicon-lock'></i></span>
 	            <input ng-model="pass2" class="form-control" type="password" placeholder="Confirm Password">
           	</div>
-          	
             <button class="btn btn-primary pull-right" ng-click="passwd()" style='margin-bottom: 10px; margin-top: 10px' translate>Change</button>
-         
         </div>
 
       </div>
@@ -154,18 +153,41 @@
                   <td style="word-wrap: break-word; max-width: 64em;">{{key}}</td>
                   <td><a ng-click="delete_sshkey(key_id)" translate>delete</a></td>
                 </tr>
-
               </tbody>
             </table>
           </div>
         </div>
         <div class="fluid-row">
           <div class="span12">
-
             <p translate>SSH Keys will be used when creating new KVM machines. They also will dynamically grant access
               to SmartOS zones. Based on the console access to the zone.</p>
             <textarea rows="6" class='form-control uuid' style='font-size: 0.9em;' ng-model="ssh_keys"></textarea>
             <p class='btn-toolbar pull-right'><button class='btn btn-primary' ng-click='save_sshkeys()' translate>Add</button></p>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="yubikeys">
+        <div class="fluid-row">
+          <div class="span12">
+            <table class="table table-condensed table-bordered">
+              <tbody>
+                <tr>
+                  <th translate>Key ID</th>
+                  <th translate>Delete</th>
+                </tr>
+                <tr ng-repeat="key_id in user.yubikeys">
+                  <td>{{key_id}}</td>
+                  <td><a ng-click="delete_yubikey(key_id)" translate>delete</a></td>
+                </tr>
+              </tbody>
+            </table>
+            <form ng-submit="add_otp()">
+              <div class="input-group">
+          	    <span class="input-group-addon"><i class='glyphicon glyphicon-lock'></i></span>
+	            <input ng-model="otp" class="form-control" placeholder="OTP" class='form-control' on-enter="add_otp()"></input>
+                <br/>
+          	  </div>
+            </form>
           </div>
         </div>
       </div>

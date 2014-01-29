@@ -12,8 +12,10 @@ angular.module('fifoApp')
         $scope.user = auth.currentUser()
         if (!$scope.user) return;
 
-        $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
         $scope.keys = Object.keys($scope.user.keys).length
+
+        if ($scope.user.org)
+            $scope.activeOrg = wiggle.orgs.get({id: $scope.user.org})
 
         wiggle.cloud.get(function res (data) {
             $scope.metrics = data.metrics
@@ -26,7 +28,12 @@ angular.module('fifoApp')
                 return !i.ok;
             }).length < 1
 
-            $scope.cloud_status = $scope.cloud_ok ? 'images/healthy-cluster.png' : 'images/unhealthy-cluster.png'
+            //If there is no chunter, the cloud is not ok.
+            $scope.no_servers = !$scope.metrics.hypervisors || $scope.metrics.hypervisors.length < 1
+
+            if ($scope.no_servers)
+                $scope.cloud_ok = false
+
         })
 
     }

@@ -193,8 +193,12 @@ angular.module('fifoApp').controller('MachineNewCtrl', function ($scope, wiggle,
                 return $location.path('/configuration/networks/new')
             }
 
-            ids.forEach(function(name) {
-                wiggle.networks.get({id: name}, function(res) {
+            ids.forEach(function(id) {
+                wiggle.networks.get({id: id}, function(res) {
+
+                    //If no iprange is asosiated with the network, ignore it.
+                    if (!res.ipranges || res.ipranges.length < 1) return;
+                    
                     $scope.networks.push(res)
                     if (!$scope.selectedNetworks)
                         $scope.selectedNetworks = [res]
