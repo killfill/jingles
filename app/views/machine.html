@@ -91,6 +91,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#details" data-toggle="tab" translate>Details</a></li>
       <li><a href="#performance" data-toggle="tab" translate>Performance</a></li>
+      <li><a href="#services" data-toggle="tab" translate>Services</a></li>
       <li><a href="#snapshots" data-toggle="tab" translate>Snapshots</a></li>
       <li><a href="#versioning" data-toggle="tab" translate>Versioning</a></li>
       <li><a href="#imaging" data-toggle="tab" translate>Imaging</a></li>
@@ -267,8 +268,17 @@
           </div>
           <div id="cpu" class="metric"></div>
         </div>
-
       </div>
+
+      <div class="tab-pane" id="services">
+        <table class="table table-condensed table-hover">
+          <tr ng-repeat="service in vm.services | orderBy: '-service ">
+            <td>{{service.service}}</td>
+            <td>{{service.state}}</td>
+          </tr>
+        </table>
+      </div>
+
 
       <div class="tab-pane" id="history">
         <table class="table table-condensed table-hover">
