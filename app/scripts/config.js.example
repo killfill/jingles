@@ -5,20 +5,15 @@ Config = {
      * redentials test/test.
      */
     mode: "production",
-    /*
-     * This is the URL of the FiFo API Server.
-     * Please adjust it to your configuration.
-     */
-    wiggle: window.location.protocol+"//"+window.location.host + '/api/0.1.0/',
-    //wiggle: 'http://IP/api/0.1.0/',
 
-    /*
-     * The URL of the FiFo Howl notification Service.
-     * If you are not running howl you can comment this line
-     * and the service will not be used.
+    /* 
+     * An array of FiFo api backends.
+     * Add more endpoint to be able to connect to them.
      */
-    howl: window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host+"/howl",
-    //howl: 'ws://IP/howl',
+    backends: [
+        {name: 'This', endpoint: ''},
+        //{name: 'Moon', endpoint: 'https://moon.com'},
+    ],
 
     /*
      * The URL of the remote dataset repository
@@ -47,7 +42,10 @@ Config = {
             category: "cloud",
             element: "memory",
             message: "High memory usage at: $v%",
-            formula: function(m) {return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);}
+            formula: function(m) {
+                if (!m["free-memory"]) return 0;
+                return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);
+            }
         },
         {
             max: 0.85,
@@ -55,7 +53,10 @@ Config = {
             category: "cloud",
             element: "disk",
             message: "High Disk usage at: $v%",
-            formula: function(m) {return m.used / m.size;}
+            formula: function(m) {
+                if (!m.size) return 0;
+                return m.used / m.size;
+            }
         },
         {
             min: 0.80,
