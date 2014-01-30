@@ -1,5 +1,7 @@
-<header ng-show='auth.isLogged()' mira=' ip {{isLogged}}' class="navbar navbar-inverse navbar-fixed-top" role="banner">
+<header ng-show='auth.isLogged()' class="navbar navbar-inverse navbar-fixed-top" role="banner">
+
     <div class="container">
+
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".menu-one">
                 <span class="sr-only">Toggle navigation</span>
@@ -7,16 +9,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="images/fifo.svg" style="max-height: 40px;" class="img-responsive" ></a>
+            <a class="navbar-brand" href="#"><img src="images/fifo.svg" class="img-responsive" ></a>
         </div>
 
-        <nav class="collapse navbar-collapse menu-one" role='navigation'>
+        <nav class="collapse navbar-collapse menu-one" role='navigation' style='position: relative;'>
+
             <ul class="nav navbar-nav">
                 <li ng-class="{active: isActive('machines')}"><a href="#/machines" translate permission="['cloud','vms','list']">Machines</a></li>
                 <li ng-class="{active: isActive('datasets')}"><a href="#/datasets" translate permission=['cloud','datasets','list']>Datasets</a></li>
                 <li ng-class="{active: isActive('servers')}"><a href="#/servers" translate permission=['cloud','hypervisors','list']>Servers</a></li>
                 <li ng-class="{active: isActive('configuration')}" class='dropdown'>
-                    <a class='dropdown-toggle' data-toggle='dropdown'><span translate>Configuration</span> <b class='caret'></b></a>
+                    <a class='dropdown-toggle' data-toggle='dropdown'><span translate>Config</span> <b class='caret'></b></a>
                     <ul class='dropdown-menu'>
                         <li ng-class="{active: isActive('packages')}"><a href="#/configuration/packages" translate permission=['cloud','packages','list']>Packages</a></li>
                         <li class='divider'></li>
@@ -36,7 +39,23 @@
 
             </ul>
 
+
             <ul class="nav navbar-nav navbar-right">
+
+                <li class='dropdown'>
+                    <a class="dropdown-toggle" data-toggle='dropdown'>
+                        <i class='flag-icon {{lang}}'></i>
+                    </a>
+                    <ul class="dropdown-menu" role='menu'>
+                        <li ng-repeat='lang in languages'>
+                            <a ng-click="setLang(lang)">
+                                <i class='flag-icon {{lang}}'></i>
+                                <span class='capitalize'>&nbsp;&nbsp;{{lang}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class='dropdown'>
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <i ng-show='howlConnected' class='glyphicon glyphicon-user'></i>
@@ -53,24 +72,19 @@
                 </li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class='dropdown'>
-                    <a class="dropdown-toggle" data-toggle='dropdown'>
-                        <i class='flag-icon {{lang}}'></i>
-                    </a>
-                    <ul class="dropdown-menu" role='menu'>
-                        <li ng-repeat='lang in languages'>
-                            <a ng-click="setLang(lang)">
-                                <i class='flag-icon {{lang}}'></i>
-                                <span class='capitalize'>&nbsp;&nbsp;{{lang}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
+            <form class="navbar-form navbar-right">
+                <select 
+                    style="box-sizing:border-box; max-width: 100px; position: absolute; top: 11px; right: 150px"
+                    ng-model='selected_backend' 
+                    ng-change='changeBackend(this.selected_backend)'
+                    ng-options="b.name for b in backends">
+                </select>
+            </form>
 
         </nav>
+
+
+
     </div>
 
 </header>

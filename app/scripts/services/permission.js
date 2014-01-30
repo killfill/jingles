@@ -30,15 +30,16 @@ function mk_permission_fn(wiggle, $scope) {
             case "cloud":
                 $scope.p2 = {
                     "cloud": {id: "cloud", name: "Cloud"},
-                    "users": {id: "users", name: "Users"},
+                    "datasets": {id: "datasets", name: "Datasets"},
+                    "dtraces": {id: "dtraces", name: "DTrace"},
                     "groups": {id: "groups", name: "Groups"},
                     "hypervisors": {id: "hypervisors", name: "Hypervisors"},
-                    "vms": {id: "vms", name: "Virtual Machines"},
-                    "networks": {id: "networks", name: "Networks"},
                     "ipranges": {id: "ipranges", name: "IP Ranges"},
-                    "datasets": {id: "datasets", name: "Datasets"},
+                    "networks": {id: "networks", name: "Networks"},
+                    "orgs": {id: "orgs", name: "Organizations"},
                     "packages": {id: "packages", name: "Packages"},
-                    "dtraces": {id: "dtraces", name: "DTrace"},
+                    "users": {id: "users", name: "Users"},
+                    "vms": {id: "vms", name: "Virtual Machines"},
                 };
                 break;
             case "channels":
@@ -87,6 +88,17 @@ function mk_permission_fn(wiggle, $scope) {
                         })
                     })
                 });
+                break;
+            case "orgs":
+                wiggle.orgs.query(function(orgs) {
+                    $scope.p2 = {
+                        '...': {id: '...', name: 'Everything'},
+                        '_': {id: '_', name: 'All Orgs'},
+                    }
+                    orgs.forEach(function(org) {
+                        $scope.p2[org.uuid] = {id: org.uuid, name: org.name}
+                    })
+                })
                 break;
             case "groups":
                 wiggle.groups.list(function(ids) {
@@ -226,6 +238,7 @@ function mk_permission_fn(wiggle, $scope) {
                     case "dtraces":
                     case "ipranges":
                     case "networks":
+                    case "orgs":
                         $scope.p3 = [
                             {id: "list", name: "List"},
                             {id: "create", name: "Create"}
@@ -254,6 +267,15 @@ function mk_permission_fn(wiggle, $scope) {
                         {id:"join", name: "Join a group"},
                         {id:"leave", name: "Leave a group"}
                     ];
+                    break;
+                case "orgs":
+                    $scope.p3 = [
+                        {id: "list", name: "List"},
+                        {id: "get", name: "See"},
+                        {id: "edit", name: "Edit"},
+                        {id: "delete", name: "Delete"},
+                        {id: "create", name: "Create"}
+                    ]
                     break;
                 case "groups":
                     $scope.p3 = [

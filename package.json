@@ -35,7 +35,7 @@
     "grunt-faker": "git://github.com/chrisocast/grunt-faker.git#1544e883016b62258f7f3ecf35cefdd920e52bc7",
     "grunt-ngmin": "0.0.3",
     "grunt-recess": "~0.4.0",
-    "grunt-angular-gettext": "0.0.6",
+    "grunt-angular-gettext": "~0.2.5",
     "grunt-connect-proxy": "git://github.com/killfill/grunt-connect-proxy.git#8be7454fcfe5a28c732c170e6d4d9ecccf5b81e5"
   },
   "engines": {

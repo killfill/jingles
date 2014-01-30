@@ -15,7 +15,9 @@
           </h3>
         </div>
         <div class="modal-body">
+
           <p translate>Please identify yourself</p>
+
           <form name='loginForm' ng-submit='submit' ng-disabled='!connectionStatus.ok' novalidate>
             <div class="input-group">
               <span class="input-group-addon">
@@ -35,7 +37,7 @@
                 <i class="glyphicon glyphicon-lock"></i>
               </span>
               <input class="form-control input-lg" placeholder="YubiKey-OTP" ng-model='otp' ng-disabled='!connectionStatus.ok'>
-            </div>
+            </div> 
         </div>
         <div class="modal-footer">
           <div style='padding-top: 10px; width: 350px;' ng-if='loginError' class='container text-danger pull-left text-left'>{{loginError}}</div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('HeaderCtrl', function ($scope, breadcrumbs, $location, $route, $rootScope, $http, gettextCatalog, auth, howl) {
+  .controller('HeaderCtrl', function ($scope, breadcrumbs, $location, $route, $rootScope, $http, gettextCatalog, auth, howl, wiggle) {
 
   	$scope.breadcrumbs = breadcrumbs;
 
@@ -42,5 +42,12 @@ angular.module('fifoApp')
     if (langs.indexOf('gb')<1) langs.push('gb');
     
     $scope.languages = langs.sort();
+
+    //Datacenters
+    $scope.backends = Config.backends || [{name: 'This', endpoint: ''}];
+    $scope.selected_backend = $scope.backends[0];
+    $scope.changeBackend = function(back) {
+      wiggle.setEndpoint(back.endpoint)
+    }
 
   });
