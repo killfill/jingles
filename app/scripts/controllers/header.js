@@ -48,6 +48,7 @@ angular.module('fifoApp')
     $scope.selected_backend = $scope.backends[0];
     $scope.changeBackend = function(back) {
       wiggle.setEndpoint(back.endpoint)
+      $route.reload();
     }
 
   });
