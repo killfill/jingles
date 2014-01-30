@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('MachineCtrl', function($scope, $routeParams, $location, wiggle, vmService, status) {
+  .controller('MachineCtrl', function($scope, $routeParams, $location, wiggle, vmService, status, breadcrumbs) {
 
     // $scope.setTitle('Machine details')
     $scope.force = false;
@@ -184,6 +184,7 @@ angular.module('fifoApp')
     var updateVm = function(cb) {
         wiggle.vms.get({id: uuid}, function success(res) {
             $scope.vm = vmService.updateCustomFields(res);
+            breadcrumbs.setLast($scope.vm._name)
             $scope.show_disabled = $scope.vm.mdata('show_disabled') || false;
             $scope.vm["services"] = $scope.vm["services"] || [];
             var service_state_map = {

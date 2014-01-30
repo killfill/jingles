@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('GroupCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+  .controller('GroupCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status, breadcrumbs) {
 
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
@@ -65,6 +65,7 @@ angular.module('fifoApp')
     wiggle.groups.get({id: uuid}, function(res) {
         $scope.group = res;
         $scope.permissions = res.permissions.map(update_permission);
+        breadcrumbs.setLast(res.name)
     });
 
     $scope.delete_permission = function(permission) {

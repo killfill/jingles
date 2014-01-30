@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('ServerCtrl', function ($scope, $routeParams, $location, utils, wiggle, vmService, status) {
+  .controller('ServerCtrl', function ($scope, $routeParams, $location, utils, wiggle, vmService, status, breadcrumbs) {
 
     var uuid = $routeParams.uuid
     $scope.characteristics = []
@@ -120,6 +120,7 @@ angular.module('fifoApp')
     var init = function() {
         wiggle.hypervisors.get({id: uuid}, function(res) {
             $scope.hyper = res;
+            breadcrumbs.setLast(res.alias)
             $scope.new_alias = res.alias;
             if (res.characteristics) {
                 Object.keys(res.characteristics).forEach(function(k) {

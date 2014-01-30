@@ -27,7 +27,7 @@ angular.module('services.breadcrumbs').factory('breadcrumbs', ['$rootScope', '$l
     for (i=0; i<pathElements.length; i++) {
       if (breadcrumbPath(i) == '/') return breadcrumbs = [];
 
-      //Take the name of the last route element, from the app.js config... :P
+      //Take the name of the last route element, from the app.js config.
       if (i == pathElements.length - 1)
         result.push({name: current.name || humanize(pathElements[i]), path: breadcrumbPath(i)})
       else
@@ -44,6 +44,11 @@ angular.module('services.breadcrumbs').factory('breadcrumbs', ['$rootScope', '$l
   breadcrumbsService.getFirst = function() {
     return breadcrumbs[0] || {};
   };
+
+  //Set the name of the last breadcrumbs. i.e. #/datasets/<uuid> with setLast('hi') --> [home] -> Datasets -> hi instead of the uuid.
+  breadcrumbsService.setLast = function(name) {
+    breadcrumbs[breadcrumbs.length-1].name = humanize(name)
+  }
 
   return breadcrumbsService;
 }]);

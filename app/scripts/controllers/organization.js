@@ -22,7 +22,7 @@ function init_scope($scope, org) {
 };
 
 angular.module('fifoApp')
-  .controller('OrganizationCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+  .controller('OrganizationCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status, breadcrumbs) {
 
     $scope.groups = {}
     $scope.orgs = {}
@@ -57,6 +57,7 @@ angular.module('fifoApp')
     });
 
     wiggle.orgs.get({id: uuid}, function(res) {
+        breadcrumbs.setLast(res.name)
         init_scope($scope, res)
     });
 

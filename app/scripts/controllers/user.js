@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('UserCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+  .controller('UserCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status, breadcrumbs) {
     var uuid = $routeParams.uuid;
     $scope.p2 = false;
     $scope.p3 = false;
@@ -109,6 +109,7 @@ angular.module('fifoApp')
     wiggle.users.get({id: uuid}, function(res) {
         res.groups = res.groups || [];
         $scope.user = res;
+        breadcrumbs.setLast(res.name)
         console.log(res);
         $scope.ssh_keys = $scope.user.mdata('ssh_keys')
         $scope.permissions = [];

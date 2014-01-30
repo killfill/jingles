@@ -1,7 +1,7 @@
 'use strict';
 var renderer;
 angular.module('fifoApp')
-  .controller('DtraceCtrl', function ($scope, $routeParams, $location, wiggle, status) {
+  .controller('DtraceCtrl', function ($scope, $routeParams, $location, wiggle, status, breadcrumbs) {
   	var uuid = $routeParams.uuid;
     var socket = false;
 
@@ -57,6 +57,7 @@ angular.module('fifoApp')
         }
 
         $scope.script = res;
+        breadcrumbs.setLast(res.name)
 
         //It seems we neet to so this at the end of the work queue. not sure how to do that, but this works:
         // setTimeout(function() {

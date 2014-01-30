@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fifoApp')
-  .controller('NetworkCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status) {
+  .controller('NetworkCtrl', function ($scope, $routeParams, $location, wiggle, vmService, status, breadcrumbs) {
      var uuid = $routeParams.uuid;
 
 
@@ -25,6 +25,7 @@ angular.module('fifoApp')
     wiggle.networks.get({id: uuid}, function(res) {
         res.ipranges = res.ipranges || [];
         $scope.network = res;
+        breadcrumbs.setLast(res.name)
         $scope.network._ipranges = {};
 
         $scope.network.ipranges.map(function (gid){
