@@ -279,9 +279,9 @@
         <br/><br/>
 
         <table class="table table-condensed table-hover">
-          <tr ng-repeat="service in vm.services | orderBy: service" ng-show="show_disabled || service.state != 'disabled'">
+          <tr ng-repeat="service in vm._services | hash2array | orderBy: '-priority'" ng-show="show_disabled || service.state != 'disabled'">
             <td>{{service.service}}</td>
-            <td><span class="label label-{{service._label}}">{{service.state}}</span></td>
+            <td><span class="label label-{{service.label}}">{{service.state}}</span></td>
           </tr>
         </table>
       </div>

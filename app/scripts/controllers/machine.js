@@ -192,10 +192,27 @@ angular.module('fifoApp')
                 legacy_run: 'success',
                 maintainance: 'danger',
                 degraded: 'danger'
+            };
+            var service_prio_map = {
+                maintainance: 4,
+                degraded: 3,
+                online: 2,
+                legacy_run: 1
+            };
+
+            $scope.vm._services = {};
+            for (var service in $scope.vm["services"]) {
+                var state = $scope.vm["services"][service];
+                var label = service_state_map[state] || 'default';
+                var prio = service_prio_map[state] || 0;
+                $scope.vm._services[service] =
+                    {
+                        'state': state,
+                        'service': service,
+                        'label': label,
+                        'priority': prio
+                    };
             }
-            $scope.vm["services"].map(function(s) {
-                s._label = service_state_map[s.state] || 'default';
-            })
             var pkg =  "custom"
             if ($scope.vm["package"]) {
                 pkg = $scope.vm["package"] + "";
