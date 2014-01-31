@@ -315,14 +315,14 @@ angular.module('fifoApp')
         switch (d.action) {
 
             case 'update':
-                var b = $scope.timeline[d.uuid]
+                var b = $scope.backups[d.uuid]
                 if (d.data.size) b.size = d.data.size
                 if (d.data.state) b.state = d.data.state
                 if (typeof d.data.local != 'undefined') b.local = d.data.local
                 break;
 
             case 'deleted':
-                delete $scope.timeline[d.uuid]
+                delete $scope.backups[d.uuid]
                 status.success('Backup deleted')
                 break;
 
@@ -347,11 +347,11 @@ angular.module('fifoApp')
         switch (d.action) {
 
             case 'deleted':
-                if ($scope.timeline[d.uuid]) {
-                    if ($scope.timeline[d.uuid].local) {
-                        $scope.timeline[d.uuid].local = false
+                if ($scope.snapshots[d.uuid]) {
+                    if ($scope.snapshots[d.uuid].local) {
+                        $scope.snapshots[d.uuid].local = false
                     } else {
-                        delete $scope.timeline[d.uuid]
+                        delete $scope.snapshots[d.uuid]
                         status.success('Snapshot deleted')
                     }
                 }
@@ -363,7 +363,7 @@ angular.module('fifoApp')
                 break;
 
             default:
-                var snap = $scope.timeline[d.uuid]
+                var snap = $scope.snapshots[d.uuid]
                 snap.state = d.action
                 snap.message = d.message
         }
@@ -557,7 +557,7 @@ angular.module('fifoApp')
                     wiggle.vms.save({id: uuid, controller: 'backups'}, body,
                         function success(data, h) {
                             data.type = 'backup'
-                            $scope.timeline[data.uuid] = data
+                            $scope.backups[data.uuid] = data
                         },
                         function error(data, h) {
                             status.error('Could not create. See your console')
@@ -575,7 +575,7 @@ angular.module('fifoApp')
                     ok: function() {
                         wiggle.vms.delete({id: uuid, controller: 'backups', controller_id: obj._key},
                             function success(){
-                                $scope.timeline[obj._key].state = 'deleting'
+                                $scope.backups[obj._key].state = 'deleting'
                             },
                             function error(data){
                                 status.error('Could not delete. See your console')
@@ -598,7 +598,7 @@ angular.module('fifoApp')
                         status.info('Will rollback to backup ' + obj.comment);
                         wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key}, {action: 'rollback'},
                            function success(data) {
-                                $scope.timeline[obj._key].state='rolling...'
+                                $scope.backups[obj._key].state='rolling...'
                            },
                            function error(data) {
                                status.error('Error when rolling back. See the history')
@@ -619,7 +619,7 @@ angular.module('fifoApp')
                 wiggle.vms.save({id: uuid, controller: 'snapshots'}, {comment: comment},
                                 function success(data, h) {
                                     data.type = 'snapshot'
-                                        $scope.timeline[data.uuid] = data
+                                        $scope.snapshots[data.uuid] = data
                                 },
                                 function error(data) {
                                     status.error('Could not save. See your console')
@@ -637,7 +637,7 @@ angular.module('fifoApp')
                 ok: function() {
                      wiggle.vms.delete({id: uuid, controller: 'snapshots', controller_id: snap._key},
                       function success() {
-                        $scope.timeline[snap._key].state = 'deleting'
+                        $scope.snapshots[snap._key].state = 'deleting'
                       },
                       function error(data) {
                         status.error('Could not delete. See your console')
@@ -660,7 +660,7 @@ angular.module('fifoApp')
                     status.info('Will rollback to snapshot ' + snap.comment);
                     wiggle.vms.put({id: uuid, controller: 'snapshots', controller_id: snap._key}, {action: 'rollback'},
                        function success(data) {
-                            $scope.timeline[snap._key].state='rolling...'
+                            $scope.snapshots[snap._key].state='rolling...'
                        },
                        function error(data) {
                            status.error('Error when rolling back. See the history')
