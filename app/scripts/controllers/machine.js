@@ -206,6 +206,7 @@ angular.module('fifoApp')
         };
         $scope.$on('services', function(e, msg) {
             mk_services(msg.message.data);
+            $scope.$apply();
         });
 
 
@@ -270,8 +271,7 @@ angular.module('fifoApp')
                 $scope.img_desc = $scope.vm.config._dataset && $scope.vm.config._dataset.description;
             }, function error() {
                 $scope.something_wrong = true;
-            }
-                          )
+            })
         }
 
         $scope.update = function() {
