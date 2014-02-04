@@ -356,7 +356,7 @@
             <tr ng-repeat="b in backups | hash2array | orderBy: '-timestamp' ">
               <td class='nowrap'> <i class='glyphicon' ng-class='glyphicon-cloud'></i></td>
               <td class='nowrap' style="width: 35%"><strong title='{{b.uuid}}' jq-run='tooltip'>{{b.comment}}</strong></td>
-              <td class='nowrap light'><span ng-show="b.local_size && b.local_size > 0">{{b.local | bytes}}</span></td>
+              <td class='nowrap light'><span ng-show="b.local_size && b.local_size > 0">{{b.local_size | bytes}}</span></td>
               <td class='nowrap light'><span ng-show="b.size">{{b.size | bytes}}</span></td>
               <td class='nowrap light'>{{b.message}}</td>
               <td><span class='label label-default' ng-class='{ "label-success" : b.state == "completed" , "label-warning" : b.state == "deleting" || b.state=="uploading" || b.state=="pending", "label-danger" : b.state == "error" }'>{{b.state}}</span></td>
