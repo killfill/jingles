@@ -35,7 +35,7 @@
       <td ng-show="auth.canAccess(['cloud', 'packages', 'list'])" data-title="'Package'|translate" sortable="'_package.name'" class='fifo-visible-lg fifo-visible-md fifo-visible-sm'>
         {{vm._package.name}}
       </td>
-      <td ng-show="auth.canAccess(['cloud','datasets','list'])" jq-run='tooltip' jq-options="{container: 'body'}" title='{{vm.config._dataset.description}}' sortable="'config._dataset.name'" class='fifo-hidden-xs nowrap'>
+      <td ng-show="auth.canAccess(['cloud','datasets','list'])" jq-run='tooltip' jq-options="{container: 'body'}" title="{{vm.config._dataset.description}}" sortable="'config._dataset.name'" class='fifo-hidden-xs nowrap'>
         <img ng-src="images/logos/{{vm.config._dataset.os || 'unknown'}}.svg" class='oslogo'>
         {{vm.config._dataset.name || ('Unknown' | translate)}}
       </td>
