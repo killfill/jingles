@@ -802,59 +802,37 @@ angular.module('fifoApp')
 
         var init = function() {
             $scope.hypervisors = {};
-            wiggle.hypervisors.list(function(res) {
-                res.forEach(function(id) {
-                    $scope.hypervisors[id] = {
-                        name: id,
-                        id: id
-                    };
-                    wiggle.hypervisors.get({id: id}, function(h) {
-                        $scope.hypervisors[id] = h;
-                    });
+            wiggle.hypervisors.query(function(res) {
+                res.forEach(function(h) {
+                    $scope.hypervisors[h.uuid] = h;
                 });
             });
 
             /* Get the all the packages */
             $scope.packages = {};
-            wiggle.packages.list(function(res) {
-                res.forEach(function(pid) {
-                    $scope.packages[pid] = {
-                        name: pid,
-                        id: pid
-                    };
-                    wiggle.packages.get({id: pid}, function(pkg) {
-                        $scope.packages[pid] = pkg;
-
-                        /* Additional fields GET does not provide */
-                        $scope.packages[pid].id = pid;
-                        $scope.packages[pid].vcpus = pkg.cpu_cap/100;
-                        $scope.packages[pid].cpu_shares = pkg.ram;
-                    });
+            wiggle.packages.query(function(res) {
+                res.forEach(function(pkg) {
+                    var pid = pkg.uuid
+                    $scope.packages[pid] = pkg
+                    $scope.packages[pid].id = pid;
+                    $scope.packages[pid].vcpus = pkg.cpu_cap/100;
+                    $scope.packages[pid].cpu_shares = pkg.ram;
                 });
             });
 
             $scope.networks = {};
-            wiggle.networks.list(function(res) {
-                res.forEach(function(pid) {
-                    $scope.networks[pid] = {
-                        name: pid,
-                        id: pid
-                    };
-                    wiggle.networks.get({id: pid}, function(pkg) {
-                        $scope.networks[pid] = pkg;
-
-                        /* Additional fields GET does not provide */
-                        $scope.networks[pid].id = pid;
-                    });
+            wiggle.networks.query(function(res) {
+                res.forEach(function(net) {
+                    nid = net.uuid
+                    $scope.networks[nid] = net
+                    $scope.networks[nid].id = nid;
                 });
             });
 
-            $scope.orgs = []
-            wiggle.orgs.list(function(ids) {
-                ids.forEach(function(id) {
-                    wiggle.orgs.get({id: id}, function(org) {
-                        $scope.orgs[id] = org;
-                    });
+            $scope.orgs = {}
+            wiggle.orgs.query(function(res) {
+                res.forEach(function(org) {
+                    $scope.orgs[org.uuid] = org;
                 });
             });
 
@@ -863,10 +841,8 @@ angular.module('fifoApp')
                 $scope.has_s3 = res.metrics.storage == 's3'
             })
 
-
             howl.join(uuid + '-metrics');
-            updateVm()
-
+            updateVm();
         }
 
         // TODO:

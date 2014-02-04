@@ -23,7 +23,7 @@ angular.module('fifoApp')
 
       //reload the current view.
     }
-    
+
 
     var is_empty = function is_empty(obj) {
 
@@ -110,7 +110,8 @@ angular.module('fifoApp')
                          grant: {method: 'PUT'},
                          revoke: {method: 'DELETE'},
                          create: {method: 'POST'},
-                         delete: {method: 'DELETE'}})
+                         delete: {method: 'DELETE'},
+                         query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}})
       services.orgs= $resource(endpoint + 'orgs/:id/:controller/:controller_id/:controller_id1/:controller_id2/:controller_id3',
                         {id: '@id',
                          controller: '@controller',
@@ -130,17 +131,20 @@ angular.module('fifoApp')
       services.hypervisors= $resource(endpoint + 'hypervisors/:id/:controller/:controller_id',
                              {id: '@id', controller: '@controller', controller_id: '@controller_id'},
                              {put: {method: 'PUT'},
-                              delete: {method: 'DELETE'}}
+                              delete: {method: 'DELETE'},
+                              query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                             )
       services.vms= $resource(endpoint + 'vms/:id/:controller/:controller_id',
                      {id: '@id', controller: '@controller', controller_id: '@controller_id'},
-                     {put: {method: 'PUT'}}
+                     {put: {method: 'PUT'},
+                      query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                     )
       services.ipranges= $resource(endpoint + 'ipranges/:id',
                           {id: '@id'},
                           {create: {method: 'POST'},
                            get: {method: 'GET', cache: true},
-                           delete: {method: 'DELETE'}}
+                           delete: {method: 'DELETE'},
+                           query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                          )
       services.networks= $resource(endpoint + 'networks/:id/:controller/:controller_id/:controller_id1/:controller_id2',
                           {id: '@id',
@@ -151,22 +155,26 @@ angular.module('fifoApp')
                           {put: {method: 'PUT'},
                            create: {method: 'POST'},
                            get: {method: 'GET', cache: true},
-                           delete: {method: 'DELETE'}}
+                           delete: {method: 'DELETE'},
+                           query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                          )
       services.datasets= $resource(endpoint + 'datasets/:id',
                           {id: '@id'},
                           {import: {method: 'POST'},
-                           put: {method: 'PUT'}})
+                           put: {method: 'PUT'},
+                           query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}})
       services.packages= $resource(endpoint + 'packages/:id',
                           {id: '@id'},
                           {create: {method: 'POST'},
                            get: {method: 'GET', cache: true},
-                           delete: {method: 'DELETE'}}
+                           delete: {method: 'DELETE'},
+                           query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                          )
       services.dtrace= $resource(endpoint + 'dtrace/:id',
                         {id: '@id'},
                         {create: {method: 'POST'},
-                         delete: {method: 'DELETE'}}
+                         delete: {method: 'DELETE'},
+                         query: {method: 'GET', isArray: true, headers: {'x-full-list': true}}}
                        )
 
 
@@ -207,7 +215,7 @@ angular.module('fifoApp')
       });
 
       /* Gets with cache! */
-      
+
       services.datasets.clearCache = function(id) {
           cacheObj.remove(endpoint + 'datasets/' + id)
       }
@@ -278,16 +286,16 @@ angular.module('fifoApp')
               if (angular.isUndefined(res.owner)) {
                 checkIfReady();
               } else {
-                services.orgs.get({id: res.owner}, 
-                  function(org) { res._owner = org; checkIfReady(); }, 
+                services.orgs.get({id: res.owner},
+                  function(org) { res._owner = org; checkIfReady(); },
                   function err() {checkIfReady();})
               }
 
               if (angular.isUndefined(res.hypervisor)) {
                 checkIfReady();
               } else {
-                services.hypervisors.get({id: res.hypervisor}, 
-                  function(data) { res._hypervisor = data; checkIfReady(); }, 
+                services.hypervisors.get({id: res.hypervisor},
+                  function(data) { res._hypervisor = data; checkIfReady(); },
                   function err() {checkIfReady();})
               }
 
