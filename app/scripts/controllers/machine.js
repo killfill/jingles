@@ -214,6 +214,15 @@ angular.module('fifoApp')
             $scope.vm.mdata_set({show_disabled: !$scope.show_disabled});
         }
 
+        $scope.service_action = function(vm, action, service) {
+            wiggle.vms.put(
+                {id: vm, controller: 'services'},
+                {'action': action, 'service': service},
+                function res(r) {
+                    console.log(res);
+                });
+
+        }
 
         var updateVm = function(cb) {
             wiggle.vms.get({id: uuid}, function success(res) {
