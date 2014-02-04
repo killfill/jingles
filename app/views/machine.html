@@ -20,11 +20,13 @@
                 permission=['vms','{{vm.uuid}}','delete']>
           <i class="glyphicon glyphicon-trash"></i>
         </button>
-        <button ng-click="confirm_freeze(vm)"
-                ng-disabled="prevent_freeze()"
-                class="btn btn-default" bs-modal="'views/partials/modal-confirm.html'"
-                title="Freeze" jq-run="tooltip" jq-options="{placement: 'bottom'}"
-                permission=['vms','{{vm.uuid}}','delete']>
+        <button
+           ng-show="has_s3"
+           ng-click="confirm_freeze(vm)"
+           ng-disabled="prevent_freeze()"
+           class="btn btn-default" bs-modal="'views/partials/modal-confirm.html'"
+           title="Freeze" jq-run="tooltip" jq-options="{placement: 'bottom'}"
+           permission=['vms','{{vm.uuid}}','delete']>
           <i class="glyphicon glyphicon-cloud-upload"></i>
         </button>
         <button ng-click="console(vm)"
@@ -81,7 +83,7 @@
 
   <div ng-show="vm.state == 'stored'"
      class="alert alert-danger">
-    Restore to hypervisor 
+    Restore to hypervisor
     <select ng-model="restore_target"
             ng-options="hv.alias for hv in hypervisors | hash2array | orderBy: 'name'">
     </select>.
@@ -107,7 +109,7 @@
         <li><a href="#performance" data-toggle="tab" translate>Performance</a></li>
         <li ng-show="vm.config.type == 'zone'"><a href="#services" data-toggle="tab" translate>Services</a></li>
         <li><a href="#snapshots" data-toggle="tab" translate>Snapshots</a></li>
-        <li ng-show='has_s3'><a href="#versioning" data-toggle="tab" translate>Versioning</a></li>
+        <li ng-show='has_s3'has_s3'><a href="#versioning" data-toggle="tab" translate>Versioning</a></li>
         <li><a href="#imaging" data-toggle="tab" translate>Imaging</a></li>
         <li><a href="#resize" data-toggle="tab" translate>Change</a></li>
         <li><a href="#history" data-toggle="tab" translate>History</a></li>
