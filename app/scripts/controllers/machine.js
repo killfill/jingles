@@ -224,6 +224,41 @@ angular.module('fifoApp')
 
         }
 
+        $scope.confirm_freeze = function() {
+            var vm = $scope.vm;
+            $scope.modal = {
+                title: 'Confirm VM Removal',
+                btnClass: 'btn-danger',
+                confirm: 'Remove',
+                body: '<p><font color="red">Warning!</font> you are about to remove the VM <b id="delete-uuid">' + vm.uuid + " "+ (vm.config && vm.config.alias? '(' + vm.config.alias + ')': '') + "</b> from the hypervisor but leave backups in storage. Are you 100% sure you really want to do this?</p><p>This feature is experimental!</p>",
+                ok: function() {
+                    wiggle.vms.delete(
+                        {id: vm.uuid, controller: 'hypervisor'},
+                        function success() {
+                            updateVm();
+                            status.success('VM moved to storage.');
+                        },
+                        function error(data) {
+                            status.error('Error removing nic from storage.');
+                            console.log(data);
+                        });
+                }
+            }
+
+        }
+
+        $scope.prevent_freeze = function () {
+            var vm = $scope.vm;
+            if (! vm)
+                return true;
+            var has_fullbackup = false;
+            for (var b in vm.backups || {}) {
+                if (vm.backups[b]["parent"] == undefined)
+                    has_fullbackup = true
+            }
+            return vm.state != 'stopped' || ! has_fullbackup || vm.mdata('locked');
+        }
+
         var updateVm = function(cb) {
             wiggle.vms.get({id: uuid}, function success(res) {
                 $scope.vm = vmService.updateCustomFields(res);
@@ -622,24 +657,50 @@ angular.module('fifoApp')
                 break;
 
             case 'rollback':
-
-                $scope.modal = {
-                    confirm: 'Rollback',
-                    btnClass: 'btn-danger',
-                    title: 'Confirm Rollback',
-                    body: '<p><font color="red">Warning!</font> You are about to rollback to backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '?</p>' +
-                        "</b>Are you 100% sure you really want to do this?</p>",
-                    ok: function() {
-                        status.info('Will rollback to backup ' + obj.comment);
-                        wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key}, {action: 'rollback'},
-                                       function success(data) {
-                                           $scope.backups[obj._key].state='rolling...'
-                                       },
-                                       function error(data) {
-                                           status.error('Error when rolling back. See the history')
-                                           console.log(data)
-                                       })
+                var vm = $scope.vm;
+                if (vm.state == 'stopped' ) {
+                    $scope.modal = {
+                        confirm: 'Rollback',
+                        btnClass: 'btn-danger',
+                        title: 'Confirm Rollback',
+                        body: '<p><font color="red">Warning!</font> You are about to rollback to backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '?</p>' +
+                            "</b>Are you 100% sure you really want to do this?</p>",
+                        ok: function() {
+                            status.info('Will rollback to backup ' + obj.comment);
+                            wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key}, {action: 'rollback'},
+                                           function success(data) {
+                                               $scope.backups[obj._key].state='rolling...'
+                                           },
+                                           function error(data) {
+                                               status.error('Error when rolling back. See the history')
+                                               console.log(data)
+                                           })
+                        }
                     }
+                } else if (vm.state == "stored" && !vm.hypervisor && $scope.restore_target){
+                    var hypervisor = $scope.restore_target.uuid;
+                    $scope.modal = {
+                        confirm: 'Restore',
+                        btnClass: 'btn-danger',
+                        title: 'Confirm Restore',
+                        body: '<p><font color="red">Warning!</font> You are about to restore this vm from the backup <strong>' + obj.comment + '</strong> dated ' + new Date(obj.timestamp/1000) + '?</p>' +
+                            "</b>Are you 100% sure you really want to do this?</p>",
+                        ok: function() {
+                            status.info('Will restore from backup ' + obj.comment);
+                            wiggle.vms.put({id: uuid, controller: 'backups', controller_id: obj._key},
+                                           {action: 'rollback', hypervisor: hypervisor},
+                                           function success(data) {
+                                               $scope.backups[obj._key].state='rolling...'
+                                           },
+                                           function error(data) {
+                                               status.error('Error when rolling back. See the history')
+                                               console.log(data)
+                                           })
+                        }
+                    }
+
+                } else {
+                    console.log("Restore impossible in state", vm.state);
                 }
                 break;
             }
@@ -739,8 +800,20 @@ angular.module('fifoApp')
             console.log(vm + "@" + snap, config);
         }
 
-
         var init = function() {
+            $scope.hypervisors = {};
+            wiggle.hypervisors.list(function(res) {
+                res.forEach(function(id) {
+                    $scope.hypervisors[id] = {
+                        name: id,
+                        id: id
+                    };
+                    wiggle.hypervisors.get({id: id}, function(h) {
+                        $scope.hypervisors[id] = h;
+                    });
+                });
+            });
+
             /* Get the all the packages */
             $scope.packages = {};
             wiggle.packages.list(function(res) {
