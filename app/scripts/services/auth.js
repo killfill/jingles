@@ -128,7 +128,7 @@ angular.module('fifoApp')
       // console.log(prev && prev.$$route.controller, '->', curr.$$route.controller, ev)
       checkIfLogged()
     })
-    
+
     /* Separate the login check from the action taken: listen for auth events and do something */
     $rootScope.$on('auth:login_needed', function() {
       if ($location != '/login')
