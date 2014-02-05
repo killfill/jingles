@@ -823,7 +823,7 @@ angular.module('fifoApp')
             $scope.networks = {};
             wiggle.networks.query(function(res) {
                 res.forEach(function(net) {
-                    nid = net.uuid
+                    var nid = net.uuid
                     $scope.networks[nid] = net
                     $scope.networks[nid].id = nid;
                 });
