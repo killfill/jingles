@@ -19,7 +19,6 @@ angular.module('fifoApp').factory('wiggle', function ($resource, $http, $cacheFa
         var tmp = url || (window.location.protocol + '//' + window.location.host);
         Config.howl = Config.howl || tmp.replace(/^http/, "ws") + "/howl";
         Config.endpoint = endpoint;
-        //reload the current view.
     }
 
 
