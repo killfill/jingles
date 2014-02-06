@@ -787,11 +787,14 @@ angular.module('fifoApp')
                 os: $scope.img_os,
                 description: $scope.img_desc
             };
+            var payload = {
+                config: config,
+                snapshot: snap,
+                vm: vm
+            };
             wiggle.datasets.import(
                 {},
-                {config: config,
-                 snapshot: snap,
-                 vm: vm},
+                payload,
                 function(r) {
                     howl.join(uuid);
                     status.info('Creating ' + r.name + ' ' + r.version);
