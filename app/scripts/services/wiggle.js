@@ -322,7 +322,7 @@ angular.module('fifoApp').factory('wiggle', function ($resource, $http, $cacheFa
         setEndpoint(Config.backends[0].endpoint);
     } else {
         setEndpoint(''); //start pointing to current backend
-    }'
+    };
     services.setEndpoint = setEndpoint;
 
     return services;
