@@ -677,7 +677,7 @@ angular.module('fifoApp')
                                            })
                         }
                     }
-                } else if (vm.state == "stored" && !vm.hypervisor && $scope.restore_target){
+                } else if ((vm.state == "stored" || vm.state == 'limbo') && !vm.hypervisor && $scope.restore_target){
                     var hypervisor = $scope.restore_target.uuid;
                     $scope.modal = {
                         confirm: 'Restore',
