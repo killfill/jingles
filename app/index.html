@@ -1,157 +1,110 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!doctype html>
+<html class="no-js">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title></title>
-    <meta name="description" content=""/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link rel="stylesheet" href="styles/bootstrap.css"/>
-    <link rel="stylesheet" href="styles/bootstrap-responsive.css"/>
-    <link rel="stylesheet" href="styles/glyphicons.css"/>
-    <link rel="stylesheet" href="styles/main.css"/>
-
+    <meta charset="utf-8">
+    <title>FiFo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Project FiFo administrative console">
+    <meta name="author" content="http://project-fifo.net">
+    <!-- build:css styles/app.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="bower_components/famfamfam-flags-sprite/src/flags-sprite.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/alertify.js/themes/alertify.core.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/alertify.js/themes/alertify.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="vendor/jquery.simplecolorpicker.css">
+    <!-- endbuild -->
 </head>
-<body ng-app="fifoApp" class='ng-cloak'>
+<body ng-app='fifoApp'>
 
-    <!--[if lt IE 7]>
-    <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-    <![endif]-->
-
-    <!--[if lt IE 9]>
-    <script src="scripts/vendor/es5-shim.min.js"></script>
-    <script src="scripts/vendor/json3.min.js"></script>
-    <![endif]-->
-
-    <div id='dialog-modal' class="modal hide fade" aria-hidden="false">
-        <div class="modal-header"><button type="button" class="close" data-dismiss="modal">x</button><h3>Please confirm</h3></div>
-        <div class="modal-body"></p></div>
-        <div class="modal-footer">
-            <a data-dismiss="modal" class="btn">Cancel</a>
-            <a data-dismiss="modal" class="btn btn-primary">Confirm</a>
-        </div>
+    <div ng-controller='HeaderCtrl'>
+        <div class='header-include' ng-include src="'views/partials/header.html'"></div>
     </div>
+    <div class="ng-view-include container" ng-view></div>
 
-    <div id='login-modal' class="modal" ng-show="!loggedUser || !loggedUser.username">
-        <form ng-submit="login()" ng-controller='LoginCtrl'>
-            <div class="modal-header"><h3><img src="images/PF.png" style="height: 25px;" alt="Project FiFo"> Please sign in</h3></div>
-            <div class="modal-body">
-                <input ng-model='username' class="input-block-level" type='text' placeholder='Login' autofocus required>
-                <input ng-model='password' class="input-block-level" type='password' placeholder='Password' required>
-            </div>
-            <div class="modal-footer">
-                <button href="#" class="btn btn-primary" type="submit">Ok</button>
-            </div>
-        </form>
-    </div>
+    <!-- build:js scripts/bower_components.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/ng-table/ng-table.js"></script>
+    <script src="bower_components/angular-gettext/dist/angular-gettext.js"></script>
+    <script src="bower_components/typeahead.js/dist/typeahead.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <div class="navbar navbar-inverse navbar-fixed-top" id="nav-bar" ng-show="loggedUser && loggedUser.username">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-
-                <!--<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span></a>
-                -->
-
-                <a class="brand" href="#">
-                    <img src="images/PF.png" style="height: 30px;" alt="Project FiFo"/>
-                </a>
-
-                <ul class='nav' ng-repeat='st in status'>
-                    <li style='padding-top: 15px; padding-left: 20px;'>{{st.name}}</li>
-                    <li class='span2' style='padding-top: 15px; height: 10px' ng-show='st.current'>
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: {{st.percent}}%;"></div>
-                        </div>                
-                    </li>
-                </ul>  
-
-
-                <div class='btn-toolbar'>
-                    <div class='btn-group pull-right nav' ng-controller='LoginCtrl'>
-                        <a href="#" class='btn btn-small dropdown-toggle' data-toggle='dropdown'>
-                            <i class='icon-user'></i> {{loggedUser.username}}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class='dropdown-menu'>
-                            <li><a href='#' ng-click='logout()'>My info</a></li>
-                            <li><a href='#' ng-click='logout()'>Public keys</a></li>
-                            <li class='divider'></li>
-                            <li><a href='#' ng-click='logout()'>Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class='container-fluid' id='ui' ng-show="loggedUser && loggedUser.username">
-        <div class="tabs-left">
-            <nav-tabs>
-              <nav-tab href="#/status" icon="camera">Status</nav-tab>
-              <nav-tab href="#/dashboard" icon="dashboard">Dashboard</nav-tab>
-              <nav-tab href="#/virtual-machines" icon="display">Virtual Machines</nav-tab>
-              <nav-tab href="#/hypervisors" icon="cloud">Hypervisors</nav-tab>
-              <nav-tab href="#/networks" icon="share_alt">Networks</nav-tab>
-              <nav-tab href="#/datasets" icon="hdd">Datasets</nav-tab>
-              <nav-tab href="#/packages" icon="cargo">Packages</nav-tab>
-              <nav-tab href="#/groups" icon="group">Groups</nav-tab>
-              <nav-tab href="#/users" icon="user">Users</nav-tab>
-            </nav-tabs>
-
-            <div class='tab-content main-tab-content' style="margin-left:170px">
-                <div class='tab-pane active' ng-view></div>
-            </div>
-
-        </div>
-    </div>
-
-    <footer ng-show="loggedUser && loggedUser.username">
-        <hr>
-        <p class="copy">
-            &copy; <a href="http://project-fifo.net">Project FiFo</a> 2012</p>
-            <p class="credits">Design by <a href="http://www.davidtrindade.com" target="_blank">David Trindade</a></p>
-    </footer>
-
-    <script src="scripts/vendor/angular.js"></script>
-    <script src="components/angular-modules/resource.js"></script>
-    <script src="components/angular-modules/cookies.js"></script>
-    <script src="components/jquery/jquery.js"></script>
-    <script src="components/bootstrap-js/bootstrap.js"></script>
-    <script src="components/moment/moment.js"></script>
-
-    <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
     <script src="scripts/config.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/status.js"></script>
-    <script src="scripts/controllers/dashboard.js"></script>
-    <script src="scripts/controllers/virtual-machines.js"></script>
-    <script src="scripts/controllers/vm.js"></script>
-    <script src="scripts/controllers/hypervisors.js"></script>
-    <script src="scripts/controllers/networks.js"></script>
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/lang.js"></script>
+
+    <script src="scripts/services/wiggle.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/header.js"></script>
+    <script src="scripts/controllers/machines.js"></script>
+    <script src="scripts/services/breadcrumbs.js"></script>
     <script src="scripts/controllers/datasets.js"></script>
+    <script src="scripts/controllers/servers.js"></script>
     <script src="scripts/controllers/packages.js"></script>
     <script src="scripts/controllers/groups.js"></script>
+    <script src="scripts/controllers/ip-ranges.js"></script>
     <script src="scripts/controllers/users.js"></script>
-    <script src="scripts/controllers/new_vm.js"></script>
-    <script src="scripts/controllers/new_package.js"></script>
-    <script src="scripts/controllers/new_network.js"></script>
-    <script src="scripts/services/wiggle.js"></script>
-    <script src="scripts/services/howl.js"></script>
-    <script src="scripts/services/status.js"></script>
-    <script src="scripts/services/modal.js"></script>
-    <script src="scripts/services/user.js"></script>
-    <script src="scripts/services/vm.js"></script>
+    <script src="scripts/controllers/organizations.js"></script>
+    <script src="scripts/controllers/dtraces.js"></script>
+    <script src="scripts/controllers/networks.js"></script>
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/directives/directives.js"></script>
+    <script src="scripts/directives/permission.js"></script>
+    <script src="scripts/services/status.js"></script>
+    <script src="scripts/services/vm.js"></script>
+    <script src="scripts/controllers/machine.js"></script>
+    <script src="scripts/services/graphs.js"></script>
+    <script src="scripts/services/howl.js"></script>
+    <script src="scripts/services/datasetsat.js"></script>
+    <script src="scripts/directives/simplecolorpicker.js"></script>
+    <script src="scripts/controllers/dataset.js"></script>
+    <script src="scripts/controllers/server.js"></script>
+    <script src="scripts/services/utils.js"></script>
+    <script src="scripts/controllers/package.js"></script>
+    <script src="scripts/controllers/network.js"></script>
+    <script src="scripts/controllers/user.js"></script>
+    <script src="scripts/services/permission.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/group.js"></script>
+    <script src="scripts/controllers/organization.js"></script>
+    <script src="scripts/controllers/dtrace.js"></script>
+    <script src="scripts/services/auth.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/machine-new.js"></script>
+    <script src="scripts/controllers/package-new.js"></script>
+    <script src="scripts/controllers/network-new.js"></script>
+    <script src="scripts/controllers/ip-range-new.js"></script>
+    <script src="scripts/controllers/user-new.js"></script>
+    <script src="scripts/controllers/group-new.js"></script>
+    <script src="scripts/controllers/organization-new.js"></script>
+    <script src="scripts/controllers/dtrace-new.js"></script>
+    <script src="scripts/controllers/vis-graph.js"></script>
+    <script src="scripts/directives/rule.js"></script>
+    <script src="scripts/renderer/heatmap.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- Manually added -->
+    <script src="vendor/flotr2.min.js"></script>
+    <script src="vendor/gauge.min.js"></script>
+    <script src="bower_components/nginfinitescroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/alertify.js/lib/alertify.min.js"></script>
+    <script src="bower_components/msgpack-javascript/msgpack.js"></script>
+    <script src="vendor/jquery.simplecolorpicker.js"></script>
+    <!-- Taken from https://raw.github.com/mgcrea/angular-strap/master/src/directives/modal.js (Im just using that part of angular-strap.. deleted dependency and changes 'modal hide' => 'modal hidenono + addClass('fade') => addClass('fadenono') -->
+    <script type="text/javascript" src="vendor/modal.js"></script>
     <!-- endbuild -->
 
 </body>

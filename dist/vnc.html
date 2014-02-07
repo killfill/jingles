@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FiFo VNC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Project FiFo administrative console">
+    <meta name="author" content="http://project-fifo.net">
+
+    <link rel="stylesheet" href="styles/04d157e2.vnc.css" media="screen">
+
+  </head>
+  <body>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div id="noVNC_screen col-md-4">
+        <div id="noVNC_status_bar">
+            <div id="noVNC_status" class="col-md-4 alert alert-info">
+              Loading
+            </div>
+
+            <div id="noVNC_buttons" class="col-md-3">
+              <input type=button value="Send CtrlAltDel!" id="sendCtrlAltDelButton">
+            </div>
+
+          <div class="row">
+            <div id="noVNC_buttons" class="col-md-4">
+              <canvas id="noVNC_canvas" width="100%" height="100%">
+                Canvas not supported.
+              </canvas>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <footer>
+      <hr>
+      <p class="copy">
+        &copy; <a href="http://project-fifo.net">Project FiFo</a></p>
+    </footer>
+    <script type="application/javascript">INCLUDE_URI="vendor/vnc/";</script>
+
+    <script src="scripts/1f69a46e.vnc_lib.js"></script>
+
+    <script src="scripts/5c15f9c5.vnc.js"></script>
+
+
+
+</html>

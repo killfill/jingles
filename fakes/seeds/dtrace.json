@@ -1,0 +1,7 @@
+{
+    "config": {},
+    "name": "{{random.bs_noun}}",
+    "script": "adsdsadsadskdskjdskjdsakjdaskj",
+    "uuid": "{{random.number(4)}}",
+    "version": "0.1.0"
+}

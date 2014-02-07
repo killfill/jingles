@@ -1,0 +1,139 @@
+<div class="tab-pane" ng-show='script.uuid'>
+
+  <div class="row-fluid">
+    <span class="span8">
+      <h3 style='display: inline-block; margin-top: 10px;'>Script {{script.name}}</h3>
+    </span>
+  </div>
+  <hr/>
+
+  <div class="tabbable tabs-top" ng-show='script.config'>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#edit" data-toggle="tab" translate>Edit</a></li>
+      <li><a href="#run" data-toggle="tab" translate>Run</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="edit">
+        <div class="row-fluid">
+          <div class="col-md-8 box">
+            <div class="header">
+              <i class="glyphicon glyphicon-tasks"></i>
+              <span class="badge badge-info" translate>Script</span>
+            </div>
+            <textarea id='code' ng-model="script.script" class="input-block-level form-control" rows="20"></textarea>
+          </div>
+
+          <div class="col-md-3 box">
+            <div class="header">
+              <i class="glyphicon glyphicon-tasks"></i>
+              <span class="badge badge-info" translate>Variables</span>
+            </div>
+
+            <div ng-repeat='variable in script.vars' class='thumbnail2'>
+              <input
+                 class="col-md-5 disabled"
+                 placeholder="Variable"
+                 type="text"
+                 title='Attribute' jq-run='tooltip'
+                 ng-model="variable.name"
+                 disabled
+                 />
+              <input class="col-md-5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
+            </div>
+            <br/>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="run">
+        <div class="row-fluid">
+          <div class="col-md-3 accordion box" id="dtrace-targets">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#dtrace-targets" href="#dtrace-target-hypervisors" ng-click="sel_vms = []">
+                  <span class="badge badge-info" translate>Servers</span>
+                </a>
+              </div>
+              <div id="dtrace-target-hypervisors" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  <select class="col-md-12" multiple="multiple" ng-model="sel_hyps">
+                    <option ng-repeat="(id, h) in hypervisors" value="{{id}}">{{h.alias}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#dtrace-targets" href="#dtrace-target-vms" ng-click="sel_hyps = []">
+                  <span class="badge badge-info">vms</span>
+                </a>
+              </div>
+              <div id="dtrace-target-vms" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <select class="col-md-12" multiple="multiple" ng-model="sel_vms">
+                    <option ng-repeat="(id, h) in vms" value="{{id}}">{{h.config.alias}}({{h.uuid}})</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5 box">
+            <div class="header">
+              <i class="glyphicon glyphicon-tasks"></i>
+              <span class="badge badge-info" translate>Script</span>
+              <div class="btn-group" style="margin-right: 20px;">
+                <button
+                   title="Play"
+                   jq-run="tooltip"
+                   class="btn btn-sm btn-default"
+                   ng-disabled="running"
+                   ng-click="start()">
+                  <i class="glyphicon glyphicon-play"></i>
+                </button>
+                <button
+                   title="Pause"
+                   jq-run="tooltip"
+                   class="btn btn-sm btn-default"
+                   ng-disabled="! running"
+                   ng-click="pause()">
+                  <i class="glyphicon glyphicon-pause"></i>
+                </button>
+                <button
+                   title="Stop"
+                   jq-run="tooltip"
+                   class="btn btn-sm btn-default"
+                   ng-disabled="! running"
+                   ng-click="stop()">
+                  <i class="glyphicon glyphicon-stop"></i>
+                </button>
+              </div>
+            </div>
+            <div style="width: 300px;" id="content">
+            </div>
+          </div>
+
+          <div class="col-md-3 box">
+            <div class="header">
+              <i class="glyphicon glyphicon-tasks"></i>
+              <span class="badge badge-info" translate>Variables</span>
+            </div>
+
+            <div ng-repeat='variable in script.cur_vars' class='thumbnail2'>
+              <input
+                 class="col-md-5 disabled"
+                 placeholder="Variable"
+                 type="text"
+                 title='Attribute' jq-run='tooltip'
+                 ng-model="variable.name"
+                 disabled
+                 />
+              <input class="col-md-5" title='Value' jq-run='tooltip' placeholder="Value" type="text" ng-model="variable.value"/>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

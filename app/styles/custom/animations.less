@@ -1,0 +1,83 @@
+/*
+//Global anum.. :P
+.ng-enter, .ng-leave {
+  .transition(all ease-out 5.25s);
+}
+////////////
+*/
+
+//Header sliding :P
+.header-include {
+  position: relative;
+  
+  &.ng-enter, &.ng-leave {
+    .transition(all ease-out 0.5s);
+  }
+  &.ng-enter {
+    // position: relative;
+    top: -@navbar-height;
+    opacity: 0;
+  }  
+  &.ng-enter-active {
+    top: 0;
+  }
+  //Reset the top property of the fixed top navbar, so we can move it around.
+  &.ng-enter > header.navbar-fixed-top {
+    top: inherit;
+  }
+
+}
+
+
+//ng-view anims
+.ng-view-include {
+  &.ng-enter {
+    .transition(all ease-out 0.25s);
+  }
+  // &.ng-leave {
+  //   .transition(all ease-out 0s);
+  // }
+}
+
+.ng-enter {
+  opacity:0;
+}
+.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.ng-leave {
+  opacity:1;
+}
+.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+
+
+
+/* Table anims :P */
+tr.ng-enter, 
+tr.ng-leave
+{ 
+    -webkit-transition: 150ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 150ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 150ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 150ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 150ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+} 
+ 
+tr.ng-leave.ng-leave-active,
+tr.ng-enter {
+    opacity: 0;
+    height: 0px;
+}
+ 
+tr.ng-enter.ng-enter-active, 
+tr.ng-leave {
+    opacity: 1;
+    height: 30px;
+}
+
+
+

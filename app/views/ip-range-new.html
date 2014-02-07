@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-info">
+      <span translate>Create a iprange called: </span>
+      <input class='input-large' style='margin-left: 8px;' type=text ng-model='name' autofocus>
+  	<button class='btn btn-success pull-right' ng-disabled='!(name && tag && network && netmask && gateway && first && last)' ng-click='create_iprange()' translate>Create</button>
+    </div>
+  </div>
+
+  <div class="col-md-6 thumbnail">
+    <div id="create-ipranges-form" class="form-horizontal" novalidate="novalidate">
+      <div class="control-group">
+        <label class="control-label" for="iprange-tag" title="Valid nic tag as listed by `sysinfo`" jq-run='tooltip'>Tag &nbsp;</label>
+        <select ng-model="tag" class="valid input-medium" ng-options="t for t in iprange_tags"></select>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="iprange-network">Network &nbsp;</label>
+        <input id="iprange-network" ng-model="network" name="iprange-network" type="text" placeholder="eg. 10.1.1.0" class="valid input-medium"><label for="iprange-network" generated="true" class="error" style="display: block;"></label>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="iprange-netmask">Netmask &nbsp;</label>
+        <input id="iprange-netmask" ng-model='netmask' name="iprange-netmask" type="text" placeholder="eg. 255.255.255.0" class="valid input-medium"><label for="iprange-netmask" generated="true" class="error" style="display: block;"></label>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="iprange-gateway">Gateway &nbsp;</label>
+        <input id="iprange-gateway" ng-model='gateway' name="iprange-gateway" type="text" placeholder="eg. 10.1.1.1" class="valid input-medium"><label for="iprange-gateway" generated="true" class="error" style="display: block;"></label>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 thumbnail">
+    <div class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="iprange-first">First IP &nbsp;</label>
+        <input id="iprange-first" ng-model='first' name="iprange-first" type="text" placeholder="10.1.1.100" class="valid input-medium">
+        <label for="iprange-first" generated="true" class="error" style="display: block;"></label>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="iprange-last">Last IP &nbsp;</label>
+        <input id="iprange-last" ng-model='last' name="iprange-last" type="text" placeholder="10.1.1.200" class="valid input-medium">
+        <label for="iprange-last" generated="true" class="error" style="display: block;"></label>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="iprange-first">VLAN &nbsp;</label>
+        <input id="iprange-first" ng-model='vlan' name="vlan" type="text" class="valid input-small">
+        <label for="vlan" generated="true" class="error" style="display: block;"></label>
+      </div>
+    </div>
+  </div>
+</div>

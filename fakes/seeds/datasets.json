@@ -1,0 +1,22 @@
+{
+    "dataset": "{{random.number(10)}}",
+    "description": "{{Lorem.sentence(1)}}",
+    "image_size": 0,
+    "imported": 1,
+    "name": "{{random.bs_noun}}",
+    "networks": [
+        {
+            "description": "public",
+            "name": "net0"
+        }
+    ],
+    "os": "smartos",
+    "status": "imported",
+    "type": "zone",
+    "users": [
+        {"name": "root"},
+        {"name": "admin"},
+        {"name": "mysql"}
+    ],
+    "version": "13.2.0"
+}

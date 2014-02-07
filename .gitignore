@@ -1,1 +1,16 @@
+.lein-cljsbuild-compiler-0/
+.lein-cljsbuild-repl/
+app/js/
+out/
+repl/
+target/
+app/tmp
+*.version
 app/scripts/config.js
+pkg/build-info
+pkg/packlist
+node_modules
+.tmp
+.sass-cache
+app/bower_components
+fakes/generated/

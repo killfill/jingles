@@ -5,20 +5,30 @@ Config = {
      * redentials test/test.
      */
     mode: "production",
-    /*
-     * This is the URL of the FiFo API Server.
-     * Please adjust it to your configuration.
+
+    /* 
+     * An array of FiFo api backends.
+     * Add more endpoint to be able to connect to them.
      */
-    wiggle: window.location.protocol+"//"+window.location.host,
-    //wiggle: 'http://IP/api/0.1.0/',
+    backends: [
+        {name: 'This', endpoint: ''},
+        //{name: 'Moon', endpoint: 'https://moon.com'},
+    ],
 
     /*
-     * The URL of the FiFo Howl notification Service.
-     * If you are not running howl you can comment this line
-     * and the service will not be used.
-     */
-    howl: window.location.protocol.replace(/^http/, "ws")+"//"+window.location.host+"/howl",
-    //howl: 'ws://IP/howl',
+     * The URL of the remote dataset repository
+     *
+    */
+    datasets: 'datasets.at',
+
+     /* Polling interval in seconds for checking if there is a new VM */
+     newVmPolling: false,
+
+     /* Polling in the main status page */
+     statusPolling: 10,
+
+     /* Time in seconds to wait to show the force stop button for the VM's */
+     timeForceButton: 10,
 
     /* Here you can define the rules by which the UI decides if metrics are good or bad.
      * 'type'  values of warning or error are shown as a big red X, values of info are
@@ -27,31 +37,26 @@ Config = {
      */
     could_test: [
         {
-            max: 0,
-            type: "info",
-            category: "configuration",
-            element: "wiggle-ui-config",
-            message: "You have not adjusted your wiggle ui config.js. " +
-                "This is OK, but please keep in mind that the default warning levels in there " +
-                "might not apply to you. If you see warnings that you think you should not go " +
-                "there and change them, you can also remove this message there.",
-            formula: function() {return 1}
-        },
-        {
             max: 0.85,
             type: "warning",
             category: "cloud",
             element: "memory",
             message: "High memory usage at: $v%",
-            formula: function(m) {return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);}
+            formula: function(m) {
+                if (!m["free-memory"]) return 0;
+                return m["provisioned-memory"] / (m["free-memory"] + m["provisioned-memory"]);
+            }
         },
         {
-            max: 0.60,
+            max: 0.85,
             type: "warning",
             category: "cloud",
             element: "disk",
             message: "High Disk usage at: $v%",
-            formula: function(m) {return m.used / m.size;}
+            formula: function(m) {
+                if (!m.size) return 0;
+                return m.used / m.size;
+            }
         },
         {
             min: 0.80,
@@ -92,14 +97,21 @@ Config = {
             } else if (e.mim != undefined) {
                 ok = (v >= e.min);
             }
-            if (! ok)
-                r.push({
-                    category: e.category,
-                    element: e.element,
-                    type: e.type,
-                    message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
-                });
+            r.push({
+                category: e.category,
+                element: e.element,
+                type: e.type,
+                max: e.max,
+                percent: parseInt(Math.round(v * 100), 10),
+                ok: ok,
+                message: e.message.replace("$v%", (v*100).toFixed(2) + "%").replace("$v", (v).toFixed(2))
+            });
             return r;
         }, []);
-    }
+    },
+
+    adjustMessage: "You have not adjusted your config.js file at /opt/local/fifo-jingles/app/scripts/config.js " +
+                "This is OK, but please keep in mind that the default warning levels in there " +
+                "might not apply to you. If you see warnings that you think you should not go " +
+                "there and change them, you can also remove this message there."
 }

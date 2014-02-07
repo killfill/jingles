@@ -1,0 +1,9 @@
+{
+    "ipranges": [
+        "{{random.number(2)}}",
+        "{{random.number(2)}}}"
+    ],
+    "name": "{{random.bs_noun}}",
+    "uuid": "{{random.number(4)}}",
+    "version": "0.1.0"
+}

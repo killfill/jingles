@@ -1,0 +1,91 @@
+{
+    "characteristics": [],
+    "etherstubs": [],
+    "host": "{{Internet.ip}}",
+    "alias": "{{random.bs_noun}}",
+    "uuid": "{{random.number(4)}}",
+    "networks": "{{Lorem.words}}",
+    "pools": {
+        "zones": {
+            "dedup": "{{random.number(100)}}",
+            "free": "{{random.number(25627320)}}",
+            "health": "ONLINE",
+            "size": "{{random.number(85627320)}}",
+            "used": "{{random.number(65627320)}}"
+        }
+    },
+    "port": "{{random.number(65000)}}",
+    "resources": {
+        "free-memory": "{{random.number(68000)}}",
+        "l1hits": "{{random.number(1728160836)}}",
+        "l1miss": "{{random.number(30762668)}}",
+        "l1size": "{{random.number(50509)}}",
+        "l2hits": "{{random.number(1728160836)}}",
+        "l2miss": "{{random.number(30762668)}}",
+        "l2size": "{{random.number(50509)}}",
+        "provisioned-memory": "{{random.number(32000)}}",
+        "total-memory": "{{random.number(128000)}}"
+    },
+    "sysinfo": {
+        "Boot Parameters": {
+            "console": "text",
+            "root_shadow": "Hmmmmmmm",
+            "smartos": "true"
+        },
+        "Boot Time": "{{random.number(1368881571)}}",
+        "CPU Physical Cores": "{{random.number(4)}}",
+        "CPU Total Cores": "{{random.number(92)}}",
+        "CPU Type": "Intel(R) Xeon(R) CPU E5645 @ 2.40GHz",
+        "CPU Virtualization": "vmx",
+        "Datacenter Name": "{{Name.lastName}}",
+        "Disks": {
+            "c0t0d0": {
+                "Size in GB": "{{random.number(4000)}}"
+            },
+            "c0t1d0": {
+                "Size in GB": "{{random.number(4000)}}"
+            },
+            "c0t2d0": {
+                "Size in GB": "{{random.number(4000)}}"
+            }
+        },
+        "Hostname": "{{random.bs_noun}}",
+        "Link Aggregations": {},
+        "Live Image": "20121101T182015Z",
+        "Manufacturer": "Dell Inc.",
+        "MiB of Memory": "{{random.number(128000)}}",
+        "Network Interfaces": {
+            "bnx0": {
+                "Link Status": "down",
+                "MAC Address": "a4:ba:db:1d:23:47",
+                "NIC Names": [
+                    "admin"
+                ],
+                "ip4addr": "{{Internet.ip}}"
+            },
+            "bnx1": {
+                "Link Status": "unknown",
+                "MAC Address": "a4:ba:db:1d:23:48",
+                "NIC Names": [
+                    "external"
+                ],
+                "ip4addr": ""
+            }
+        },
+        "Product": "PowerEdge R410",
+        "Serial Number": "",
+        "System Type": "SunOS",
+        "UUID": "44454c4c-0000-1020-8020-80c04f202020",
+        "VM Capable": true,
+        "Virtual Network Interfaces": {},
+        "Zpool": "zones",
+        "Zpool Disks": "c0t0d0,c0t1d0,c0t2d0",
+        "Zpool Profile": "raidz",
+        "Zpool Size in GiB": "{{random.number(8825)}}"
+    },
+    "version": "dev-1cd5cbb, Tue Aug 13 05:59:16 2013 +0200",
+    "virtualisation": [
+        "zone",
+        "kvm"
+    ]
+}

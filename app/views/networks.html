@@ -1,48 +1,30 @@
-          <div class="tab-pane" id="networks">
-            <div class="row-fluid">
-              <div class="span12">
-                <h2>Networks
-                  <a style="float: right; margin-left: 20px;" href="#/networks/new" class="btn btn-inverse">
-                    <i class="icon-white icon-plus"></i> New
-                  </a>
-                </h2>
-                <hr/>
-              </div>
-            </div>
-            <div class="row-fluid">
-              <div class="span12">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Tag</th>
-                      <th>Subnet</th>
-                      <th>Gateway</th>
-                      <th>Netmask</th>
-                      <th>First</th>
-                      <th>Next</th>
-                      <th>Last</th>
-                      <th>Returned</th>
-                      <th class="span1">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      <tr ng-repeat='net in networks'>
-                        <td>{{net.name}}</td>
-                        <td>{{net.tag}}</td>
-                        <td>{{net.network}}</td>
-                        <td>{{net.gateway}}</td>
-                        <td>{{net.netmask}}</td>
-                        <td>{{net.first}}</td>
-                        <td>{{net.current}}</td>
-                        <td>{{net.last}}</td>
-                        <td>{{net.free.length}}</td>
-                        <td>
-                            <i ng-click="delete(this)" jq-run='tooltip' title="delete" class="icon-remove-sign clickable"></i>
-                        </td>
-                      <tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+<div class="tab-pane" id="networks">
+  <div class="pane-nav">
+    <a href="#/configuration/networks/new" class="btn btn-primary" translate>
+      New Network
+    </a>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th translate>Name</th>
+            <th class="span1" translate>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="net in networks | hash2array | orderBy: 'name'">
+            <td>
+              <strong><a href="#/configuration/networks/{{net.uuid}}">{{net.name}}</a></strong>
+              <i class="glyphicon glyphicon-exclamation-sign" ng-if='!net.ipranges' title='No IP Range assigned' jq-run='tooltip'></i>
+            </td>
+            <td>
+              <i ng-click="delete(net)" jq-run='tooltip' title="Delete" class="glyphicon glyphicon-remove clickable" bs-modal="'views/partials/modal-confirm.html'"></i>
+            </td>
+          <tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

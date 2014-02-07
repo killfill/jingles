@@ -1,0 +1,14 @@
+{
+    "current": "{{Internet.ip}}",
+    "first": "{{Internet.ip}}",
+    "free": "{{Lorem.words}}",
+    "gateway": "{{Internet.ip}}",
+    "last": "{{Internet.ip}}",
+    "name": "{{random.bs_noun}}",
+    "netmask": "255.255.255.0",
+    "network": "{{Internet.ip}}",
+    "tag": "{{random.bs_noun}}}",
+    "uuid": "{{random.number(10000)}}",
+    "version": "0.1.0",
+    "vlan": "{{random.number(5)}}"
+}

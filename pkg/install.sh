@@ -4,15 +4,7 @@ USER=jingles
 GROUP=www
 DOMAIN="project-fifo.net"
 CERTDIR="/var/db/fifo"
-SUBJ="
-C=AU
-ST=Victoria
-O=Company
-localityName=Melbourne
-commonName=$DOMAIN
-organizationalUnitName=Widgets
-emailAddress=blah@blah.com
-"
+CERTPREFIX="fifo"
 
 
 fail_if_error() {
@@ -26,32 +18,51 @@ case $2 in
     PRE-INSTALL)
         if [ ! -d /var/db/fifo ]
         then
+            #echo Trying to guess network configuration ...
+
+            if ifconfig net1 > /dev/null 2>&1
+            then
+                IP=`ifconfig net1 | grep inet | awk -e '{print $2}'`
+            else
+                IP=`ifconfig net0 | grep inet | awk -e '{print $2}'`
+            fi
+            SUBJ="
+C=AU
+ST=Victoria
+O=Company
+localityName=Melbourne
+commonName=$IP
+organizationalUnitName=None
+emailAddress=blah@blah.com
+"
+
+
             export PASSPHRASE=$(head -c 128 /dev/random  | uuencode - | grep -v "^end" | tr "\n" "d")
             echo "Creating certificates"
             mkdir -p $CERTDIR
 
-            openssl genrsa -des3 -out $CERTDIR/$DOMAIN.key -passout env:PASSPHRASE 2048
+            openssl genrsa -des3 -out $CERTDIR/$CERTPREFIX.key -passout env:PASSPHRASE 2048
             fail_if_error $?
 
             openssl req \
                 -new \
                 -batch \
-                -subj "$(/opt/local/gnu/bin/echo -n "$SUBJ" | /opt/local/gnu/bin/tr "\n" "/")" \
-                -key $CERTDIR/$DOMAIN.key \
-                -out $CERTDIR/$DOMAIN.csr \
+                -subj "$(echo -n "$SUBJ" | tr "\n" "/")" \
+                -key $CERTDIR/$CERTPREFIX.key \
+                -out $CERTDIR/$CERTPREFIX.csr \
                 -passin env:PASSPHRASE
             fail_if_error $?
 
-            cp $CERTDIR/$DOMAIN.key $CERTDIR/$DOMAIN.key.org
+            cp $CERTDIR/$CERTPREFIX.key $CERTDIR/$CERTPREFIX.key.org
             fail_if_error $?
 
-            openssl rsa -in $CERTDIR/$DOMAIN.key.org -out $CERTDIR/$DOMAIN.key -passin env:PASSPHRASE
+            openssl rsa -in $CERTDIR/$CERTPREFIX.key.org -out $CERTDIR/$CERTPREFIX.key -passin env:PASSPHRASE
             fail_if_error $?
 
-            openssl x509 -req -days 365 -in $CERTDIR/$DOMAIN.csr -signkey $CERTDIR/$DOMAIN.key -out $CERTDIR/$DOMAIN.crt
+            openssl x509 -req -days 365 -in $CERTDIR/$CERTPREFIX.csr -signkey $CERTDIR/$CERTPREFIX.key -out $CERTDIR/$CERTPREFIX.crt
             fail_if_error $?
 
-            cat $CERTDIR/$DOMAIN.key $CERTDIR/$DOMAIN.crt > $CERTDIR/$DOMAIN.pem
+            cat $CERTDIR/$CERTPREFIX.key $CERTDIR/$CERTPREFIX.crt > $CERTDIR/$CERTPREFIX.pem
 
             chgrp -R $GROUP $CERTDIR
 
@@ -60,15 +71,10 @@ case $2 in
 
         ;;
     POST-INSTALL)
-        #echo Trying to guess network configuration ...
-
-        #if ifconfig net1 > /dev/null 2>&1
-        #then
-        #    IP=`ifconfig net1 | grep inet | awk -e '{print $2}'`
-        #else
-        #    IP=`ifconfig net0 | grep inet | awk -e '{print $2}'`
-        #fi
-        #cp /opt/local/wiggle-ui/htdocs/js/config.js.example /opt/local/wiggle-ui/htdocs/js/config.js
+        if [ ! -f /opt/local/fifo-jingles/dist/scripts/config.js ]
+        then
+            cp /opt/local/fifo-jingles/dist/scripts/config.js.example /opt/local/fifo-jingles/dist/scripts/config.js
+        fi
         #sed --in-place=.bak -e "s/127.0.0.1/${IP}/g" /opt/local/wiggle-ui/htdocs/js/config.js
         ;;
 esac

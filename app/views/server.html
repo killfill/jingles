@@ -1,0 +1,206 @@
+<div ng-show="hyper"  style='display: table;' class='col-md-12 col-lg-12 col-sm-12 col-xs-12'>
+  <span class="pull-left">
+    <h3 style='display: inline-block; margin-top: 0px;'>{{hyper.alias}}</h3>
+  </span>
+  <div class='pull-right'>
+    <div class="btn-toolbar pull-right">
+      <div class="btn-group btn-group-sm" style="margin-right: 20px;">
+        <button ng-click="confirm_delete(hyper)"
+                class="btn btn-default" bs-modal="'views/partials/modal-confirm.html'"
+                title='Delete' jq-run='tooltip' jq-options="{placement: 'bottom'}"
+                permission=['hypervisors','{{hyper.uuid}}','delete']>
+          <i class='glyphicon glyphglyphicon glyphicon-trash'></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <hr/>
+
+  <div>
+
+    <div class="tabbable tabs-top">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#details" data-toggle="tab" translate>Details</a></li>
+        <li><a href="#performance" data-toggle="tab" translate>Performance</a></li>
+        <li><a href="#characteristics" data-toggle="tab" translate>Characteristics</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="details">
+          <div class="row-fluid">
+
+
+            <div class="hyperbox">
+
+              <div class="header">
+                <i class="glyphicon glyphicon-inbox"></i>
+                <span class="badge badge-info" translate>Information</span>
+              </div>
+
+              <dl class="dl-horizontal">
+                <dt translate>Node name</dt>
+                <dd>
+
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" ng-model='new_alias'></input>
+                    <span class="input-group-btn" ng-if='new_alias != hyper.alias'>
+                      <button class="btn btn-default" ng-click='saveAlias(new_alias)' translate>Save</button>
+                    </span>
+                  </div>
+                  <!-- <input type='text' class='form-control' style='width: 70%; height: inherit; padding: inherit;' ng-model='new_alias'></dd> -->
+                </dd>
+                <dt translate>SmartOS ver</dt>
+                <dd>{{hyper.sysinfo["Live Image"]}}</dd>
+                <dt translate>Agent version</dt>
+                <dd title="{{hyper.version.split(',')[1]}}" jq-run='tooltip'>{{hyper.version.split(',')[0]}}</dd>
+                <dt translate>Booted</dt>
+                <dd jq-run='tooltip' title="{{hyper.sysinfo['Boot Time'] *1000 | date:'medium'}}" am-time-ago="hyper.sysinfo['Boot Time'] *1000"></dd>
+                <dt translate>Zpool profile</dt>
+                <dd>{{hyper.sysinfo["Zpool Profile"]}}</dd>
+              </dl>
+
+            </div>
+
+            <div class="hyperbox">
+
+              <div class="header">
+                <i class="glyphicon glyphicon-tasks"></i>
+                <span class="badge badge-info" translate>CPU / Mainboard</span>
+              </div>
+
+              <dl class="dl-horizontal">
+                <dt translate>CPU type</dt>
+                <dd>{{hyper.sysinfo["CPU Type"]}}</dd>
+                <dt translate>Cores</dt>
+                <dd>{{hyper.sysinfo["CPU Total Cores"]}} ({{hyper.sysinfo["CPU Physical Cores"]}} cpus)</dd>
+                <dt translate>Capability</dt>
+                <dd>{{hyper.virtualisation.join(", ")}}</dd>
+                <dt translate>Mainboard</dt>
+                <dd>{{hyper.sysinfo["Product"]}}</dd>
+                <dt translate>Manufacturer</dt>
+                <dd>{{hyper.sysinfo["Manufacturer"]}}</dd>
+                <dt ng-show='hyper.sysinfo["Serial Number"]' translate>Serial</dt>
+                <dd ng-show='hyper.sysinfo["Serial Number"]'>{{hyper.sysinfo["Serial Number"]  | orDefault:'-'}}</dd>
+              </dl>
+            </div>
+
+            <div class="hyperbox">
+
+              <div class="header">
+                <i class="glyphicon glyphicon-filter"></i>
+                <span class="badge badge-info" translate>Memory</span>
+              </div>
+
+              <dl class="dl-horizontal">
+                <dt translate>Total</dt>
+                <dd>{{hyper.resources["total-memory"] | Mbytes}}</dd>
+                <dt translate>Provisioned</dt>
+                <dd>{{hyper.resources["provisioned-memory"] | Mbytes}}</dd>
+                <dt translate>Free</dt>
+                <dd>{{hyper.resources["free-memory"] | Mbytes}}</dd>
+                <dt translate>L1 Size</dt>
+                <dd>{{hyper.resources["l1size"] | Mbytes}}</dd>
+                <dt translate>L1 Arc hit %</dt>
+                <dd>{{(hyper.resources["l1hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l1miss"])).toFixed(2)}}%</dd>
+                <dt ng-show='hyper.resources["l2size"]' translate>L2 Size</dt>
+                <dd ng-show='hyper.resources["l2size"]'>{{hyper.resources["l2size"] | Mbytes  | orDefault:'-'}}</dd>
+                <dt ng-show='hyper.resources["l2size"]' translate>L2 Arc hit %</dt>
+                <dd ng-show='hyper.resources["l2size"]'>{{(hyper.resources["l2hits"]*100/(hyper.resources["l1hits"] + hyper.resources["l2miss"])).toFixed(2) | orDefault:'-'}}%</dd>
+              </dl>
+            </div>
+
+            <div class="hyperbox">
+
+              <div class="header">
+                <i class="glyphicon glyphicon-hdd"></i>
+                <span class="badge badge-info" translate>Storage</span>
+              </div>
+
+              <dl class="dl-horizontal" ng-repeat='(name, data) in hyper.pools'>
+                <dt translate>Pool</dt>
+                <dd>{{name}} ({{data.health}})</dd>
+                <dt translate>ZFS size</dt>
+                <dd>{{data.size | Mbytes}}</dd>
+                <dt translate>ZFS used</dt>
+                <dd>{{data.used | Mbytes}}</dd>
+                <dt translate>ZFS free</dt>
+                <dd>{{data.free | Mbytes}}</dd>
+
+              </dl>
+
+              <a class="accordion-toggle" data-toggle="collapse" href="#disks" translate>
+                Disks
+              </a>
+              <dl class='dl-horizontal collapse' id='disks'>
+                <span ng-repeat='(disk, data) in hyper.sysinfo.Disks'>
+                  <dt>{{disk}}</dt>
+                  <dd>{{data['Size in GB'] | Gbytes}}</dd>
+                </span>
+              </dl>
+
+            </div>
+
+            <div class="hyperbox">
+              <div class="header">
+                <i class="glyphicon glyphicon-signal"></i>
+                <span class="badge badge-info" translate>Networks</span>
+              </div>
+
+              <dl class="dl-horizontal">
+                <dt translate>Main IP</dt>
+                <dd>{{hyper.host}}</dd>
+                <dt translate>Network tags</dt>
+                <dd>{{hyper.networks.join(", ")}}</dd>
+              </dl>
+
+              <dl class="dl-horizontal" ng-repeat="(iface, data) in hyper.sysinfo['Network Interfaces']">
+                <dt>NIC {{$index + 1}}</dt>
+                <dd>{{iface}}</dd>
+                <dt ng-show="data.ip4addr">IP</dt>
+                <dd ng-show="data.ip4addr">{{data.ip4addr}}</dd>
+                <dt>Mac</dt>
+                <dd>{{data['MAC Address']}}</dd>
+                <dt ng-show="data['NIC Names'].length>0">tags</dt>
+                <dd ng-show="data['NIC Names'].length>0">{{data['NIC Names'].join(', ')}}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="performance">
+          <div class="row-fluid">
+
+            <div class="perfbox pull-left">
+              <div class="header">
+                <i class="glyphicon glyphicon-tasks"></i>
+                <span class="badge badge-info" translate>CPU Load</span>
+              </div>
+              <div id="cpuusage" class="metric"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="characteristics">
+          <p>
+            Characteristics can be used when <a href="#/configuration/packages/new">creating packages</a>.
+            <button class="btn btn-success pull-right" ng-click="add()">+</button>
+          </p>
+          <br/>
+          <table ng-hide="characteristics.length<1" class="table table-bordered">
+            <!--<tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th style='width: 40px;'></th>
+            </tr>-->
+            <tr ng-repeat='ch in characteristics'>
+              <th>{{ch.name}}</th>
+              <td><input type='text' class='form-control' ng-model='ch.value'/></td>
+              <td style='width: 40px;'><button class='btn btn-danger pull-right' ng-click='del(ch.name, $index)'>-</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>

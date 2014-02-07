@@ -1,0 +1,6 @@
+{
+    "metadata": [],
+    "name": "{{Address.streetName}}",
+    "triggers": [],
+    "uuid": "{{random.number(5)}}"
+}
