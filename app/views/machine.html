@@ -81,7 +81,7 @@
   <br/>
   <hr ng-show='vm.uuid'/>
 
-  <div ng-show="vm.state == 'stored'"
+  <div ng-show="vm.state == 'stored' || vm.state == 'limbo'"
      class="alert alert-danger">
     Restore to hypervisor
     <select ng-model="restore_target"
